@@ -67,6 +67,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file splitname.1.man
 NAME
    splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}
+   (LICENSE:PD)
 
 SYNOPSIS
    splitname [NAME1 NAME2 ... |[ -d -b -l -e]|-help|-version]
@@ -97,6 +98,10 @@ EXAMPLES
 
 SEE ALSO
    dirname(1), basename(1), readlink(1), realpath(1)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

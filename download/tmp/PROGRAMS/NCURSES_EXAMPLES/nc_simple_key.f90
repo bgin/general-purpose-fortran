@@ -1,3 +1,4 @@
+!(LICENSE:PD)
 ! @(#) draw a simple menu using ncurses(3c) from Fortran
 ! differences between Fortran and C usage
 ! printw(3c) is not implimented; do internal WRITE(3f) into a character variable and call addstr(3c)

@@ -9,6 +9,10 @@ DESCRIPTION
      Remove file(s).
 EXAMPLE
      _rm *.o
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

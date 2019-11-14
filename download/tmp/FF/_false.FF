@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _false.1.man
 NAME
        _false(1f) - [FUNIX] do nothing, unsuccessfully
+       (LICENSE:PD)
 
 SYNOPSIS
        _false value [ --help|--version--verbose]
@@ -38,6 +39,10 @@ EXAMPLE
 
 SEE ALSO
        _true(1f)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

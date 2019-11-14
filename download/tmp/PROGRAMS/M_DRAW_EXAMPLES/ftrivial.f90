@@ -2,6 +2,7 @@
 !  if we can draw a line and do hardware text we are almost there!
 !
 program ftrivial
+!(LICENSE:PD)
 use M_draw
 use ISO_C_BINDING
 implicit none

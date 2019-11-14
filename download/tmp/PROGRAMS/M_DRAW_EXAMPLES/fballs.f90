@@ -1,3 +1,4 @@
+!(LICENSE:PD)
 !
 ! makesphere
 !

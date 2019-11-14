@@ -1,4 +1,5 @@
 program nc_vline !@(#) draw vertical lines
+!(LICENSE:PD)
    use M_ncurses
    integer :: maxy,maxx,halfy,x,len
    integer :: ierr

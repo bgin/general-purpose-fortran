@@ -230,6 +230,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file choose.1.man
 NAME
    choose(1f) - [NCURSES] select one item from a menu using a screen interface
+   (LICENSE:PD)
 
 SYNOPSIS
    choose  [choices] [ -i index] [ -t timeout ] [ -m text] [ -d default]|[ -help|--version]
@@ -327,6 +328,10 @@ EXAMPLES
 SEE ALSO
    dialog
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

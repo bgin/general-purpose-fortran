@@ -2,6 +2,7 @@ $!------------------------------------------------------------------------------
 $DOCUMENT HELP -file _ls.1.man
 NAME
        _ls(1f) - [FUNIX:FILESYSTEM] list files in a directory
+       (LICENSE:PD)
 SYNOPSIS
        _ls [directory|--version|--help] [ -a] [ -l|-csv]
 DESCRIPTION
@@ -69,6 +70,10 @@ EXTENDED SQLITE EXAMPLE
    EOF
    )| column -t -s '|'
    exit
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

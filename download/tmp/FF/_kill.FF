@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _kill.1.man
 NAME
     _kill(1f) - [FUNIX] send signals to processes
+    (LICENSE:PD)
 SYNTAX
     _kill PIDs [ -s signal_number] [ --help|--version]
 DESCRIPTION
@@ -22,6 +23,10 @@ EXAMPLE
     > *kill*: process not found
     > *kill*: PID value of 0 is not supported
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

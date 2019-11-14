@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       findll(1f) - [FILE FILTER] find long lines                               ',&
+'       (LICENSE:PD)                                                             ',&
 'SYNOPSIS                                                                        ',&
 '       findll [FILENAMES] [ -l LENGTH] [ -wrap] | [ -help| -version]            ',&
 'DESCRIPTION                                                                     ',&
@@ -38,6 +39,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '        # show length of all lines on stdin                                     ',&
 '        $ findll -l -1                                                          ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -47,6 +52,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        findll(1f) - [FILE FILTER] find long lines
+!!        (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!        findll [FILENAMES] [ -l LENGTH] [ -wrap] | [ -help| -version]
@@ -76,6 +82,11 @@ end subroutine help_usage
 !!         $ findll *.f *.F -l 72
 !!         # show length of all lines on stdin
 !!         $ findll -l -1
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -92,7 +103,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    find long lines>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:01:11 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:04:27 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

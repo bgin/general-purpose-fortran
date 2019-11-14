@@ -1,4 +1,5 @@
 program temp_leave ! @(#) temporarily leave screen mode in ncurses from Fortran
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    integer :: ierr

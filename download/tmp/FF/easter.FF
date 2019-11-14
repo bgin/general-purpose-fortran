@@ -43,6 +43,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file easter.1.man
 NAME
    easter(1f) - [FUNIX] print day and month Easter falls on for given year
+   (LICENSE:PD)
 
 SYNOPSIS
    easter [year]|[ --help|--version]
@@ -60,7 +61,10 @@ EXAMPLES
 
    easter 2017
    Easter day: the 16th day of April in the year of our Lord 2017
-
+AUTHOR
+   John S. Urban
+LICENSE
+   Public License
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
    end program demo_easter

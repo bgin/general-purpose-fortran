@@ -2,6 +2,7 @@
 !!##NAME
 !!    unicode(7f) - [FORTRAN] UNICODE example
 !!
+!!##DESCRIPTION
 !!  Support for ISO 10646 (Unicode) is not required for Fortran 2003 any
 !!  more than it is required for C, but the Standard does specify how it
 !!  should be done.

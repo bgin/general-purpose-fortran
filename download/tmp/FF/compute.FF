@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file compute.1.man
 NAME
        compute(1f) - [MATH] evaluate a calculator expression
+       (LICENSE:PD)
 SYNOPSIS
        compute [STRING] [ -verbose]| [ -help| -version]
 DESCRIPTION
@@ -57,6 +58,10 @@ EXAMPLES
 
 SEE ALSO
        M_calculator(3fm)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public License
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples

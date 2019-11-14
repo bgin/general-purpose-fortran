@@ -1,4 +1,5 @@
 program printw_example
+!(LICENSE:PD)
 ! @(#) simple printw-family calls to place text on the screen
  ! NOTE:
  !    mvprintw is currently very limited in that it can only be called using the forms

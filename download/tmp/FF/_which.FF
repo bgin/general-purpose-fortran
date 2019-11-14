@@ -1,6 +1,7 @@
 $DOCUMENT HELP -file _which.1.man
 NAME
        _which(1f) - [FUNIX:FILESYSTEM] shows the full path of (shell) commands.
+       (LICENSE:PD)
 
 SYNOPSIS
        _which program_leafname [ -all]|[ --help|--version]
@@ -24,6 +25,10 @@ RETURN VALUE
        programname   was given.
 
 EXAMPLE
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples

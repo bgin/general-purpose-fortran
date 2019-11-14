@@ -17,6 +17,10 @@ OPTIONS
        --version    display version information and exit
 SEE ALSO
        reverse(1), rev(1)
+AUTHOR  
+       John S. Urban
+LICENSE 
+       Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

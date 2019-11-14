@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!      system_getkey(3f) - read single character from keyboard in hot (raw I/O) mode
+!!      (LICENSE:MIT)
 !!##SYNTAX
 !!
 !!##DESCRIPTION
@@ -162,6 +163,10 @@
 !!
 !!    caveat: communication-related characters such as ctrl-S and ctrl-Q
 !!    are often still intercepted by the system or by terminal emulators.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 ! Last updated May 5th, 2009 -- John S. Urban
 !===================================================================================================================================

@@ -42,5 +42,6 @@ append("vinit.3m_pixel.html");
 append("xcentertext.3m_pixel.html");
 append("ycentertext.3m_pixel.html");
 append("dl_slices.3.html");
+append("pixel_slice.3.html");
 append("huegif.1.html");
 }

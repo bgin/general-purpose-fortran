@@ -42,9 +42,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <div id="Container">
 <div id="Content">
 <dl>
-<dt<b>NAME</b></dt><dd>
+<dt><b>NAME</b></dt><dd>
     M_calculator(3fm) - [M_calculator::INTRO] module of routines for parsing expressions and returning values
-    (LICENSE:MIT)
+    (LICENSE:PD)
 </dd>
 <!-- =========================================================================================================================== -->
 <dt><b>SYNOPSIS</b></dt><dd>
@@ -137,9 +137,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </dd>
 <!-- =========================================================================================================================== -->
 <dt><b> SEE ALSO</b></dt> <dd>
-   <ul>
-   <li> module M_calculator
-   </ul>
+<ul>
+   <li> jucalc(3f)  </li>
+   <li> jucalcx(3f)  </li>
+   <li> inum0(3f),rnum0(3f),dnum0(3f),snum0(3f)  </li>
+   <li> stuff(3f),stuffa(3f), getvalue, igetvalue, rgetvalue  </li>
+   <li> strgarr, strgar2  </li>
+</ul>
 </dd>
 <!-- =========================================================================================================================== -->
 <dt><b> <a name="USAGE">USAGE</a></b></dt> <dd>
@@ -693,6 +697,198 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </dd>
 <!-- =========================================================================================================================== -->
 </dl>
+<dl>
+<!-- =========================================================================================================================== -->
+<dt>
+<h2>ADDING FUNCTIONS</h2>
+<p>
+   Any program that calls JUCALC directly or indirectly (via JUCALX(),
+   STRGAR2(), INUM0(), RNUM0(), SNUM0()) can extend the functions
+   available by supplying two routines:
+</p>
+
+<ol>
+  <li> SUBSTITUTE_SUBROUTINE(3f) - This user-supplied routine is a hook
+           for programmers to add their own functions to JUCALC without
+           having to change JUCALC directly. It is passed the name of
+           unknown functions and their parameter lists if the expression
+           'ownmode(1)' is passed to the calculator.  If you do not
+           need to add custom functions to the calculator this is
+           not required. A user-defined function call be created and
+           called with
+
+              call set_mysub(SUBROUTINE_NAME)
+
+           The routine must be defined with an explicit interface
+           available in the calling unit.
+
+  <li> SUBSTITUTE_C(3f) - This user-supplied function is here to optimize
+           performance of a particular program and everyone else should
+           typically ignore it.  In a special case a non-standard
+           function needed added that was called so heavily that it
+           was important that it be called more efficiently than a
+           user defined function placed in SUBSTITUTE_SUBROUTINE(3f)
+           is. It allows for the function "c" to be defined and given
+           an array and an array size as arguments. By default the "c"
+           function just returns zero.  A replacement can be defined by
+           creating a function with similar arguments and calling
+
+              call set_myfunc(FUNCTION_NAME).
+
+           The routine must be defined with an explicit interface
+           available in the calling unit.
+</ol>
+
+<p>
+   The following program shows a simple but complete line-mode calculator
+   program.
+</p>
+
+   ./compute        # run example program
+   a=10
+   a/2
+   3**4
+   sin(3.1416/4)
+   PI=2*asin(1)
+   diameter=20.3+8/4
+   circumference=PI*diameter
+   funcs
+   dump
+   # use end-of-file (typically control-D) to exit program
+   ctrl-D
+</pre>
+
+<!--FORTRAN90--><xmp>
+
+   program demo_M_calculator
+
+      !     line mode calculator that calls jucalc
+      !
+      use M_calculator, only: jucalc,iclen_calc
+      use M_calculator, only : rnum0
+      implicit none
+      integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
+      character(len=iclen_calc) :: event, line
+      character(len=iclen_calc) :: outlin
+      integer                   :: ios
+      integer                   :: ierr
+      real(kind=k_dbl)          :: rvalue
+      character(len=80)         :: string
+      INFINITE: do
+         read(*,'(a)',iostat=ios)line
+         if(ios.ne.0)exit INFINITE
+         call jucalc(line,outlin,event,rvalue,ierr)
+         ! line   -- input expression
+         ! outlin -- result as a string
+         ! event  --
+         ! rvalue -- result as a numeric value
+         ! ierr   -- return status
+         !
+         ! several different meaning to the status flag ...
+         select case(ierr)
+         case(0)  ! a numeric value was returned without error
+           write(6,'(a,a,a)')trim(outlin),' = ',trim(line)
+         case(2)  ! a string value was returned without error
+           write(6,'(a)')trim(event)
+         case(1)  ! a request for a message has been returned
+                  ! (from DUMP or FUNC)
+           write(6,'(a,a)')'message===>',trim(event)
+         case(-1) ! an error has occurred
+           write(6,'(a,a)')'error===>',trim(event)
+         case default ! this should not occur
+           write(6,'(a)')'warning===> unexpected ierr value from jucalc'
+         end select
+      enddo INFINITE
+
+      string='A=sind(30)'
+      rvalue=rnum0(string,ierr)
+      if(ierr.eq.0)then
+         write(*,*) rvalue
+      else
+         write(*,*) 'error evaluating '//trim(string)
+      endif
+      rvalue=rnum0('A',ierr)
+      write(*,*) rvalue
+
+      ! OPTIONAL: contains example routines for adding user-defined
+      !           functions.
+      !
+      call set_mysub(my_functions)
+      call set_myfunc(c)
+      contains
+      subroutine my_functions(func,iflen,args,iargstp,n,fval,ctmp,ier)
+      ! extend functions available to the calculator routine
+      !
+      !  if the function ownmode(1) is called this subroutine
+      !  will be accessed to do user-written functions.
+      !
+      !  func(iend-1)=procedure name.  func should not be changed.
+      !  iflen=length of procedure name.
+      !  args=array of 100 elements containing procedure arguments.
+      !  iargstp=type of argument(1=numeric value,2=position of string value)
+      !  n=integer number of parameters
+      !  x=array of 55555 x values
+      !  y=array of 55555 y values
+      !  fval=value to replace function call
+      !  ctmp=string to return when returning a string value
+      !  ier=returned error flag value.
+      !      set to -1 if an error occurs.
+      !      set to  0 if a number is returned
+      !      set to  2 if a string is returned
+      !
+      use M_calculator, only: x,y,values,values_len,iclen_calc
+      integer, parameter           :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
+      ! values: the values of string variables
+      ! values_len: the lengths of the string variable values
+      character(len=*),intent(in)  :: func
+      integer,intent(in)           :: iflen
+      real(kind=k_dbl),intent(in)  :: args(100)
+      integer,intent(in)           :: iargstp(100)
+      integer,intent(in)           :: n
+      real(kind=k_dbl)             :: fval
+      character(len=*)             :: ctmp
+      integer                      :: ier
+
+      integer                      :: iwhich
+      character(len=iclen_calc)    :: temp1
+         fval=0.0d0
+      !-----------------------------------------------------------------------
+         write(*,*)'*my_functions* unknown function ', func(1:iflen)
+         write(*,*)'function name length is..',iflen
+         write(*,*)'number of arguments .....',n
+         do i10=1,n
+            if(iargstp(i10).eq.0)then
+               write(*,*)i10,' VALUE=',args(i10)
+            elseif(iargstp(i10).eq.2)then
+               iwhich=int(args(i10))
+               ilen=values_len(iwhich)
+               write(*,*)i10,' STRING='//values(iwhich)(:ilen)
+            else
+               write(*,*)'unknown parameter type is ',iargstp(i10)
+            endif
+         enddo
+      end subroutine my_functions
+      !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+      real function c(fval,n)
+      implicit none
+      !  a built-in calculator function called c must be satisfied.
+      !  write whatever you want here as a function
+      integer, parameter          :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
+      integer,intent(in)          :: n
+      real(kind=k_dbl),intent(in) :: fval(n)
+         c=0.0
+      end function c
+      end program demo_M_calculator
+</xmp>
+</dd>
+<!-- =========================================================================================================================== -->
+<dt><b>AUTHOR</b></dt><dd>
+  John S. Urban
+</dd>
+<!-- =========================================================================================================================== -->
+<dt><b>LICENSE</b></dt><dd>
+   Public Domain
+</dd>
 <!-- =========================================================================================================================== -->
 </div>
 </div>

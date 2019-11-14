@@ -28,6 +28,7 @@ $! this is converted into the help_usage subroutine by ufpp ...
 $DOCUMENT HELP -file days2sec.1.man
 NAME
    days2sec(1f) - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds
+   (LICENSE:PD)
 
 SYNOPSIS
    days2sec dd-hh:mm:ss | --version| --help
@@ -87,6 +88,10 @@ EXAMPLE
     111
 SEE ALSO
     sec2days(1)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $! this is converted into the help_version subroutine by ufpp ...

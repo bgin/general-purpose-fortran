@@ -2,6 +2,7 @@ $!------------------------------------------------------------------------------
 $DOCUMENT HELP -file _stat.1.man
 NAME
        _stat(1f) - [FUNIX:FILESYSTEM] list file properties
+       (LICENSE:PD)
 SYNOPSIS
        _stat pathnames|--version|--help 
 DESCRIPTION
@@ -27,6 +28,10 @@ EXAMPLES
    Last access time:            1507483493 2017-10-08 13:24:53
    Last modification time:      1507483493 2017-10-08 13:24:53
    Last status change time:     1507483494 2017-10-08 13:24:54
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

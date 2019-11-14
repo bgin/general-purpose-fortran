@@ -290,7 +290,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    display a TUI definition and return values>',&
 '@(#)VERSION:        1.0, 20150508>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:38:06 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:25:51 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -309,6 +309,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    fixedfrom(1f) - [FUNIX] read in a TUI definition and return values from screen panel',&
+'    (LICENSE:PD)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    fixedform [file|-demo]|[ --help| --version]                                 ',&
@@ -334,6 +335,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '    yes(1), repeat(1), xargs(1)                                                 ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -343,6 +348,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     fixedfrom(1f) - [FUNIX] read in a TUI definition and return values from screen panel
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -370,6 +376,10 @@ end subroutine help_usage
 !!
 !!##SEE ALSO
 !!     yes(1), repeat(1), xargs(1)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 end program fifo
 !-----------------------------------------------------------------------------------------------------------------------------------

@@ -36,6 +36,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   --help       display this help and exit                                      ',&
 '   --version    output version information and exit                             ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -72,6 +76,10 @@ end subroutine help_usage
 !!
 !!    --help       display this help and exit
 !!    --version    output version information and exit
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -92,7 +100,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)                change and redistribute it.  There is NO WARRANTY;>',&
 '@(#)                without even the implied warranty of MERCHANTABILITY or>',&
 '@(#)                FITNESS FOR A PARTICULAR PURPOSE.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:09:44 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:52:03 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

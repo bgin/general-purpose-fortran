@@ -195,6 +195,7 @@ contains
 $FILTER HELP -file target.1.man
 NAME
    target(1f) - [M_drawplus] draw targets on Adobe PDF files
+   (LICENSE:PD)
 SYNOPSIS
    target [ --help| --version]
 DESCRIPTION
@@ -214,6 +215,10 @@ EXAMPLE
    f50_slow_fire_pistol.pdf
    f50_small_bore_rifle.pdf
    f50_timed_and_rapid_fire_pistol.pdf
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $FILTER END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $FILTER VERSION

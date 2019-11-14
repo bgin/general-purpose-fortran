@@ -90,6 +90,10 @@ EXAMPLES
        >28 29 30 31
 
       month -month April # month names may be given instead of numbers
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples

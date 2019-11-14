@@ -109,6 +109,10 @@ EXAMPLE
   10 factors as 2*5
   11 IS A PRIME NUMBER
   12 factors as (2**2)*3
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
@@ -121,8 +125,6 @@ VERSION:        1.1, 20161007
 AUTHOR:         John S. Urban
 REPORTING BUGS: http://www.urbanjost.altervista.org/
 HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
-                There is NO WARRANTY, to the extent permitted by law.
-UUID:           37a84d23-0b17-4cd5-bb09-54e23d2e66a6
+LICENSE:        Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

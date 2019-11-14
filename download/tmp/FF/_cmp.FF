@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _cmp.1.man
 NAME
      _cmp(1f) - [FUNIX] compare two files byte by byte
+     (LICENSE:PD)
 SYNOPSIS
      _cmp file1 file2 [ -quiet] [ -show]| [ [ -help] [ -version] ]
 DESCRIPTION
@@ -65,6 +66,10 @@ EXIT STATUS
 
       0     no differences were found
       1     differences were found
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

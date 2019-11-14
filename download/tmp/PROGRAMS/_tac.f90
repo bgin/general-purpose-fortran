@@ -1,4 +1,5 @@
 program tac
+!LICENSE:PD)
 use M_io,      only : swallow
 use M_strings, only : notabs
 implicit none

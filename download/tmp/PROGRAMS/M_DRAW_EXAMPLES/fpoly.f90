@@ -1,4 +1,5 @@
 !@(#)  draw some polygons
+!(LICENSE:PD)
 !
 subroutine drawpoly
 use M_draw

@@ -1,4 +1,5 @@
 program fjtext   !@(#)  demonstrate still more features of text
+!(LICENSE:PD)
 use M_draw
 character(len=20) ::  dev
 

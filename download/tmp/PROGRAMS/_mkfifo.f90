@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '     _mkfifo(1f) - [FUNIX:FILESYSTEM] make a FIFO pipe by calling mkfifo(3c)    ',&
+'     (LICENSE:PD)                                                               ',&
 'SYNOPSIS                                                                        ',&
 '     _mkfifo file(s)                                                            ',&
 'DESCRIPTION                                                                     ',&
@@ -19,6 +20,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   --help     display this help and exit                                        ',&
 '   --version  output version information and exit                               ',&
 'EXAMPLE                                                                         ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -28,6 +33,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!      _mkfifo(1f) - [FUNIX:FILESYSTEM] make a FIFO pipe by calling mkfifo(3c)
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!      _mkfifo file(s)
@@ -39,6 +45,10 @@ end subroutine help_usage
 !!    --version  output version information and exit
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 
 subroutine help_version(l_version)
@@ -58,7 +68,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:04:02 AM>',&
+'@(#)COMPILED:       Mon, Nov 11th, 2019 8:46:22 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -68,8 +78,8 @@ end subroutine help_version
 program demo_system_mkfifo
 use M_kracken, only : kracken,lget,sgets,IPvalue
 use M_system, only : system_mkfifo, system_perror
-use M_system, only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
-use M_system, only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
+use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
+use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
 use M_system, only : DEFFILEMODE, ACCESSPERMS
 use M_system, only : system_perror
 implicit none

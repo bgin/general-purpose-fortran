@@ -1,4 +1,5 @@
 subroutine attryn(a, c)
+!(LICENSE:PD)
 ! @(#) test termattrs(3f) and query which attributes this terminal type takes
    use M_ncurses
    implicit none

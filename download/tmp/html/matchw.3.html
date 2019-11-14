@@ -54,7 +54,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </A>
 <BLOCKQUOTE>
 <B>matchw(3f) </B>- [M_strings:COMPARE] compare given string for match to pattern which may contain wildcard characters
-<B>(LICENSE:???)
+<B>(LICENSE:PD)
 </B><B>
 </B></BLOCKQUOTE>
 <A name=contents></A><H3>CONTENTS</H3></A>
@@ -64,8 +64,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <A HREF=#3>Options</A><BR>
 <A HREF=#4>Examples</A><BR>
 <A HREF=#5>Author</A><BR>
+<A HREF=#6>License</A><BR>
 </BLOCKQUOTE>
-<A name=6>
+<A name=7>
 
      <H3>SYNOPSIS</H3>
 
@@ -135,96 +136,195 @@ question mark and asterisk is problematic.
 Example program
 <P>
 <PRE>
-    program demo_matchw
-    call demo1()
-    call demo2()
-    contains
-    !!
-    ! basic example
-    !!
-    subroutine demo1()
-    use M_strings, only : matchw
-    ! first match is not all of string so F
-    write(*,*)matchw(&#146;*c*ax &#146;,&#146;abcdefgaxaxaxax&#146;)
-    ! true
-    write(*,*)matchw(&#146;*c*ax*&#146;,&#146;abcdefgaxaxaxax&#146;)
-    !
-    write(*,*)merge(&#146;MATCH&#146;,&#146;ERROR&#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*c*ax*&#146;))
-    write(*,*)merge(&#146;MATCH&#146;,&#146;ERROR&#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*c??f*&#146;))
-    write(*,*)merge(&#146;ERROR&#146;,&#146;NO   &#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*a??f&#146;))
-    write(*,*)merge(&#146;ERROR&#146;,&#146;NO   &#146;,matchw(&#146;abcdefgaxaxaxax&#146;,&#146;*y&#146;))
-    end subroutine demo1
-    !!
-    ! More extensive example
-    !!
-    subroutine demo2()
-    use M_strings, only : matchw
-    !implicit none
-    integer np, ns
-    parameter (np =  19, ns =  6)
-    character pattern(np)*8, string(ns)*12
-    character pattern2(np)*8
-    integer s, p
-    data pattern /&#146;*&#146;,&#146;a*a&#146;,&#146;a*&#146;,&#146;ab*&#146;,&#146;*a&#146;,&#146;a*a&#146;,&#146;a?d?&#146;,&#146;a?d*&#146;,&#146;abra&#146;,&
-    & &#146;aa&#146;,&#146;a&#146;,&#146;ab&#146;,&#146;*&#146;,&#146;?&#146;,&#146;????&#146;,&#146;?*&#146;,&#146;*?&#146;,&#146;***?&#146;,&#146;****?&#146;/
-    data pattern2/&#146;*&#146;,&#146;a**a&#146;,&#146;a*d?&#146;,&#146;ab*&#146;,&#146;*a&#146;,&#146;a*a&#146;,&#146;a?d?&#146;,&#146;a?d*&#146;,&#146;alda&#146;,&
-    & &#146;aa&#146;,&#146;a&#146;,&#146;ab&#146;,&#146;*&#146;,&#146;?&#146;,&#146;???a&#146;,&#146;????&#146;,&#146;**&#146;,&#146;***a&#146;,&#146;?????&#146;/
-    data string / &#146;abracadabra&#146;, &#146;aldabra&#146;, &#146;alda&#146;, &#146;carta&#146;, &#146;abdc&#146;, &#146;abra&#146;/
-       !
-       write(*,&#146;("TABLE 1",t18, *(a6))&#146;) pattern
-       do s = 1,ns
-          write(*, &#146;(a, 100L6)&#146;) &
-           & string(s),(matchw(string(s),pattern(p)), p=1,np)
-       enddo
-       !
-       write(*,&#146;("TABLE 2",t18, *(a6))&#146;) pattern2
-       do s = 1,ns
-          write(*, &#146;(a, 100L6)&#146;) &
-           & string(s),(matchw(string(s),pattern2(p)), p=1,np)
-       enddo
-       !
-       stop
-       !
-       do s = 1,ns
-          do p=1,np
-          write(*, &#146;(a,a,L7)&#146;) &
-           & string(s),pattern2(p),matchw(string(s),pattern2(p))
-          enddo
-       enddo
-    end subroutine demo2
-    !
-    end program demo_matchw
+   program demo_matchw
+   implicit none
+   ! This main() routine passes a bunch of test strings into the above code.
+   ! In performance comparison mode, it does that over and over.  Otherwise,
+   ! it does it just once.  Either way, it outputs a passed/failed result.
+   !
+      integer :: nReps
+      logical :: allpassed
+      integer :: i
+      allpassed = .true.
 <P>
+      nReps = 10000
+      nReps = 1     ! Can choose as many repetitions as you&#146;re expecting in the real world.
+<P>
+      do i=1,nReps
+         ! Cases with repeating character sequences.
+         allpassed=and(allpassed, test("a*abab", "a*b", .true.))
+         !!cycle
+         allpassed=and(allpassed, test("ab", "*?", .true.))
+         allpassed=and(allpassed, test("abc", "*?", .true.))
+         allpassed=and(allpassed, test("abcccd", "*ccd", .true.))
+         allpassed=and(allpassed, test("bLah", "bLaH", .false.))
+         allpassed=and(allpassed, test("mississippi", "*sip*", .true.))
+         allpassed=and(allpassed, test("xxxx*zzzzzzzzy*f", "xxx*zzy*f", .true.))
+         allpassed=and(allpassed, test("xxxx*zzzzzzzzy*f", "xxxx*zzy*fffff", .false.))
+         allpassed=and(allpassed, test("mississipissippi", "*issip*ss*", .true.))
+         allpassed=and(allpassed, test("xxxxzzzzzzzzyf", "xxxx*zzy*fffff", .false.))
+         allpassed=and(allpassed, test("xxxxzzzzzzzzyf", "xxxx*zzy*f", .true.))
+         allpassed=and(allpassed, test("xyxyxyzyxyz", "xy*z*xyz", .true.))
+         allpassed=and(allpassed, test("xyxyxyxyz", "xy*xyz", .true.))
+         allpassed=and(allpassed, test("mississippi", "mi*sip*", .true.))
+         allpassed=and(allpassed, test("ababac", "*abac*", .true.))
+         allpassed=and(allpassed, test("ababac", "*abac*", .true.))
+         allpassed=and(allpassed, test("aaazz", "a*zz*", .true.))
+         allpassed=and(allpassed, test("a12b12", "*12*23", .false.))
+         allpassed=and(allpassed, test("a12b12", "a12b", .false.))
+         allpassed=and(allpassed, test("a12b12", "*12*12*", .true.))
+<P>
+         ! Additional cases where the &#146;*&#146; char appears in the tame string.
+         allpassed=and(allpassed, test("*", "*", .true.))
+         allpassed=and(allpassed, test("a*r", "a*", .true.))
+         allpassed=and(allpassed, test("a*ar", "a*aar", .false.))
+<P>
+         ! More double wildcard scenarios.
+         allpassed=and(allpassed, test("XYXYXYZYXYz", "XY*Z*XYz", .true.))
+         allpassed=and(allpassed, test("missisSIPpi", "*SIP*", .true.))
+         allpassed=and(allpassed, test("mississipPI", "*issip*PI", .true.))
+         allpassed=and(allpassed, test("xyxyxyxyz", "xy*xyz", .true.))
+         allpassed=and(allpassed, test("miSsissippi", "mi*sip*", .true.))
+         allpassed=and(allpassed, test("miSsissippi", "mi*Sip*", .false.))
+         allpassed=and(allpassed, test("abAbac", "*Abac*", .true.))
+         allpassed=and(allpassed, test("abAbac", "*Abac*", .true.))
+         allpassed=and(allpassed, test("aAazz", "a*zz*", .true.))
+         allpassed=and(allpassed, test("A12b12", "*12*23", .false.))
+         allpassed=and(allpassed, test("a12B12", "*12*12*", .true.))
+         allpassed=and(allpassed, test("oWn", "*oWn*", .true.))
+<P>
+         ! Completely tame (no wildcards) cases.
+         allpassed=and(allpassed, test("bLah", "bLah", .true.))
+<P>
+         ! Simple mixed wildcard tests suggested by IBMer Marlin Deckert.
+         allpassed=and(allpassed, test("a", "*?", .true.))
+<P>
+         ! More mixed wildcard tests including coverage for false positives.
+         allpassed=and(allpassed, test("a", "??", .false.))
+         allpassed=and(allpassed, test("ab", "?*?", .true.))
+         allpassed=and(allpassed, test("ab", "*?*?*", .true.))
+         allpassed=and(allpassed, test("abc", "?**?*?", .true.))
+         allpassed=and(allpassed, test("abc", "?**?*&?", .false.))
+         allpassed=and(allpassed, test("abcd", "?b*??", .true.))
+         allpassed=and(allpassed, test("abcd", "?a*??", .false.))
+         allpassed=and(allpassed, test("abcd", "?**?c?", .true.))
+         allpassed=and(allpassed, test("abcd", "?**?d?", .false.))
+         allpassed=and(allpassed, test("abcde", "?*b*?*d*?", .true.))
+<P>
+         ! Single-character-match cases.
+         allpassed=and(allpassed, test("bLah", "bL?h", .true.))
+         allpassed=and(allpassed, test("bLaaa", "bLa?", .false.))
+         allpassed=and(allpassed, test("bLah", "bLa?", .true.))
+         allpassed=and(allpassed, test("bLaH", "?Lah", .false.))
+         allpassed=and(allpassed, test("bLaH", "?LaH", .true.))
+<P>
+         ! Many-wildcard scenarios.
+         allpassed=and(allpassed, test(&
+         &"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",&
+         &"a*a*a*a*a*a*aa*aaa*a*a*b",&
+         &.true.))
+         allpassed=and(allpassed, test(&
+         &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
+         &"*a*b*ba*ca*a*aa*aaa*fa*ga*b*",&
+         &.true.))
+         allpassed=and(allpassed, test(&
+         &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
+         &"*a*b*ba*ca*a*x*aaa*fa*ga*b*",&
+         &.false.))
+         allpassed=and(allpassed, test(&
+         &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
+         &"*a*b*ba*ca*aaaa*fa*ga*gggg*b*",&
+         &.false.))
+         allpassed=and(allpassed, test(&
+         &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
+         &"*a*b*ba*ca*aaaa*fa*ga*ggg*b*",&
+         &.true.))
+         allpassed=and(allpassed, test("aaabbaabbaab", "*aabbaa*a*", .true.))
+         allpassed=and(allpassed, test("a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", "a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.))
+         allpassed=and(allpassed, test("aaaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.))
+         allpassed=and(allpassed, test("aaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .false.))
+         allpassed=and(allpassed, test(&
+         &"abc*abcd*abcde*abcdef*abcdefg*abcdefgh*abcdefghi*abcdefghij*abcdefghijk*abcdefghijkl*abcdefghijklm*abcdefghijklmn",&
+         & "abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*",&
+         &.false.))
+         allpassed=and(allpassed, test(&
+         &"abc*abcd*abcde*abcdef*abcdefg*abcdefgh*abcdefghi*abcdefghij*abcdefghijk*abcdefghijkl*abcdefghijklm*abcdefghijklmn",&
+         &"abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*",&
+         &.true.))
+         allpassed=and(allpassed, test("abc*abcd*abcd*abc*abcd", "abc*abc*abc*abc*abc", .false.))
+         allpassed=and(allpassed, test( "abc*abcd*abcd*abc*abcd*abcd*abc*abcd*abc*abc*abcd", &
+         &"abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abcd",&
+         &.true.))
+         allpassed=and(allpassed, test("abc", "********a********b********c********", .true.))
+         allpassed=and(allpassed, test("********a********b********c********", "abc", .false.))
+         allpassed=and(allpassed, test("abc", "********a********b********b********", .false.))
+         allpassed=and(allpassed, test("*abc*", "***a*b*c***", .true.))
+<P>
+         ! A case-insensitive algorithm test.
+         ! allpassed=and(allpassed, test("mississippi", "*issip*PI", .true.))
+      enddo
+<P>
+      if (allpassed)then
+         write(*,&#146;(a)&#146;)"Passed",nReps
+      else
+         write(*,&#146;(a)&#146;)"Failed"
+      endif
 </PRE>
+!===================================================================================================================================
+contains
+!===================================================================================================================================
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb:       if (allpassed)then
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>! This is a test program for wildcard matching routines.</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+It can be used
+! either to test a single routine for correctness, or to compare the timings
+! of two (or more) different wildcard matching routines.
+!
+function <B>test</B>(tame, wild, bExpectedResult) <B>result</B>(bpassed)
+use M_strings, only : matchw
+<B>character</B>(len=*) :: tame
+<B>character</B>(len=*) :: wild
+<TABLE width=100% cellpadding=3><!-- tsb: It can be used
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>logical</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: bExpectedResult
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>logical</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: bResult
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>logical</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: bPassed
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>bResult = .true.</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+! We&#146;ll do "&=" cumulative checking.
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>bPassed = .false.</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+! Assume the worst.
+<B>write</B>(*,*)repeat(&#146;=&#146;,79)
+bResult = <B>matchw</B>(tame, wild) ! Call a wildcard matching routine.
+</TD></TR>
+<TR></TR></TABLE>! To assist correctness checking, output the two strings in any failing scenarios.
+if (bExpectedResult .eqv. bResult) then
+bPassed = .true.
+<B>if</B>(nReps == 1) <B>write</B>(*,*)"Passed match on ",tame," vs. ", wild
+else
+<B>if</B>(nReps == 1) <B>write</B>(*,*)"Failed match on ",tame," vs. ", wild
+endif
+</TD></TR>
+<TR></TR></TABLE>end function test
+end program demo_matchw
+</BLOCKQUOTE>
+<P>
 Expected output
-<P>
-<PRE>
-    &gt; F
-    &gt; T
-    &gt; MATCH
-    &gt; MATCH
-    &gt; NO
-    &gt; NO
-<P>
-</PRE>
-Expected output
-<P>
-<PRE>
-   TABLE 1     * a*a  a*   ab* *a a*a a?d? a?d* abra aa a ab * ? ???? ?*   *? ***? ****?
-   abracadabra T T    T    T   T  T   F    F    F    F  F F  T F F    T    F  F    F
-   aldabra     T T    T    F   T  T   F    T    F    F  F F  T F F    T    F  F    F
-   alda        T T    T    F   T  T   T    T    F    F  F F  T F T    T    F  F    F
-   carta       T F    F    F   T  F   F    F    F    F  F F  T F F    T    F  F    F
-   abdc        T F    T    T   F  F   T    T    F    F  F F  T F T    T    F  F    F
-   abra        T T    T    T   T  T   F    F    T    F  F F  T F T    T    F  F    F
-   TABLE 2     * a**a a*d? ab* *a a*a a?d? a?d* alda aa a ab * ? ???a ???? ** ***a ?????
-   abracadabra T F    F    T   T  T   F    F    F    F  F F  T F F    F    F  F    F
-   aldabra     T F    F    F   T  T   F    T    F    F  F F  T F F    F    F  F    F
-   alda        T F    T    F   T  T   T    T    T    F  F F  T F T    T    F  F    F
-   carta       T F    F    F   T  F   F    F    F    F  F F  T F F    F    F  F    T
-   abdc        T F    T    T   F  F   T    T    F    F  F F  T F F    T    F  F    F
-   abra        T F    F    T   T  T   F    F    F    F  F F  T F T    T    F  F    F
-</PRE>
 </BLOCKQUOTE>
 <A name=5>
 
@@ -232,21 +332,21 @@ Expected output
 
 </A>
 <BLOCKQUOTE>
-<TABLE cellpadding=3>
-<TR valign=top><TD colspan=2>
-<B>Heavily based on a version from Clive Page, <A HREF="mailto:cgp@le.ac.uk">cgp@le.ac.uk</A>,</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-2003 June 24.
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
-<A name=>
+John S. Urban
+<P>
+Based on the article "Matching Wildcards: An Empirical Way to Tame an Algorithm"
+in Dr Dobb&#146;s Journal, By Kirk J. Krauss, October 07, 2014
+</BLOCKQUOTE>
+<A name=6>
 
-    <H4>&nbsp; &nbsp; LICENSE</H4>
+     <H3>LICENSE</H3>
+
 </A>
 <BLOCKQUOTE>
-???
+Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>matchw (3)</TD> <TD align=right width=33%><I>November 05, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 18e9af05-0ced-4c4a-b720-44ee4c11bb4b using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>matchw (3)</TD> <TD align=right width=33%><I>November 13, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 97f9382f-898f-4e21-a78f-ce8d4f3e8df6 using man macros.</FONT>
 <br><br><center><img src="images/matchw.3.gif"></center>
 </div>
 </div>

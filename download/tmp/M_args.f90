@@ -4,9 +4,15 @@
 !>
 !!##NAME
 !!    M_args(3fm) - [ARGUMENTS::M_args] - define a NAMELIST in a module template to provide command line argument parsing
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
+!!    use M_args, only : get_namelist, print_dictionary, unnamed
+!!    use M_args, only : get_command_arguments_as_raw_namelist
+!!    use M_args, only : get_command_arguments_stack
+!!    use M_args, only : get_command_arguments_string
+!!    use M_args, only : longest_command_argument
+!!    use M_args, only : debug
 !!
 !!##DESCRIPTION
 !!    Use the M_arguments(3fp) module template in the following example
@@ -93,7 +99,7 @@
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 module M_args
 use M_journal, only : journal
@@ -145,8 +151,9 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
-!!    NAME get_command_arguments_stack(3f) - [ARGUMENTS:M_args] return a character array containing all the command line arguments
-!!    (LICENSE:MIT)
+!!##NAME
+!!    get_command_arguments_stack(3f) - [ARGUMENTS:M_args] return a character array containing all the command line arguments
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function get_command_arguments(stack) result (args)
@@ -173,6 +180,11 @@ contains
 !!    write(*,*)'longest argument is ',len(myargs)
 !!    write(*,*)'number of arguments is ',size(myargs)
 !!    end program demo_get_command_arguments_stack
+!!
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 function get_command_arguments_stack() result(args)
 character(len=:),allocatable :: args(:)
@@ -205,7 +217,7 @@ end function get_command_arguments_stack
 !>
 !!##NAME
 !!    get_command_arguments_string(3f) - [ARGUMENTS:M_args] return all command arguments as an allocated string
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -244,7 +256,7 @@ end function get_command_arguments_stack
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine get_command_arguments_string(string,istatus)
 
@@ -310,7 +322,7 @@ end subroutine get_command_arguments_string
 !>
 !!##NAME
 !!    get_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -682,7 +694,7 @@ end subroutine get_command_arguments_string
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function get_namelist(definition,all) result (readme)
 
@@ -733,7 +745,7 @@ end function get_namelist
 !>
 !!##NAME
 !!    get_command_arguments_as_raw_namelist(3f) - [ARGUMENTS:M_args] NAMELIST-based command line argument parsing
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -816,7 +828,7 @@ end function get_namelist
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function get_command_arguments_as_raw_namelist() result (string)
 
@@ -840,7 +852,7 @@ integer :: command_line_length
 !>
 !!##NAME
 !!    prototype_to_dictionary(3f) - [ARGUMENTS:M_args] parse user command and store tokens into dictionary
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -887,7 +899,7 @@ integer :: command_line_length
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine prototype_to_dictionary(string)
 implicit none
@@ -1030,7 +1042,7 @@ end subroutine prototype_to_dictionary
 !>
 !!##NAME
 !!    update(3f) - [ARGUMENTS:M_args] update internal dictionary given keyword and value
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine update(key,val)
@@ -1049,7 +1061,7 @@ end subroutine prototype_to_dictionary
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine update(key,val)
 character(len=*),intent(in)           :: key
@@ -1103,7 +1115,7 @@ end subroutine update
 !>
 !!##NAME
 !!    wipe_dictionary(3fp) - [ARGUMENTS:M_args] reset private M_args(3fm) dictionary to empty
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine wipe_dictionary()
@@ -1118,7 +1130,7 @@ end subroutine update
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine wipe_dictionary()
    if(allocated(keywords))deallocate(keywords)
@@ -1162,7 +1174,7 @@ end function get
 !>
 !!##NAME
 !!    prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_args] convert Unix-like command arguments to namelist
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
@@ -1227,7 +1239,7 @@ end function get
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
 implicit none
@@ -1438,7 +1450,7 @@ end subroutine dictionary_to_namelist
 !>
 !!##NAME
 !!   print_dictionary(3f) - [M_args]print internal dictionary created by calls to get_namelist(3f)
-!!   (LICENSE:MIT)
+!!   (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine print_dictionary(header)
@@ -1493,7 +1505,7 @@ end subroutine dictionary_to_namelist
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine print_dictionary(header)
 character(len=*),intent(in),optional :: header
@@ -1506,7 +1518,7 @@ integer          :: i
    if(allocated(keywords))then
       if(size(keywords).gt.0)then
          write(stderr,'(*(a,t21,a,t30,a))')'KEYWORD','PRESENT','VALUE'
-         write(stderr,'(*(a,t21,l0,t30,"[",a,"]",/))')(trim(keywords(i)),present_in(i),values(i)(:counts(i)),i=1,size(keywords))
+         write(stderr,'(*(a,t21,l1,t30,"[",a,"]",/))')(trim(keywords(i)),present_in(i),values(i)(:counts(i)),i=1,size(keywords))
       endif
    endif
    if(allocated(unnamed))then
@@ -1522,7 +1534,7 @@ end subroutine print_dictionary
 !>
 !!##NAME
 !!    longest_command_argument(3f) - [ARGUMENTS:M_args] length of longest argument on command line
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function longest_command_argument() result(ilongest)
@@ -1544,7 +1556,7 @@ end subroutine print_dictionary
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function longest_command_argument() result(ilongest)
 integer :: i
@@ -1569,7 +1581,7 @@ end function longest_command_argument
 !>
 !!##NAME
 !!    namelist_to_dictionary(3f) - [ARGUMENTS:M_args] parse namelist string and store tokens into dictionary
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1605,7 +1617,7 @@ end function longest_command_argument
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine namelist_to_dictionary(string)
 implicit none

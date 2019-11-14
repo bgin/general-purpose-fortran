@@ -281,6 +281,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     topic(1) - [HELP] Display specially formatted help text files.             ',&
 'SYNOPSIS                                                                        ',&
 '     topic [TOPIC | -t| -e SEARCH_STRING] [ -f INPUT_FILE]]|[ -all| -topics| -summaries]',&
+'     (LICENSE:PD)                                                               ',&
 'DESCRIPTION                                                                     ',&
 '   This utility program is used to read topics from a specially formatted       ',&
 '   help text file. It is often called from a program as a subprocess.           ',&
@@ -371,6 +372,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '  * M_strings(3f)                                                               ',&
 '  * M_regexp(3f)                                                                ',&
 '  * M_kracken(3f)                                                               ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -383,6 +388,7 @@ end subroutine help_usage
 !!##SYNOPSIS
 !!
 !!      topic [TOPIC | -t| -e SEARCH_STRING] [ -f INPUT_FILE]]|[ -all| -topics| -summaries]
+!!      (LICENSE:PD)
 !!##DESCRIPTION
 !!    This utility program is used to read topics from a specially formatted
 !!    help text file. It is often called from a program as a subprocess.
@@ -474,6 +480,10 @@ end subroutine help_usage
 !!   * M_strings(3f)
 !!   * M_regexp(3f)
 !!   * M_kracken(3f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -494,7 +504,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        2.5, 20130818  Updated and made a seperate program instead of a subroutine>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:10:04 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:06:24 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,8 +1,12 @@
 !>
 !!##NAME
 !!    M_list(3f) - [M_list] maintain simple lists
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
+!!
 !!##SYNOPSIS
+!!
+!!    use M_list, only : insert, replace, remove
+!!    use M_list, only : dictionary
 !!
 !!##DESCRIPTION
 !!
@@ -19,6 +23,7 @@
 !!    which can be easily accessed with standard routines.
 !!
 !!    BASIC LIST
+!!
 !!    subroutine locate(list,value,place,ier,errmsg)  finds the index where a
 !!                                                    value is found or should
 !!                                                    be in a sorted array and
@@ -137,6 +142,11 @@
 !!     get b=>value of b
 !!     get d=>value of d
 !!     get notthere=>
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -218,7 +228,7 @@ contains
 !>
 !!##NAME
 !!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -334,7 +344,7 @@ contains
 !!##AUTHOR
 !!    1989,2017 John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine locate_c(list,value,place,ier,errmsg)
 
@@ -660,7 +670,7 @@ end subroutine locate_i
 !>
 !!##NAME
 !!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -719,7 +729,7 @@ end subroutine locate_i
 !!##AUTHOR
 !!    1989,2017 John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine remove_c(list,place)
 
@@ -834,7 +844,7 @@ end subroutine remove_i
 !>
 !!##NAME
 !!    replace(3f) - [M_list] replace entry in a string array at specified position
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -923,7 +933,7 @@ end subroutine remove_i
 !!##AUTHOR
 !!    1989,2017 John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine replace_c(list,value,place)
 use M_time, only : now
@@ -1050,7 +1060,7 @@ end subroutine replace_i
 !>
 !!##NAME
 !!    insert(3f) - [M_list] insert entry into a string array at specified position
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1130,7 +1140,7 @@ end subroutine replace_i
 !!##AUTHOR
 !!    1989,2017 John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine insert_c(list,value,place)
 use M_time, only : now
@@ -1285,7 +1295,7 @@ end subroutine insert_i
 !>
 !!##NAME
 !!    dict_delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1337,6 +1347,11 @@ end subroutine insert_i
 !!     [z],[xxx],[aaa],[ZZZ]
 !!     [z],[xxx],[aaa],[ZZZ]
 !!     [xxx],[aaa],[ZZZ]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine dict_delete(self,key)
 
@@ -1360,7 +1375,7 @@ end subroutine dict_delete
 !>
 !!##NAME
 !!    dict_get(3f) - [M_list] get value of key-value pair in a dictionary given key
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1410,6 +1425,11 @@ end subroutine dict_delete
 !!     end program demo_locate
 !!
 !!    Results:
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 function dict_get(self,key) result(value)
 
@@ -1433,7 +1453,7 @@ end function dict_get
 !>
 !!##NAME
 !!    dict_add(3f) - [M_list] add or replace a key-value pair in a dictionary
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1473,6 +1493,11 @@ end function dict_get
 !!     end program demo_add
 !!
 !!    Results:
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine dict_add(self,key,value)
 

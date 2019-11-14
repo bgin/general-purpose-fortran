@@ -49,6 +49,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file lcm.1.man
 NAME
        lcm(1f) - [NUMBERS] display least common multiple of a list of whole numbers
+       (LICENSE:PD)
 
 SYNOPSIS
        lcm [NUMBERS]...
@@ -82,6 +83,10 @@ EXAMPLE
   >lcm 202023 2147483647
   >STOP 1
   >*lcm* result larger than a standard integer = 433841088817881
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

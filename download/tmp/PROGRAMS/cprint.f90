@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   cprint(1f) - [FILE FILTER] filter prints specified columns                   ',&
+'   (LICENSE:PD)                                                                 ',&
 'SYNOPSIS                                                                        ',&
 '   cprint [ columns ][ -delimiters delim] |-help|-version                       ',&
 '                                                                                ',&
@@ -27,6 +28,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      >echo d e h l o r w|cprint 3 2 4 4 5 7 5 6 4 1                            ',&
 '      h e l l o w o r l d                                                       ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -36,6 +41,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    cprint(1f) - [FILE FILTER] filter prints specified columns
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    cprint [ columns ][ -delimiters delim] |-help|-version
@@ -54,6 +60,11 @@ end subroutine help_usage
 !!
 !!       >echo d e h l o r w|cprint 3 2 4 4 5 7 5 6 4 1
 !!       h e l l o w o r l d
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -71,7 +82,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170224>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:57:51 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:03:54 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

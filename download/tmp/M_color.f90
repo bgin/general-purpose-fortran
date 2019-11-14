@@ -14,7 +14,7 @@
 !! <!-- ======================================================================= -->
 !! <dt> <a name="M_COLOR">NAME</a></dt> <dd>
 !! <em>M_COLOR(3f)</em>&nbsp;-&nbsp;[M_color]&nbsp;a&nbsp;Fortran&nbsp;module&nbsp;that&nbsp;lets&nbsp;you&nbsp;convert&nbsp;between&nbsp;common&nbsp;color&nbsp;models
-!! (LICENSE:MIT)
+!! (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS </dt><dd>
@@ -143,7 +143,7 @@
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt>REFERENCES</dt><dd>
-!!   The algorithms are heavily based on chapter 17 of
+!!   The algorithms are based on chapter 17 of
 !!   "Fundamentals of Interactive Computer Graphics"; J. D. Foley and A. Van Dam.
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -153,8 +153,13 @@
 !!
 !! </dd>
 !! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
 !! </dl>
-!! <h2>Details on the internal procedures ...</h2>
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -188,7 +193,7 @@ contains
 !! <dl>
 !! <dt> <a name="HUE">NAME</a> </dt><dd>
 !!    HUE(3f) - [M_color] converts a color's components from one color model to another.
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !! </dd>
 !!
 !! <dt> SYNOPSIS </dt><dd>
@@ -411,6 +416,18 @@ contains
 !!        RETURNED hsv ====>         337          72          69
 !!        STATUS ==========>           0
 !! </pre>
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
 !! </dd>
 !! <!-- ======================================================================= -->
 !! </dl>
@@ -646,7 +663,7 @@ end subroutine test_hue
 !! <dt> <a name="RGBHLS">NAME</a> </dt><dd>
 !!     RGBHLS(3fp) - [M_color] Given red, green, and blue color components
 !!     calculates the hue, lightness, and saturation for a color
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -684,6 +701,18 @@ end subroutine test_hue
 !! <tr ALIGN="right"><td ALIGN="left">Pink</td><td>100.0</td><td>50.0</td><td>50.0</td><td>0</td><td>75.0</td><td>100.0</td><td style="background-color:#FF8080">&nbsp;</td></tr>
 !! </table>
 !! </blockquote>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
+!! </dd>
 !! <!-- ======================================================================= -->
 !! </dl>
 !===================================================================================================================================
@@ -752,7 +781,7 @@ end subroutine rgbhls
 !! <dt> <a name="RGBHVS">NAME</a> </dt><dd>
 !!     RGBHVS(3fp) - [M_color] calculates the hue, value, &amp; saturation
 !!     for a color given in red, green, &amp; blue components values.
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -796,6 +825,18 @@ end subroutine rgbhls
 !! <tr>      <td              style="background-color:#000080">&nbsp;</td>  <td>Navy</td>          <td>#000080</td>  <td>(0,0,50)</td>       <td>(240&ordm;,100%,50%)</td>     </tr>
 !! </table>
 !! </blockquote>
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
 !! </dd>
 !! <!-- ======================================================================= -->
 !! </dl>
@@ -867,7 +908,7 @@ end subroutine rgbhvs
 !! <dt> <a name="CMYRGB">NAME</a> </dt><dd>
 !!     cmyrgb(3fp) - [M_color] calculates the cyan, magenta, and yellow components
 !!     given the  red, green, and blue component values.
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -889,6 +930,19 @@ end subroutine rgbhvs
 !!     given the  red, green, and blue component values.
 !! <!-- ======================================================================= -->
 !! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
 !! </dl>
 !===================================================================================================================================
 subroutine cmyrgb(c,m,y,r,g,b,status)
@@ -916,7 +970,7 @@ end subroutine cmyrgb
 !! <dt> <a name="RGBCMY">NAME</a> </dt><dd>
 !!     rgbcmy(3fp) - [M_color] calculates the cyan, magenta, and yellow components
 !!     given the  red, green, and blue component values.
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -952,6 +1006,19 @@ end subroutine cmyrgb
 !! </blockquote>
 !! <!-- ======================================================================= -->
 !! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
 !! </dl>
 !===================================================================================================================================
 subroutine rgbcmy(r,g,b,c,m,y,status)
@@ -977,7 +1044,7 @@ end subroutine rgbcmy
 !>
 !!##NAME
 !!    RGBMONO(3f) - [M_color] converts RGB colors to a reasonable grayscale intensity.
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1038,6 +1105,20 @@ end subroutine rgbcmy
 !!     Black      0.00000000
 !!     Maroon     15.0000010
 !!     Pink       65.0000000
+!!
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
 !===================================================================================================================================
 subroutine rgbmono(rr,rg,rb,ri,status)
 
@@ -1082,7 +1163,7 @@ end subroutine test_rgbmono
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBVAL">NAME</a> </dt><dd>
 !!    RGBVAL(3fp) - [M_color] is an internal private function used by hlsrgb(3fp).
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS</dt><dd>
@@ -1097,6 +1178,18 @@ end subroutine test_rgbmono
 !! <!-- ======================================================================= -->
 !! <dt> DESCRIPTION</dt>  <dd>
 !!    Function RGBVAL(3f) is an internal private function used by hlsrgb().
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
 !!
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -1147,7 +1240,7 @@ end function rgbval
 !! <dt> <a name="HLSRGB">NAME</a> </dt><dd>
 !!     HLSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
 !!     color given in hue, lightness, &amp; saturation values.
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS</dt>  <dd>
@@ -1168,6 +1261,18 @@ end function rgbval
 !!
 !!     HLSRGB() calculates the red, green, &amp; blue components for a
 !!      color given in hue, lightness, &amp; saturation values.
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
 !! </dd>
 !! <!-- ======================================================================= -->
 !! </dl>
@@ -1215,7 +1320,7 @@ end subroutine hlsrgb
 !! <dt> <a name="HVSRGB">NAME</a> </dt><dd>
 !!     HVSRGB(3fp) - [M_color] calculates the red, green, &amp; blue components for a
 !!      color given in hue, value, &amp; saturation values.
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS </dt><dd>
@@ -1236,6 +1341,18 @@ end subroutine hlsrgb
 !!
 !!     HVSRGB() calculates the red, green, &amp; blue components for a
 !!      color given in hue, value, &amp; saturation values.
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
 !! </dd>
 !! <!-- ======================================================================= -->
 !! </dl>
@@ -1298,7 +1415,7 @@ end subroutine hvsrgb
 !! <dt> <a name="YIQRGB">NAME</a> </dt><dd>
 !!    YIQRGB(3fp) - [M_color] Convert luma, orange-blue chrominance, and  purple-green chrominance
 !!    to RGB values.
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -1315,6 +1432,18 @@ end subroutine hvsrgb
 !!
 !!    Convert luma, orange-blue chrominance, and  purple-green chrominance
 !!    to RGB values.
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
 !!
 !! </dd>
 !! <!-- ======================================================================= -->
@@ -1362,7 +1491,7 @@ end subroutine yiqrgb
 !! <!-- ======================================================================= -->
 !! <dt> <a name="RGBYIQ">NAME</a> </dt><dd>
 !!    RGBYIQ(3fp) - [M_color] Convert RGB values to luma, orange-blue chrominance, and  purple-green chrominance.
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->
 !! <dt> SYNOPSIS  </dt><dd>
@@ -1377,6 +1506,18 @@ end subroutine yiqrgb
 !! <!-- ======================================================================= -->
 !! <dt> DESCRIPTION  </dt><dd>
 !!    Convert RGB values to luma, orange-blue chrominance, and  purple-green chrominance.
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> AUTHOR </dt><dd>
+!!
+!!    John S. Urban
+!!
+!! </dd>
+!! <!-- ======================================================================= -->
+!! <dt> LICENSE </dt><dd>
+!!
+!!    Public Domain
+!!
 !! </dd>
 !! <!-- ======================================================================= -->
 !! </dl>
@@ -1409,7 +1550,7 @@ end subroutine rgbyiq
 !>
 !!##NAME
 !!     closest_color_name(3f) - [M_color] returns the closest name for the given RGB values.
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine closest_color_name(r,g,b,closestname)
@@ -1457,6 +1598,10 @@ end subroutine rgbyiq
 !!        red
 !!        green
 !!        blue
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE closest_color_name(r,g,b,closestname)
 use M_strings, only: v2s
@@ -1552,7 +1697,7 @@ end subroutine test_closest_color_name
 !>
 !!##NAME
 !!     COLOR_NAME2RGB(3f) - [M_color] returns the RGB values in the range 0 to 100 for a given known color name.
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!
@@ -1595,6 +1740,10 @@ end subroutine test_closest_color_name
 !!     enddo TRYALL
 !!     !write(*,*)'Number of colors found is ',i-1
 !!     end program demo_color_name2rgb
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine color_name2rgb(name,r,g,b,echoname)
 use M_strings, only: lower

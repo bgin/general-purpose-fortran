@@ -2,6 +2,7 @@ $ifdef TESTPRG90
 $DOCUMENT HELP -file _colrm.1.man
 NAME
        _colrm(1f) - [FUNIX] remove columns from a file
+       (LICENSE:PD)
 
 SYNOPSIS
        _colrm [first [last]]
@@ -30,6 +31,10 @@ EXAMPLE
        cat FILENAME|_colrm 73
        # remove first three characters in each line
        cat FILENAME|_colrm 1 3
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

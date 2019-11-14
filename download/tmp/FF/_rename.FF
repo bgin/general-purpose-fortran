@@ -5,6 +5,7 @@ $IFDEF TESTPRG90
 $DOCUMENT HELP -file _rename.1.man
 NAME
    _rename(1f) - [FUNIX:FILESYSTEM] rename files by replacing first occurrence of a string in a filename with new string
+   (LICENSE:PD)
 
 SYNOPSIS
    _rename old new file... [ -verbose][ -dryrun]|[ -help|-version]
@@ -33,6 +34,10 @@ OPTIONS
     --version  Display version information and exit.
     --dryrun   Does all file operations except for moving the
                changed file back to the original. Implies --version.
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

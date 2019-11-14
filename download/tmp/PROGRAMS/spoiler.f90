@@ -1,6 +1,7 @@
 program spoiler
 ! A trifling program for reading punchlines that are
 ! encoded using the ROT-13 rotation encryption.
+! (LICENSE:MIT)
 implicit none
 character(len=256) :: line
 integer            :: ios

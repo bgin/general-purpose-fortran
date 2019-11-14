@@ -74,6 +74,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}',&
+'   (LICENSE:MIT)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   splitname [NAME1 NAME2 ... |[ -d -b -l -e]|-help|-version]                   ',&
@@ -104,6 +105,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '   dirname(1), basename(1), readlink(1), realpath(1)                            ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -113,6 +118,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    splitname(1f) - [FUNIX] strip pathname into components {dir,name,basename,extension}
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -145,6 +151,10 @@ end subroutine help_usage
 !!
 !!##SEE ALSO
 !!    dirname(1), basename(1), readlink(1), realpath(1)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -163,7 +173,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DATE:           2017-04-18>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:08:47 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:50:48 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

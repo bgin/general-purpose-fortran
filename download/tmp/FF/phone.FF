@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP
 NAME
      phone(1f) - [M_sqlite] create, change and query SQLite3 database containing phone numbers
+     (LICENSE:PD)
 SYNOPSIS
  phone [ -db file] ...
   [ 
@@ -41,8 +42,12 @@ DESCRIPTION
     select 3.0/4.0 as 'answer'
     sqlite> SELECT sqlite_version() AS 'SQLite Version'; # get SQLite version
 
-     
 EXAMPLE
+     
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
@@ -63,7 +68,7 @@ program phoner
    use M_system, only  : R_USR,W_USR,X_USR
  !!use M_system, only  : R_GRP,W_GRP,X_GRP
  !!use M_system, only  : R_OTH,W_OTH,X_OTH
- !!use M_system, only  : R_WXG,R_WXO,R_WXU
+ !!use M_system, only  : RWX_G,RWX_O,RWX_U
    use M_sqlite
    implicit none
 

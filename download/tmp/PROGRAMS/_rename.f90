@@ -13,6 +13,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   _rename(1f) - [FUNIX:FILESYSTEM] rename files by replacing first occurrence of a string in a filename with new string',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   _rename old new file... [ -verbose][ -dryrun]|[ -help|-version]              ',&
@@ -41,6 +42,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    --version  Display version information and exit.                            ',&
 '    --dryrun   Does all file operations except for moving the                   ',&
 '               changed file back to the original. Implies --version.            ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -50,6 +55,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    _rename(1f) - [FUNIX:FILESYSTEM] rename files by replacing first occurrence of a string in a filename with new string
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -80,6 +86,10 @@ end subroutine help_usage
 !!     --version  Display version information and exit.
 !!     --dryrun   Does all file operations except for moving the
 !!                changed file back to the original. Implies --version.
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -99,7 +109,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:04:48 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:06:06 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

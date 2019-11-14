@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file findll.1.man
 NAME
        findll(1f) - [FILE FILTER] find long lines
+       (LICENSE:PD)
 SYNOPSIS
        findll [FILENAMES] [ -l LENGTH] [ -wrap] | [ -help| -version]
 DESCRIPTION
@@ -31,6 +32,10 @@ EXAMPLES
         # show length of all lines on stdin
         $ findll -l -1
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples

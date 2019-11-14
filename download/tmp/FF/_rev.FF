@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _rev.1.man
 NAME
        _rev(1f) - [FUNIX] reverse lines in a file
+       (LICENSE:PD)
 SYNOPSIS
        _rev INPUT_FILE(S) [ --help][ --version]
 DESCRIPTION
@@ -12,6 +13,10 @@ OPTIONS
        --version      display version information and exit
 SEE ALSO
        tac(1), rev(1)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

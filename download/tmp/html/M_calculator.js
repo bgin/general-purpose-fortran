@@ -1,6 +1,5 @@
 function loadthem(){
 append("M_calculator.3.html");
-append("M_calculator_example.3.html");
 append("M_calculator_programmer_notes.3.html");
 append("dnum0.3.html");
 append("getvalue.3.html");

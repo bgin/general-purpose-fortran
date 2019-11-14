@@ -208,6 +208,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       0.70547000D+03    0.32082348D+04    0.90600741D+03    0.10611600D+01    0.50778529D-01    0.00000000D+00',&
 '   0         SUM=  0.6353636479675987E+05                                       ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -408,6 +412,11 @@ end subroutine help_usage
 !!        0.70000000D+03    0.30943291D+04    0.82243999D+03    0.99006883D+00    0.36618048D-01    0.70000112D+03
 !!        0.70547000D+03    0.32082348D+04    0.90600741D+03    0.10611600D+01    0.50778529D-01    0.00000000D+00
 !!    0         SUM=  0.6353636479675987E+05
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -429,7 +438,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      1985, 1986, 1989, 1990, 20090501, 20131129 John. S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:39:04 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:27:09 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

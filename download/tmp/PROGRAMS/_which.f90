@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       _which(1f) - [FUNIX:FILESYSTEM] shows the full path of (shell) commands. ',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _which program_leafname [ -all]|[ --help|--version]                      ',&
@@ -33,6 +34,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       programname   was given.                                                 ',&
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -42,6 +47,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        _which(1f) - [FUNIX:FILESYSTEM] shows the full path of (shell) commands.
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -67,6 +73,10 @@ end subroutine help_usage
 !!
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -83,7 +93,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathnames of leaf names that are executable and can be found using the $PATH variable>',&
 '@(#)VERSION:        1.0, 2017-10-15>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:07:33 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:49:00 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

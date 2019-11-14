@@ -2,6 +2,7 @@ $!==============================================================================
 $DOCUMENT HELP -file huegif.1.man
 NAME
    huegif(1f) - [M_pixel] generate color wheels as GIF pixmap files
+   (LICENSE:PD)
 
 SYNOPSIS
    huegif [ --help| --version]
@@ -39,6 +40,10 @@ OPTIONS
 
     --version   output version information and exit
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples

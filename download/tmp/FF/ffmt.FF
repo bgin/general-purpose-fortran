@@ -86,8 +86,7 @@ VERSION:        1.0, 20190421
 AUTHOR:         John S. Urban
 REPORTING BUGS: http://www.urbanjost.altervista.org/
 HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
-                There is NO WARRANTY, to the extent permitted by law.
+LICENSE:        MIT License
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file ffmt.1.man
@@ -110,6 +109,10 @@ OPTIONS
        -w, WIDTH               maximum line width (default of 75 columns)
        --help                  display this help and exit
        --version               output version information and exit
+AUTHOR
+   John S. Urban
+LICENSE
+   MIT License
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 end program demo_ffmt      

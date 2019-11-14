@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   ufpp_template(1f) - [UFPP] write a template of a ufpp source file            ',&
+'   (LICENSE:MIT)                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   ufpp_template [ --version| --help]                                           ',&
 'DESCRIPTION                                                                     ',&
@@ -19,6 +20,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '  --help     display help text and quit                                         ',&
 'EXAMPLE                                                                         ',&
 '   ufpp_template                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -42,7 +47,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180223>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:42:29 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:31:08 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -135,10 +140,15 @@ example_text=[ CHARACTER(LEN=128) :: &
 '@DOCUMENT HELP                                                                  ',&
 'NAME                                                                            ',&
 '   name(3f) - [M_module] description                                            ',&
+'   (LICENSE:PD)                                                                 ',&
 'SYNOPSIS                                                                        ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
 'EXAMPLE                                                                         ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '@DOCUMENT END                                                                   ',&
 '@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
 '@DOCUMENT VERSION                                                               ',&

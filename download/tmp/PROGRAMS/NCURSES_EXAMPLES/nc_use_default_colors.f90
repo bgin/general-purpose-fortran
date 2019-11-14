@@ -1,4 +1,5 @@
 program nc_use_default_colors
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    integer(C_INT) :: ierr

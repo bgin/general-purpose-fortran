@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       quadratic(1f) - [MATH] Calculate and print the roots of a quadratic formula even if they are complex',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       quadratic A B C [ --verbose]|[ --help| --version]                        ',&
@@ -53,6 +54,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    z1 = z2 =-0.666666687                                                       ',&
 '    discriminant =0                                                             ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -62,6 +67,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        quadratic(1f) - [MATH] Calculate and print the roots of a quadratic formula even if they are complex
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -106,6 +112,11 @@ end subroutine help_usage
 !!     the roots (ie. "x intercepts") are repeated (real and equal) so the parabola just touches the x-axis at:
 !!     z1 = z2 =-0.666666687
 !!     discriminant =0
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -122,7 +133,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    Calculate and print the roots of a quadratic formula even if they are complex>',&
 '@(#)VERSION:        2.0, 20180825>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:37:22 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:19:17 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

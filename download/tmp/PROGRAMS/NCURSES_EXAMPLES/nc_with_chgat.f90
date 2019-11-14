@@ -1,4 +1,5 @@
 program with_chgat
+!(LICENSE:PD)
 ! @(#) change attributes of text on the screen using ncurses(3c) from Fortran
    use M_ncurses,only:  n=>C_NULL_CHAR, s=>C_SHORT , null=>C_NULL_PTR
    use M_ncurses

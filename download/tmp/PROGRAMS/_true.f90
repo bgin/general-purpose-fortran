@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       _true(1f) - [FUNIX] do nothing, successfully                             ',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _true [ --verbose|--help|--version]                                      ',&
@@ -25,6 +26,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       _true && echo SUCCESSFUL || echo DID NOT WORK                            ',&
 'SEE ALSO                                                                        ',&
 '       _true(1f)                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -34,6 +39,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        _true(1f) - [FUNIX] do nothing, successfully
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -51,6 +57,10 @@ end subroutine help_usage
 !!        _true && echo SUCCESSFUL || echo DID NOT WORK
 !!##SEE ALSO
 !!        _true(1f)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -67,7 +77,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    do nothing, successfully>',&
 '@(#)VERSION:        1.0, 20170125>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:06:48 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:47:56 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

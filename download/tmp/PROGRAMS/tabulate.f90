@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '     tabulate(1f) - [M_messages] write out a row of numbers and a text-based scaled graph',&
+'     (LICENSE:PD)                                                               ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '     tabulate -min 0 -max 100 -fill '' '' -len 0                                ',&
@@ -128,6 +129,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   9.840000     -0.4033932     -0.9150267    # 2            1                                   #',&
 '   9.960000     -0.5100321     -0.8601554    #  2        1                                      #',&
 '   10.08000     -0.6093352     -0.7929127    #    2    1                                        #',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -137,6 +142,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!      tabulate(1f) - [M_messages] write out a row of numbers and a text-based scaled graph
+!!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -257,6 +263,10 @@ end subroutine help_usage
 !!    9.840000     -0.4033932     -0.9150267    # 2            1                                   #
 !!    9.960000     -0.5100321     -0.8601554    #  2        1                                      #
 !!    10.08000     -0.6093352     -0.7929127    #    2    1                                        #
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -274,7 +284,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        Thu Nov 23,  2000>',&
 '@(#)AUTHORS:        John S. Urban>',&
 '@(#)LANGUAGE:       Fortran>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:41:38 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:30:14 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

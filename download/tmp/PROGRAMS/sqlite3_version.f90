@@ -1,4 +1,5 @@
 program demo_sqlite3_libversion
+!(LICENSE:PD)
 
 use M_sqlite, only : sqlite3_libversion
 use M_sqlite, only : sqlite3_libversion_number

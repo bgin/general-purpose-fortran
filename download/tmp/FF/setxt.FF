@@ -22,6 +22,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file setxt.1.man
 NAME
    setxt(1) - [NCURSES] set xterm(1) attributes using a screen or line mode
+   (LICENSE:PD)
 SYNOPSIS
    setxt [keywords] -rows NN -cols NN
          -right NN -down NN
@@ -136,6 +137,10 @@ EXAMPLE
 
    C-shell
       alias cd 'cd \!*; esc -nt'
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

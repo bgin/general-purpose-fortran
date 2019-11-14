@@ -1,4 +1,5 @@
 program sweepit
+!(LICENSE:PD)
 use M_draw
 use M_time, only : system_sleep, ordinal_seconds
 use M_kracken, only: kracken, iget, sget, lget
@@ -44,7 +45,8 @@ stopit=.false.
 if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
-'minefield(1f) - [M_draw] minefield game                                         ',&
+'   minefield(1f) - [M_draw] minefield game                                      ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   minefield [[ -r rows] [ -c columns]] |[ --help --version ]                   ',&
@@ -75,7 +77,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '               two-button mouses                                                ',&
 '   --help      display help text and exit                                       ',&
 '   --version   display version text and exit                                    ',&
-'                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -84,7 +89,8 @@ end subroutine help_usage
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!! minefield(1f) - [M_draw] minefield game
+!!    minefield(1f) - [M_draw] minefield game
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -116,6 +122,10 @@ end subroutine help_usage
 !!                two-button mouses
 !!    --help      display help text and exit
 !!    --version   display version text and exit
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -132,7 +142,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:59:10 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 1:45:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

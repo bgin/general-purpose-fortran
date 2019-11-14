@@ -29,6 +29,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   setxt(1) - [NCURSES] set xterm(1) attributes using a screen or line mode     ',&
+'   (LICENSE:PD)                                                                 ',&
 'SYNOPSIS                                                                        ',&
 '   setxt [keywords] -rows NN -cols NN                                           ',&
 '         -right NN -down NN                                                     ',&
@@ -143,6 +144,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   C-shell                                                                      ',&
 '      alias cd ''cd \!*; esc -nt''                                              ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -152,6 +157,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    setxt(1) - [NCURSES] set xterm(1) attributes using a screen or line mode
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    setxt [keywords] -rows NN -cols NN
@@ -268,6 +274,10 @@ end subroutine help_usage
 !!
 !!    C-shell
 !!       alias cd 'cd \!*; esc -nt'
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -285,7 +295,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180408>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:38:32 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:26:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

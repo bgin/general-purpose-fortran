@@ -78,6 +78,10 @@ EXAMPLE
    paws 1 -repeat 60         # pause sixty seconds, display the date each second
    paws -until 23:59:59      # pause until midnight
    paws 15:00 -date 23:59:59 # pause till midnight then an additional 15 minutes
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $! this is converted into the help_version subroutine by ufpp ...

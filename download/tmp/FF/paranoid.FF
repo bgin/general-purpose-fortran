@@ -70,6 +70,10 @@ $!      (C) 2011 WESTINGHOUSE ELECTRIC COMPANY LLC
     Is this a program restart after failure (1)
     or a start from scratch (0) ?
 
+AUTHOR
+   
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

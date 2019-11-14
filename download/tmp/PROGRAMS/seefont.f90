@@ -42,6 +42,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   seefont(1) - [M_drawplus] show sample of font                                ',&
+'   (LICENSE:PD)                                                                 ',&
 'SYNOPSIS                                                                        ',&
 '   seefont [fontname[ -x window_width][ -y window_height][ -w linewidth]|[ --help| --version]',&
 'DESCRIPTION                                                                     ',&
@@ -65,7 +66,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '    # make an Adobe PDF file showing samples of each font                       ',&
 '    env M_DRAW_DEVICE=pdf seefont -x 3000 -y 3000 >seefont.pdf                  ',&
-'                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -75,6 +79,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    seefont(1) - [M_drawplus] show sample of font
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    seefont [fontname[ -x window_width][ -y window_height][ -w linewidth]|[ --help| --version]
@@ -100,6 +105,10 @@ end subroutine help_usage
 !!
 !!     # make an Adobe PDF file showing samples of each font
 !!     env M_DRAW_DEVICE=pdf seefont -x 3000 -y 3000 >seefont.pdf
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -120,7 +129,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20181109>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:59:37 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:09:02 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

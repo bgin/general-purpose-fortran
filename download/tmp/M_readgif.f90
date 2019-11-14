@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    readgif(3f) - [M_readgif] read a GIF file
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -69,14 +70,19 @@
 !!       call writegif('boxes_new.gif',image,color_map2)
 !!
 !!       end program demo_readgif
+!!
+!!##AUTHORS
+!!    Jos Bergervoet, Van Snyder, Maurizio Cremonesi, Clive Page, and others
+!!##LICENSE
+!!    This module contains a subroutine readgif(3f) which can read GIF files
+!!    of types Gif87a and Gif89 (and maybe others).  The code comes from
+!!    various authors, see comments below.  This version was put together
+!!    by Clive Page who has put it into the public domain.
 !===================================================================================================================================
 module M_readgif
-!==================================================================================================================================!
-! FOR READGIF
 ! readgif2.f90   cgp 2010 Aug 28
-! Authors: Jos Bergervoet, Van Snyder, Maurizio Cremonesi, Clive Page, and others
 ! Original code from: http://it.geocities.com/butonoj/doc/gif-io/gifio.htm (now a dead link)
-public :: readgif                     ! procedure, see below
+public :: readgif
 public test_suite_M_readgif
 private
 ! *****     private stuff     ******************************************
@@ -115,15 +121,15 @@ CONTAINS
 !==================================================================================================================================!
 subroutine readgif(filename, num_image, image, iostat, color_map, verbose)
 ! read the num_image'th gif image from filename into arrays image and color_map
-character(len=*), intent(in) :: filename  ! input file
-integer, intent(in)          :: num_image ! number of image required
-integer, intent(out), allocatable :: image(:,:) ! Image data returned
-integer, intent(out)         :: iostat    ! I/O error number, =0 if ok
-real   , allocatable, intent(out) :: color_map(:,:) ! RGB for each level, range 0.0 to 1.0
-logical, intent(in), optional :: verbose  ! .true.for verbose output
+character(len=*), intent(in) :: filename                ! input file
+integer, intent(in)          :: num_image               ! number of image required
+integer, intent(out), allocatable :: image(:,:)         ! Image data returned
+integer, intent(out)         :: iostat                  ! I/O error number, =0 if ok
+real   , allocatable, intent(out) :: color_map(:,:)     ! RGB for each level, range 0.0 to 1.0
+logical, intent(in), optional :: verbose                ! .true.for verbose output
 ! -----     local variables     ------------------------------------
 character(len=16) :: buf             ! input buffer
-character (len=1):: c                       ! shorter input buffer
+character (len=1):: c                ! shorter input buffer
 integer :: image_count               ! number of images processed so far
 logical :: my_verbose
 ! -----     executable statements     ------------------------------
@@ -748,7 +754,4 @@ end subroutine test_suite_M_readgif
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!==================================================================================================================================!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!==================================================================================================================================!
 end module M_readgif

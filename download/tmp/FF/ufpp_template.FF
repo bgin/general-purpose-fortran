@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP
 NAME
    ufpp_template(1f) - [UFPP] write a template of a ufpp source file
+   (LICENSE:MIT)
 SYNOPSIS
    ufpp_template [ --version| --help]
 DESCRIPTION
@@ -11,6 +12,10 @@ OPTIONS
   --help     display help text and quit
 EXAMPLE
    ufpp_template
+AUTHOR
+   John S. Urban
+LICENSE
+   MIT License
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
@@ -111,10 +116,15 @@ end program krackenbasic
 @DOCUMENT HELP
 NAME
    name(3f) - [M_module] description
+   (LICENSE:PD)
 SYNOPSIS
 
 DESCRIPTION
 EXAMPLE
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 @DOCUMENT END
 @!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @DOCUMENT VERSION

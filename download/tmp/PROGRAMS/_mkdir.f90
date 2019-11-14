@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '     _mkdir(1f) - [FUNIX:FILESYSTEM] call mkdir(3c) to make directories         ',&
+'     (LICENSE:PD)                                                               ',&
 'SYNOPSIS                                                                        ',&
 '     _mkdir DIRECTORY ... [OPTION]...                                           ',&
 'DESCRIPTION                                                                     ',&
@@ -29,7 +30,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   # show creation of three directories                                         ',&
 '   _mkdir A B C                                                                 ',&
-'                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -39,6 +43,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!      _mkdir(1f) - [FUNIX:FILESYSTEM] call mkdir(3c) to make directories
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!      _mkdir DIRECTORY ... [OPTION]...
@@ -60,6 +65,10 @@ end subroutine help_usage
 !!
 !!    # show creation of three directories
 !!    _mkdir A B C
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -78,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:03:53 AM>',&
+'@(#)COMPILED:       Mon, Nov 11th, 2019 8:47:18 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -88,8 +97,8 @@ end subroutine help_version
 program demo_system_mkdir
 use M_kracken, only : kracken,lget,sgets,IPvalue
 use M_system,  only : system_mkdir, system_perror
-use M_system,  only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
-use M_system,  only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
+use M_system,  only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
+use M_system,  only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
 use M_system,  only : DEFFILEMODE, ACCESSPERMS
 use M_io,      only : dirname
 implicit none

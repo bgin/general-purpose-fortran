@@ -21,6 +21,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '     area_of_simple_polygon(1f) - determine area of simple (non-intersecting) polygon given coordinates of points',&
+'     (LICENSE:PD)                                                               ',&
 'SYNOPSIS                                                                        ',&
 '     area_of_simple_polygon [file(s)|[ --help| --version]]                      ',&
 'DESCRIPTION                                                                     ',&
@@ -55,6 +56,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   0.0000000000000000 0.0000000000000000                                        ',&
 '   5.0000000000000000 -5.0000000000000000                                       ',&
 '    area=  -50.000000000000000                                                  ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -81,7 +86,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20181231>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:09:05 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:51:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

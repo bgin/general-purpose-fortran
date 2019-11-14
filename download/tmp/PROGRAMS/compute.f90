@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       compute(1f) - [MATH] evaluate a calculator expression                    ',&
+'       (LICENSE:PD)                                                             ',&
 'SYNOPSIS                                                                        ',&
 '       compute [STRING] [ -verbose]| [ -help| -version]                         ',&
 'DESCRIPTION                                                                     ',&
@@ -65,6 +66,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '       M_calculator(3fm)                                                        ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public License                                                               ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -74,6 +79,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        compute(1f) - [MATH] evaluate a calculator expression
+!!        (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!        compute [STRING] [ -verbose]| [ -help| -version]
@@ -131,6 +137,10 @@ end subroutine help_usage
 !!
 !!##SEE ALSO
 !!        M_calculator(3fm)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public License
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -148,7 +158,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:57:40 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:07:15 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

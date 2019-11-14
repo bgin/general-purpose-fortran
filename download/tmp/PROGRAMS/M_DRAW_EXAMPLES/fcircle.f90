@@ -1,6 +1,7 @@
-   program demo_circle
-   use M_DRAW
-   integer :: ipaws
+program demo_circle
+!(LICENSE:PD)
+use M_DRAW
+integer :: ipaws
    !! set up drawing surface
    call prefsize(400,400)
    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
@@ -22,4 +23,4 @@
    ipaws=getkey()
    !! exit graphics mode
    call vexit()
-   end program demo_circle
+end program demo_circle

@@ -4,6 +4,7 @@
 ! Fortran translation by John S. Urban <urbanjost@comcast.net>, 20141129
 !-----------------------------------------------------------------------------------------------------------------------------------
 PROGRAM simple_attr
+!(LICENSE:PD)
    USE M_ncurses
    IMPLICIT NONE
    INTEGER             :: maxrow, maxcol

@@ -1,4 +1,5 @@
 program hello_word_ncurses 
+!(LICENSE:PD)
 ! @(#) simple "hello world!" example of calling ncurses(3f) from fortran
    use M_ncurses
    implicit none

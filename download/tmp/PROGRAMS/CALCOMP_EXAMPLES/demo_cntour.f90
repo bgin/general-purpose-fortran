@@ -1,4 +1,5 @@
 program qa6
+! (LICENSE:Public Domain)
    use m_calcomp
    dimension totx(10),toty(10),am(10,10),cv(10)
    !

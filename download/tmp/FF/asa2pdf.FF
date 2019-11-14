@@ -5,6 +5,7 @@ $DOCUMENT HELP -file asa2pdf.1.man
 NAME
     asa2pdf(1f) - [FILE FILTER] Convert text files with/without
                 ASA carriage control to an Adobe PDF file.
+		(LICENSE:PD)
 
 SYNOPSIS
    asa2pdf -o output_filename -i input_filename
@@ -271,6 +272,10 @@ SEE ALSO
       paste(1)        can be used to put files side-by-side.
 
 asa(1)/nasa(1), fpr(1), enscript(1), a2ps(1), and ps2pdf(1).
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

@@ -2,6 +2,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file quadratic.1.man
 NAME
        quadratic(1f) - [MATH] Calculate and print the roots of a quadratic formula even if they are complex
+       (LICENSE:PD)
 
 SYNOPSIS
        quadratic A B C [ --verbose]|[ --help| --version]
@@ -45,6 +46,10 @@ EXAMPLE
     z1 = z2 =-0.666666687
     discriminant =0
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

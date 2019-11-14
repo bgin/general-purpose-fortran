@@ -7,6 +7,7 @@
 $DOCUMENT HELP -file dtu.1.man
 NAME
        dtu(1f) - [FILE FILTER] convert files between Unix and DOS line terminator conventions
+       (LICENSE:PD)
 
 SYNOPSIS
        dtu [[ -make dos|unix] [ -z] [ -n] -i input -o output ]|--help|--version
@@ -27,6 +28,10 @@ OPTIONS
        -o output_file  required
        --help          display this help and exit
        --version       output version information and exit
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
@@ -36,16 +41,9 @@ DESCRIPTION:    convert files between Unix and DOS line terminator conventions
 VERSION:        1.0 Mon. Jun 22, 2009
 VERSION:        2.0 Mon. Nov 24, 2014
 AUTHOR:         John S. Urban
-LICENSE:        This program is free software; you can redistribute it and/or
-                modify it.
-
-                This program is distributed in the hope that it will be useful,
-                but WITHOUT ANY WARRANTY; without even the implied warranty of
-                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 REPORTING BUGS: http://www.urbanjost.altervista.org/
 HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
-                There is NO WARRANTY, to the extent permitted by law.
+LICENSE:        Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 module GLOBAL

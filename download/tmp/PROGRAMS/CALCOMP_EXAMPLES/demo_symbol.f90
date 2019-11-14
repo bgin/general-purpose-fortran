@@ -1,4 +1,5 @@
 program qa2
+! (LICENSE:Public Domain)
 use M_calcomp, only : plots, plot, symbol, number, nframe
 use M_calcomp, only : MOVE, DRAW
 !

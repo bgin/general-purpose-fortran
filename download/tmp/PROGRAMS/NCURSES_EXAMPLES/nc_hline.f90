@@ -1,4 +1,5 @@
 program hline_test
+!(LICENSE:PD)
 ! @(#) draw horizonal lines using mvhline(3f)
    use M_ncurses                                    ! enable the Fortran module interface to ncurses(3c)
    implicit none

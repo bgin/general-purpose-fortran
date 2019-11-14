@@ -16,6 +16,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       dtu(1f) - [FILE FILTER] convert files between Unix and DOS line terminator conventions',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       dtu [[ -make dos|unix] [ -z] [ -n] -i input -o output ]|--help|--version ',&
@@ -36,6 +37,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       -o output_file  required                                                 ',&
 '       --help          display this help and exit                               ',&
 '       --version       output version information and exit                      ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -45,6 +50,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        dtu(1f) - [FILE FILTER] convert files between Unix and DOS line terminator conventions
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -66,6 +72,10 @@ end subroutine help_usage
 !!        -o output_file  required
 !!        --help          display this help and exit
 !!        --version       output version information and exit
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -83,17 +93,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 Mon. Jun 22, 2009>',&
 '@(#)VERSION:        2.0 Mon. Nov 24, 2014>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)LICENSE:        This program is free software; you can redistribute it and/or>',&
-'@(#)                modify it.>',&
-'@(#)>',&
-'@(#)                This program is distributed in the hope that it will be useful,>',&
-'@(#)                but WITHOUT ANY WARRANTY; without even the implied warranty of>',&
-'@(#)                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
-'@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:00:07 AM>',&
+'@(#)LICENSE:        Public Domain>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:04:10 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

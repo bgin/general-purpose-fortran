@@ -1,4 +1,5 @@
 program fshapes
+!(LICENSE:PD)
 !
 !@(#)  This program shows some of the simple primitives.
 !

@@ -11,6 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    asa2pdf(1f) - [FILE FILTER] Convert text files with/without                 ',&
 '                ASA carriage control to an Adobe PDF file.                      ',&
+'                (LICENSE:PD)                                                    ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   asa2pdf -o output_filename -i input_filename                                 ',&
@@ -277,6 +278,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      paste(1)        can be used to put files side-by-side.                    ',&
 '                                                                                ',&
 'asa(1)/nasa(1), fpr(1), enscript(1), a2ps(1), and ps2pdf(1).                    ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -288,6 +293,7 @@ end subroutine help_usage
 !!##NAME
 !!     asa2pdf(1f) - [FILE FILTER] Convert text files with/without
 !!                 ASA carriage control to an Adobe PDF file.
+!!                 (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -556,6 +562,10 @@ end subroutine help_usage
 !!       paste(1)        can be used to put files side-by-side.
 !!
 !! asa(1)/nasa(1), fpr(1), enscript(1), a2ps(1), and ps2pdf(1).
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -572,7 +582,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    convert text files with ASA carriage return to Adobe PDF files>',&
 '@(#)VERSION:        2.0, 20170210>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:56:03 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:03:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

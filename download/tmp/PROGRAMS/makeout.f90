@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       makeout(1f) - [DEVELOPER] Generate a Makefile from the sources (C, Fortran) in the current directory',&
+'       (LICENSE:PD)                                                             ',&
 'SYNOPSIS                                                                        ',&
 '       makeout program_files [ -o [filename]] [ -l LIBNAME] [ -v][ --version|--help]',&
 'DESCRIPTION                                                                     ',&
@@ -76,6 +77,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '  automake(1), create_makefile(1), create_makefiles(1), gccmakedep(1),          ',&
 '  imake(1), makedepend(1), xmkmf(1) and many resources on the WWW.              ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -85,6 +90,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        makeout(1f) - [DEVELOPER] Generate a Makefile from the sources (C, Fortran) in the current directory
+!!        (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!        makeout program_files [ -o [filename]] [ -l LIBNAME] [ -v][ --version|--help]
@@ -152,6 +158,11 @@ end subroutine help_usage
 !!   the documentation for gmake(1), make(1), cmake(1), cpp(1), fpp(1),
 !!   automake(1), create_makefile(1), create_makefiles(1), gccmakedep(1),
 !!   imake(1), makedepend(1), xmkmf(1) and many resources on the WWW.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -168,7 +179,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:10:41 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:53:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

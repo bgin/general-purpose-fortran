@@ -203,6 +203,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   target(1f) - [M_drawplus] draw targets on Adobe PDF files                    ',&
+'   (LICENSE:MIT)                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   target [ --help| --version]                                                  ',&
 'DESCRIPTION                                                                     ',&
@@ -222,6 +223,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   f50_slow_fire_pistol.pdf                                                     ',&
 '   f50_small_bore_rifle.pdf                                                     ',&
 '   f50_timed_and_rapid_fire_pistol.pdf                                          ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -231,6 +236,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    target(1f) - [M_drawplus] draw targets on Adobe PDF files
+!!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
 !!    target [ --help| --version]
@@ -252,6 +258,10 @@ end subroutine help_usage
 !!    f50_slow_fire_pistol.pdf
 !!    f50_small_bore_rifle.pdf
 !!    f50_timed_and_rapid_fire_pistol.pdf
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -268,7 +278,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create printable targets>',&
 '@(#)VERSION:        1.0, 20190108>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:59:00 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:36:56 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

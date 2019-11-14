@@ -1,5 +1,6 @@
 ! @(#) test some object-related procedures
 program sobj
+!(LICENSE:PD)
 use M_draw
 character(len=20) :: device
    write(*,*)"Fortran: Enter output device: "

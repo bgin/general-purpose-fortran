@@ -1,4 +1,5 @@
 !@(#) Draws patches of various bases
+!(LICENSE:PD)
 !
         program fpatch
 

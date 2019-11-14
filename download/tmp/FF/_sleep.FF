@@ -3,6 +3,7 @@ $IF DEFINED(TESTPRG90) ! Place test program source here
 $DOCUMENT HELP -file _sleep.1.man
 NAME
    _sleep(1f) - [FUNIX:TIME] pause for specified duration
+   (LICENSE:PD)
 SYNOPSIS
    _sleep [dd-hh:mm:ss[.xxx]|xxx.yyy[s|m|h|d]] [ -countdown|-countup -count]|--help|--version
 DESCRIPTION
@@ -46,6 +47,10 @@ EXAMPLE
    _sleep 0.10     # pause one tenth of a second
    _sleep 3m 10s   # pause three minutes and 10 seconds
    _sleep 1:00:00  # pause for one hour
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

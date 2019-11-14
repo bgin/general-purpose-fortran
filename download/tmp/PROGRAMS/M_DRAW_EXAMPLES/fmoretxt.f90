@@ -1,4 +1,5 @@
 !@(#) draw a grid in the middle of the screen
+!(LICENSE:PD)
 !
         subroutine drawgrid
 

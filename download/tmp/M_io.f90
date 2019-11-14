@@ -9,7 +9,6 @@ public slurp
 public swallow
 public dirname
 public splitpath
-public isdir
 public get_tmp
 public scratch
 public read_line
@@ -1464,80 +1463,6 @@ end subroutine splitpath
 !===================================================================================================================================
 !>
 !!##NAME
-!!    isdir(3f) - [M_io] checks if argument is a directory path
-!!    (LICENSE:MIT)
-!!##SYNTAX
-!!
-!!   logical function isdir(path)
-!!
-!!    character(len=*),intent(in) :: path
-!!    logical                     :: isdir
-!!
-!!##DESCRIPTION
-!!
-!!    isdir(3f) checks if path is a path to a directory on Unix-compatible file systems
-!!
-!!##OPTIONS
-!!
-!!    path    a character string representing a directory pathname.
-!!            Trailing spaces are ignored.
-!!
-!!##RETURNS
-!!    isdir   TRUE if the path is currently a directory
-!!
-!!##EXAMPLES
-!!
-!!   Sample program:
-!!
-!!    program demo_isdir
-!!    Use M_io, only : isdir
-!!    implicit none
-!!    integer                     :: i
-!!    character(len=80),parameter :: names(*)=[ &
-!!    '/tmp            ', &
-!!    '/tmp/NOTTHERE   ', &
-!!    '/usr/local      ', &
-!!    '.               ', &
-!!    'PROBABLY_NOT    ']
-!!    do i=1,size(names)
-!!       write(*,*)' is ',trim(names(i)),' a directory? ', isdir(names(i))
-!!    enddo
-!!    end program demo_isdir
-!!
-!!   Results:
-!!
-!!    is /tmp a directory?  T
-!!    is /tmp/NOTTHERE a directory?  F
-!!    is /usr/local a directory?  T
-!!    is . a directory?  T
-!!    is PROBABLY_NOT a directory?  F
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    MIT License
-!===================================================================================================================================
-function isdir(dirname)
-implicit none
-
-character(len=*),parameter::ident_10="@(#)M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems"
-
-logical                     :: isdir
-character(len=*),intent(in) :: dirname
-
-! a trick to be sure DIRNAME is a dir on systems supporting Unix-compatible pathnames
-if(dirname.ne.'')then
-   inquire( file=trim(dirname)//"/.", exist=isdir )
-else
-   isdir=.false.
-endif
-
-end function isdir
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
 !!     read_all(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
 !!     (LICENSE:MIT)
 !!
@@ -1593,7 +1518,7 @@ function read_all(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
 implicit none
 
-character(len=*),parameter::ident_11="&
+character(len=*),parameter::ident_10="&
 &@(#)M_io::read_all(3f): read a line from specified LUN into allocatable string up to line length limit"
 
 character(len=:),allocatable,intent(out) :: line
@@ -1685,7 +1610,7 @@ use iso_fortran_env, only : INPUT_UNIT
 use M_strings,only : notabs
 implicit none
 
-character(len=*),parameter::ident_12="&
+character(len=*),parameter::ident_11="&
 &@(#)M_io::read_line(3f): read a line from specified LUN into allocatable string up to line length limit"
 
 character(len=:),allocatable,intent(out) :: line
@@ -1775,7 +1700,7 @@ end function read_line
 !===================================================================================================================================
 function get_tmp() result(tname)
 
-character(len=*),parameter::ident_13="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
+character(len=*),parameter::ident_12="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
 
 character(len=:),allocatable :: tname
 integer                      :: lngth
@@ -1864,7 +1789,7 @@ end function get_tmp
 function scratch(prefix) result(tname)
 use M_uuid, only : generate_uuid
 
-character(len=*),parameter::ident_14="@(#)M_io::scratch(3f): Return the name of a scratch file"
+character(len=*),parameter::ident_13="@(#)M_io::scratch(3f): Return the name of a scratch file"
 
 character(len=*),intent(in),optional :: prefix
 character(len=:),allocatable :: tname
@@ -1955,7 +1880,7 @@ use,intrinsic :: iso_fortran_env, only : stdin=>input_unit !!, stdout=>output_un
 use M_journal,                    only : journal
 implicit none
 
-character(len=*),parameter::ident_15="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
+character(len=*),parameter::ident_14="@(#)M_io::rd_character(3fp): ask for string from standard input with user-definable prompt"
 
 character(len=*),intent(in)  :: prompt
 character(len=*),intent(in)  :: default
@@ -1991,7 +1916,7 @@ function rd_doubleprecision(prompt,default) result(dvalue)
 use M_strings, only : s2v, isnumber, decodebase
 implicit none
 
-character(len=*),parameter::ident_16="&
+character(len=*),parameter::ident_15="&
 &@(#)M_io::rd_doubleprecision(3fp): ask for number from standard input with user-definable prompt"
 
 doubleprecision              :: dvalue
@@ -2037,7 +1962,7 @@ end function rd_doubleprecision
 function rd_real(prompt,default) result(rvalue)
 implicit none
 
-character(len=*),parameter::ident_17="@(#)M_io::rd_real(3fp): ask for number from standard input with user-definable prompt"
+character(len=*),parameter::ident_16="@(#)M_io::rd_real(3fp): ask for number from standard input with user-definable prompt"
 
 real                         :: rvalue
 character(len=*),intent(in)  :: prompt
@@ -2048,7 +1973,7 @@ end function rd_real
 function rd_integer(prompt,default) result(ivalue)
 implicit none
 
-character(len=*),parameter::ident_18="@(#)M_io::rd_integer(3fp): ask for number from standard input with user-definable prompt"
+character(len=*),parameter::ident_17="@(#)M_io::rd_integer(3fp): ask for number from standard input with user-definable prompt"
 
 integer                      :: ivalue
 character(len=*),intent(in)  :: prompt
@@ -2063,7 +1988,6 @@ subroutine test_suite_M_io()
 !! setup
    call test_dirname()
    call test_get_tmp()
-   call test_isdir()
    call test_notopen()
    call test_print_inquire()
    call test_rd()
@@ -2095,15 +2019,6 @@ use M_debug, only : unit_check_level
    !!call unit_check('get_tmp', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('get_tmp',msg='')
 end subroutine test_get_tmp
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_isdir()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('isdir',msg='')
-   !!call unit_check('isdir', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('isdir',msg='')
-end subroutine test_isdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_notopen()
 

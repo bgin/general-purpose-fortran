@@ -4,6 +4,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _tty.1.man
 NAME
        _tty(1f) - [FUNIX:FILESYSTEM] print information about the file/terminal connected to standard input
+       (LICENSE:PD)
 
 SYNOPSIS
        _tty [OPTION]...
@@ -58,6 +59,10 @@ REPORTING BUGS
 SEE ALSO
       isatty(3c),tty(1), ttyname(3)
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

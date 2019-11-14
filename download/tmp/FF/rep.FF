@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file rep.1.man
 NAME
        rep(1f) - [FILE FILTER] replace fixed strings in files
+       (LICENSE:PD)
 SYNOPSIS
        rep filenames -c /from/to/ [ -verbose][ -dryrun]|[ -help| -version]
        (LICENSE:PD)
@@ -28,6 +29,10 @@ OPTIONS
        --version     Display version information and exit.
        --dryrun      Does all file operations except for moving the 
                      changed file back to the original. Implies --version.
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

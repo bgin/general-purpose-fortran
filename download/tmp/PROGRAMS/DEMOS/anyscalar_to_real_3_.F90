@@ -1,5 +1,4 @@
            program demo_anyscalar_to_real
-           use M_anything,     only : real256
            use iso_fortran_env, only : int8, int16, int32, int64
            use iso_fortran_env, only : real32, real64, real128
            implicit none
@@ -11,7 +10,6 @@
               write(*,*)squarei(2_real32)
               write(*,*)squarei(2_real64)
               write(*,*)squarei(2_real128)
-              write(*,*)squarei(2_real256)
            contains
 
            function squarei(invalue) result (dvalue)

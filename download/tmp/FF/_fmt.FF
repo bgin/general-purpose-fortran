@@ -98,6 +98,10 @@ $!     -u, --uniform-spacing   one space between words, two after sentences
 $!     -g, --goal=WIDTH        goal width (default of 93% of width)
        --help                  display this help and exit
        --version               output version information and exit
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 end program demo_fmt      

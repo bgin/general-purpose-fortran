@@ -1,4 +1,5 @@
 !@(#) Demonstrate just how much you can put in an object
+!(LICENSE:PD)
 !
         program fobjviews
 
@@ -22,12 +23,10 @@
 
         call color(BLACK)
         call clear
-
 !
 ! make an object that represents the cube
 !
         call makecube
-
 !
 ! set up an object which draws in the top left of the screen.
 !

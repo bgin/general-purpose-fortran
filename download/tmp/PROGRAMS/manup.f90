@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page               ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   manup FILE -cmd title -section N --product "product name" -help .F. --version .F.',&
@@ -103,6 +104,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     # test man page                                                            ',&
 '     man 1 yes|more                                                             ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -112,6 +117,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    manup(1f) - [DEVELOPER] Simple markup of text to a man(1) page
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -206,6 +212,11 @@ end subroutine help_usage
 !!
 !!      # test man page
 !!      man 1 yes|more
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -224,8 +235,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)LICENSE:        There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:36:45 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:02:44 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

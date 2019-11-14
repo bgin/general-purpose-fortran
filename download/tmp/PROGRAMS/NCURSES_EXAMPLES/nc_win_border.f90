@@ -1,5 +1,6 @@
 !-----------------------------------------------------------------------------------------
 program win_border ! @(#) draw box that can be moved around screen with ncurses(3c) from fortran
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    type(C_PTR) :: my_win

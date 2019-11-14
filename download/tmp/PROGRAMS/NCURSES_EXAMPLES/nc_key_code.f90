@@ -1,4 +1,5 @@
 program key_code
+!(LICENSE:PD)
 ! @(#) basic example of using ncurses(3c) from Fortran that shows identifying what keys were pressed
    use M_ncurses
    implicit none

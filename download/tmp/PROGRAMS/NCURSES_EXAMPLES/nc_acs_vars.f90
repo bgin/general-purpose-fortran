@@ -1,5 +1,6 @@
 program acs_vars
 ! @(#) test Alternate Character Set (ACS) variable names (line boxes characters, ...)
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    integer :: ierr

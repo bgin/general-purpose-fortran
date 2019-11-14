@@ -1,4 +1,5 @@
 program demo_termname
+!(LICENSE:PD)
 ! @(#) query terminal type set using termname(3f)
 use M_ncurses
 implicit none

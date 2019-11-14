@@ -1,4 +1,5 @@
 program nc_events                                ! @(#) event driven loop that IDs key presses and mouse clicks using keyname(3c)
+!(LICENSE:PD)
    use M_ncurses                                   ! use to Fortran interface module to the ncurses(3c) library
    implicit none
    character(len=1024) :: buffer                 ! buffer to write messages into using Fortran to pass to ncurses(3c)

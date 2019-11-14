@@ -1,9 +1,10 @@
+program flocator
 !
 !@(#)  a routine to demonstrate using locator.
 !
-   program flocator
+!(LICENSE:PD)
 
-      use M_draw
+   use M_draw
 
    character(len=20) :: dev
    integer bt, BLACK, GREEN, BLUE
@@ -46,32 +47,32 @@
 !       that we know the mouse button has been released.
 !
 
-1       continue
-      bt = locator(x, y)
-      if (bt .eq. -1) then
-         call vexit
-         print*,'No locator device found'
-         stop
-      else if (bt .eq. 2) then
-         call vexit
-         stop
-      else if (bt .eq. 0) then
-         act = .true.
-      else if (act) then 
-         act = .false.
-         if (bt .eq. 1) then
-            if (curpnt) then
-               call move2(sx, sy)
-               call draw2(x, y)
-               curpnt = .false.
-            else
-               curpnt = .true.
-            end if
-
-            sx = x
-            sy = y
+1  continue
+   bt = locator(x, y)
+   if (bt .eq. -1) then
+      call vexit
+      print*,'No locator device found'
+      stop
+   else if (bt .eq. 2) then
+      call vexit
+      stop
+   else if (bt .eq. 0) then
+      act = .true.
+   else if (act) then
+      act = .false.
+      if (bt .eq. 1) then
+         if (curpnt) then
+            call move2(sx, sy)
+            call draw2(x, y)
+            curpnt = .false.
+         else
+            curpnt = .true.
          end if
+
+         sx = x
+         sy = y
       end if
+   end if
    goto 1
 
-   end
+end program flocator

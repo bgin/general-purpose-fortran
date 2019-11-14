@@ -1,4 +1,5 @@
 PROGRAM QA4
+! (LICENSE:Public Domain)
    USE M_calcomp
    ! 07/30/69
    DIMENSION X(104), Y(104)

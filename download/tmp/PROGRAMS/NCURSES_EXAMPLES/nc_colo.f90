@@ -1,6 +1,7 @@
 !-------------------------------------------------------------------------------
 program colo
 ! @(#) Simple color text program using ncurses(3c) from Fortran with more than 8 colors
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    integer :: num=0

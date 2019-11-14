@@ -1,4 +1,5 @@
 program demo_fixedwidth
+!(LICENSE:PD)
 use M_draw
 implicit none
 

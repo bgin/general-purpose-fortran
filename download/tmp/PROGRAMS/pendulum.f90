@@ -72,6 +72,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   The frequency of the pendulum is  0.287753224     swings/sec.                ',&
 '   Each swing takes   3.47519994     sec.                                       ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -144,6 +148,11 @@ end subroutine help_usage
 !!    For a pendulum with length   3.00000000      feet
 !!    The frequency of the pendulum is  0.287753224     swings/sec.
 !!    Each swing takes   3.47519994     sec.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -164,7 +173,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:39:44 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:27:47 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -4,6 +4,7 @@ $DOCUMENT HELP -file base.1.man
 NAME
 
    base(1f) - [CONVERT] convert numbers between bases
+   (LICENSE:PD)
 
 SYNOPSIS
    base values [ -ibase NN][ -obase MM][ -brief] |[[ --help]|[ --version]]
@@ -92,6 +93,10 @@ EXAMPLE
     base 2:1111 3:10 4:10 8:10 16:10 -obase 2 -brief
       1111 11 100 1000 10000 
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file tabulate.1.man
 NAME
      tabulate(1f) - [M_messages] write out a row of numbers and a text-based scaled graph
+     (LICENSE:PD)
 
 SYNOPSIS
      tabulate -min 0 -max 100 -fill ' ' -len 0
@@ -128,6 +129,10 @@ EXAMPLE
    9.840000     -0.4033932     -0.9150267    # 2            1                                   #
    9.960000     -0.5100321     -0.8601554    #  2        1                                      #
    10.08000     -0.6093352     -0.7929127    #    2    1                                        #
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

@@ -1,4 +1,5 @@
 program flcube !@(#) track a cube with the locator
+!(LICENSE:PD)
 use M_draw
 use M_draw, only : D_BLACK
 implicit none

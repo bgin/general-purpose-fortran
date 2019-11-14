@@ -60,6 +60,10 @@ EXAMPLE
 
 SEE ALSO
    ascii(1),iprint(1)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION
@@ -70,8 +74,7 @@ VERSION:        1.0, 20160530
 AUTHOR:         John S. Urban
 REPORTING BUGS: http://www.urbanjost.altervista.org/
 HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.
-                There is NO WARRANTY, to the extent permitted by law.
+LICENSE:        Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program hexd

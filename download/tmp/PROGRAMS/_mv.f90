@@ -18,6 +18,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
 '     _mv file.text /tmp/file.txt                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -37,7 +41,12 @@ end subroutine help_usage
 !!##EXAMPLE
 !!
 !!      _mv file.text /tmp/file.txt
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
+
 subroutine help_version(l_version)
 implicit none
 character(len=*),parameter     :: ident="@(#)help_version(3f): prints version information"
@@ -58,13 +67,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
 '@(#)COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:04:11 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:44:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
 endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
+
 program demo_system_rename
 use M_kracken, only : kracken,lget,sgets,IPvalue
 use M_system, only : system_rename

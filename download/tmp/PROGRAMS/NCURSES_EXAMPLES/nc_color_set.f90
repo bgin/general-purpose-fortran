@@ -1,5 +1,6 @@
 !-------------------------------------------------------------------------------
 !@(#) setting color pairs using ncurses(3c) from Fortran
+!(LICENSE:PD)
 program color_set_example
     use M_ncurses
     implicit none

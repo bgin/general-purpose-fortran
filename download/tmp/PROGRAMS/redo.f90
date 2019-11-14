@@ -1,4 +1,5 @@
 program redoit
+!(LICENSE:PD)
 use M_history, only : redo
 implicit none
 

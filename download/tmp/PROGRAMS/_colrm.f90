@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       _colrm(1f) - [FUNIX] remove columns from a file                          ',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _colrm [first [last]]                                                    ',&
@@ -38,6 +39,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       cat FILENAME|_colrm 73                                                   ',&
 '       # remove first three characters in each line                             ',&
 '       cat FILENAME|_colrm 1 3                                                  ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -47,6 +52,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        _colrm(1f) - [FUNIX] remove columns from a file
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -77,6 +83,10 @@ end subroutine help_usage
 !!        cat FILENAME|_colrm 73
 !!        # remove first three characters in each line
 !!        cat FILENAME|_colrm 1 3
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -94,7 +104,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180324>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:02:08 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:41:44 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

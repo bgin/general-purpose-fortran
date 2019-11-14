@@ -98,6 +98,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       >28 29 30 31                                                             ',&
 '                                                                                ',&
 '      month -month April # month names may be given instead of numbers          ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -140,6 +144,10 @@ end subroutine help_usage
 !!        >28 29 30 31
 !!
 !!       month -month April # month names may be given instead of numbers
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -160,7 +168,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:37:44 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:19:52 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

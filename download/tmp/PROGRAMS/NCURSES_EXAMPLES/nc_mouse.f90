@@ -1,4 +1,5 @@
 program nc_mouse  ! @(#) how to get position and click information from mouse presses
+!(LICENSE:PD)
 ! A press is processed and then you are back in your program and then a release gets its own KEY_MOUSE return
    use M_ncurses
    implicit none

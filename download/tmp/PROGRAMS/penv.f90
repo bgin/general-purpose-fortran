@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       penv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells',&
+'       (LICENSE:PD)                                                             ',&
 'SYNOPSIS                                                                        ',&
 '       penv [variable...] [ -C| -B| -v] [ -p PREFIX]                            ',&
 '       penv [ --help| --version]                                                ',&
@@ -60,6 +61,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '        1  otherwise                                                            ',&
 'SEE ALSO                                                                        ',&
 '       env(1), printenv(1)                                                      ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -69,6 +74,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        penv(1f) - [M_system:ENVIRONMENT] print all or part of environment in formats readable by various shells
+!!        (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!        penv [variable...] [ -C| -B| -v] [ -p PREFIX]
@@ -120,6 +126,10 @@ end subroutine help_usage
 !!         1  otherwise
 !!##SEE ALSO
 !!        env(1), printenv(1)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -138,8 +148,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:39:55 AM>',&
+'@(#)COPYRIGHT:      Copyright (C) 2016 John S. Urban. Public Domain>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:27:59 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

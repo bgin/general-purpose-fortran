@@ -17,8 +17,6 @@ integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 
 ! on this platform, (select_real_kind(i),i=1,100) returns
 ! 1:6=   4, 7:15 = 8, 16:18= 10, 19:33= 16, 34:  = -1
-integer,parameter        :: r(34)=[(selected_int_kind(i),i=1,34)]
-integer,public,parameter :: real256=r(34)
 
 integer,parameter        :: dp=kind(0.0d0)
 
@@ -61,7 +59,7 @@ contains
 !>
 !!##NAME
 !!    empty(3f) - [M_anything] set an allocatable array to zero
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    use M_anything, only : empty, assignment(=)
@@ -108,6 +106,10 @@ contains
 !!               0
 !!               0
 !!               0
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
    subroutine ints_empty_( x, emp )
        integer, allocatable, intent(inout) :: x(:)
@@ -164,7 +166,7 @@ end subroutine bytes_to_anything
 !>
 !!##NAME
 !!    anything_to_bytes(3f) - [M_anything] convert standard types to bytes (character(len=1):: array(:))
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -232,6 +234,11 @@ end subroutine bytes_to_anything
 !!     20 69 73 20
 !!     61 20 73 74
 !!     72 69 6E 67
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 function anything_to_bytes_arr(anything) result(chars)
 implicit none
@@ -290,7 +297,7 @@ end function  anything_to_bytes_scalar
 !>
 !!##NAME
 !!    anyscalar_to_double(3f) - [M_anything] convert integer or real parameter of any kind to doubleprecision
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -309,8 +316,7 @@ end function  anything_to_bytes_scalar
 !!
 !!    VALUEIN  input argument of a procedure to convert to type DOUBLEPRECISION.
 !!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
-!!             kind=real32, kind=real64, kind=real128,
-!!             or kind=real256
+!!             kind=real32, kind=real64, or kind=real128
 !!##RESULTS
 !!
 !!    D_OUT    The value of VALUIN converted to doubleprecision (assuming
@@ -322,7 +328,6 @@ end function  anything_to_bytes_scalar
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_double
-!!     use M_anything,      only : real256
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     use iso_fortran_env, only : real32, real64, real128
 !!     implicit none
@@ -334,7 +339,6 @@ end function  anything_to_bytes_scalar
 !!        write(*,*)squarei(2_real32)
 !!        write(*,*)squarei(2_real64)
 !!        write(*,*)squarei(2_real128)
-!!        write(*,*)squarei(2_real256)
 !!     contains
 !!
 !!     function squarei(invalue) result (dvalue)
@@ -347,6 +351,10 @@ end function  anything_to_bytes_scalar
 !!     end function squarei
 !!
 !!     end program demo_anyscalar_to_double
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 pure elemental function anyscalar_to_double(valuein) result(d_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
@@ -370,7 +378,7 @@ doubleprecision,parameter :: big=huge(0.0d0)
       !!   write(error_unit,*)'*anyscalar_to_double* value too large ',valuein
       !!endif
       d_out=dble(valuein)
-   !type is (real(kind=real256))
+   !type is (real(kind=real128))
    !   if(valuein.gt.big)then
    !      write(error_unit,*)'*anyscalar_to_double* value too large ',valuein
    !   endif
@@ -386,7 +394,7 @@ end function anyscalar_to_double
 !>
 !!##NAME
 !!    anyscalar_to_real(3f) - [M_anything] convert integer or real parameter of any kind to real
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -405,8 +413,7 @@ end function anyscalar_to_double
 !!
 !!    VALUEIN  input argument of a procedure to convert to type REAL.
 !!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
-!!             kind=real32, kind=real64, kind=real128,
-!!             or kind=real256
+!!             kind=real32, kind=real64, or kind=real128.
 !!##RESULTS
 !!
 !!    R_OUT    The value of VALUIN converted to real (assuming it is actually
@@ -417,7 +424,6 @@ end function anyscalar_to_double
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_real
-!!     use M_anything,     only : real256
 !!     use iso_fortran_env, only : int8, int16, int32, int64
 !!     use iso_fortran_env, only : real32, real64, real128
 !!     implicit none
@@ -429,7 +435,6 @@ end function anyscalar_to_double
 !!        write(*,*)squarei(2_real32)
 !!        write(*,*)squarei(2_real64)
 !!        write(*,*)squarei(2_real128)
-!!        write(*,*)squarei(2_real256)
 !!     contains
 !!
 !!     function squarei(invalue) result (dvalue)
@@ -442,6 +447,10 @@ end function anyscalar_to_double
 !!     end function squarei
 !!
 !!     end program demo_anyscalar_to_real
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 pure elemental function anyscalar_to_real(valuein) result(r_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
@@ -468,7 +477,7 @@ real,parameter      :: big=huge(0.0)
       !!   write(error_unit,*)'*anyscalar_to_real* value too large ',valuein
       !!endif
       r_out=real(valuein)
-   !type is (real(kind=real256));   r_out=real(valuein)
+   !type is (real(kind=real128));   r_out=real(valuein)
    end select
 end function anyscalar_to_real
 !===================================================================================================================================
@@ -478,7 +487,7 @@ end function anyscalar_to_real
 !!##NAME
 !!
 !!    anyinteger_to_64bit(3f) - [M_anything] convert integer any kind to integer(kind=64)
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -538,6 +547,11 @@ end function anyscalar_to_real
 !!    4.6116860141324206E+018  2147483647 !!    4611686014132420609
 !!    8.5070591730234616E+037  9223372036854775807 !!    85070591730234615847396907784232501249
 !!    2.8948022309329049E+076 170141183460469231731687303715884105727 !!    28948022309329048855892746252171976962977213799489202546401021394546514198529
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 pure elemental function anyinteger_to_64bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit

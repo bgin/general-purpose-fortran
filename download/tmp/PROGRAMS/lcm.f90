@@ -57,6 +57,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       lcm(1f) - [NUMBERS] display least common multiple of a list of whole numbers',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       lcm [NUMBERS]...                                                         ',&
@@ -90,6 +91,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '  >lcm 202023 2147483647                                                        ',&
 '  >STOP 1                                                                       ',&
 '  >*lcm* result larger than a standard integer = 433841088817881                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '                                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -100,6 +105,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        lcm(1f) - [NUMBERS] display least common multiple of a list of whole numbers
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -135,6 +141,10 @@ end subroutine help_usage
 !!   >lcm 202023 2147483647
 !!   >STOP 1
 !!   >*lcm* result larger than a standard integer = 433841088817881
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -154,7 +164,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)UUID:           8f39b1e5-592f-4a22-946f-b8da2aa49633>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:00:52 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:11:10 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,4 +1,5 @@
 program scanw_example ! @(#) read a string from the screen using ncurses(3c) from Fortran
+!(LICENSE:PD)
  use M_ncurses
  implicit none
  integer           :: ierr

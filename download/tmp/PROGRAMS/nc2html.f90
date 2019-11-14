@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '      nc2html(1) - [NCURSES] print an ncurses(3c) window dump as HTML           ',&
+'      (LICENSE:PD)                                                              ',&
 'DESCRIPTION                                                                     ',&
 '      Given a file generated with the ncurses(3c) putwin(3c) procedure          ',&
 '      read the file and write it out an an HTML file for printing or            ',&
@@ -23,6 +24,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '         -pg              Optionally display the ncurses(3c) window dump file   ',&
 '                          and pause                                             ',&
 'EXAMPLE                                                                         ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -32,6 +37,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!       nc2html(1) - [NCURSES] print an ncurses(3c) window dump as HTML
+!!       (LICENSE:PD)
 !!##DESCRIPTION
 !!       Given a file generated with the ncurses(3c) putwin(3c) procedure
 !!       read the file and write it out an an HTML file for printing or
@@ -47,6 +53,10 @@ end subroutine help_usage
 !!                           and pause
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -64,7 +74,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20150312>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:38:19 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:26:05 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

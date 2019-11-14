@@ -5,6 +5,7 @@ $ifdef TESTPRG90
 $DOCUMENT HELP -file xauth_key.1.man
 NAME
    xauth_key(1f) - [M_random] generate magic cookies for xauth
+   (LICENSE:PD)
 SYNOPSIS
    xauth_key [characters] [ -n number_of_characters]
 DESCRIPTION
@@ -22,6 +23,10 @@ EXAMPLE
     xauth add :0 . `xauth_key`
 SEE ALSO
    X(1), xauth(1)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program xauth_key

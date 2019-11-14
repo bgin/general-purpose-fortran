@@ -1,4 +1,5 @@
 program init_func_example
+!(LICENSE:PD)
 ! @(#) Capture all key strokes and identify what keys were pressed
 
    use M_ncurses

@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file nc2html.1.man
 NAME
       nc2html(1) - [NCURSES] print an ncurses(3c) window dump as HTML
+      (LICENSE:PD)
 DESCRIPTION
       Given a file generated with the ncurses(3c) putwin(3c) procedure
       read the file and write it out an an HTML file for printing or 
@@ -16,6 +17,10 @@ OPTIONS
          -pg              Optionally display the ncurses(3c) window dump file
 	                  and pause 
 EXAMPLE
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

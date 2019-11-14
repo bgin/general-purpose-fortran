@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files',&
+'   (PUBLIC:MIT)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   change c/old/new/ FILENAMES [ -dryrun][ -cmd COMMAND]| --version| --help     ',&
@@ -36,7 +37,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   change c/.f90/.F90/  *.f90                                                   ',&
 '   # copy all files with .f90 in their name to *.F90                            ',&
 '   change c@.f90@.F90@  *.f90 -cmd cp                                           ',&
-'                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -46,6 +50,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files
+!!    (PUBLIC:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -74,6 +79,10 @@ end subroutine help_usage
 !!    change c/.f90/.F90/  *.f90
 !!    # copy all files with .f90 in their name to *.F90
 !!    change c@.f90@.F90@  *.f90 -cmd cp
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -90,7 +99,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:57:06 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:34:37 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,4 +1,5 @@
 !@(#)  demonstrate double buffering and what happens when you hit clipping plane
+!(LICENSE:PD)
 !
 !      Specifying an extra argument turns on the filling.
 !

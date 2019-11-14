@@ -1435,7 +1435,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         Michel Olagnon, Phil Garnatz>',&
 '@(#)VERSION:        V-2.0 2019-09-10, minor modifications to integrate into GPF>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:01:28 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:40:55 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -1454,6 +1454,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   f90split(1f) - [DEVELOPER] split Fortran source file into individual files   ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   f90split < largefile [ > list_file ] |[ --help| --version]                   ',&
@@ -1480,10 +1481,14 @@ help_text=[ CHARACTER(LEN=128) :: &
 'LICENSE                                                                         ',&
 '   All rights to this code waived, so that it may be freely distributed         ',&
 '   as public domain software subject to the condition that these 6 lines        ',&
-'   are verbatim reproduced. Originally written by Michel Olagnon, from          ',&
-'   Ifremer, France, who would be pleased to receive your comments and           ',&
-'   corrections. M. Olagnon (Michel.Olagnon@ifremer.fr) Improved by              ',&
-'   Phil Garnatz, Cray Research Inc. for makefile generation                     ',&
+'   are verbatim reproduced.                                                     ',&
+'                                                                                ',&
+'   Originally written by Michel Olagnon, from Ifremer, France, who              ',&
+'   would be pleased to receive your comments and corrections.                   ',&
+'                                                                                ',&
+'      M. Olagnon (Michel.Olagnon@ifremer.fr)                                    ',&
+'         Improved by                                                            ',&
+'      Phil Garnatz, Cray Research Inc. for makefile generation                  ',&
 '                                                                                ',&
 'EXAMPLES                                                                        ',&
 '   Sample commands                                                              ',&
@@ -1501,6 +1506,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    f90split(1f) - [DEVELOPER] split Fortran source file into individual files
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1528,10 +1534,14 @@ end subroutine help_usage
 !!##LICENSE
 !!    All rights to this code waived, so that it may be freely distributed
 !!    as public domain software subject to the condition that these 6 lines
-!!    are verbatim reproduced. Originally written by Michel Olagnon, from
-!!    Ifremer, France, who would be pleased to receive your comments and
-!!    corrections. M. Olagnon (Michel.Olagnon@ifremer.fr) Improved by
-!!    Phil Garnatz, Cray Research Inc. for makefile generation
+!!    are verbatim reproduced.
+!!
+!!    Originally written by Michel Olagnon, from Ifremer, France, who
+!!    would be pleased to receive your comments and corrections.
+!!
+!!       M. Olagnon (Michel.Olagnon@ifremer.fr)
+!!          Improved by
+!!       Phil Garnatz, Cray Research Inc. for makefile generation
 !!
 !!##EXAMPLES
 !!

@@ -9,7 +9,12 @@ DESCRIPTION
 
 EXAMPLE
      _mv file.text /tmp/file.txt
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
+
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples
 PROGRAM:        _mv(1f)
@@ -22,6 +27,7 @@ LICENSE:        Public Domain. This is free software: you are free to change and
                 There is NO WARRANTY, to the extent permitted by law.
 COMPILED:       Sun, Nov 27th, 2016 10:47:13 PM
 $DOCUMENT END
+
 program demo_system_rename
 use M_kracken, only : kracken,lget,sgets,IPvalue
 use M_system, only : system_rename

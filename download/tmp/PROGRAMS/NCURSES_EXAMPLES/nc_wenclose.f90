@@ -1,4 +1,5 @@
 program wenclose_test ! @(#) detect when click mouse in a window using wenclose(3c) 
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    type(C_PTR)          :: target

@@ -46,6 +46,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   fseq filename -e 20 -i "i10,'''':'''',1x"                                    ',&
 '   # show                                                                       ',&
 '   fseq filename -e 1000000000 -i "i0,t5,'''':'''',1x"                          ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -93,6 +97,10 @@ end subroutine help_usage
 !!    fseq filename -e 20 -i "i10,'':'',1x"
 !!    # show
 !!    fseq filename -e 1000000000 -i "i0,t5,'':'',1x"
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -111,9 +119,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
-'@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:01:19 AM>',&
+'@(#)LICENSE:        Public Domain>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:09:23 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -4,6 +4,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file change.1.man
 NAME
    change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files
+   (LICENSE:PD)
 
 SYNOPSIS
    change c/old/new/ FILENAMES [ -dryrun][ -cmd COMMAND]| --version| --help
@@ -30,7 +31,10 @@ EXAMPLE
    change c/.f90/.F90/  *.f90
    # copy all files with .f90 in their name to *.F90
    change c@.f90@.F90@  *.f90 -cmd cp
-
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $! this is converted into the help_version subroutine by ufpp ...

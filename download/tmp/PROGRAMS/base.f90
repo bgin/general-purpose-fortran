@@ -11,6 +11,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '                                                                                ',&
 '   base(1f) - [CONVERT] convert numbers between bases                           ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   base values [ -ibase NN][ -obase MM][ -brief] |[[ --help]|[ --version]]      ',&
@@ -99,6 +100,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    base 2:1111 3:10 4:10 8:10 16:10 -obase 2 -brief                            ',&
 '      1111 11 100 1000 10000                                                    ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -109,6 +114,7 @@ end subroutine help_usage
 !!##NAME
 !!
 !!    base(1f) - [CONVERT] convert numbers between bases
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -198,6 +204,11 @@ end subroutine help_usage
 !!     # convert values of various explicit bases to base2 in brief mode
 !!     base 2:1111 3:10 4:10 8:10 16:10 -obase 2 -brief
 !!       1111 11 100 1000 10000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -215,7 +226,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20170916>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:37:12 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:19:05 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

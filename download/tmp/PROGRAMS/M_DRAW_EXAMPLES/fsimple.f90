@@ -4,6 +4,7 @@
 !  move and draw in the initial coordinate system -1.0 to 1.0.
 !
 program fsimple
+!(LICENSE:PD)
 use M_draw
 integer,parameter :: BLACK = 0, GREEN = 2
 character(len=50) :: device

@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    _kill(1f) - [FUNIX] send signals to processes                               ',&
+'    (LICENSE:PD)                                                                ',&
 'SYNTAX                                                                          ',&
 '    _kill PIDs [ -s signal_number] [ --help|--version]                          ',&
 'DESCRIPTION                                                                     ',&
@@ -30,6 +31,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    > *kill*: process not found                                                 ',&
 '    > *kill*: PID value of 0 is not supported                                   ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -39,6 +44,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     _kill(1f) - [FUNIX] send signals to processes
+!!     (LICENSE:PD)
 !!##SYNTAX
 !!     _kill PIDs [ -s signal_number] [ --help|--version]
 !!##DESCRIPTION
@@ -59,6 +65,11 @@ end subroutine help_usage
 !!     > *kill*: SIGNAL=9 PID=60476 successfully sent
 !!     > *kill*: process not found
 !!     > *kill*: PID value of 0 is not supported
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -76,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 2017-05-23>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:03:18 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:43:18 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,4 +1,5 @@
 program nc_putwin ! @(#) use putwin(3f) to create a window dump to a file
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    type(C_PTR)          :: win

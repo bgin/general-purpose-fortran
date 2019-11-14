@@ -238,6 +238,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   choose(1f) - [NCURSES] select one item from a menu using a screen interface  ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   choose  [choices] [ -i index] [ -t timeout ] [ -m text] [ -d default]|[ -help|--version]',&
@@ -335,6 +336,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 'SEE ALSO                                                                        ',&
 '   dialog                                                                       ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -344,6 +349,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    choose(1f) - [NCURSES] select one item from a menu using a screen interface
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -442,6 +448,11 @@ end subroutine help_usage
 !!
 !!##SEE ALSO
 !!    dialog
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -459,7 +470,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180331>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:37:55 AM>',&
+'@(#)COMPILED:       Tue, Nov 12th, 2019 7:43:21 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

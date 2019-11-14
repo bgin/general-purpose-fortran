@@ -1,4 +1,5 @@
 program nc_getwin ! @(#) read a window dump from putwin(3c) using getwin(3c)
+!(LICENSE:PD)
    use M_ncurses
    type(C_PTR) :: win
    integer     :: ierr

@@ -1,6 +1,7 @@
 $DOCUMENT HELP -file model.1.man
 NAME
    model(1f) - [FORTRAN:iso_fortran_env] fortran numeric model information
+   (LICENSE:PD)
 
 SYNOPSIS
    model
@@ -8,6 +9,10 @@ SYNOPSIS
 DESCRIPTION
    The following routines are called for various types:
 
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 program model

@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       _uname(1f) - [FUNIX] print system information                            ',&
+'       (LICENSE:PD)                                                             ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       _uname [OPTION]...                                                       ',&
@@ -46,6 +47,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      >_uname -machine                                                          ',&
 '      >x86_64                                                                   ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -55,6 +60,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        _uname(1f) - [FUNIX] print system information
+!!        (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -92,6 +98,11 @@ end subroutine help_usage
 !!
 !!       >_uname -machine
 !!       >x86_64
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -107,7 +118,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    print system information>',&
 '@(#)VERSION:        1.0, 20161107>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:07:07 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:48:20 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

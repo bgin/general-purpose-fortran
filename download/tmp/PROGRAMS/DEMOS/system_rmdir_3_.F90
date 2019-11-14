@@ -7,7 +7,7 @@
           call execute_command_line('ls -ld _scratch')
 
           write(*,*)'TRY TO CREATE _scratch/'
-          ierr=system_mkdir('_scratch',0+8*0+7)
+          ierr=system_mkdir('_scratch',RWX_U')
           write(*,*)'IERR=',ierr
           call execute_command_line('ls -ld _scratch')
 

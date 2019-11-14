@@ -236,7 +236,7 @@ public :: system_malloc
 public :: system_free
 public :: system_memcpy
 
-public :: R_GRP,R_OTH,R_USR,R_WXG,R_WXO,R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR,DEFFILEMODE,ACCESSPERMS
+public :: R_GRP,R_OTH,R_USR,RWX_G,RWX_O,RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR,DEFFILEMODE,ACCESSPERMS
 public :: R_OK,W_OK,X_OK,F_OK  ! for system_access
 
 public test_suite_M_system
@@ -1117,9 +1117,9 @@ end interface
 integer(kind=mode_t),bind(c,name="FS_IRGRP") ::R_GRP
 integer(kind=mode_t),bind(c,name="FS_IROTH") ::R_OTH
 integer(kind=mode_t),bind(c,name="FS_IRUSR") ::R_USR
-integer(kind=mode_t),bind(c,name="FS_IRWXG") ::R_WXG
-integer(kind=mode_t),bind(c,name="FS_IRWXO") ::R_WXO
-integer(kind=mode_t),bind(c,name="FS_IRWXU") ::R_WXU
+integer(kind=mode_t),bind(c,name="FS_IRWXG") ::RWX_G
+integer(kind=mode_t),bind(c,name="FS_IRWXO") ::RWX_O
+integer(kind=mode_t),bind(c,name="FS_IRWXU") ::RWX_U
 integer(kind=mode_t),bind(c,name="FS_IWGRP") ::W_GRP
 integer(kind=mode_t),bind(c,name="FS_IWOTH") ::W_OTH
 integer(kind=mode_t),bind(c,name="FS_IWUSR") ::W_USR
@@ -2027,7 +2027,7 @@ end function system_chown
 !!    logical                     :: system_isdir
 !!
 !!##DESCRIPTION
-!!        The isdir(3f) function checks if path is a path to a directory.
+!!        The system_isdir(3f) function checks if path is a directory.
 !!
 !!##OPTIONS
 !!        path   a character string representing a directory pathname. Trailing spaces are ignored.
@@ -2878,8 +2878,8 @@ end function system_rename
 !!    program demo_system_chmod
 !!    use M_system, only : system_chmod
 !!    use M_system, only : system_stat
-!!    use M_system, only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
-!!    use M_system, only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
+!!    use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
+!!    use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
 !!    implicit none
 !!    integer         :: ierr
@@ -2897,7 +2897,7 @@ end function system_rename
 !!       open(file='_test2',unit=10)
 !!       write(10,*)'TEST FILE 2'
 !!       close(unit=10)
-!!       ierr=system_chmod('_test2', R_WXU)
+!!       ierr=system_chmod('_test2', RWX_U)
 !!
 !!       !Setting Different Permissions for Owner, Group, and Other
 !!       ! The following example sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
@@ -2905,13 +2905,13 @@ end function system_rename
 !!       open(file='_test3',unit=10)
 !!       write(10,*)'TEST FILE 3'
 !!       close(unit=10)
-!!       ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
+!!       ierr=system_chmod('_test3', IANY([RWX_U,R_GRP,X_GRP,R_OTH]));
 !!
 !!       !Setting and Checking File Permissions
 !!       ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
 !!       ! verify the permissions.
 !!
-!!       ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
+!!       ierr=system_chmod("home/cnd/mod1", IANY([RWX_U,RWX_G,R_OTH,W_OTH]))
 !!       call system_stat("home/cnd/mod1", buffer,status)
 !!
 !!       ! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
@@ -3048,7 +3048,7 @@ end subroutine system_getcwd
 !!    call execute_command_line('ls -ld _scratch')
 !!
 !!    write(*,*)'TRY TO CREATE _scratch/'
-!!    ierr=system_mkdir('_scratch',0+8*0+7)
+!!    ierr=system_mkdir('_scratch',RWX_U')
 !!    write(*,*)'IERR=',ierr
 !!    call execute_command_line('ls -ld _scratch')
 !!
@@ -3160,7 +3160,7 @@ end function system_rmdir
 !!    Additionally, some shortcuts are provided (basically a bitwise-OR
 !!    combination of the above):
 !!
-!!      Read + Write + Execute: R_WXU (User), R_WXG (Group), R_WXO (Others)
+!!      Read + Write + Execute: RWX_U (User), RWX_G (Group), RWX_O (Others)
 !!      DEFFILEMODE: Equivalent of 0666 =rw-rw-rw-
 !!      ACCESSPERMS: Equivalent of 0777 = rwxrwxrwx
 !!
@@ -3169,13 +3169,13 @@ end function system_rmdir
 !!    following mkfifo() calls equivalently:
 !!
 !!      ierr= mkfifo("myfile", IANY([R_USR, W_USR, X_USR]));
-!!      ierr= mkfifo("myfile", R_WXU);
+!!      ierr= mkfifo("myfile", RWX_U);
 !!
 !!    In order to give anyone any rights (mode 0777 = rwxrwxrwx), you can
 !!    use any of the following calls equivalently:
 !!
 !!      ierr= mkfifo("myfile",IANY([R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH]));
-!!      ierr= mkfifo("myfile",IANY([R_WXU,R_WXG,R_WXO]));
+!!      ierr= mkfifo("myfile",IANY([RWX_U,RWX_G,RWX_O]));
 !!      ierr= mkfifo("myfile",ACCESSPERMS);
 !!##RETURN VALUE
 !!    Upon successful completion, return 0.
@@ -3190,8 +3190,8 @@ end function system_rmdir
 !!
 !!    program demo_system_mkfifo
 !!    use M_system, only : system_mkfifo, system_perror
-!!    use M_system, only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
-!!    use M_system, only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
+!!    use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
+!!    use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
 !!    implicit none
 !!       integer :: status
@@ -3251,7 +3251,7 @@ end function system_mkfifo
 !!
 !!    Additionally, some shortcuts are provided (basically a bitwise-OR combination of the above):
 !!
-!!      Read + Write + Execute: R_WXU (User), R_WXG (Group), R_WXO (Others)
+!!      Read + Write + Execute: RWX_U (User), RWX_G (Group), RWX_O (Others)
 !!      DEFFILEMODE: Equivalent of 0666 =rw-rw-rw-
 !!      ACCESSPERMS: Equivalent of 0777 = rwxrwxrwx
 !!
@@ -3260,13 +3260,13 @@ end function system_mkfifo
 !!    following mkdir() calls equivalently:
 !!
 !!      ierr= mkdir("mydir", IANY([R_USR, W_USR, X_USR]));
-!!      ierr= mkdir("mydir", R_WXU);
+!!      ierr= mkdir("mydir", RWX_U);
 !!
 !!    In order to give anyone any rights (mode 0777 = rwxrwxrwx), you can
 !!    use any of the following calls equivalently:
 !!
 !!      ierr= mkdir("mydir",IANY([R_USR,W_USR,X_USR,R_GRP,W_GRP,X_GRP,R_OTH,W_OTH,X_OTH]));
-!!      ierr= mkdir("mydir",IANY([R_WXU,R_WXG,R_WXO]));
+!!      ierr= mkdir("mydir",IANY([RWX_U,RWX_G,RWX_O]));
 !!      ierr= mkdir("mydir",ACCESSPERMS);
 !!
 !!##EXAMPLE
@@ -3276,8 +3276,8 @@ end function system_mkfifo
 !!    program demo_system_mkdir
 !!    use M_system, only : system_perror
 !!    use M_system, only : system_mkdir
-!!    use M_system, only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
-!!    use M_system, only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
+!!    use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
+!!    use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
 !!    implicit none
 !!    integer :: ierr
@@ -5481,7 +5481,7 @@ character(len=4096) :: message
    open(file='_test2',unit=10)
    write(10,*)'TEST FILE 2'
    close(unit=10)
-   ierr=system_chmod('_test2', R_WXU)
+   ierr=system_chmod('_test2', RWX_U)
    open(file='_test2',unit=10)
    close(unit=10,status='delete')
 
@@ -5491,7 +5491,7 @@ character(len=4096) :: message
    open(file='_test3',unit=10)
    write(10,*)'TEST FILE 3'
    close(unit=10)
-   ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
+   ierr=system_chmod('_test3', IANY([RWX_U,R_GRP,X_GRP,R_OTH]));
    open(file='_test3',unit=10)
    close(unit=10,status='delete')
 
@@ -5499,7 +5499,7 @@ character(len=4096) :: message
 ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
 ! verify the permissions.
 
-   ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
+   ierr=system_chmod("home/cnd/mod1", IANY([RWX_U,RWX_G,R_OTH,W_OTH]))
    call system_stat("home/cnd/mod1", buffer,status)
 
 ! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a
@@ -6104,7 +6104,7 @@ subroutine test_system_rmdir()
    if(isdir(dirname))then ! TRY TO CREATE
       call unit_check_msg('system_rmdir',dirname,'directory existed')
    endif
-   ierr=system_mkdir(dirname,0+8*0+7)
+   ierr=system_mkdir(dirname,RWX_U)
    call unit_check('est_system_rmdir',ierr.eq.0,msg=msg('try to create',dirname))
    call unit_check('system_rmdir',isdir(dirname),msg=msg('check if',dirname,'exists and is a directory'))
 !! test
@@ -6257,11 +6257,10 @@ character(len=4096) :: value
 end subroutine test_system_unsetenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_memcpy()
-   call unit_check_start('system_utime',msg='')
-   !!call unit_check('system_utime', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('system_utime',msg='')
+   call unit_check_start('system_memcpy',msg='')
+   !!call unit_check('system_memcpy', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('system_memcpy',msg='')
 end subroutine test_system_memcpy
-!===================================================================================================================================
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_utime()
 

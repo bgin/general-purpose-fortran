@@ -1,5 +1,5 @@
           program demo_easter
-          use m_time, only : easter, fmtdate
+          use M_time, only : easter, fmtdate
           implicit none
           integer :: year
           integer :: dat(8) ! year,month,day,tz,hour,minute,second,millisecond

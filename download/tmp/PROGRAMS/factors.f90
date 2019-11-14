@@ -70,7 +70,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       factors(1f) - [NUMBERS] display prime factors of numbers                 ',&
-'       (LICENSE:PD)                                                             ',&
+'       (LICENSE:MIT)                                                            ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '       factors [NUMBER]...                                                      ',&
@@ -117,6 +117,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '  10 factors as 2*5                                                             ',&
 '  11 IS A PRIME NUMBER                                                          ',&
 '  12 factors as (2**2)*3                                                        ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -126,7 +130,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        factors(1f) - [NUMBERS] display prime factors of numbers
-!!        (LICENSE:PD)
+!!        (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -175,6 +179,10 @@ end subroutine help_usage
 !!   10 factors as 2*5
 !!   11 IS A PRIME NUMBER
 !!   12 factors as (2**2)*3
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -193,10 +201,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
-'@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)UUID:           37a84d23-0b17-4cd5-bb09-54e23d2e66a6>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:00:34 AM>',&
+'@(#)LICENSE:        MIT License>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:39:43 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

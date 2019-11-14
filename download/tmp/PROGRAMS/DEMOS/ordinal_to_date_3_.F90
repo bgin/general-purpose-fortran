@@ -1,5 +1,5 @@
           program demo_datesub
-          use m_time, only : ordinal_to_date
+          use M_time, only : ordinal_to_date
           implicit none
           INTEGER            :: yyyy, ddd, mm, dd
           integer            :: dat(8)

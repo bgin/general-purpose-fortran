@@ -74,7 +74,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180427>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:07:24 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:48:46 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -93,6 +93,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    _uuidgen(1f) - [FUNIX] generate a UUID (Universally Unique ID) string per RFC 4122',&
+'    (LICENSE:PD)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    _uuidgen [[ --method NAME][ -urn][ -repeat N]]|[ --help|--version]          ',&
@@ -147,6 +148,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   f2a2faf0-833a-11e9-7373-cde3ffff3681                                         ',&
 '   f2a2faf0-833a-11e9-7373-271cfbfd42bc                                         ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -156,6 +161,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     _uuidgen(1f) - [FUNIX] generate a UUID (Universally Unique ID) string per RFC 4122
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -211,5 +217,10 @@ end subroutine help_usage
 !!    f2a2faf0-833a-11e9-7373-afbb9f7b9100
 !!    f2a2faf0-833a-11e9-7373-cde3ffff3681
 !!    f2a2faf0-833a-11e9-7373-271cfbfd42bc
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 end program uuidgen

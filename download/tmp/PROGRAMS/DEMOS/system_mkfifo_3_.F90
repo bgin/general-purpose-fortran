@@ -1,7 +1,7 @@
           program demo_system_mkfifo
           use M_system, only : system_mkfifo, system_perror
-          use M_system, only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
-          use M_system, only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
+          use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
+          use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
           use M_system, only : DEFFILEMODE, ACCESSPERMS
           implicit none
              integer :: status

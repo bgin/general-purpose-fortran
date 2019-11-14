@@ -1,4 +1,5 @@
 program nc_scanw
+!(LICENSE:PD)
    use M_ncurses
    real,parameter ::  UNI=4.5
    integer        ::  pieces

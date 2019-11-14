@@ -304,7 +304,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file<br/>
 	M_io::dirname(3f): strip last component from filename<br/>
 	M_io::splitpath(3f): split Unix pathname into components (dir,name,basename,extension)<br/>
-	M_io::isdir(3f): determine if DIRNAME is a directory name ON UNIX-COMPATIBLE file systems<br/>
 	M_io::read_all(3f): read a line from specified LUN into allocatable string up to line length limit<br/>
 	M_io::read_line(3f): read a line from specified LUN into allocatable string up to line length limit<br/>
 	M_io::get_tmp(3f): Return the name of the scratch directory<br/>
@@ -588,7 +587,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::switch(3f): toggle between string and array of characters<br/>
 	M_strings::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)<br/>
 	M_strings::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(d2s,r2s,i2s)<br/>
-	M_strings::matchw(3f): compare string to pattern which may contain wildcard characters<br/>
+	M_strings::matchw(3f): function compares text strings, one of which can have wildcards ('*' or '?').<br/>
 	M_strings::split(3f): parse string on delimiter characters and store tokens into an allocatable array<br/>
 	M_strings::chomp(3f): Tokenize a string : JSU- 20151030<br/>
 	M_strings::delim(3f): parse a string and store tokens into an array<br/>
@@ -646,6 +645,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::base(3f): convert whole number string in base [2-36] to string in alternate base [2-36]<br/>
 	M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number<br/>
 	M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]<br/>
+	M_strings::todecimal(3f): given string and base return decimal integer<br/>
+	M_strings::todecimal(3f): given integer and base return string<br/>
 	M_strings::fmt(3f): wrap a long string into a paragraph<br/>
 	M_strings::construct_from_fill(3f): construct TYPE(STRING)<br/>
 	M_strings::oop_len(3f): length of string<br/>

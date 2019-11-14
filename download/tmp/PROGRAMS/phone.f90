@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '     phone(1f) - [M_sqlite] create, change and query SQLite3 database containing phone numbers',&
+'     (LICENSE:PD)                                                               ',&
 'SYNOPSIS                                                                        ',&
 ' phone [ -db file] ...                                                          ',&
 '  [                                                                             ',&
@@ -49,8 +50,12 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    select 3.0/4.0 as ''answer''                                                ',&
 '    sqlite> SELECT sqlite_version() AS ''SQLite Version''; # get SQLite version ',&
 '                                                                                ',&
-'                                                                                ',&
 'EXAMPLE                                                                         ',&
+'                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -74,7 +79,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180318>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:41:06 AM>',&
+'@(#)COMPILED:       Mon, Nov 11th, 2019 8:47:56 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -90,7 +95,7 @@ program phoner
    use M_system, only  : R_USR,W_USR,X_USR
  !!use M_system, only  : R_GRP,W_GRP,X_GRP
  !!use M_system, only  : R_OTH,W_OTH,X_OTH
- !!use M_system, only  : R_WXG,R_WXO,R_WXU
+ !!use M_system, only  : RWX_G,RWX_O,RWX_U
    use M_sqlite
    implicit none
 

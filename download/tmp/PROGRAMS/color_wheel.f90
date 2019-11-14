@@ -37,6 +37,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 program huedisk
+!(LICENSE:PD)
 use M_draw
 use M_drawplus, only : page
 use M_kracken,  only : kracken, lget
@@ -222,6 +223,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   color_wheel(1f) - [M_draw] generate HLS color wheels                         ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   color_wheel [ --help| --version]                                             ',&
@@ -247,6 +249,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   color_wheel                                                                  ',&
 '   # display PDF file using an Adobe PDF viewer                                 ',&
 '   xpdf look.hue                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public License                                                               ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -256,6 +262,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    color_wheel(1f) - [M_draw] generate HLS color wheels
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -283,6 +290,10 @@ end subroutine help_usage
 !!    color_wheel
 !!    # display PDF file using an Adobe PDF viewer
 !!    xpdf look.hue
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public License
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -300,7 +311,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0 20181013>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:43:25 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:07:50 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values',&
+'   (LICENSE:MIT)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   degrees [value_unit ...] [ -C values] [ -F values] [ --help] [ --version]    ',&
@@ -47,6 +48,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '      32.00F        0.00C                                                       ',&
 '      98.60F       37.00C                                                       ',&
 '     212.00F      100.00C                                                       ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   MIT License                                                                  ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -56,6 +61,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values
+!!    (LICENSE:MIT)
 !!
 !!##SYNOPSIS
 !!
@@ -95,6 +101,10 @@ end subroutine help_usage
 !!       32.00F        0.00C
 !!       98.60F       37.00C
 !!      212.00F      100.00C
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    MIT License
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -113,9 +123,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
-'@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 1:58:13 AM>',&
+'@(#)LICENSE:        MIT License>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:35:57 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

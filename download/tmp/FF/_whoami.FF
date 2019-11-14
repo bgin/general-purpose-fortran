@@ -14,6 +14,10 @@ EXAMPLE
       Command usage:
 
         _whoami
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $DOCUMENT VERSION
 PRODUCT:        GPF (General Purpose Fortran) utilities and examples

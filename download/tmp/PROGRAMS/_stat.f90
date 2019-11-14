@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '       _stat(1f) - [FUNIX:FILESYSTEM] list file properties                      ',&
+'       (LICENSE:PD)                                                             ',&
 'SYNOPSIS                                                                        ',&
 '       _stat pathnames|--version|--help                                         ',&
 'DESCRIPTION                                                                     ',&
@@ -35,6 +36,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   Last access time:            1507483493 2017-10-08 13:24:53                  ',&
 '   Last modification time:      1507483493 2017-10-08 13:24:53                  ',&
 '   Last status change time:     1507483494 2017-10-08 13:24:54                  ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -44,6 +49,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!        _stat(1f) - [FUNIX:FILESYSTEM] list file properties
+!!        (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!        _stat pathnames|--version|--help
@@ -71,6 +77,10 @@ end subroutine help_usage
 !!    Last access time:            1507483493 2017-10-08 13:24:53
 !!    Last modification time:      1507483493 2017-10-08 13:24:53
 !!    Last status change time:     1507483494 2017-10-08 13:24:54
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -87,7 +97,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    list pathname properties>',&
 '@(#)VERSION:        1.0, 2017-10-00>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:05:59 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:46:57 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

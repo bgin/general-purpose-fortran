@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   model(1f) - [FORTRAN:iso_fortran_env] fortran numeric model information      ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   model                                                                        ',&
@@ -17,6 +18,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 'DESCRIPTION                                                                     ',&
 '   The following routines are called for various types:                         ',&
 '                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -26,6 +31,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    model(1f) - [FORTRAN:iso_fortran_env] fortran numeric model information
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -33,6 +39,11 @@ end subroutine help_usage
 !!
 !!##DESCRIPTION
 !!    The following routines are called for various types:
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 program model
 !!use,intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT

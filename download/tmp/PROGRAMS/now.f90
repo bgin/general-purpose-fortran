@@ -168,6 +168,10 @@ text=[ character(len=len(text(1))) ::                                           
 &'  assumed, and Leap Seconds are not specifically accounted for.                 ',&
 &'SEE ALSO                                                                        ',&
 &'   month(1), sec2days(1), days2sec(1), easter(1), paws(1), today(1), ttee(1)    ',&
+&'AUTHOR                                                                          ',&
+&'   John S. Urban                                                                ',&
+&'LICENSE                                                                         ',&
+&'   Public Domain                                                                ',&
 &'                                                                                ']
 
 do i=1,size(text)
@@ -201,7 +205,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:38:54 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:11:57 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -1,5 +1,6 @@
 program nc_colors
 ! @(#) Print out some ncurses colors.
+!(LICENSE:PD)
 !---------------------------------------------
 ! John S. Urban, 20141214
 !---------------------------------------------

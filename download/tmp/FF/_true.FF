@@ -3,6 +3,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file _true.1.man
 NAME
        _true(1f) - [FUNIX] do nothing, successfully
+       (LICENSE:PD)
 
 SYNOPSIS
        _true [ --verbose|--help|--version]
@@ -18,6 +19,10 @@ EXAMPLE
        _true && echo SUCCESSFUL || echo DID NOT WORK
 SEE ALSO
        _true(1f)
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT VERSION

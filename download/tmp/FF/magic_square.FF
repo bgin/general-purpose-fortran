@@ -1,4 +1,5 @@
 program demo_magic_square
+!(LICENSE:PD)
 use M_math, only : magic_square
 implicit none
 

@@ -161,6 +161,7 @@ integer                        :: i
 text= [&
 &'NAME                                                                            ', &
 &'   ttee(1f) - [TIME] write input to stdout and a file with timing info.         ', &
+&'   (LICENSE:PD)                                                                 ', &
 &'                                                                                ', &
 &'SYNOPSIS                                                                        ', &
 &'   ttee [[ -o|--output] filename(s)] [ -a|--append] [ --timestamp FLAG]] ...    ', &
@@ -206,6 +207,10 @@ text= [&
 &'    2457565.488 :Iteration 1 : Error: 1.20                                      ', &
 &'    2457565.558 :Iteration 2 : Error: 0.08                                      ', &
 &'    2467569.684 :Iteration 3 : Error: 1.2e-3                                    ', &
+&'AUTHOR                                                                          ', &
+&'  John S. Urban                                                                 ', &
+&'LICENSE                                                                         ', &
+&'  Public Domain                                                                 ', &
 &'                                                                                ']
 do i=1,SIZE(text)
    select case (text(i))
@@ -236,7 +241,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)COPYRIGHT:      Copyright (C) 2009 John S. Urban>',&
 '@(#)LICENSE:        This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:41:59 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:12:12 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

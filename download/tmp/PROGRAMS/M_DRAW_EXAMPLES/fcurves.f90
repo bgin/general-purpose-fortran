@@ -1,5 +1,5 @@
-!
 ! @(#) using curves
+   !(LICENSE:PD)
 !
         program fcurves
 

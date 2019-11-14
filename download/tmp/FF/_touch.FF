@@ -6,6 +6,7 @@ $!
 $DOCUMENT HELP -file _touch.1.man
 NAME
    _touch(1f) - [FUNIX:FILESYSTEM] change file access and modify timestamps to current time, creating file is necessary
+   (LICENSE:PD)
 
 SYNOPSIS
    _touch [FILE... [ -date DATE]]|[ --help|--version|--verbose]
@@ -26,6 +27,10 @@ EXAMPLES
 
    _touch *.f90
    _touch * -date 2000-01-02 10:20:30
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 $DOCUMENT END
 $!----------------------------------------------------------------------------------------------------------------------------------
 $!

@@ -9,4 +9,4 @@ AUTHOR
 LICENSE
        MIT Licenseend program demo_xterm_get_iconstate
 
-                                                        November 05, 2019                                 xterm_get_iconstate(3)
+                                                        November 13, 2019                                 xterm_get_iconstate(3)

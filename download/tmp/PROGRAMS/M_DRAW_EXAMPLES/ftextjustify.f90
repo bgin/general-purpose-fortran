@@ -1,4 +1,5 @@
 program testit
+!(LICENSE:PD)
 use M_draw, only : vinit, prefsize, clear, getkey, textsize, font, color, linewidth, textjustify
 use M_draw, only : vflush, vexit, move2, circle, drawstr, draw2
 use M_draw, only : d_right, d_top, d_ycentered, d_bottom, d_xcentered, d_top, d_ycentered, d_left 

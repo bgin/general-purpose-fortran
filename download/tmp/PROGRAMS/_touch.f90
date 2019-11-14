@@ -10,6 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   _touch(1f) - [FUNIX:FILESYSTEM] change file access and modify timestamps to current time, creating file is necessary',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   _touch [FILE... [ -date DATE]]|[ --help|--version|--verbose]                 ',&
@@ -30,6 +31,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   _touch *.f90                                                                 ',&
 '   _touch * -date 2000-01-02 10:20:30                                           ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -39,6 +44,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    _touch(1f) - [FUNIX:FILESYSTEM] change file access and modify timestamps to current time, creating file is necessary
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -61,6 +67,10 @@ end subroutine help_usage
 !!
 !!    _touch *.f90
 !!    _touch * -date 2000-01-02 10:20:30
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -77,7 +87,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    change file access timestamp to current time, creating file is necessary>',&
 '@(#)VERSION:        1.0, 20180217>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:06:29 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 9:47:33 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -13,6 +13,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   xauth_key(1f) - [M_random] generate magic cookies for xauth                  ',&
+'   (LICENSE:PD)                                                                 ',&
 'SYNOPSIS                                                                        ',&
 '   xauth_key [characters] [ -n number_of_characters]                            ',&
 'DESCRIPTION                                                                     ',&
@@ -30,6 +31,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '    xauth add :0 . `xauth_key`                                                  ',&
 'SEE ALSO                                                                        ',&
 '   X(1), xauth(1)                                                               ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -39,6 +44,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    xauth_key(1f) - [M_random] generate magic cookies for xauth
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    xauth_key [characters] [ -n number_of_characters]
@@ -58,6 +64,10 @@ end subroutine help_usage
 !!     xauth add :0 . `xauth_key`
 !!##SEE ALSO
 !!    X(1), xauth(1)
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 program xauth_key
 use M_kracken, only : kracken, lget, iget, sget
@@ -104,7 +114,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20171219>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:45:05 AM>',&
+'@(#)COMPILED:       Thu, Nov 7th, 2019 10:37:25 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

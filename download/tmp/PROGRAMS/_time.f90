@@ -1,6 +1,7 @@
 !>
 !!##NAME
 !!    _time(1f) - [FUNIX] display time used by a command
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     time 'commands'
@@ -23,6 +24,10 @@
 !!    COMMAND:hostname;sleep 3;pwd;date
 !!      times:
 !!            cpu=    0.03 user=    0.00  sys=    0.03 wall=    3.55
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 program demo_print_watch
 ! example program starts a watch W1, stops it, and prints the results

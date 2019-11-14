@@ -1,5 +1,6 @@
 !
 !@(#) using non-square viewports, the associated distortion -- and how to fix it
+!(LICENSE:PD)
 !
         program fdistrt
 

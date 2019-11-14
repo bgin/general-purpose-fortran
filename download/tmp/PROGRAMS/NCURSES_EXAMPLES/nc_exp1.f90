@@ -1,4 +1,5 @@
 program exp1     ! @(#) draw a panel and fill it and show a subsection of it
+!(LICENSE:PD)
    use M_ncurses
    implicit none
    type(C_PTR)    :: pad_ptr

@@ -45,7 +45,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output the month and day Easter falls on for a particular year>',&
 '@(#)VERSION:        1.0, 20170223>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:08:11 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:05:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -64,6 +64,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   easter(1f) - [FUNIX] print day and month Easter falls on for given year      ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   easter [year]|[ --help|--version]                                            ',&
@@ -81,7 +82,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   easter 2017                                                                  ',&
 '   Easter day: the 16th day of April in the year of our Lord 2017               ',&
-'                                                                                ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public License                                                               ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -91,6 +95,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    easter(1f) - [FUNIX] print day and month Easter falls on for given year
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -110,6 +115,10 @@ end subroutine help_usage
 !!
 !!    easter 2017
 !!    Easter day: the 16th day of April in the year of our Lord 2017
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public License
 !===================================================================================================================================
    end program demo_easter
 !-----------------------------------------------------------------------------------------------------------------------------------

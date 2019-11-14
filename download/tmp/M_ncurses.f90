@@ -1,5 +1,4 @@
 !-------------------------------------------------------------------------------
-!-------------------------------------------------------------------------------
 ! @(#) Fortran interface to the ncurses(3c) library -John S.Urban 20141205
 !
 ! The ncurses.f90 and macros.c files contain a  Fortran interface to

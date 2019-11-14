@@ -51,6 +51,7 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $DOCUMENT HELP -file gcd.1.man
 NAME
        gcd(1f) - [NUMBERS] display greatest common divisor of a list of whole numbers
+       (LICENSE:PD)
 
 SYNOPSIS
        gcd [NUMBERS]...
@@ -80,6 +81,10 @@ EXAMPLE
 
   gcd 10 34 82 -verbose
   2=gcd([10,34,82])
+AUTHOR
+   John S. Urban
+LICENSE
+   Public Domain
 
 $DOCUMENT END
 $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

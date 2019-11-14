@@ -1,4 +1,5 @@
-   program demo_rect
+program demo_rect
+!(LICENSE:PD)
    use M_draw
    implicit none
    integer :: i, ipaws
@@ -33,4 +34,4 @@
    !! wrap up graphics
    call vexit()
 
-   end program demo_rect
+end program demo_rect

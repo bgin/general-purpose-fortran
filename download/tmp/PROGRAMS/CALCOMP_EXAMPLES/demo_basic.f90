@@ -1,4 +1,5 @@
 PROGRAM QA1
+! (LICENSE:Public Domain)
    USE M_calcomp
    CHARACTER * 10 ICHR1
    CHARACTER * 14 ICHR2,ICHR3

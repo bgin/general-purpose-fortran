@@ -169,6 +169,10 @@ text=[ character(len=len(text(1))) ::                                           
 &'  assumed, and Leap Seconds are not specifically accounted for.                 ',&
 &'SEE ALSO                                                                        ',&
 &'   month(1), sec2days(1), days2sec(1), easter(1), paws(1), today(1), ttee(1)    ',&
+&'AUTHOR                                                                          ',&
+&'   John S. Urban                                                                ',&
+&'LICENSE                                                                         ',&
+&'   Public Domain                                                                ',&
 &'                                                                                ']
 
 do i=1,size(text)

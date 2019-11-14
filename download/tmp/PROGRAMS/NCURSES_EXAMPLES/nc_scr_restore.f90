@@ -1,4 +1,5 @@
 program nc_scr_restore
+!(LICENSE:PD)
    use M_ncurses
    character(len=7),parameter :: FILENAME="windump"
    integer :: r

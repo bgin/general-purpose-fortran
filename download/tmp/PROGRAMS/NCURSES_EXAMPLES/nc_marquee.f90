@@ -1,4 +1,5 @@
 program nc_marquee ! @(#) example of inserting characters with insch(3c)
+!(LICENSE:PD)
 use M_ncurses
 implicit none
 character(len=80) :: text = "NEWS: *** Congressman indicted ***"

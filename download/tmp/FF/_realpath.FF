@@ -1,4 +1,5 @@
 program demo_system_realpath
+!(LICENSE:PD)
 use M_system, only : system_realpath, system_perror
 implicit none
 character(len=:),allocatable :: pathi,patho

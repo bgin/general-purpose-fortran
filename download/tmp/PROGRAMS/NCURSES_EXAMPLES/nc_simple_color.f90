@@ -1,5 +1,6 @@
 !-------------------------------------------------------------------------------
 program simple_color
+!(LICENSE:PD)
 ! @(#) Simple color text program using ncurses(3c) from Fortran
    use M_ncurses
    implicit none

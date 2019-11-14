@@ -1,6 +1,7 @@
 !@(#)  Demonstrate a rotating translating tetrahedron, and doublebuffering
 !
 program ftetra
+!(LICENSE:PD)
 use M_draw
 
         integer BLACK, GREEN, RED, BLUE

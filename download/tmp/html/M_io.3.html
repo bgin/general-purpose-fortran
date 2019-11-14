@@ -43,11 +43,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <div id="Content">
 <dl>
    <dt> NAME </dt>
-   <dd> M_io(3f) - [M_io] Fortran I/O module</dd>
+   <dd> M_io(3f) - [M_io] Fortran I/O module
+        (LICENSE:MIT)
+   </dd>
    <dt> SYNOPSIS </dt><dd>
       <pre>
       use M_io, only : slurp, swallow, notopen, print_inquire, uniq, read_table
-      use M_io, only : dirname, splitpath, isdir, get_tmp, scratch
+      use M_io, only : dirname, splitpath, get_tmp, scratch
       use M_io, only : read_line, read_all
       </pre>
    </dd>
@@ -57,7 +59,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
       <ul>
          <li><a href="notopen.3.html">       NOTOPEN </a> - find unused FUN/LUN file-unit-number</li>
          <li><a href="print_inquire.3.html"> PRINT_INQUIRE </a> - run INQUIRE(3f) on a file by name or number and print results</li>
-         <li><a href="isdir.3.html">         ISDIR </a> - tell if a path is an existing directory on Unix-compatible systems</li>
 
          <li> SPLITTING PATHNAMES
          <ul>

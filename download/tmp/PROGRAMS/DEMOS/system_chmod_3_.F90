@@ -1,8 +1,8 @@
           program demo_system_chmod
           use M_system, only : system_chmod
           use M_system, only : system_stat
-          use M_system, only : R_GRP,R_OTH,R_USR,R_WXG,R_WXO
-          use M_system, only : R_WXU,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
+          use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
+          use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
           use M_system, only : DEFFILEMODE, ACCESSPERMS
           implicit none
           integer         :: ierr
@@ -20,7 +20,7 @@
              open(file='_test2',unit=10)
              write(10,*)'TEST FILE 2'
              close(unit=10)
-             ierr=system_chmod('_test2', R_WXU)
+             ierr=system_chmod('_test2', RWX_U)
 
              !Setting Different Permissions for Owner, Group, and Other
              ! The following example sets owner permissions for CHANGEFILE to read, write, and execute, group permissions to read and
@@ -28,13 +28,13 @@
              open(file='_test3',unit=10)
              write(10,*)'TEST FILE 3'
              close(unit=10)
-             ierr=system_chmod('_test3', IANY([R_WXU,R_GRP,X_GRP,R_OTH]));
+             ierr=system_chmod('_test3', IANY([RWX_U,R_GRP,X_GRP,R_OTH]));
 
              !Setting and Checking File Permissions
              ! The following example sets the file permission bits for a file named /home/cnd/mod1, then calls the stat() function to
              ! verify the permissions.
 
-             ierr=system_chmod("home/cnd/mod1", IANY([R_WXU,R_WXG,R_OTH,W_OTH]))
+             ierr=system_chmod("home/cnd/mod1", IANY([RWX_U,RWX_G,R_OTH,W_OTH]))
              call system_stat("home/cnd/mod1", buffer,status)
 
              ! In order to ensure that the S_ISUID and S_ISGID bits are set, an application requiring this should use stat() after a

@@ -20,7 +20,7 @@
 !!   -->
 !! <!-- =========================================================================================================================== -->
 !! <h1>NAME</h1>
-!! <h2>ufpp(1f) -  [DEVELOPER] a Fortran source code pre-processor</h2>
+!! <h2>ufpp(1f) -  [DEVELOPER] a Fortran source code pre-processor (LICENSE:PD)</h2>
 !! <!-- =========================================================================================================================== -->
 !! <h1>SYNOPSIS</h1>
 !! <pre>
@@ -3639,7 +3639,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Mon, Nov 4th, 2019 2:42:11 AM>',&
+'@(#)COMPILED:       Sun, Nov 10th, 2019 7:02:16 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

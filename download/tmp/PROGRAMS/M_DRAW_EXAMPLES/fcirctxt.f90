@@ -2,6 +2,7 @@
 !@(#)  display all the hershey fonts and demonstrate textang
 !
 program fcirctxt
+!(LICENSE:PD)
 
 use M_draw, only: vinit, vsetflush, color, clear, font, vexit, vflush
 use M_draw, only: ortho2, textang, boxtext, rect, textsize, getkey

@@ -9,6 +9,7 @@ private
 !>
 !!##NAME
 !!      journal(3f) - [M_journal] provides public message routine, no paging or graphic mode change
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!
@@ -136,6 +137,10 @@ private
 !!    call journal('o')
 !!
 !!    end program demo_journal
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 public journal
 
@@ -340,6 +345,7 @@ end subroutine change_model
 !>
 !!##NAME
 !!    where_write_message_all(3f) - [M_journal] converts any standard scalar type to a string
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine  where_write_message_all(where,message,g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
@@ -371,6 +377,10 @@ end subroutine change_model
 !!    use M_journal, only : where_write_message_all
 !!    implicit none
 !!    end program program demo_wm_all
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine where_write_message_all(where,message, &
                 & generic1, generic2, generic3,   &

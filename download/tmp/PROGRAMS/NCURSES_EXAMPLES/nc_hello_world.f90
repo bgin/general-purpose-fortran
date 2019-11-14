@@ -1,4 +1,5 @@
 program nc_hello_world
+!(LICENSE:PD)
 ! @(#) HELLO WORLD program using ncurses(3c) from Fortran
 !
 !! C PROGRAMMERS: NOTE THAT FORTRAN FUNCTIONS REQUIRE THEIR RETURNED VALUE BE ASSIGNED TO A VARIABLE
