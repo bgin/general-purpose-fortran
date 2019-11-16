@@ -1,7 +1,7 @@
 !>
 !!##NAME
 !!    M_html(3fm) - [M_html] a module of routines to help write output as HTML documents
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -31,7 +31,7 @@
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -49,7 +49,7 @@ CONTAINS
 !>
 !!##NAME
 !!    h_array(3f) - [M_html] print a numeric array as an HTML table
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -84,7 +84,7 @@ CONTAINS
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine h_array(iounit,array)
 use M_journal, only : journal
@@ -112,7 +112,7 @@ end subroutine h_array
 !>
 !!##NAME
 !!    h_close(3f) - [M_html] close an HTML file
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine h_close(iounit)
@@ -148,7 +148,7 @@ end subroutine h_array
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine h_close(iounit)
 use M_journal, only : journal
@@ -167,7 +167,7 @@ end subroutine h_close
 !>
 !!##NAME
 !!    h_open(3f) - [M_html] close an HTML file
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine h_open(iounit)
@@ -205,7 +205,7 @@ end subroutine h_close
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine h_open(iounit,filename)
 use M_journal, only : journal

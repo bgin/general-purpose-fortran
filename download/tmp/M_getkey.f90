@@ -1,7 +1,7 @@
 !>
 !!##NAME
 !!      system_getkey(3f) - read single character from keyboard in hot (raw I/O) mode
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!##SYNTAX
 !!
 !!##DESCRIPTION
@@ -166,7 +166,7 @@
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 ! Last updated May 5th, 2009 -- John S. Urban
 !===================================================================================================================================

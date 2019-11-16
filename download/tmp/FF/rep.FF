@@ -115,7 +115,7 @@ logical                      :: exists, open
       exit OKBLOCK
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   scratch_file=scratch()
+   scratch_file=scratch('./')
    open(newunit=lun_out,      &
       & file=scratch_file,    &
       & iostat=ios,           &

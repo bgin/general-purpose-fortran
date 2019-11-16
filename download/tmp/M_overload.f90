@@ -1,7 +1,7 @@
 !>
 !!##NAME
 !!    M_overload(3fm) - [M_overload] overloads of standard operators and intrinsic procedures
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!  overloads on LOGICAL values

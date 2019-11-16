@@ -1,7 +1,7 @@
 !>
 !!##NAME
 !!      M_readline(3fm) - [M_readline] Calling readline(3c) from Fortran
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!      Use M_readline, only : system_readline
@@ -54,7 +54,11 @@
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT
+!!    Public Domain
+!!
+!!    Although this interface to readline(3c) is released as Public Domain,
+!!    note that the Readline library itself is free software, distributed
+!!    under the terms of the [GNU] General Public License, version 2.
 !===================================================================================================================================
 MODULE M_readline
 
@@ -87,7 +91,7 @@ contains
 !>
 !!##NAME
 !!      system_readline(3f) - [M_readline] Call readline(3c) from Fortran
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     character(kind=c_char,len=*),intent(in) :: prompt
@@ -144,7 +148,11 @@ contains
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT
+!!    Public Domain
+!!
+!!    Although this interface to readline(3c) is released as Public Domain,
+!!    note that the Readline library itself is free software, distributed
+!!    under the terms of the [GNU] General Public License, version 2.
 !===================================================================================================================================
 SUBROUTINE system_readline(line,prompt)
 USE ISO_C_BINDING

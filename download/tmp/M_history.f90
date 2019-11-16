@@ -1,7 +1,7 @@
 !>
 !!##NAME
 !!    redo(3f) - [M_history] Fortran-based Input History Editor
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -198,7 +198,7 @@
 !!##AUTHOR
 !!    John S. Urban, 1988,2009,2011,2015 (last change: Nov 2019)
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 module M_history
 !

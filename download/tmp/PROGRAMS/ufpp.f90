@@ -2615,6 +2615,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   ufpp(1) - [DEVELOPER] pre-process FORTRAN source files                       ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   ufpp  [[-D] define_list]                                                     ',&
@@ -3113,6 +3114,10 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >AUTHOR:      John S. Urban                                                  ',&
 '   >$FILTER END                                                                 ',&
 '   >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -3122,6 +3127,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    ufpp(1) - [DEVELOPER] pre-process FORTRAN source files
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3622,6 +3628,10 @@ end subroutine help_usage
 !!    >AUTHOR:      John S. Urban
 !!    >$FILTER END
 !!    >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -3639,7 +3649,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sun, Nov 10th, 2019 7:02:16 PM>',&
+'@(#)COMPILED:       Fri, Nov 15th, 2019 1:29:14 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

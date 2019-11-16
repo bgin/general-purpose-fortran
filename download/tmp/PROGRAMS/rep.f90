@@ -100,7 +100,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 10:28:34 PM>',&
+'@(#)COMPILED:       Thu, Nov 14th, 2019 11:48:14 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -175,7 +175,7 @@ logical                      :: exists, open
       exit OKBLOCK
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   scratch_file=scratch()
+   scratch_file=scratch('./')
    open(newunit=lun_out,      &
       & file=scratch_file,    &
       & iostat=ios,           &

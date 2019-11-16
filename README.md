@@ -4,7 +4,13 @@
 
     git clone https://github.com/urbanjost/general-purpose-fortran
     cd general_purpose-fortran/download/tmp
-    make
+    # you might have to change "-lncurses" to "-lncurses -ltinit"
+    # depending on how ncurses(3c) was built on your machine, and
+    # have ncurses(3c), readline(3c), sqlite3(3c), X11(3c) and lua(3c) 
+    # installed for all the interfaces to build, but the most 
+    # commonly used interfaces should build without problems.
+
+    make -k
 
 you might want to edit hershey.sh to select where hershey
 font files will be installed (default is /usr/share/hershey), 

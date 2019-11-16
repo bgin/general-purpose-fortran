@@ -784,7 +784,8 @@ CONTAINS
 !!##AUTHOR
 !!   John S. Urban
 !!
-!!   Based on the article "Matching Wildcards: An Empirical Way to Tame an Algorithm"
+!!##REFERENCE
+!!   The article "Matching Wildcards: An Empirical Way to Tame an Algorithm"
 !!   in Dr Dobb's Journal, By Kirk J. Krauss, October 07, 2014
 !!
 !!##LICENSE

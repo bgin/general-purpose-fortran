@@ -37,7 +37,7 @@ CONTAINS
 !>
 !!##NAME
 !!      uniq(3f) - [M_io] append a number to the end of filename to make a unique name if name exists
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!      Usage
@@ -111,7 +111,7 @@ CONTAINS
 !!##AUTHOR
 !!    John S. Urban, 1993
 !!##LICENSE
-!!    MIT License
+!! Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 function uniq(name,istart,verbose,create)
@@ -216,7 +216,7 @@ end function uniq
 !>
 !!##NAME
 !!    print_inquire(3f) - [M_io] Do INQUIRE on file by name/number and print results
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -285,7 +285,7 @@ end function uniq
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine print_inquire(iunit,name) ! Version: JSU-1997-12-31
 use M_journal, only : journal
@@ -393,7 +393,7 @@ end subroutine print_inquire
 !>
 !!##NAME
 !!    read_table(3f) - [M_io] read file containing a table of numeric values
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -474,7 +474,7 @@ end subroutine print_inquire
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine read_table_doubleprecision(filename,array,ierr)
 use M_strings, only : s2vs
@@ -603,7 +603,7 @@ end subroutine read_table_real
 !>
 !!##NAME
 !!    swallow(3f) - [M_io] read a file into a character array line by line
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine swallow(filename,pageout)
@@ -691,7 +691,7 @@ end subroutine read_table_real
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine swallow(FILENAME,pageout)
 implicit none
@@ -768,7 +768,7 @@ end subroutine swallow
 !>
 !!##NAME
 !!    SLURP(3f) - [M_io] read a file into a character array
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine slurp(filename,text)
@@ -844,7 +844,7 @@ end subroutine swallow
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine slurp(filename,text,length,lines)
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -945,7 +945,7 @@ end subroutine slurp
 !>
 !!##NAME
 !!    notopen(3f) - [M_io] Find a FUN/LUN (Fortran-unit-number) that is not in use
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    Usage
@@ -1069,7 +1069,7 @@ end subroutine slurp
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 integer function notopen(start,end,err)
 use iso_fortran_env, only : error_unit,input_unit,output_unit     ! access computing environment
@@ -1128,7 +1128,7 @@ end function notopen
 !>
 !!##NAME
 !!    dirname(3f) - [M_io] strip last component from filename
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1181,7 +1181,7 @@ end function notopen
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !>
 !! PRODUCT:        CLI library utilities and examples
@@ -1231,7 +1231,7 @@ end function dirname
 !>
 !!##NAME
 !!     splitpath(3f) - [M_io] split a Unix pathname into components
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1354,7 +1354,7 @@ end function dirname
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine splitpath(path,dir,name,basename,ext)
 use M_strings, only : split
@@ -1464,7 +1464,7 @@ end subroutine splitpath
 !>
 !!##NAME
 !!     read_all(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!
 !!##SYNTAX
 !!   function read_all(line,lun) result(ier)
@@ -1512,7 +1512,7 @@ end subroutine splitpath
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function read_all(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
@@ -1560,7 +1560,7 @@ end function read_all
 !>
 !!##NAME
 !!     read_line(3f) - [M_io] read a line from specified LUN into allocatable string up to line length limit cleaning up input line
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!
 !!##SYNTAX
 !!   function read_line(line,lun) result(ier)
@@ -1603,7 +1603,7 @@ end function read_all
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function read_line(line,lun) result(ier)
 use iso_fortran_env, only : INPUT_UNIT
@@ -1662,7 +1662,7 @@ end function read_line
 !>
 !!##NAME
 !!      get_tmp(3f) - [M_io] Return the name of the scratch directory
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     function get_tmp() result(tname)
@@ -1696,7 +1696,7 @@ end function read_line
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function get_tmp() result(tname)
 
@@ -1730,7 +1730,7 @@ end function get_tmp
 !>
 !!##NAME
 !!      scratch(3f) - [M_io] Return the name of a scratch file
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     function scratch(prefix) result(tname)
@@ -1747,7 +1747,7 @@ end function get_tmp
 !!
 !!    SCRATCH(3f) Return the name of a scratch file in the scratch directory set
 !!    by the most common environment variables used to designate a scratch
-!!    directory.
+!!    directory unless the prefix contains the character "/" or "\".
 !!
 !!    $TMPDIR is the canonical environment variable in Unix and POSIX[1] used to
 !!    specify a temporary directory for scratch space. If $TMPDIR is not set,
@@ -1756,13 +1756,16 @@ end function get_tmp
 !!
 !!##OPTIONS
 !!    prefix  an optional prefix for the leaf of the filename. A suffix created
-!!            by genuuid(3) is used to make the name unique.
+!!            by genuuid(3) is used to make the name unique. The prefix is used
+!!            as-is if it contains the character "/" or "\". Otherwise, the
+!!            prefix is prefixed by the first value that is not blank from the
+!!            set {$TMPDIR, $TEMP, $TEMPDIR, $TMP, /tmp}.
 !!
-!!            The default prefix is the basename of the program that called the
-!!            procedure (the name trimmed of anything from the right-most period
-!!            in the name to the end of the name)..
+!!            The default prefix is the basename of the program that
+!!            called the procedure (the name trimmed of directories and
+!!            anything from the right-most period in the name to the end
+!!            of the name).
 !!##EXAMPLE
-!!
 !!
 !!   Sample:
 !!
@@ -1770,21 +1773,35 @@ end function get_tmp
 !!     use M_io, only : scratch
 !!     implicit none
 !!     write(*,*)'find good scratch file name candidates; one should test if writable'
-!!     write(*,*)scratch('JUNK:')
-!!     write(*,*)scratch('')
-!!     write(*,*)scratch()
+!!     call printit('JUNK:')
+!!     call printit('./')
+!!     call printit('/var/tmp/')
+!!     call printit('')
+!!     call printit()
+!!     contains
+!!     subroutine printit(NAME)
+!!     character(len=*),intent(in),optional :: NAME
+!!     if(present(NAME))then
+!!        write(*,'(a,t20,a)')NAME,scratch(NAME)
+!!     else
+!!        write(*,'(a,t20,a)')'*NOT PRESENT*',scratch()
+!!     endif
+!!     end subroutine printit
 !!     end program demo_scratch
+!!
 !!   Results:
 !!
 !!     find good scratch file name candidates; one should test if writable
-!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/JUNK:8462159a-2ca8-4961-7ff1-2ff4f9ebaca4
-!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/f7585e37-8557-4f25-777d-29abb6ffb981
-!!     /cygdrive/c/Users/JSU/AppData/Local/Temp/demo_scratch-ec470965-42be-4ba6-4193-0f25cf2fa26c
+!!    JUNK:              /tmp/JUNK:405d766e-1320-4405-50e1-5d88fffbee9a.scr
+!!    ./                 ./xx-901606b1-6ad2-4e96-6b17-e8bffedf2452.scr
+!!    /var/tmp/          /var/tmp/xx-3f5c55fa-17ca-4020-4a05-a9d9cfad8dbe.scr
+!!                       /tmp/f10e0491-a2ff-4455-5ff6-55d7dfe7fa8c.scr
+!!    *NOT PRESENT*      /tmp/xx-f4fed5f7-3694-4609-5af4-8902ffa75839.scr
 !!
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function scratch(prefix) result(tname)
 use M_uuid, only : generate_uuid
@@ -1792,18 +1809,30 @@ use M_uuid, only : generate_uuid
 character(len=*),parameter::ident_13="@(#)M_io::scratch(3f): Return the name of a scratch file"
 
 character(len=*),intent(in),optional :: prefix
-character(len=:),allocatable :: tname
+character(len=:),allocatable         :: tname
 
-integer,parameter     :: maxlen=4096
-character(len=maxlen) :: path
-character(len=maxlen) :: bname
+integer,parameter                    :: maxlen=4096
+character(len=maxlen)                :: path
+character(len=maxlen)                :: bname
+integer                              :: ilen
 
 if(present(prefix))then
-   tname=get_tmp()//trim(prefix)//generate_uuid()
+   ilen=len_trim(prefix)
+   if(index(prefix,'/')+index(prefix,'\').ne.0)then  ! if contains with / or \ do not use current temp directory but use as-is
+      if(prefix(ilen:ilen).eq.'/'.or.prefix(ilen:ilen).eq.'\')then ! assumed that the prefix is a directory name
+         call get_command_argument(number=0,value=path)
+         call splitpath(path,basename=bname)
+         tname=trim(prefix)//trim(bname)//'-'//generate_uuid()//'.scr'
+      else
+         tname=trim(prefix)//generate_uuid()//'.scr'
+      endif
+   else
+      tname=get_tmp()//trim(prefix)//generate_uuid()//'.scr'
+   endif
 else
    call get_command_argument(number=0,value=path)
    call splitpath(path,basename=bname)
-   tname=get_tmp()//trim(bname)//'-'//generate_uuid()
+   tname=get_tmp()//trim(bname)//'-'//generate_uuid()//'.scr'
 endif
 end function scratch
 !===================================================================================================================================
@@ -1812,7 +1841,7 @@ end function scratch
 !>
 !!##NAME
 !! rd(3f) - [M_io] ask for string from standard input with user-definable prompt
-!! (LICENSE:MIT)
+!! (LICENSE:PD)
 !!
 !!   function rd(prompt,default) result(strout)
 !!
@@ -1871,7 +1900,7 @@ end function scratch
 !!##AUTHOR
 !!    John S. Urban, 1993
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function rd_character(prompt,default) result(strout)
 ! 1995 John S. Urban

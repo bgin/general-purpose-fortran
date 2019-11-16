@@ -7,6 +7,6 @@ AUTHOR
        John S. Urban
 
 LICENSE
-       MIT Licenseend program demo_xterm_get_iconstate
+       Public Domain
 
-                                                        November 13, 2019                                 xterm_get_iconstate(3)
+                                                        November 15, 2019                                 xterm_get_iconstate(3)

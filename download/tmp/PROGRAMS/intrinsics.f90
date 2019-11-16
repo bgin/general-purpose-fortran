@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 9:53:45 PM>',&
+'@(#)COMPILED:       Wed, Nov 13th, 2019 10:21:29 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -885,6 +885,7 @@ write(io,'(a)')''
 write(io,'(a)')'     The value of ALL ([.TRUE., .FALSE., .TRUE.]) is false.'
 write(io,'(a)')''
 write(io,'(a)')'  Case (ii):'
+write(io,'(a)')''
 write(io,'(a)')'                            1|3|5'
 write(io,'(a)')'     If B is the array      -+-+-'
 write(io,'(a)')'                            2|4|6'

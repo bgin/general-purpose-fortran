@@ -167,10 +167,11 @@
 AUTHOR
        John S. Urban
 
-       Based on the article "Matching Wildcards: An Empirical Way to Tame an Algorithm" in Dr Dobb's Journal, By Kirk J. Krauss,
-       October 07, 2014
+REFERENCE
+       The article "Matching Wildcards: An Empirical Way to Tame an Algorithm" in Dr Dobb's Journal, By Kirk J. Krauss, October
+       07, 2014
 
 LICENSE
        Public Domain
 
-                                                        November 13, 2019                                              matchw(3)
+                                                        November 15, 2019                                              matchw(3)

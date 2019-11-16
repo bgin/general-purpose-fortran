@@ -4,7 +4,7 @@
 !>
 !!##NAME
 !!     M_xterm(3fm) - [M_xterm] send escape sequences to an xterm(1) window that control VT102 emulator attributes
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     use M_xterm, only : xterm_font
@@ -18,9 +18,9 @@
 !!##DESCRIPTION
 !!    The xterm(1) terminal emulator emulates an extended VT102 terminal on
 !!    X11 Windows platforms. This means a number of strings beginning with
-!!    an escape character can be used to clear the screen, toggle between 80
-!!    and 132 column mode, position the cursor, and perform other
-!!    command sequences that allow screen-based utilities to operate.
+!!    an escape character can be used to clear the screen, toggle between
+!!    80 and 132 column mode, position the cursor, and perform other command
+!!    sequences that allow screen-based utilities to operate.
 !!
 !!    Since basic terminal control libraries such as ncurses(3c) already
 !!    exist for basic terminal screen formatting, The M_xterm(3fm) module
@@ -102,7 +102,7 @@
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 module M_xterm
 !!use,intrinsic :: iso_fortran_env, only : stdin=>input_unit, stdout=>output_unit, stderr=>error_unit ! access computing environment
@@ -145,7 +145,7 @@ contains
 !>
 !!##NAME
 !!    xterm_xrdb(3f) - [M_xterm] write current xterm(1) window attributes as X11 Windows resources
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_xrdb(name)
@@ -210,7 +210,7 @@ contains
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_xrdb(name)
 implicit none
@@ -258,7 +258,7 @@ end subroutine xterm_xrdb
 !>
 !!##NAME
 !!    xterm_occupancy(3f) - [M_xterm] try to move xterm(1) to specified virtual display
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -305,7 +305,7 @@ end subroutine xterm_xrdb
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_occupancy(windowname)
 implicit none
@@ -324,7 +324,7 @@ end subroutine xterm_occupancy
 !>
 !!##NAME
 !!    xterm_get_pencolor(3f) - [M_xterm] query xterm(1) color by number
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function xterm_get_pencolor(pennum) result(color)
@@ -360,7 +360,7 @@ end subroutine xterm_occupancy
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function xterm_get_pencolor(pennum) result(color)
 use M_strings, only : v2s, split
@@ -390,7 +390,7 @@ end function xterm_get_pencolor
 !>
 !!##NAME
 !!    xterm_get_colors(3f) - [M_xterm] query xterm(1) colors
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function xterm_get_colors(type) result(color)
@@ -452,7 +452,7 @@ end function xterm_get_pencolor
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function xterm_get_colors(type) result(color)
 use M_strings, only : isdigit, isspace, switch
@@ -512,7 +512,7 @@ end function xterm_get_colors
 !>
 !!##NAME
 !!    xterm_pencolor(3f) - [M_xterm] set xterm(1) color by number using escape sequences
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_pencolor(pennum,color)
@@ -546,7 +546,7 @@ end function xterm_get_colors
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_pencolor(pennum,color)
 implicit none
@@ -565,7 +565,7 @@ end subroutine xterm_pencolor
 !>
 !!##NAME
 !!    xterm_colors(3f) - [M_xterm] set xterm(1) colors
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_colors(type,color)
@@ -610,7 +610,7 @@ end subroutine xterm_pencolor
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_colors(type,color)
 use M_strings, only : isdigit, isspace, switch
@@ -666,7 +666,7 @@ end subroutine xterm_colors
 !>
 !!##NAME
 !!    xterm_font(3f) - [M_xterm] set xterm(1) font
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_font(fontname)
@@ -735,7 +735,7 @@ end subroutine xterm_colors
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_font(fontname)
 character(len=*),intent(in) :: fontname
@@ -772,7 +772,7 @@ end subroutine xterm_font
 !>
 !!##NAME
 !! xterm_keywords(3f) - [M_xterm] sent hints to X11 Window manager and select modes
-!! (LICENSE:MIT)
+!! (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_keywords(keyword)
@@ -810,7 +810,7 @@ end subroutine xterm_font
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_keywords(keyword)
 character(len=*),intent(in)  :: keyword
@@ -847,7 +847,7 @@ end subroutine xterm_keywords
 !>
 !!##NAME
 !!    xterm_position(3f) - [M_xterm] set xterm(1) window position using escape sequences
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_position(right,down)
@@ -877,7 +877,7 @@ end subroutine xterm_keywords
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_position(right,down)
 integer,intent(in),optional :: right,down
@@ -904,7 +904,7 @@ end subroutine xterm_position
 !>
 !!##NAME
 !!    xterm_geometry(3f) - [M_xterm] set xterm(1) size using escape sequences
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_geometry(rows,cols)
@@ -936,7 +936,7 @@ end subroutine xterm_position
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_geometry(rows,cols)
 integer,intent(in),optional :: rows,cols
@@ -958,7 +958,7 @@ end subroutine xterm_geometry
 !>
 !!##NAME
 !!    xterm_width(3f) - [M_xterm] set xterm(1) width to 80 or 132 characters
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_width(iwidth)
@@ -994,7 +994,7 @@ end subroutine xterm_geometry
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_width(iwidth)
 integer,intent(in) :: iwidth
@@ -1019,7 +1019,7 @@ end subroutine xterm_width
 !>
 !!##NAME
 !!    xterm_labels(3f) - [M_xterm] set xterm(1) X11 WIndow labels using escape sequences
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_labels(string)
@@ -1047,7 +1047,7 @@ end subroutine xterm_width
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_labels(type,label)
 character(len=*),intent(in) :: type
@@ -1072,7 +1072,7 @@ end subroutine xterm_labels
 !>
 !!##NAME
 !!    xterm_clear(3f) - [M_xterm] clear xterm(1) screen using escape sequences
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_clear()
@@ -1092,7 +1092,7 @@ end subroutine xterm_labels
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_clear()
 
@@ -1160,7 +1160,7 @@ end function RAWGET
 !>
 !!##NAME
 !!    xterm_get_font(3f) - [M_xterm] obtain xterm(1) font name
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function xterm_get_font() result(fontname)
@@ -1184,7 +1184,7 @@ end function RAWGET
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function xterm_get_font() result(fontname)
 ! Obtain current screen fontname
@@ -1216,7 +1216,7 @@ end function xterm_get_font
 !>
 !!##NAME
 !!    xterm_get_iconstate(3f) - [M_xterm] obtain xterm(1) icon state using escape sequences
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function xterm_get_iconstate() result(state)
@@ -1242,7 +1242,7 @@ end function xterm_get_font
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT Licenseend program demo_xterm_get_iconstate
+!!    Public Domain
 !===================================================================================================================================
 function xterm_get_iconstate() result(state)
 use M_strings, only : split
@@ -1273,7 +1273,7 @@ end function xterm_get_iconstate
 !>
 !!##NAME
 !!    xterm_get_geometry(3f) - [M_xterm] obtain xterm(1) screen size in character units
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_get_geometry(rows,cols)
@@ -1301,7 +1301,7 @@ end function xterm_get_iconstate
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_get_geometry(rows,cols)
 ! Obtain current screen size and place in wide and high
@@ -1330,7 +1330,7 @@ end subroutine xterm_get_geometry
 !>
 !!##NAME
 !!    xterm_get_position(3f) - [M_xterm] obtain xterm(1) screen position
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine xterm_get_position(right,down)
@@ -1359,7 +1359,7 @@ end subroutine xterm_get_geometry
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine xterm_get_position(right,down)
 use iso_fortran_env, only : int8, int16, int32, int64

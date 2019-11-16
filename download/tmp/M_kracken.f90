@@ -78,7 +78,7 @@ contains
 !>
 !!##NAME
 !!    RETREV(3f) - [ARGUMENTS:M_kracken] get keyword value as a string from a command's argument list processed by kracken(3f)
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -136,7 +136,7 @@ contains
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine retrev(name,val,len,ier)
 
@@ -169,7 +169,7 @@ end subroutine retrev
 !>
 !!##NAME
 !!    dget(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision value from command argument
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function dget(keyword) result(value)
@@ -220,7 +220,7 @@ end subroutine retrev
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function dget(keyword)
 
@@ -241,7 +241,7 @@ end function dget
 !>
 !!##NAME
 !!    rget(3f) - [ARGUMENTS:M_kracken] given keyword fetch real value from command argument
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function rget(keyword) result(value)
@@ -292,7 +292,7 @@ end function dget
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function rget(keyword)
 
@@ -312,7 +312,7 @@ end function rget
 !>
 !!##NAME
 !!    iget(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer value from command argument
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -368,7 +368,7 @@ end function rget
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function iget(keyword)
 
@@ -389,7 +389,7 @@ end function iget
 !>
 !!##NAME
 !!    lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical value from command arguments
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function lget(keyword) result(lval)
@@ -448,7 +448,7 @@ end function iget
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function lget(keyword)
 
@@ -492,7 +492,7 @@ end function lget
 !>
 !!##NAME
 !!    sget(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value and length from command arguments
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   function sget(name,ilen) result(string)
@@ -557,7 +557,7 @@ end function lget
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function sget(name,ilen) result(string)
 
@@ -591,7 +591,7 @@ end function sget
 !>
 !!##NAME
 !!    dgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch doubleprecision array from command arguments
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function dgets(keyword,ier) result(darray)
@@ -649,7 +649,7 @@ end function sget
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function dgets(keyword,ier) result(darray)
 
@@ -693,7 +693,7 @@ end function dgets
 !>
 !!##NAME
 !!    igets(3f) - [ARGUMENTS:M_kracken] given keyword fetch integer array from command arguments
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function igets(keyword,ier) result(iarray)
@@ -752,7 +752,7 @@ end function dgets
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function igets(keyword,ier) result(iarray)
 
@@ -780,7 +780,7 @@ end function igets
 !>
 !!##NAME
 !!    rgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch real array from command arguments
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function rgets(keyword,ier) result(rarray)
@@ -863,7 +863,7 @@ end function igets
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function rgets(keyword,ier) result(rarray)
 
@@ -890,7 +890,7 @@ end function rgets
 !>
 !!##NAME
 !!    lget(3f) - [ARGUMENTS:M_kracken] given keyword fetch logical array from command argument
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function lgets(keyword) result(lvals)
@@ -947,7 +947,7 @@ end function rgets
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function lgets(keyword) result(larray)
 
@@ -999,7 +999,7 @@ end function lgets
 !>
 !!##NAME
 !!    sgets(3f) - [ARGUMENTS:M_kracken] given keyword fetch string value parsed on whitespace into an array
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   function sgets(name,delim) result(strings)
@@ -1061,7 +1061,7 @@ end function lgets
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function sgets(name,delim) result(strings)
 
@@ -1094,7 +1094,7 @@ end function sgets
 !>
 !!##NAME
 !!    kracken(3f) - [ARGUMENTS:M_kracken] crack command line options on Fortran programs, using "-KEYWORD VALUE" syntax
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!     subroutine kracken(verb, string[,ierror])
@@ -1202,7 +1202,7 @@ end function sgets
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine kracken(verb,string,error_return)
 
@@ -1269,7 +1269,7 @@ end subroutine kracken
 !>
 !!##NAME
 !!    setprompts(3f) - [ARGUMENTS:M_kracken] set explicit prompts for keywords in interactive mode
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine setprompts(verb,init)
@@ -1323,7 +1323,7 @@ end subroutine kracken
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine setprompts(verb,init)
 
@@ -1339,7 +1339,7 @@ end subroutine setprompts
 !>
 !!##NAME
 !!    dissect(3f) - [ARGUMENTS:M_kracken] convenient call to parse() -- define defaults, then process
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1391,7 +1391,7 @@ end subroutine setprompts
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine dissect(verb,init,pars,error_return)
 
@@ -1424,7 +1424,7 @@ end subroutine dissect
 !>
 !!##NAME
 !!    parse(3f) - [ARGUMENTS:M_kracken] parse user command and store tokens into Language Dictionary
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1555,7 +1555,7 @@ end subroutine dissect
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine parse(verb,string,allow,error_return)
 
@@ -1782,7 +1782,7 @@ end subroutine parse
 !>
 !!##NAME
 !!    store(3f) - [ARGUMENTS:M_kracken] add or replace value for specified name in dictionary(if allow='add' add name if needed)
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine store(name1,value1,allow1,ier)
@@ -1913,7 +1913,7 @@ end subroutine parse
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
 
@@ -2075,7 +2075,7 @@ end subroutine store
 !>
 !!##NAME
 !!    subscript_(3fp) - [ARGUMENTS:M_kracken] return the subscript value of a string when given its name
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   function subscript_(chars0)
@@ -2096,7 +2096,7 @@ end subroutine store
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function subscript_(chars0)
 
@@ -2131,7 +2131,7 @@ end function subscript_
 !>
 !!##NAME
 !!    menu(3fp) - [ARGUMENTS:M_kracken] prompt for values using a menu interface
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine menu(verb)
@@ -2152,7 +2152,7 @@ end function subscript_
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine menu(verb)
 
@@ -2383,7 +2383,7 @@ end subroutine menu
 !>
 !!##NAME
 !!    show(3f) - [ARGUMENTS:M_kracken] dump dictionary entries
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2432,7 +2432,7 @@ end subroutine menu
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE)
 

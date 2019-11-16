@@ -2238,7 +2238,7 @@ call unit_check_start('unique', '-library libGPF') ! start tests
 
 ints=[1,1,2,3,4,4,10,20,20,30]
 call unique(ints,icount)
-call unit_check('unique',icount.eq.7 .and. all(ints.eq.[1, 2, 3, 4, 10, 20, 30]),msg='eliminate duplicates from array')
+call unit_check('unique',icount.eq.7 .and. all(ints(icount).eq.[1, 2, 3, 4, 10, 20, 30]),msg='eliminate duplicates from array')
 
 ints=[integer ::]
 call unique(ints,icount)
@@ -2250,11 +2250,11 @@ call unit_check('unique',icount.eq.1 .and. all(ints.eq.[10]),msg='check array of
 
 ints=[10,10,10,10]
 call unique(ints,icount)
-call unit_check('unique',icount.eq.1 .and. all(ints.eq.[10]),msg='all duplicates')
+call unit_check('unique',icount.eq.1 .and. all(ints.eq.[10,10,10,10]),msg='all duplicates')
 
 ints=[10,20,30,40]
 call unique(ints,icount)
-call unit_check('unique',icount.eq.4 .and. all(ints.eq.[10, 20, 30, 40]),msg='no change required')
+call unit_check('unique',icount.eq.4 .and. all(ints(icount).eq.[10, 20, 30, 40]),msg='no change required')
 
 call unit_check_done('unique',msg='test of unique(3f) completed') ! assume if got here passed checks
 end subroutine test_unique

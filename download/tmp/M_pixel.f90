@@ -1,7 +1,7 @@
 !>
 !!##NAME
 !!    M_pixel(3f) - [M_pixel] module for drawing into a pixel array with 2D vector operations
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -149,6 +149,10 @@
 !!          enddo
 !!       end subroutine target
 !!    end program demo_M_pixel
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1393,7 +1397,7 @@ contains
 !>
 !!##NAME
 !!      rect(3f) - [M_pixel] draw rectangle given two corners
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1447,6 +1451,11 @@ contains
 !!    call vexit()
 !!
 !!    end program demo_rect
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine rect(x1,y1, x2,y2)
 
@@ -1475,7 +1484,7 @@ end subroutine rect
 !>
 !!##NAME
 !!      line(3f) - [M_pixel] draw line between two points
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1490,6 +1499,11 @@ end subroutine rect
 !!##OPTIONS
 !!    X1,Y1  starting point for line segment
 !!    X2,Y2  end point for line segment
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine line(x1,y1, x2,y2 )
 
@@ -1571,7 +1585,7 @@ end subroutine swapcoord
 !>
 !!##NAME
 !!      draw_line_single(3fp) - [M_pixel] Bresenham's line algorithm
-!!      (LICENSE:MIT)
+!!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2271,6 +2285,17 @@ end subroutine draw_line_single
 !!    call write_animated_gif('hershey.3m_pixel.gif',movie,P_colormap,delay=40)
 !!    !call execute_command_line('display hershey.3m_pixel.gif')
 !!    end program demo_hershey
+!!
+!!##AUTHOR
+!!    Derived from the Longlib93 library.
+!!##LICENSE
+!!    Public Domain
+!!
+!!    Longlib was written by an employee of a US government contractor and
+!!    is in the public domain.
+!!
+!!    Changes to modernize and make more portable by John S. Urban are also
+!!    placed in the public domain.
 !===================================================================================================================================
 subroutine hershey(x,y,height,itext,theta,ntext)
 
@@ -2750,7 +2775,7 @@ END SUBROUTINE CHRCOD
 !>
 !!##NAME
 !!    strlength(3f) - [M_pixel] return length of string
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2829,6 +2854,10 @@ END SUBROUTINE CHRCOD
 !!    end subroutine nextline
 !!
 !!    end program demo_strlength
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 function strlength(string)
 
@@ -2857,7 +2886,7 @@ end function strlength
 !>
 !!##NAME
 !!    justfy(3f) - [M_pixel] return lengths used to justify a string when calling hershey
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -2880,6 +2909,11 @@ end function strlength
 !!
 !!##EXAMPLE
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine justfy(s, height, text, ntext)
 
@@ -2953,7 +2987,7 @@ end subroutine justfy
 !>
 !!##NAME
 !!    polyline2(3f) - [M_pixel] - draw an unclosed polyline in the XY plane
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!        subroutine polyline2(arrx,arry)
@@ -2994,6 +3028,11 @@ end subroutine justfy
 !!    call writegif('polyline2.3m_pixel.gif',P_pixel,P_ColorMap,transparent)
 !!    call vexit()
 !!    end program demo_polyline2
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine polyline2(x,y)
 use :: M_anything, only : anyscalar_to_real
@@ -3037,7 +3076,7 @@ end subroutine polyline2
 !>
 !!##NAME
 !!    clear(3f) - [M_pixel] clear background to current color or specified color index
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3054,6 +3093,10 @@ end subroutine polyline2
 !!
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine clear(indx)
 
@@ -3085,7 +3128,7 @@ end subroutine if_init
 !>
 !!##NAME
 !!    arc(3f) - [M_pixel] draw an arc using current line width and color
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3132,6 +3175,11 @@ end subroutine if_init
 !!    call writegif('arc.3m_pixel.gif',P_pixel,P_ColorMap,transparent)
 !!    call vexit()
 !!    end program demo_arc
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine arc(x,y,radius,startang,endang)
 
@@ -3172,7 +3220,7 @@ end subroutine arc
 !>
 !!##NAME
 !!    circle(3f) - [M_pixel] draw a circle using current line width and color
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3222,6 +3270,11 @@ end subroutine arc
 !!    !! exit graphics mode
 !!    call vexit()
 !!    end program demo_circle
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine circle(x,y,radius)
 
@@ -3258,7 +3311,7 @@ end subroutine circle
 !>
 !!##NAME
 !!    linewidth(3f) - [M_pixel] set linewidth
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3306,6 +3359,11 @@ end subroutine circle
 !!       call writegif('linewidth.3m_pixel.gif',P_pixel,P_colormap)
 !!       call vexit()
 !!    end program demo_linewidth
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine linewidth(iwidth)
 
@@ -3322,7 +3380,7 @@ end subroutine linewidth
 !>
 !!##NAME
 !!    color(3f) - [M_pixel] set current color index
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3386,6 +3444,10 @@ end subroutine linewidth
 !!        ! use system to display GIF file
 !!        call execute_command_line('display color.3m_pixel.gif')
 !!     end program demo_color
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine color(icolor)
 
@@ -3400,7 +3462,7 @@ end subroutine color
 !>
 !!##NAME
 !!     mapcolor(3f) - [M_pixel] set a color index using RGB values
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3569,6 +3631,11 @@ end subroutine color
 !!       hue_val=hue_val+ANG_INC
 !!    end subroutine slice
 !!    end program demo_mapcolor
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine mapcolor(indx,red,green,blue)
 
@@ -3597,7 +3664,7 @@ end subroutine mapcolor
 !>
 !!##NAME
 !!     circleprecision(3f) - [M_pixel] set number of line segments used to approximate a circle
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3656,6 +3723,10 @@ end subroutine mapcolor
 !!       ! use system to display GIF file
 !!       call execute_command_line('display circleprecision.3m_pixel.gif')
 !!    end program demo_circleprecision
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine circleprecision(nsegs)
 
@@ -3670,7 +3741,7 @@ end subroutine circleprecision
 !>
 !!##NAME
 !!    getviewport(3f) - [M_pixel] return viewport in screen pixel coordinates
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3706,6 +3777,10 @@ end subroutine circleprecision
 !!    RIGHT    value for right side
 !!    BOTTOM   value for bottom side
 !!    TOP      value for top side
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine getviewport(left,right,bottom,top)
 
@@ -3728,7 +3803,7 @@ end subroutine getviewport
 !>
 !!##NAME
 !!    viewport(3f) - [M_pixel] Specify which part of the screen to draw in.
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3751,6 +3826,11 @@ end subroutine getviewport
 !!         Y |                                    |
 !!           #------------------------------------#
 !!      (left=0,bottom=400)
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine viewport(left,right,bottom,top)
 
@@ -3771,7 +3851,7 @@ end subroutine viewport
 !>
 !!##NAME
 !!    mapping(3fp) - [M_pixel] calculate conversion factors between viewport and world window
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3781,6 +3861,11 @@ end subroutine viewport
 !!
 !!##EXAMPLE
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine mapping()
 use M_math,only : invert_4x4
@@ -3839,7 +3924,7 @@ end subroutine viewport2world
 !>
 !!##NAME
 !!    ortho2(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3856,6 +3941,10 @@ end subroutine viewport2world
 !!
 !!##EXAMPLE
 !!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine ortho2(left, right, bottom, top)
 
@@ -3877,7 +3966,7 @@ end subroutine ortho2
 !>
 !!##NAME
 !!    page(3f) - [M_pixel] define the area of the virtual world coordinates to map to the viewport
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -3893,6 +3982,11 @@ end subroutine ortho2
 !!
 !!##EXAMPLE
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine page(xsmall,xlarge,ysmall,ylarge)
 use M_journal, only : journal
@@ -4002,7 +4096,7 @@ end subroutine page
 !>
 !!##NAME
 !!    rmove2(3f) - [M_pixel] relative move
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4040,6 +4134,10 @@ end subroutine page
 !!      call  execute_command_line('display rmove2.3m_pixel.gif')
 !!      call vexit()
 !!      end program demo_rmove2
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine rmove2(Xdelta,Ydelta)
 
@@ -4058,7 +4156,7 @@ end subroutine rmove2
 !>
 !!##NAME
 !!    move2(3f) - [M_pixel] change current position
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4094,6 +4192,10 @@ end subroutine rmove2
 !!      call writegif('move2.3m_pixel.gif',P_pixel,P_colormap)
 !!      call vexit()
 !!      end program demo_move2
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine move2(x,y)
 
@@ -4111,7 +4213,7 @@ end subroutine move2
 !>
 !!##NAME
 !!    rdraw2(3f) - [M_pixel] draw from current position to given point
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4169,6 +4271,11 @@ end subroutine move2
 !!      end subroutine square
 !!
 !!      end program demo_rdraw2
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine rdraw2(xdelta,ydelta)
 
@@ -4190,7 +4297,7 @@ end subroutine rdraw2
 !>
 !!##NAME
 !!    draw2(3f) - [M_pixel] draw from current position to given point
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4253,6 +4360,11 @@ end subroutine rdraw2
 !!       ! exit graphics mode
 !!       call vexit()
 !!    end program demo_draw2
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine draw2(x,y)
 
@@ -4274,7 +4386,7 @@ end subroutine draw2
 !>
 !!##NAME
 !!    prefsize(3f) - [M_pixel] specify size of pixel array
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!  definition:
@@ -4325,6 +4437,10 @@ end subroutine draw2
 !!         call draw2(-300.0,200.0)
 !!      end subroutine picture
 !!      end program demo_prefsize
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine prefsize(x,y)
 
@@ -4343,7 +4459,7 @@ end subroutine prefsize
 !>
 !!##NAME
 !!    vexit(3f) - [M_pixel] exit pixel graphics mode
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4381,6 +4497,10 @@ end subroutine prefsize
 !!      call writegif('vexit.3m_pixel.gif',P_pixel,P_colormap)
 !!      call vexit()
 !!      end program demo_vexit
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine vexit()
 
@@ -4398,7 +4518,7 @@ end subroutine vexit
 !>
 !!##NAME
 !!    vinit(3f) - [M_pixel] initialize pixel graphics module
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4433,6 +4553,10 @@ end subroutine vexit
 !!      call writegif('vinit.3m_pixel.gif',P_pixel,P_colormap)
 !!      call vexit()
 !!      end program demo_vinit
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine vinit(string)
 
@@ -4494,7 +4618,7 @@ end subroutine vinit
 !>
 !!##NAME
 !!    makepoly(3f) - [M_pixel] opens polygon constructed by a series of move-draws and closed by closepoly                  |
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4623,6 +4747,10 @@ end subroutine vinit
 !!       endif
 !!    end subroutine hypoc
 !!    end program demo_makepoly
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine makepoly()
 
@@ -4638,7 +4766,7 @@ end subroutine makepoly
 !>
 !!##NAME
 !!    closepoly(3f) - [M_pixel] Terminates a polygon opened by makepoly(3f)
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4648,6 +4776,11 @@ end subroutine makepoly
 !!
 !!##DESCRIPTION
 !!    Terminates a polygon opened by MAKEPOLY(3f).
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine closepoly()
 
@@ -4662,7 +4795,7 @@ end subroutine closepoly
 !>
 !!##NAME
 !!    print_ppm(3f) - [M_pixel] print pixel array as a ppm p3 file
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4695,6 +4828,11 @@ end subroutine closepoly
 !!      call print_ppm('demo_print_ppm.ppm')
 !!      call vexit()
 !!      end program demo_print_ppm
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine print_ppm(filename)
 
@@ -4726,7 +4864,7 @@ end subroutine print_ppm
 !>
 !!##NAME
 !!   print_ascii(3f) - [M_pixel] print small pixel array as ASCII text
-!!   (LICENSE:MIT)
+!!   (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4787,6 +4925,11 @@ end subroutine print_ppm
 !!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
 !!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
 !!    00000000000000000000000000000000000000000000000000000000000000000000000000000000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine print_ascii(filename)
 use,intrinsic :: iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT
@@ -4915,7 +5058,7 @@ end subroutine print_ascii
 !>
 !!##NAME
 !!    textsize(3f) - [M_pixel] set text size in world units
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4966,6 +5109,11 @@ end subroutine print_ascii
 !!       ! use system to display GIF file
 !!       call execute_command_line('display textsize.3m_pixel.gif')
 !!    end program demo_textsize
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine textsize(width,height)
 
@@ -4984,7 +5132,7 @@ end subroutine textsize
 !>
 !!##NAME
 !!    ycentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in Y direction
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -4999,6 +5147,11 @@ end subroutine textsize
 !!
 !!##EXAMPLE
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine ycentertext()
 
@@ -5015,7 +5168,7 @@ end subroutine ycentertext
 !>
 !!##NAME
 !!    xcentertext(3f) - [M_pixel] set text centering mode on for drawstr(3f) and drawc(3f) in X direction
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5034,6 +5187,11 @@ end subroutine ycentertext
 !!
 !!##EXAMPLE
 !!
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine xcentertext()
 
@@ -5050,7 +5208,7 @@ end subroutine xcentertext
 !>
 !!##NAME
 !!    centertext(3f) - [M_pixel] set text centering mode for drawstr(3f) and drawc(3f)
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5115,6 +5273,11 @@ end subroutine xcentertext
 !!    call vexit()
 !!
 !!    end program demo_centertext
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine centertext(onoff)
 
@@ -5132,7 +5295,7 @@ end subroutine centertext
 !>
 !!##NAME
 !!    textang(3f) - [M_pixel] set text angle
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5182,6 +5345,11 @@ end subroutine centertext
 !!    call vexit()
 !!
 !!    end program demo_textang
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine textang(ang)
 
@@ -5200,7 +5368,7 @@ end subroutine textang
 !>
 !!##NAME
 !!    font(3f) - [M_pixel] select font style by name
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS:
 !!  definition:
@@ -5300,7 +5468,7 @@ end subroutine font
 !>
 !!##NAME
 !!    drawchar(3f) - [M_pixel]  Draw a character at the current position
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5351,6 +5519,11 @@ end subroutine font
 !!    call write_animated_gif('drawchar.3m_pixel.gif',movie,P_colormap)
 !!    call execute_command_line('display drawchar.3m_pixel.gif')
 !!    end program demo_drawchar
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine drawchar(ch)
 
@@ -5367,7 +5540,7 @@ end subroutine drawchar
 !>
 !!##NAME
 !!    drawstr(3f) - [M_pixel]  Draw the text string at the current position
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5425,47 +5598,11 @@ end subroutine drawchar
 !!
 !!       end program demo_drawstr
 !!   Results:
-!! ================================================================================
-!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_34908
-!! r - /tmp/_JSU.ff
-!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_34908/_JSU.34908.f90
-!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
-!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_34908
-!! ================================================================================
-!!               0           2           1
-!! ================================================================================
-!!   Results:
-!! ================================================================================
-!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_11392
-!! r - /tmp/_JSU.ff
-!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_11392/_JSU.11392.f90
-!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
-!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_11392
-!! ================================================================================
-!!               0           2           1
-!! ================================================================================
-!!   Results:
-!! ================================================================================
-!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_36436
-!! r - /tmp/_JSU.ff
-!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_36436/_JSU.36436.f90
-!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
-!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_36436
-!! ================================================================================
-!!               0           2           1
-!! ================================================================================
-!!   Results:
-!! ================================================================================
-!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_13432
-!! r - /tmp/_JSU.ff
-!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_13432/_JSU.13432.f90
-!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
-!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_13432
-!! ================================================================================
-!!               0           2           1
-!! ================================================================================
 !!
-!!   Results:
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine drawstr(string)
 use :: M_units, only : cosd, sind
@@ -5552,7 +5689,7 @@ end subroutine drawstr
 !>
 !!##NAME
 !!    getgp2(3f) - [M_pixel] Gets the current graphics position in world coords.
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5591,6 +5728,11 @@ end subroutine drawstr
 !!   Results
 !!
 !!    CURRENT POSITION (X,Y)=   96.5000000       98.3330002
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine getgp2(x, y)
 
@@ -5608,7 +5750,7 @@ end subroutine getgp2
 !>
 !!##NAME
 !!    getdisplaysize(3f) - [M_pixel] Returns the width and height of the device in pixels
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5619,6 +5761,11 @@ end subroutine getgp2
 !!
 !!##DESCRIPTION
 !!    Returns the width and height of the device in pixels in w and h respectively.
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine getdisplaysize(w, h)
 
@@ -5636,7 +5783,7 @@ end subroutine getdisplaysize
 !>
 !!##NAME
 !!    point2(3f) - [M_pixel] Draw a point at x, y
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5667,6 +5814,11 @@ end subroutine getdisplaysize
 !!    call writegif('point2.3m_pixel.gif',P_pixel,P_colormap)
 !!    call vexit()
 !!    end program demo_point2
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine point2(x, y)
 
@@ -5683,7 +5835,7 @@ end subroutine point2
 !>
 !!##NAME
 !!    state(3f) - [M_pixel] print graphics state of M_pixel graphics module
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5726,6 +5878,11 @@ end subroutine point2
 !!    TEXT JUSTIFICATION: X_CENTER= F Y_CENTER= F
 !!    VIEWPORT:           LEFT=   0.00000000     RIGHT=   639.000000     BOTTOM=   399.000000     TOP=   0.00000000
 !!    WINDOW:             LEFT=   0.00000000     RIGHT=   640.000000     BOTTOM=   0.00000000     TOP=   400.000000
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 recursive subroutine state(string)
 
@@ -5773,7 +5930,7 @@ end subroutine state
 !>
 !!##NAME
 !!    poly2(3f) - [M_pixel] construct a polygon from an array of points
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -5841,6 +5998,11 @@ end subroutine state
 !!    end subroutine setcolor
 !!
 !!    end program demo_poly2
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine poly2(n,points)
 
