@@ -10,7 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   days2sec(1f) - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds                ',&
-'   (LICENSE:MIT)                                                                ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   days2sec dd-hh:mm:ss | --version| --help                                     ',&
@@ -73,7 +73,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'AUTHOR                                                                          ',&
 '   John S. Urban                                                                ',&
 'LICENSE                                                                         ',&
-'   MIT License                                                                  ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -83,7 +83,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    days2sec(1f) - [TIME] Convert [[-]dd-][[hh:]mm:]ss to seconds
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -148,7 +148,7 @@ end subroutine help_usage
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -169,7 +169,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 9:35:45 PM>',&
+'@(#)COMPILED:       Sat, Nov 16th, 2019 4:06:49 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

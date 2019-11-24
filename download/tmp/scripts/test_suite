@@ -1,11 +1,6 @@
 #!/bin/bash
 ################################################################################
 #set -x
-export MYLIB=$HOME/lib/CYGWIN64_GFORTRAN
-if [ ! -d "$MYLIB" ]
-then
-   MYLIB=.
-fi
 ################################################################################
 HELP(){
 (txt2man -T||cat) <<\EOF
@@ -89,15 +84,16 @@ EOF
 esac
 #-------------------------------------------
 [ "$VERBOSE" = 'TRUE' ] && cat $UUID.f90
-LIBS='-lncurses -lsqlite3 -lreadline -lX11'
+LIBS='-lncurses -ltinit -lsqlite3 -lreadline -lX11'
+LIBS='-lncurses         -lsqlite3 -lreadline -lX11'
 echo "TEST SUITE FOR $SUBNAME"
 (
    exec 2>&1
-   if [ -e $MYLIB/libGPF_C.a ]
+   if [ -e libGPF_C.a ]
    then
-      gfortran $UUID.f90 -I. -L. -J. -I$MYLIB -L$MYLIB -lGPF -lGPF_C -o $UUID $LIBS
+      gfortran $UUID.f90 -I. -L. -J. -lGPF -lGPF_C -o $UUID $LIBS
    else
-      gfortran $UUID.f90 -I. -L. -J. -I$MYLIB -L$MYLIB -lGPF -o $UUID $LIBS
+      gfortran $UUID.f90 -I. -L. -J. -lGPF -o $UUID $LIBS
    fi
    [ -e $UUID ] && $UUID
    rm -f $UUID $UUID.f90

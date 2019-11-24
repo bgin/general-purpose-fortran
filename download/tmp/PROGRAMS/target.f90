@@ -203,7 +203,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   target(1f) - [M_drawplus] draw targets on Adobe PDF files                    ',&
-'   (LICENSE:MIT)                                                                ',&
+'   (LICENSE:PD)                                                                 ',&
 'SYNOPSIS                                                                        ',&
 '   target [ --help| --version]                                                  ',&
 'DESCRIPTION                                                                     ',&
@@ -226,7 +226,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'AUTHOR                                                                          ',&
 '   John S. Urban                                                                ',&
 'LICENSE                                                                         ',&
-'   MIT License                                                                  ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -236,7 +236,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    target(1f) - [M_drawplus] draw targets on Adobe PDF files
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    target [ --help| --version]
@@ -261,7 +261,7 @@ end subroutine help_usage
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -278,7 +278,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create printable targets>',&
 '@(#)VERSION:        1.0, 20190108>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 9:36:56 PM>',&
+'@(#)COMPILED:       Sat, Nov 16th, 2019 5:00:03 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

@@ -435,7 +435,7 @@ int i;
    printf("(The file %s a symbolic link)\n", (S_ISLNK(buf->st_mode)) ? "is" : "is not");
    printf("---------------------------\n");
    printf("File Size ........................ %jd bytes\n",(intmax_t)buf->st_size);  /* st_size      file size in bytes */
-   printf("Number of Links .................. %d\n",buf->st_nlink);        /* st_nlink     number of links to this file. */
+   printf("Number of Links .................. %ld\n",buf->st_nlink);        /* st_nlink     number of links to this file. */
    printf("File inode ....................... %ld\n",buf->st_ino);          /* st_ino       The inode for the file */
 
    i=0;

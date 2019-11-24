@@ -572,16 +572,16 @@ end function gcd
 integer function gcd_2(m,n)
 implicit none
 integer,intent(in) :: m,n
-integer :: ia,ib,itemp
-   ia = m
-   ib = n
+integer :: answer,ifirst,itemp
+   answer = m
+   ifirst = n
    do
-      if(ib.eq.0)exit
-      itemp = ia
-      ia = ib
-      ib = mod(itemp, ib)
+      if(ifirst.eq.0)exit
+      itemp = answer
+      answer = ifirst
+      ifirst = mod(itemp, ifirst)
    enddo
-   gcd_2 = iabs(ia)
+   gcd_2 = iabs(answer)
 end function gcd_2
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-

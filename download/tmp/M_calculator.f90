@@ -1720,7 +1720,7 @@ case("matchw")
           iii=int(args(2))                                    ! index of second string
           iie=values_len(ii)                                  ! last non-blank character
           iiie=values_len(iii)                                ! last non-blank character
-          if(matchw(values(iii)(:iiie),values(ii)(:iie)))then ! see if match
+          if(matchw(trim(values(iii)(:iiie)),trim(values(ii)(:iie))))then ! see if match
              fval=TRUE                                        ! string matched wild-card expression
           else
              fval=FALSE                                       ! string did not match wild-card expression

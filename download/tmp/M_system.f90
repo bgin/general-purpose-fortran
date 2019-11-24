@@ -3045,13 +3045,14 @@ end subroutine system_getcwd
 !!    program demo_system_rmdir
 !!    use M_system, only : system_perror
 !!    use M_system, only : system_rmdir, system_mkdir
+!!    use M_system, only : RWX_U
 !!    implicit none
 !!    integer :: ierr
 !!    write(*,*)'BEFORE TRY TO CREATE _scratch/'
 !!    call execute_command_line('ls -ld _scratch')
 !!
 !!    write(*,*)'TRY TO CREATE _scratch/'
-!!    ierr=system_mkdir('_scratch',RWX_U')
+!!    ierr=system_mkdir('_scratch',RWX_U)
 !!    write(*,*)'IERR=',ierr
 !!    call execute_command_line('ls -ld _scratch')
 !!
@@ -4485,8 +4486,10 @@ end interface
 
    username = c_getlogin()
    if(.not.c_associated(username)) then
-      write(*,'(a)')'*system_getlogin* Error getting username. not associated'
-      fname=c_null_char
+      !! in windows 10 subsystem running Ubunto does not work
+      !!write(*,'(a)')'*system_getlogin* Error getting username. not associated'
+      !!fname=c_null_char
+      fname=system_getpwuid(system_geteuid())
    else
       fname=c2f_string(username)
    endif
@@ -5114,9 +5117,9 @@ call test_system_getcwd()
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_stat_print()
-      call system_stat_print('/tmp')
-      call system_stat_print('/etc/hosts')
    call unit_check_start('system_stat_print',msg='')
+   call system_stat_print('/tmp')
+   call system_stat_print('/etc/hosts')
    !!call unit_check('system_stat_print', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('system_stat_print',msg='')
 end subroutine test_system_stat_print
@@ -5559,8 +5562,10 @@ call unit_check_start('system_closedir',msg='test if can read from current direc
    call unit_check('system_closedir', filename.ne.'', msg=msg('found a file named',filename))
    call system_closedir(dir,ierr)         !--- close directory stream
    call unit_check('system_closedir', ierr.eq.0, msg=msg('closing gave ierr=',ierr))
-   call system_readdir(dir,filename,ierr)
+   !!!!!!! TRYING BAD OPERATION HANGS SYSTEMS. CANNOT FIND GENERIC TEST TO SEE IF OPEN
+   !!call system_readdir(dir,filename,ierr)
    !!call unit_check('system_closedir', ierr.ne.0, msg=msg('try reading now should give error ierr=',ierr))
+   !!!!!!!
    call unit_check_done('system_closedir',msg='')
 end subroutine test_system_closedir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -6109,7 +6114,7 @@ subroutine test_system_rmdir()
       call unit_check_msg('system_rmdir',dirname,'directory existed')
    endif
    ierr=system_mkdir(dirname,RWX_U)
-   call unit_check('est_system_rmdir',ierr.eq.0,msg=msg('try to create',dirname))
+   call unit_check('system_rmdir',ierr.eq.0,msg=msg('try to create',dirname))
    call unit_check('system_rmdir',isdir(dirname),msg=msg('check if',dirname,'exists and is a directory'))
 !! test
    ierr=system_rmdir(dirname) ! TRY TO REMOVE

@@ -179,7 +179,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 9:53:20 PM>',&
+'@(#)COMPILED:       Sun, Nov 17th, 2019 3:17:50 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -266,7 +266,7 @@ character(len=:),allocatable    :: COMMAND_LINE
    allocate(character(len=len(programs)) :: f_programs(0))
    allocate(character(len=len(programs)) :: c_programs(0))
    do i=1,size(programs)
-      if(matchw(programs(i),'*.c'))then
+      if(matchw(trim(programs(i)),'*.c'))then
          !! bug in gfortran means have to test
          if(size(c_programs).eq.0)then
             c_programs=[programs(i)]
@@ -274,12 +274,12 @@ character(len=:),allocatable    :: COMMAND_LINE
             c_programs=[c_programs,programs(i)]
          endif
       elseif(any([                          &
-              matchw(programs(i),'*.f'),    &
-              matchw(programs(i),'*.F'),    &
-              matchw(programs(i),'*.f90'),  &
-              matchw(programs(i),'*.F90'),  &
-              matchw(programs(i),'*.ff'),   &
-              matchw(programs(i),'*.FF')]))then
+              matchw(trim(programs(i)),'*.f'),    &
+              matchw(trim(programs(i)),'*.F'),    &
+              matchw(trim(programs(i)),'*.f90'),  &
+              matchw(trim(programs(i)),'*.F90'),  &
+              matchw(trim(programs(i)),'*.ff'),   &
+              matchw(trim(programs(i)),'*.FF')]))then
          !! bug in gfortran means have to test
          if(size(f_programs).eq.0)then
             f_programs=[programs(i)]
@@ -418,7 +418,7 @@ character(len=:),allocatable    :: COMMAND_LINE
       write(io,'(a)')'all: $(PROG) $(CPROG)'
    endif
    write(io,'(a)')expand('\ttest -e scripts/test_suite && chmod u+xr scripts/test_suite||echo "test_suite not found"')
-   write(io,'(a)')expand('\tenv PATH="`pwd`/scripts:$$PATH" which test_suite && test_suite -l test_suite_log.txt')
+   write(io,'(a)')expand('\tPATH="`pwd`/scripts:$$PATH"; which test_suite && test_suite -l test_suite_log.txt')
 !----------------------------------------------------------------------------------------------------------------------------------
    if(libname.eq.'')then
    fixed=[character(len=132) :: &

@@ -58,7 +58,9 @@
 !!    cmd          command passed to system to start process
 !!    fp           C file pointer returned by process_open_*()
 !!    string       data line to send or receive from process
-!!    ierr         error flag returned. Non-zero indicates an error
+!!    ierr         error flag returned.
+!!                 process_writeline(3f) : negative indicates an error
+!!                 process_readline(3f)  : Non-zero indicates an error
 !!
 !!    maximum character value length is currently 4096
 !!
@@ -237,22 +239,24 @@
 !!    contains
 !!    !-------------------------------------------------------------------------------
 !!    subroutine readit(cmd)
-!!       use M_process ,ONLY: process_open_read, process_readline, streampointer
+!!       use M_process ,ONLY: process_open_read, process_readline, streampointer, process_close
 !!       type(streampointer) :: fp    ! C file pointer returned by process_open()
 !!       character(len=*)    :: cmd   ! command line executed to start process
 !!       character(len=4096) :: line  ! line of data to read (assumed long enough to hold any input line)
 !!       integer ierr
 !!       call process_open_read(cmd,fp,ierr)   ! open process to read from
-!!       write(*,*)'TEST: process is opened with status ',ierr
+!!       write(*,*)'READTEST: process is opened with status ',ierr
 !!       ierr=0
 !!       do while(ierr .eq. 0)
 !!          call process_readline(line,fp,ierr)  ! read a line from the process
 !!          if(ierr.ne.0)then
-!!             write(*,*)'TEST: ierr is ',ierr
+!!             write(*,*)'READTEST: ierr is ',ierr
 !!             exit
 !!          endif
-!!          write(*,*)'TEST: line:'//trim(line)
+!!          write(*,*)'READTEST: line:'//trim(line)
 !!       enddo
+!!       call process_close(fp,ierr)
+!!       write(*,*)'READTEST: process closed with status ',ierr
 !!    end subroutine readit
 !!    !-------------------------------------------------------------------------------
 !!    subroutine writeit(cmd)
@@ -263,18 +267,18 @@
 !!       integer ierr
 !!       integer i
 !!       call process_open_write(cmd,fp,ierr)   ! open process to write to
-!!       write(*,*)'TEST: process is opened'
+!!       write(*,*)'WRITETEST: process is opened'
 !!       ierr=0
 !!       do i=1,10
-!!          write(line,'("TEST: line ",i0)')i
+!!          write(line,'("WRITETEST: line ",i0)')i
 !!          call process_writeline(line,fp,ierr)
-!!          if(ierr.ne.0)then
-!!             write(*,*)'TEST: process write error ',ierr
+!!          if(ierr.lt.0)then
+!!             write(*,*)'WRITETEST: process write error ',ierr
 !!             exit
 !!          endif
 !!       enddo
 !!       call process_close(fp,ierr)
-!!       write(*,*)'TEST: process closed with status ',ierr
+!!       write(*,*)'WRITETEST: process closed with status ',ierr
 !!    end subroutine writeit
 !!    end program test
 !!
@@ -746,7 +750,7 @@ logical                        :: trm_local
       ierr=system_fputs(writefrom//C_NEW_LINE//C_NULL_CHAR,fp%handle)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(ierr.ne.0)then
+   if(ierr.lt.0)then
       ios = system_pclose(fp%handle)
       if(process_debug)then
          write(*,*) '*process_writeline_scalar* Closed pipe with status ',ios
@@ -767,12 +771,20 @@ character(len=*),intent(in)    :: writefrom(:)
 type(streampointer),intent(in) :: fp
 integer,intent(out)            :: ierr
 integer                        :: i
+integer                        :: isize
 !-----------------------------------------------------------------------------------------------------------------------------------
+   isize=size(writefrom,dim=1)
+   if(process_debug)then
+      write(*,*)'*process_writeline_array*',isize
+   endif
    ierr=0
    do i=1,size(writefrom,dim=1)
       call process_writeline_scalar(writefrom(i),fp,ierr)
-      if(ierr.ne.0)exit
+      if(ierr.lt.0)exit
    enddo
+   if(i.ne.isize+1)then
+      write(*,*)'*process_writeline_array* only processed',i,' of ',isize,' elements'
+   endif
 
 end subroutine process_writeline_array
 !===================================================================================================================================
@@ -845,8 +857,6 @@ type(streampointer)          :: fp            ! C file pointer returned by proce
 integer                      :: ierr          ! check status of calls to process module routines
 integer                      :: lun
 integer                      :: ios
-integer                      :: i
-character(len=:),allocatable :: text(:)
 character(len=256)           :: line
    call unit_check_start('process_open_write',msg='')
    ! clear scratch file
@@ -871,9 +881,9 @@ character(len=256)           :: line
    call process_open_write('bash||cmd',fp,ierr)    ! open process to write to
    call unit_check('process_open_write', ierr.eq.0, msg=msg('ierr=',ierr))
    call process_writeline('echo three >_scratch_.txt',fp,ierr)
-   call unit_check('process_open_write', ierr.eq.0, msg=msg('should be open, ierr=',ierr))
+   call unit_check('process_open_write', ierr.ge.0, msg=msg('write of "echo three >_scratch_.txt", ierr=',ierr))
    call process_writeline('echo four >>_scratch_.txt',fp,ierr)
-   call unit_check('process_open_write', ierr.eq.0, msg=msg('should be open, ierr=',ierr))
+   call unit_check('process_open_write', ierr.ge.0, msg=msg('write of "echo four >>_scratch_.txt", ierr=',ierr))
    call process_close(fp,ierr)
    call unit_check('process_open_write', ierr.ne.0, msg=msg('should now be closed, ierr=',ierr))
    ! check expected file
@@ -928,21 +938,22 @@ character(len=256)           :: line
    open(newunit=lun,file='_scratch_.txt',iostat=ios)
    close(unit=lun,iostat=ios,status='delete')
    ! start shell
-   call process_open_write('bash||cmd',fp,ierr)    ! open process to write to (ie. start gnuplot(1) program)
+   call process_open_write('bash||cmd',fp,ierr)    ! open process to write to
    ! feed commands to shell that redirect output to _scratch_.txt file
-   text=[character(len=128) :: &
-      "echo one   >_scratch_.txt", &
+   text=[character(len=128) ::      &
+      "echo one   >_scratch_.txt",  &
       "echo two   >>_scratch_.txt", &
       "echo three >>_scratch_.txt", &
       "echo four  >>_scratch_.txt"]
    call process_writeline(text,fp,ierr)       ! multiple lines
+   call unit_check('process_writeline_array',ierr.ge.0,msg=msg('wrote four lines, ierr=',ierr))
    call process_close(fp,ierr)
    ! check expected file
    open(newunit=lun,file='_scratch_.txt')
    do i=1,5
       read(lun,'(a)',iostat=ios)line
       if(ios.ne.0)exit
-      call unit_check('process_writeline_array',line.eq.lines(i),msg=msg(line))
+      call unit_check('process_writeline_array',line.eq.lines(i),msg=msg('got ',line,'expected',line))
    enddo
    close(unit=lun,iostat=ios,status='delete')
    call unit_check('process_writeline_array',i.eq.5,msg=msg('number of lines',i-1))

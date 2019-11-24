@@ -1935,10 +1935,10 @@ end function inf128
 !!            stop
 !!         endif
 !!
-!!        ALT1: block
-!!        integer :: x = 2143289344
-!!           print *, transfer(x, 1.0)    ! prints "nan" on i686
-!!        blockend ALT1
+!!         ALT1: block
+!!         integer :: x = 2143289344
+!!            print *, transfer(x, 1.0)    ! prints "nan" on i686
+!!         blockend ALT1
 !!
 !!      end program demo_nan
 !!

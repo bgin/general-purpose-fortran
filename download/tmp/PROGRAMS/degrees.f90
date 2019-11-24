@@ -10,7 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values',&
-'   (LICENSE:MIT)                                                                ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   degrees [value_unit ...] [ -C values] [ -F values] [ --help] [ --version]    ',&
@@ -51,7 +51,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'AUTHOR                                                                          ',&
 '   John S. Urban                                                                ',&
 'LICENSE                                                                         ',&
-'   MIT License                                                                  ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -61,7 +61,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    degrees(1f) - [CONVERT] Convert between Fahrenheit and Celsius temperature values
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -104,7 +104,7 @@ end subroutine help_usage
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -123,8 +123,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)LICENSE:        MIT License>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 9:35:57 PM>',&
+'@(#)LICENSE:        Public Domain>',&
+'@(#)COMPILED:       Sat, Nov 16th, 2019 4:09:25 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

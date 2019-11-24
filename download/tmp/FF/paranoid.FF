@@ -85,13 +85,13 @@ $!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 $!
 $! If not defined, set preprocessor variable ISO_FORTRAN_ENV
 $! to indicate if compiler_version() and compiler_options() intrinsics are supported
-$! default to assuming it is supported
+$! default to assuming it is not supported
 $!
 $DEFINE TRUE=0
 $DEFINE FALSE=1
 $!
 $IFNDEF HAVE_ISO_FORTRAN_ENV
-$   DEFINE HAVE_ISO_FORTRAN_ENV=TRUE
+$   DEFINE HAVE_ISO_FORTRAN_ENV=FALSE
 $ENDIF
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=

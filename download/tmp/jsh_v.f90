@@ -11,12 +11,12 @@ integer,intent(in) :: i
       call trimit('@(#)Program Version ..... 0.0.0>')
       call trimit('@(#)Build Target ........ CYGWIN64_GFORTRAN>')
       call trimit('@(#)Compiler Version .... '//trim(compiler_version())//'>')
-!     call trimit('@(#)Compiler Options .... '//trim(compiler_options())//'>')
+      call trimit('@(#)Compiler Options .... '//trim(compiler_options())//'>')
       call trimit('@(#)Compile Date ........ '//&
-     &'Fri, Nov 15, 2019  1:18:28 PM>')
+     &'Sat Nov 23 21:00:25 EST 2019>')
      call trimit('@(#)Compiled on node:>')
       call trimit('@(#) Nodename ........... '// &
-     &'buzz>')
+     &'venus>')
       call trimit('@(#) System Type ........ '// &
      &'CYGWIN_NT-10.0>')
       call trimit('@(#) O.S. Release ....... '// &

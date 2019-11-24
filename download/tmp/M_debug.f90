@@ -219,8 +219,16 @@ public unit_check_good
 public unit_check_bad
 public unit_check_done
 public unit_check_msg
-public msg
 
+public msg
+!-----------------------------------------------------------------------------------------------------------------------------------
+! DUPLICATED FROM M_STRINGS(3FM) TO PREVENT CIRCULAR DEPENDENCY
+character(len=*),parameter::ident_1="@(#)M_strings::msg(3f): {msg_scalar,msg_one}"
+
+interface msg
+   module procedure msg_scalar, msg_one
+end interface msg
+!-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -270,7 +278,7 @@ contains
 subroutine unit_check_msg(name,g1, g2, g3, g4, g5, g6, g7, g8, g9)
 implicit none
 
-character(len=*),parameter::ident_1="&
+character(len=*),parameter::ident_2="&
 &@(#)M_debug::unit_check_msg(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: name
@@ -284,26 +292,27 @@ end subroutine unit_check_msg
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+! DUPLICATED FROM M_STRINGS(3FM) TO PREVENT CIRCULAR DEPENDENCY
 !>
 !!##NAME
-!!    msg(3f) - [M_debug] converts any standard scalar type to a string
+!!    msg(3f) - [M_strings] converts any standard scalar type to a string
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!    function msg(g1,g2g3,g4,g5,g6,g7,g8,g9)
+!!    function msg(g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
 !!
-!!     class(*),intent(in),optional :: g1,g2,g3,g4,g5,g6,g7,g8,g9
-!!     character(len=:),allocatable :: msg
+!!     class(*),intent(in),optional  :: g1,g2,g3,g4,g5,g6,g7,g8,g9
+!!     logical,intent(in),optional   :: nospace
+!!     character,len=(:),allocatable :: msg
+!!
 !!##DESCRIPTION
-!!    msg(3f) builds a string from up to nine scalar values. Since the routine
-!!    uses internal WRITE statements to build the returned string it should not
-!!    be used in a WRITE or PRINT statement, as Fortran does not yet support
-!!    recursive I/O.
+!!    msg(3f) builds a space-separated string from up to nine scalar values.
 !!
 !!##OPTIONS
 !!    g[1-9]  optional value to print the value of after the message. May
 !!            be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
 !!            or CHARACTER.
+!!    nospace  if nospace=.true., then no spaces are added between values
 !!##RETURNS
 !!    msg     description to print
 !!
@@ -312,9 +321,11 @@ end subroutine unit_check_msg
 !!   Sample program:
 !!
 !!    program demo_msg
-!!    use M_debug, only : msg
+!!    use M_strings, only : msg
 !!    implicit none
 !!    character(len=:),allocatable :: pr
+!!    character(len=:),allocatable :: frmt
+!!    integer                      :: biggest
 !!
 !!    pr=msg('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
 !!    write(*,'(a)')pr
@@ -325,74 +336,152 @@ end subroutine unit_check_msg
 !!    pr=msg('complex         :',cmplx(huge(0.0),tiny(0.0)) )
 !!    write(*,'(a)')pr
 !!
+!!    ! create a format on the fly
+!!    biggest=huge(0)
+!!    frmt=msg('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
+!!    write(*,*)'format=',frmt
+!!
 !!    ! although it will often work, using msg(3f) in an I/O statement is not recommended
 !!    write(*,*)msg('program will now stop')
 !!
 !!    end program demo_msg
+!!
+!!  Output
+!!
+!!    HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308
+!!    real            : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38
+!!    doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-308
+!!    complex         : (3.40282347E+38,1.17549435E-38)
+!!     format=(*(i9:,1x))
+!!     program will now stop
 !!
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
 !===================================================================================================================================
-function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
+! DUPLICATED FROM M_STRINGS(3FM) TO PREVENT CIRCULAR DEPENDENCY
+function msg_scalar(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-character(len=*),parameter::ident_2="@(#)M_debug::msg(3f): writes a message to a string composed of any standard scalar types"
+character(len=*),parameter::ident_3="&
+&@(#)M_strings::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
 class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
-character(len=:), allocatable :: msg
+logical,intent(in),optional   :: nospace
+character(len=:), allocatable :: msg_scalar
 character(len=4096)           :: line
 integer                       :: istart
+integer                       :: increment
+   if(present(nospace))then
+      if(nospace)then
+         increment=1
+      else
+         increment=2
+      endif
+   else
+      increment=2
+   endif
 
    istart=1
    line=' '
-   if(present(generic1))call append_generic(generic1)
-   if(present(generic2))call append_generic(generic2)
-   if(present(generic3))call append_generic(generic3)
-   if(present(generic4))call append_generic(generic4)
-   if(present(generic5))call append_generic(generic5)
-   if(present(generic6))call append_generic(generic6)
-   if(present(generic7))call append_generic(generic7)
-   if(present(generic8))call append_generic(generic8)
-   if(present(generic9))call append_generic(generic9)
-   msg=trim(line)
+   if(present(generic1))call print_generic(generic1)
+   if(present(generic2))call print_generic(generic2)
+   if(present(generic3))call print_generic(generic3)
+   if(present(generic4))call print_generic(generic4)
+   if(present(generic5))call print_generic(generic5)
+   if(present(generic6))call print_generic(generic6)
+   if(present(generic7))call print_generic(generic7)
+   if(present(generic8))call print_generic(generic8)
+   if(present(generic9))call print_generic(generic9)
+   msg_scalar=trim(line)
 contains
 !===================================================================================================================================
-subroutine append_generic(generic)
+subroutine print_generic(generic)
 !use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in),optional :: generic
-character(len=4096)          :: message
-integer                      :: ios
    select type(generic)
-      type is (integer(kind=int8));     write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (integer(kind=int16));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (integer(kind=int32));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (integer(kind=int64));    write(line(istart:),'(i0)',iostat=ios,iomsg=message) generic
-      type is (real(kind=real32));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      type is (real(kind=real64));      write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      type is (real(kind=real128));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      !type is (real(kind=real256));     write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      !type is (real);                   write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      !type is (doubleprecision);        write(line(istart:),'(1pg0)',iostat=ios,iomsg=message) generic
-      type is (logical);                write(line(istart:),'(1l)',iostat=ios,iomsg=message) generic
-      type is (character(len=*));       write(line(istart:),'(a)',iostat=ios,iomsg=message) trim(generic)
-      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")',iostat=ios,iomsg=message) generic
-      class default
-         write(line(istart:),'(a)',iostat=ios,iomsg=message) '????UNKNOWN_TYPE????'
-         !!stop 'unknown type in *append_generic*'
+      type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
+      type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int32));    write(line(istart:),'(i0)') generic
+      type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
+      type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
+      type is (logical);                write(line(istart:),'(1l)') generic
+      type is (character(len=*));       write(line(istart:),'(a)') trim(generic)
+      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
-   istart=len_trim(line)+2
-   if(ios.ne.0)then
-      !!line(istart:)=message
-      call stderr('*msg* '//message)
-      !!stop '*msg* error in converting to string'
-   endif
-end subroutine append_generic
+   istart=len_trim(line)+increment
+end subroutine print_generic
 !===================================================================================================================================
-end function msg
+end function msg_scalar
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+! DUPLICATED FROM M_STRINGS(3FM) TO PREVENT CIRCULAR DEPENDENCY
+function msg_one(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
+implicit none
+
+character(len=*),parameter::ident_4="&
+&@(#)M_strings::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
+
+class(*),intent(in)           :: generic1(:)
+class(*),intent(in),optional  :: generic2(:), generic3(:), generic4(:), generic5(:)
+class(*),intent(in),optional  :: generic6(:), generic7(:), generic8(:), generic9(:)
+logical,intent(in),optional   :: nospace
+character(len=:), allocatable :: msg_one
+character(len=4096)           :: line
+integer                       :: istart
+integer                       :: increment
+   if(present(nospace))then
+      if(nospace)then
+         increment=1
+      else
+         increment=2
+      endif
+   else
+      increment=2
+   endif
+
+   istart=1
+   line=' '
+   call print_generic(generic1)
+   if(present(generic2))call print_generic(generic2)
+   if(present(generic3))call print_generic(generic3)
+   if(present(generic4))call print_generic(generic4)
+   if(present(generic5))call print_generic(generic5)
+   if(present(generic6))call print_generic(generic6)
+   if(present(generic7))call print_generic(generic7)
+   if(present(generic8))call print_generic(generic8)
+   if(present(generic9))call print_generic(generic9)
+   msg_one=trim(line)
+contains
+!===================================================================================================================================
+subroutine print_generic(generic)
+!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
+class(*),intent(in),optional :: generic(:)
+integer :: i
+   select type(generic)
+      type is (integer(kind=int8));     write(line(istart:),'("[",*(i0,1x))') generic
+      type is (integer(kind=int16));    write(line(istart:),'("[",*(i0,1x))') generic
+      type is (integer(kind=int32));    write(line(istart:),'("[",*(i0,1x))') generic
+      type is (integer(kind=int64));    write(line(istart:),'("[",*(i0,1x))') generic
+      type is (real(kind=real32));      write(line(istart:),'("[",*(1pg0,1x))') generic
+      type is (real(kind=real64));      write(line(istart:),'("[",*(1pg0,1x))') generic
+      type is (real(kind=real128));     write(line(istart:),'("[",*(1pg0,1x))') generic
+      type is (logical);                write(line(istart:),'("[",*(1l,1x))') generic
+      type is (character(len=*));       write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
+      type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
+   end select
+   line=trim(line)//"]"
+   istart=len_trim(line)+increment
+end subroutine print_generic
+!===================================================================================================================================
+end function msg_one
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -478,7 +567,7 @@ end function msg
 subroutine stderr(msg, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
 implicit none
 
-character(len=*),parameter::ident_3="@(#)M_debug::stderr(3f): writes a message to standard error using a standard f2003 method"
+character(len=*),parameter::ident_5="@(#)M_debug::stderr(3f): writes a message to standard error using a standard f2003 method"
 
 class(*),intent(in),optional :: msg
 class(*),intent(in),optional :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
@@ -581,7 +670,7 @@ end subroutine stderr
 !===================================================================================================================================
 subroutine fstop(ierr,stdout,stderr)
 
-character(len=*),parameter::ident_4="@(#)M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message"
+character(len=*),parameter::ident_6="@(#)M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message"
 
 integer,intent(in)                   :: ierr
 character(len=*),optional,intent(in) :: stdout
@@ -778,7 +867,7 @@ end subroutine fstop
 !===================================================================================================================================
 subroutine unit_check(name,logical_expression,msg)
 
-character(len=*),parameter::ident_5="@(#)M_debug::unit_check(3f):if .not.expression call 'goodbad NAME bad' & stop program"
+character(len=*),parameter::ident_7="@(#)M_debug::unit_check(3f):if .not.expression call 'goodbad NAME bad' & stop program"
 
 character(len=*),intent(in)          :: name
 logical,intent(in)                   :: logical_expression
@@ -887,7 +976,7 @@ end subroutine unit_check
 !===================================================================================================================================
 subroutine unit_check_start(name,options,msg)
 
-character(len=*),parameter::ident_6="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
+character(len=*),parameter::ident_8="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: options
@@ -985,7 +1074,7 @@ end subroutine unit_check_start
 !===================================================================================================================================
 subroutine unit_check_done(name,opts,msg)
 
-character(len=*),parameter::ident_7="@(#)M_debug::unit_check_done(3f): call 'goodbad NAME bad'"
+character(len=*),parameter::ident_9="@(#)M_debug::unit_check_done(3f): call 'goodbad NAME bad'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
@@ -1085,7 +1174,7 @@ end subroutine unit_check_done
 !===================================================================================================================================
 subroutine unit_check_bad(name,opts,msg)
 
-character(len=*),parameter::ident_8="@(#)M_debug::unit_check_bad(3f): call 'goodbad NAME bad'"
+character(len=*),parameter::ident_10="@(#)M_debug::unit_check_bad(3f): call 'goodbad NAME bad'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
@@ -1156,7 +1245,7 @@ end subroutine unit_check_bad
 !===================================================================================================================================
 subroutine unit_check_good(name,opts,msg)
 
-character(len=*),parameter::ident_9="@(#)M_debug::unit_check_good(3f): call 'goodbad NAME good'"
+character(len=*),parameter::ident_11="@(#)M_debug::unit_check_good(3f): call 'goodbad NAME good'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
@@ -1235,7 +1324,7 @@ end subroutine unit_check_good
 !===================================================================================================================================
 subroutine pdec(string)
 
-character(len=*),parameter::ident_10="@(#)M_debug::pdec(3f): write ASCII Decimal Equivalent (ADE) numbers vertically beneath string"
+character(len=*),parameter::ident_12="@(#)M_debug::pdec(3f): write ASCII Decimal Equivalent (ADE) numbers vertically beneath string"
 
 character(len=*),intent(in) :: string   ! the string to print
 integer                     :: ilen     ! number of characters in string to print
@@ -1257,7 +1346,7 @@ end subroutine pdec
 !===================================================================================================================================
 function atleast(line,length) result(strout)
 
-character(len=*),parameter::ident_11="@(#)M_debug::atleast(3fp): return string padded to at least specified length"
+character(len=*),parameter::ident_13="@(#)M_debug::atleast(3fp): return string padded to at least specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length

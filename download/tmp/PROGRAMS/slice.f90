@@ -10,7 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '    slice(1f) - [M_slices] display a grid of Z values with a 3D view            ',&
-'    (LICENSE:MIT)                                                               ',&
+'    (LICENSE:PD)                                                                ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '    slice -f FILENAME -d X11 -w 20 -x 680 -y 680 -a 30 -b 40                    ',&
@@ -56,7 +56,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'AUTHOR                                                                          ',&
 '   John S. Urban                                                                ',&
 'LICENSE                                                                         ',&
-'   MIT License                                                                  ',&
+'   Public License                                                               ',&
 'END $DOCUMENT                                                                   ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
@@ -67,7 +67,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!     slice(1f) - [M_slices] display a grid of Z values with a 3D view
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -115,7 +115,7 @@ end subroutine help_usage
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public License
 !!##END $DOCUMENT
 !===================================================================================================================================
 subroutine help_version(l_version)
@@ -134,7 +134,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.1, 20190326>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 9:38:21 PM>',&
+'@(#)COMPILED:       Sat, Nov 16th, 2019 4:52:45 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

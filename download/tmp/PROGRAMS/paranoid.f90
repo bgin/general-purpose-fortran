@@ -163,7 +163,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PROGRAM:        paranoid(1)>',&
 '@(#)DESCRIPTION:    call doubleprecision and real versions of paranoia(3f)>',&
 '@(#)VERSION:        1.0, 20150508>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 10:27:22 PM>',&
+'@(#)COMPILED:       Sat, Nov 16th, 2019 4:18:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -174,7 +174,6 @@ end subroutine help_version
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 program test_paranoia
-use iso_fortran_env
 use M_kracken, only  : kracken,lget
 use M_strings, only  : substitute
 use M_time, only     : now
@@ -193,10 +192,7 @@ character(len=is)            :: string=' '
    call help_version(lget('paranoid_version'))           ! if -version option is present, display version text and exit
 !-----------------------------------------------------------------------------------------------------------------------------------
                                                          ! options can be very long. Take a guess on how it can be pretty-printed
-   options=compiler_options()                            ! get compiler options as a string
-   options=options//repeat(' ',3*len(options))           ! pad with blanks so it is long enough for substitutions
-                                                         ! assuming options are unix-like  "-keyword value"
-   call substitute(options,' -',new_line('A')//'     -') ! replace ' -' with  '[newline]     -'
+   options='UNKNOWN'
 
    print '(a)', repeat('=',80)                           ! print break line
    print '(a)', now()                                    ! print date and time
@@ -216,13 +212,6 @@ character(len=is)            :: string=' '
    call system_uname('m',string)
    write(*,*)'machine:  '//trim(string)
 
-   !---------> If have ISO_FORTRAN_ENV intrinsic module
-   print '(2a,/,a,/,5x,a)',         &                    ! print compiler version
-      'This file was compiled by ', &
-      compiler_version(),           &
-      'using the options ',         &                    ! and compiler options
-      trim(options)
-   !<---------
 
    print '(a)', repeat('=',80)
 

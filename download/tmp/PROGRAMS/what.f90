@@ -119,7 +119,8 @@ contains
 ! include "what__print_version.h"
 subroutine what__print_version()  ! automatically generated QA routine; may be removed if desired
 !@(#)what__print_version(3f) - print the command name, version and owner strings, and compiler information
-   use ISO_FORTRAN_ENV, only: compiler_options,compiler_version,error_unit,input_unit,output_unit
+   !use ISO_FORTRAN_ENV, only: compiler_options,compiler_version,error_unit,input_unit,output_unit
+   use ISO_FORTRAN_ENV, only: error_unit,input_unit,output_unit
    use M_strings, only: split
    implicit none
    integer,parameter  :: io=OUTPUT_UNIT                                    ! pre-attached standard output for this PE
@@ -160,23 +161,23 @@ subroutine what__print_version()  ! automatically generated QA routine; may be r
 !  COMPILATION HOST
    call sccs_id('@(#)ORIGIN           :: CYGWIN_NT-6.3 buzz 2.0.3(0.287/5/3) 2015-06-03 13:57 x86_64 Cygwin>') !uname(3c)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   write(io,'("=================:: ")')
+!   write(io,'("=================:: ")')
 !  COMPILER-RELATED COMPILATION INFORMATION
-   write(io,'("Compiler version :: ",a)') COMPILER_VERSION()
-   ! source_file_name  most compilers have predefined buildit macros such as ,__DATE__, __FILE__ that preprocessors expand
-   write(io,'("Compilation Date :: ",a)') '2015/07/17 11:32:57 PM' !__DATE__
-                                                      ! (hopefully) pretty-print compiler options
-   call split(COMPILER_OPTIONS(),options)             ! parse compiler options on ' ' (likely delimiter)
-   write(io,'("Compiler options ::")',advance='no')   ! only start new lines when a - begins the option
-   do i=1,size(options)
-      if(options(i)(1:1).eq.'-'.and.i.ne.1)then
-         write(io,'(a)')
-         write(io,'("                 :: ",a)',advance='no') trim(options(i))
-      else
-         write(io,'(" ",a)',advance='no') trim(options(i))
-      endif
-   enddo
-   write(io,'(/,80("="))')
+!   write(io,'("Compiler version :: ",a)') COMPILER_VERSION()
+!   ! source_file_name  most compilers have predefined buildit macros such as ,__DATE__, __FILE__ that preprocessors expand
+!   write(io,'("Compilation Date :: ",a)') '2015/07/17 11:32:57 PM' !__DATE__
+!                                                      ! (hopefully) pretty-print compiler options
+!   call split(COMPILER_OPTIONS(),options)             ! parse compiler options on ' ' (likely delimiter)
+!   write(io,'("Compiler options ::")',advance='no')   ! only start new lines when a - begins the option
+!   do i=1,size(options)
+!      if(options(i)(1:1).eq.'-'.and.i.ne.1)then
+!         write(io,'(a)')
+!         write(io,'("                 :: ",a)',advance='no') trim(options(i))
+!      else
+!         write(io,'(" ",a)',advance='no') trim(options(i))
+!      endif
+!   enddo
+!   write(io,'(/,80("="))')
 end subroutine what__print_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine help()

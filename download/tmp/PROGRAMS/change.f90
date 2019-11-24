@@ -10,7 +10,7 @@ if(l_help)then
 help_text=[ CHARACTER(LEN=128) :: &
 'NAME                                                                            ',&
 '   change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files',&
-'   (PUBLIC:MIT)                                                                 ',&
+'   (LICENSE:PD)                                                                 ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '   change c/old/new/ FILENAMES [ -dryrun][ -cmd COMMAND]| --version| --help     ',&
@@ -40,7 +40,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'AUTHOR                                                                          ',&
 '   John S. Urban                                                                ',&
 'LICENSE                                                                         ',&
-'   MIT License                                                                  ',&
+'   Public Domain                                                                ',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
    stop ! if -help was specified, stop
@@ -50,7 +50,7 @@ end subroutine help_usage
 !>
 !!##NAME
 !!    change(1f) - [FILE EDIT] replace old fixed string with new fixed string in names of files
-!!    (PUBLIC:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -82,7 +82,7 @@ end subroutine help_usage
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine help_version(l_version)
 implicit none
@@ -99,7 +99,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    rename files by changing old fixed string to new string>',&
 '@(#)VERSION:        1.0, 2017-06-29>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Thu, Nov 7th, 2019 9:34:37 PM>',&
+'@(#)COMPILED:       Sat, Nov 16th, 2019 4:06:03 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

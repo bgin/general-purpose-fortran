@@ -5,9 +5,7 @@ program fviews
 
    use M_draw
 
-   integer BLACK, GREEN, RED, MAGENTA, YELLOW
-   parameter (BLACK = 0, GREEN = 2, RED = 1, MAGENTA = 5)
-   parameter (YELLOW = 3)
+   integer,parameter :: BLACK=0, GREEN=2, RED=1, MAGENTA=5, YELLOW=3
    character(len=50) :: device
 
    print*,'Enter output device:'
@@ -47,7 +45,7 @@ program fviews
 !
    call lookat(5.0, 8.0, 5.0, 0.0, 0.0, 0.0, 0.0)
 
-   call drawtetra
+   call drawtetra()
 
 !
 ! set the text size
@@ -134,7 +132,7 @@ program fviews
 
    call vexit
 
-end
+end program fviews
 
 !
 ! drawtetra
@@ -146,8 +144,7 @@ subroutine drawtetra
 
    use M_draw
 
-   integer WHITE
-   parameter (WHITE = 7)
+   integer,parameter :: WHITE = 7
 
    call move(-0.5,  0.866, -0.5)
    call draw(-0.5, -0.866, -0.5)
@@ -172,4 +169,4 @@ subroutine drawtetra
    call move( 0.0,  0.0,    1.5)
    call drawchar('d')
 
-end program fviews
+end subroutine drawtetra

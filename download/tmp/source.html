@@ -176,8 +176,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_debug.f90">M_debug.f90</a></td>
 <td>
+	M_strings::msg(3f): {msg_scalar,msg_one}<br/>
 	M_debug::unit_check_msg(3f): writes a message to a string composed of any standard scalar types<br/>
-	M_debug::msg(3f): writes a message to a string composed of any standard scalar types<br/>
 	M_debug::stderr(3f): writes a message to standard error using a standard f2003 method<br/>
 	M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message<br/>
 	M_debug::unit_check(3f):if .not.expression call 'goodbad NAME bad' & stop program<br/>
@@ -585,6 +585,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <td>
 	M_strings(3f): Fortran module containing routines that deal with character strings<br/>
 	M_strings::switch(3f): toggle between string and array of characters<br/>
+	M_strings::msg(3f): {msg_scalar,msg_one}<br/>
 	M_strings::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)<br/>
 	M_strings::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(d2s,r2s,i2s)<br/>
 	M_strings::matchw(3f): function compares text strings, one of which can have wildcards ('*' or '?').<br/>
@@ -629,7 +630,6 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_strings::string_to_values(3f): reads an array of numbers from a numeric string<br/>
 	M_strings::s2vs(3f): function returns array of values from a string<br/>
 	M_strings::isprint(3f): indicates if input character is a printable ASCII character<br/>
-	M_strings::msg(3f): writes a message to a string composed of any standard scalar types<br/>
 	M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space<br/>
 	M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise<br/>
 	M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)<br/>

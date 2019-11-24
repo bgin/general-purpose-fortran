@@ -13,7 +13,7 @@ integer                  :: i
 
 ! on this platform, (select_int_kind(i),i=1,100) returns
 ! 1:2=1 ,3:4=2 ,5:9=4 ,10:18= 8 ,19:38=16 ,39:=-1
-integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
+!integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 
 ! on this platform, (select_real_kind(i),i=1,100) returns
 ! 1:6=   4, 7:15 = 8, 16:18= 10, 19:33= 16, 34:  = -1

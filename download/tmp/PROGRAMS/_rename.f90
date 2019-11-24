@@ -19,18 +19,18 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   _rename old new file... [ -verbose][ -dryrun]|[ -help|-version]              ',&
 '                                                                                ',&
 'DESCRIPTION                                                                     ',&
-'   rename(1f) will rename the specified files by replacing the                  ',&
+'   _rename(1f) will rename the specified files by replacing the                 ',&
 '   first occurrence of expression in their name by replacement.                 ',&
 '                                                                                ',&
 'EXAMPLES                                                                        ',&
 '   Given the files foo1, ..., foo9, foo10, ..., foo278, the commands            ',&
 '                                                                                ',&
-'      rename foo foo0 foo?                                                      ',&
-'      rename foo foo0 foo??                                                     ',&
+'      _rename foo foo0 foo?                                                     ',&
+'      _rename foo foo0 foo??                                                    ',&
 '                                                                                ',&
 '   will turn them into foo001, ..., foo009, foo010, ..., foo278. And            ',&
 '                                                                                ',&
-'      rename .htm .html *.htm                                                   ',&
+'      _rename .htm .html *.htm                                                  ',&
 '                                                                                ',&
 '   will fix the extension of *.htm files.                                       ',&
 '                                                                                ',&
@@ -62,19 +62,19 @@ end subroutine help_usage
 !!    _rename old new file... [ -verbose][ -dryrun]|[ -help|-version]
 !!
 !!##DESCRIPTION
-!!    rename(1f) will rename the specified files by replacing the
+!!    _rename(1f) will rename the specified files by replacing the
 !!    first occurrence of expression in their name by replacement.
 !!
 !!##EXAMPLES
 !!
 !!    Given the files foo1, ..., foo9, foo10, ..., foo278, the commands
 !!
-!!       rename foo foo0 foo?
-!!       rename foo foo0 foo??
+!!       _rename foo foo0 foo?
+!!       _rename foo foo0 foo??
 !!
 !!    will turn them into foo001, ..., foo009, foo010, ..., foo278. And
 !!
-!!       rename .htm .html *.htm
+!!       _rename .htm .html *.htm
 !!
 !!    will fix the extension of *.htm files.
 !!
@@ -102,14 +102,14 @@ stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
-'@(#)PROGRAM:        rename(1)>',&
+'@(#)PROGRAM:        _rename(1)>',&
 '@(#)DESCRIPTION:    replace strings in filenames>',&
 '@(#)VERSION:        1.0, 20181020>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Sun, Nov 10th, 2019 7:06:06 PM>',&
+'@(#)COMPILED:       Sat, Nov 16th, 2019 4:13:55 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

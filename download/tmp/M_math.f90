@@ -1383,6 +1383,7 @@ END SUBROUTINE linearint
 !>
 !!##NAME
 !!    gcsgau1(3f) - [M_math] solve a system of simultaneous linear equations
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine gcsgau1(n,a,b)
@@ -1419,6 +1420,8 @@ END SUBROUTINE linearint
 !!
 !!##WRITTEN BY
 !!    Fred Taylor, Computer Analysis Branch USAEWES, Vicksburg, MS. 39180
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 subroutine gcsgau1(n,a,b)
 use M_journal, only : journal
@@ -1529,6 +1532,7 @@ end subroutine gcsgau1
 !>
 !!##NAME
 !!    glstsq(3f) - [M_math] least squares fit to a polynomial expression
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine glstsq(ideg,x,y,n0,d)
@@ -1559,6 +1563,8 @@ end subroutine gcsgau1
 !!##NOTES
 !!    needs rewritten to normalize data so large numbers causing overflow
 !!    are not generated.
+!!##LICENSE
+!! Public Domain
 !===================================================================================================================================
 subroutine glstsq(ideg,x,y,n0,d)
 use M_journal, only : journal
@@ -1646,6 +1652,7 @@ end subroutine glstsq
 !>
 !!##NAME
 !!    gcsgau2(3f) - [M_math] solve a system of simultaneous linear equations
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine gcsgau2(n,a,b)
@@ -1675,14 +1682,16 @@ end subroutine glstsq
 !!##PEDIGREE
 !!    Derived from
 !!
-!!                 Graphics Compatibility System
-!!                     3-D Device-Dependent
-!!                       Subroutine GCSGAU2
-!!                            Level 7
+!!         Graphics Compatibility System
+!!             3-D Device-Dependent
+!!               Subroutine GCSGAU2
+!!                    Level 7
 !!##WRITTEN BY
-!!      Fred Taylor ; A.K.A
+!!    Fred Taylor ; A.K.A
 !!
-!!       F. T. Tracy, Computer Analysis Branch USAEWES, Vicksburg, MS. 39180
+!!    F. T. Tracy, Computer Analysis Branch USAEWES, Vicksburg, MS. 39180
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 SUBROUTINE GCSGAU2(N,A,B)
 use M_journal, only : journal

@@ -1,6 +1,6 @@
-*ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_11589
+*ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_56877
 run xxx_ thru the ufpp preprocessor next
-a - /tmp/CCALL_CYGWIN64_GFORTRAN_11589/xxx_.11589.f90
+a - /tmp/CCALL_CYGWIN64_GFORTRAN_56877/xxx_.56877.f90
 /home/urbanjs/.twm/scripts_regression/goodbad: xxx_.1 0 xxx_ start --section 1
 /home/urbanjs/V600/bin/CYGWIN64_GFORTRAN/xxx_
-*ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_11589
+*ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_56877

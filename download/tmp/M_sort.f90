@@ -2230,31 +2230,31 @@ end subroutine test_sort_quick_rx
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_unique
-use M_debug, only : unit_check_start, unit_check, unit_check_bad, unit_check_good, unit_check_done
+use M_debug, only : unit_check_start, unit_check, unit_check_bad, unit_check_good, unit_check_done,msg
 implicit none
 integer,allocatable :: ints(:)
-integer             :: icount
+integer             :: ic
 call unit_check_start('unique', '-library libGPF') ! start tests
 
 ints=[1,1,2,3,4,4,10,20,20,30]
-call unique(ints,icount)
-call unit_check('unique',icount.eq.7 .and. all(ints(icount).eq.[1, 2, 3, 4, 10, 20, 30]),msg='eliminate duplicates from array')
+call unique(ints,ic)
+call unit_check('unique',ic.eq.7.and.all(ints(:ic).eq.[1, 2, 3, 4, 10, 20, 30]),msg=msg('expect 7 ic=',ic, 'ints=',msg(ints(:ic))))
 
 ints=[integer ::]
-call unique(ints,icount)
-call unit_check('unique',icount.eq.0 .and. all(ints.eq.[integer::]),msg='check empty array ')
+call unique(ints,ic)
+call unit_check('unique',ic.eq.0 .and. all(ints.eq.[integer::]),msg='check empty array ')
 
 ints=[10]
-call unique(ints,icount)
-call unit_check('unique',icount.eq.1 .and. all(ints.eq.[10]),msg='check array of one element')
+call unique(ints,ic)
+call unit_check('unique',ic.eq.1 .and. all(ints(:ic).eq.[10]),msg='check array of one element')
 
 ints=[10,10,10,10]
-call unique(ints,icount)
-call unit_check('unique',icount.eq.1 .and. all(ints.eq.[10,10,10,10]),msg='all duplicates')
+call unique(ints,ic)
+call unit_check('unique',ic.eq.1 .and. all(ints(:ic).eq.[10,10,10,10]),msg='all duplicates')
 
 ints=[10,20,30,40]
-call unique(ints,icount)
-call unit_check('unique',icount.eq.4 .and. all(ints(icount).eq.[10, 20, 30, 40]),msg='no change required')
+call unique(ints,ic)
+call unit_check('unique',ic.eq.4 .and. all(ints(:ic).eq.[10, 20, 30, 40]),msg='no change required')
 
 call unit_check_done('unique',msg='test of unique(3f) completed') ! assume if got here passed checks
 end subroutine test_unique

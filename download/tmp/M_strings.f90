@@ -556,7 +556,14 @@ end interface switch
 ! note how returned result is "created" by the function
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident_3="&
+character(len=*),parameter::ident_3="@(#)M_strings::msg(3f): {msg_scalar,msg_one}"
+
+interface msg
+   module procedure msg_scalar, msg_one
+end interface msg
+!-----------------------------------------------------------------------------------------------------------------------------------
+
+character(len=*),parameter::ident_4="&
 &@(#)M_strings::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)"
 
 interface string_to_value
@@ -564,7 +571,7 @@ interface string_to_value
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident_4="&
+character(len=*),parameter::ident_5="&
 &@(#)M_strings::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(d2s,r2s,i2s)"
 
 interface v2s
@@ -602,6 +609,8 @@ CONTAINS
 !!    contain wildcard characters.
 !!
 !!    In this version to get a match entire string must be described by pattern.
+!!    Trailing whitespace is significant, so trim the input string to have
+!!    trailing whitespace ignored.
 !!
 !!##OPTIONS
 !!    string   the input string to test to see if it contains the pattern.
@@ -632,116 +641,114 @@ CONTAINS
 !!
 !!       do i=1,nReps
 !!          ! Cases with repeating character sequences.
-!!          allpassed=and(allpassed, test("a*abab", "a*b", .true.))
+!!          allpassed=allpassed .and. test("a*abab", "a*b", .true.)
 !!          !!cycle
-!!          allpassed=and(allpassed, test("ab", "*?", .true.))
-!!          allpassed=and(allpassed, test("abc", "*?", .true.))
-!!          allpassed=and(allpassed, test("abcccd", "*ccd", .true.))
-!!          allpassed=and(allpassed, test("bLah", "bLaH", .false.))
-!!          allpassed=and(allpassed, test("mississippi", "*sip*", .true.))
-!!          allpassed=and(allpassed, test("xxxx*zzzzzzzzy*f", "xxx*zzy*f", .true.))
-!!          allpassed=and(allpassed, test("xxxx*zzzzzzzzy*f", "xxxx*zzy*fffff", .false.))
-!!          allpassed=and(allpassed, test("mississipissippi", "*issip*ss*", .true.))
-!!          allpassed=and(allpassed, test("xxxxzzzzzzzzyf", "xxxx*zzy*fffff", .false.))
-!!          allpassed=and(allpassed, test("xxxxzzzzzzzzyf", "xxxx*zzy*f", .true.))
-!!          allpassed=and(allpassed, test("xyxyxyzyxyz", "xy*z*xyz", .true.))
-!!          allpassed=and(allpassed, test("xyxyxyxyz", "xy*xyz", .true.))
-!!          allpassed=and(allpassed, test("mississippi", "mi*sip*", .true.))
-!!          allpassed=and(allpassed, test("ababac", "*abac*", .true.))
-!!          allpassed=and(allpassed, test("ababac", "*abac*", .true.))
-!!          allpassed=and(allpassed, test("aaazz", "a*zz*", .true.))
-!!          allpassed=and(allpassed, test("a12b12", "*12*23", .false.))
-!!          allpassed=and(allpassed, test("a12b12", "a12b", .false.))
-!!          allpassed=and(allpassed, test("a12b12", "*12*12*", .true.))
+!!          allpassed=allpassed .and. test("ab", "*?", .true.)
+!!          allpassed=allpassed .and. test("abc", "*?", .true.)
+!!          allpassed=allpassed .and. test("abcccd", "*ccd", .true.)
+!!          allpassed=allpassed .and. test("bLah", "bLaH", .false.)
+!!          allpassed=allpassed .and. test("mississippi", "*sip*", .true.)
+!!          allpassed=allpassed .and. test("xxxx*zzzzzzzzy*f", "xxx*zzy*f", .true.)
+!!          allpassed=allpassed .and. test("xxxx*zzzzzzzzy*f", "xxxx*zzy*fffff", .false.)
+!!          allpassed=allpassed .and. test("mississipissippi", "*issip*ss*", .true.)
+!!          allpassed=allpassed .and. test("xxxxzzzzzzzzyf", "xxxx*zzy*fffff", .false.)
+!!          allpassed=allpassed .and. test("xxxxzzzzzzzzyf", "xxxx*zzy*f", .true.)
+!!          allpassed=allpassed .and. test("xyxyxyzyxyz", "xy*z*xyz", .true.)
+!!          allpassed=allpassed .and. test("xyxyxyxyz", "xy*xyz", .true.)
+!!          allpassed=allpassed .and. test("mississippi", "mi*sip*", .true.)
+!!          allpassed=allpassed .and. test("ababac", "*abac*", .true.)
+!!          allpassed=allpassed .and. test("aaazz", "a*zz*", .true.)
+!!          allpassed=allpassed .and. test("a12b12", "*12*23", .false.)
+!!          allpassed=allpassed .and. test("a12b12", "a12b", .false.)
+!!          allpassed=allpassed .and. test("a12b12", "*12*12*", .true.)
 !!
 !!          ! Additional cases where the '*' char appears in the tame string.
-!!          allpassed=and(allpassed, test("*", "*", .true.))
-!!          allpassed=and(allpassed, test("a*r", "a*", .true.))
-!!          allpassed=and(allpassed, test("a*ar", "a*aar", .false.))
+!!          allpassed=allpassed .and. test("*", "*", .true.)
+!!          allpassed=allpassed .and. test("a*r", "a*", .true.)
+!!          allpassed=allpassed .and. test("a*ar", "a*aar", .false.)
 !!
 !!          ! More double wildcard scenarios.
-!!          allpassed=and(allpassed, test("XYXYXYZYXYz", "XY*Z*XYz", .true.))
-!!          allpassed=and(allpassed, test("missisSIPpi", "*SIP*", .true.))
-!!          allpassed=and(allpassed, test("mississipPI", "*issip*PI", .true.))
-!!          allpassed=and(allpassed, test("xyxyxyxyz", "xy*xyz", .true.))
-!!          allpassed=and(allpassed, test("miSsissippi", "mi*sip*", .true.))
-!!          allpassed=and(allpassed, test("miSsissippi", "mi*Sip*", .false.))
-!!          allpassed=and(allpassed, test("abAbac", "*Abac*", .true.))
-!!          allpassed=and(allpassed, test("abAbac", "*Abac*", .true.))
-!!          allpassed=and(allpassed, test("aAazz", "a*zz*", .true.))
-!!          allpassed=and(allpassed, test("A12b12", "*12*23", .false.))
-!!          allpassed=and(allpassed, test("a12B12", "*12*12*", .true.))
-!!          allpassed=and(allpassed, test("oWn", "*oWn*", .true.))
+!!          allpassed=allpassed .and. test("XYXYXYZYXYz", "XY*Z*XYz", .true.)
+!!          allpassed=allpassed .and. test("missisSIPpi", "*SIP*", .true.)
+!!          allpassed=allpassed .and. test("mississipPI", "*issip*PI", .true.)
+!!          allpassed=allpassed .and. test("xyxyxyxyz", "xy*xyz", .true.)
+!!          allpassed=allpassed .and. test("miSsissippi", "mi*sip*", .true.)
+!!          allpassed=allpassed .and. test("miSsissippi", "mi*Sip*", .false.)
+!!          allpassed=allpassed .and. test("abAbac", "*Abac*", .true.)
+!!          allpassed=allpassed .and. test("aAazz", "a*zz*", .true.)
+!!          allpassed=allpassed .and. test("A12b12", "*12*23", .false.)
+!!          allpassed=allpassed .and. test("a12B12", "*12*12*", .true.)
+!!          allpassed=allpassed .and. test("oWn", "*oWn*", .true.)
 !!
 !!          ! Completely tame (no wildcards) cases.
-!!          allpassed=and(allpassed, test("bLah", "bLah", .true.))
+!!          allpassed=allpassed .and. test("bLah", "bLah", .true.)
 !!
 !!          ! Simple mixed wildcard tests suggested by IBMer Marlin Deckert.
-!!          allpassed=and(allpassed, test("a", "*?", .true.))
+!!          allpassed=allpassed .and. test("a", "*?", .true.)
 !!
 !!          ! More mixed wildcard tests including coverage for false positives.
-!!          allpassed=and(allpassed, test("a", "??", .false.))
-!!          allpassed=and(allpassed, test("ab", "?*?", .true.))
-!!          allpassed=and(allpassed, test("ab", "*?*?*", .true.))
-!!          allpassed=and(allpassed, test("abc", "?**?*?", .true.))
-!!          allpassed=and(allpassed, test("abc", "?**?*&?", .false.))
-!!          allpassed=and(allpassed, test("abcd", "?b*??", .true.))
-!!          allpassed=and(allpassed, test("abcd", "?a*??", .false.))
-!!          allpassed=and(allpassed, test("abcd", "?**?c?", .true.))
-!!          allpassed=and(allpassed, test("abcd", "?**?d?", .false.))
-!!          allpassed=and(allpassed, test("abcde", "?*b*?*d*?", .true.))
+!!          allpassed=allpassed .and. test("a", "??", .false.)
+!!          allpassed=allpassed .and. test("ab", "?*?", .true.)
+!!          allpassed=allpassed .and. test("ab", "*?*?*", .true.)
+!!          allpassed=allpassed .and. test("abc", "?**?*?", .true.)
+!!          allpassed=allpassed .and. test("abc", "?**?*&?", .false.)
+!!          allpassed=allpassed .and. test("abcd", "?b*??", .true.)
+!!          allpassed=allpassed .and. test("abcd", "?a*??", .false.)
+!!          allpassed=allpassed .and. test("abcd", "?**?c?", .true.)
+!!          allpassed=allpassed .and. test("abcd", "?**?d?", .false.)
+!!          allpassed=allpassed .and. test("abcde", "?*b*?*d*?", .true.)
 !!
 !!          ! Single-character-match cases.
-!!          allpassed=and(allpassed, test("bLah", "bL?h", .true.))
-!!          allpassed=and(allpassed, test("bLaaa", "bLa?", .false.))
-!!          allpassed=and(allpassed, test("bLah", "bLa?", .true.))
-!!          allpassed=and(allpassed, test("bLaH", "?Lah", .false.))
-!!          allpassed=and(allpassed, test("bLaH", "?LaH", .true.))
+!!          allpassed=allpassed .and. test("bLah", "bL?h", .true.)
+!!          allpassed=allpassed .and. test("bLaaa", "bLa?", .false.)
+!!          allpassed=allpassed .and. test("bLah", "bLa?", .true.)
+!!          allpassed=allpassed .and. test("bLaH", "?Lah", .false.)
+!!          allpassed=allpassed .and. test("bLaH", "?LaH", .true.)
 !!
 !!          ! Many-wildcard scenarios.
-!!          allpassed=and(allpassed, test(&
+!!          allpassed=allpassed .and. test(&
 !!          &"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",&
 !!          &"a*a*a*a*a*a*aa*aaa*a*a*b",&
-!!          &.true.))
-!!          allpassed=and(allpassed, test(&
+!!          &.true.)
+!!          allpassed=allpassed .and. test(&
 !!          &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
 !!          &"*a*b*ba*ca*a*aa*aaa*fa*ga*b*",&
-!!          &.true.))
-!!          allpassed=and(allpassed, test(&
+!!          &.true.)
+!!          allpassed=allpassed .and. test(&
 !!          &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
 !!          &"*a*b*ba*ca*a*x*aaa*fa*ga*b*",&
-!!          &.false.))
-!!          allpassed=and(allpassed, test(&
+!!          &.false.)
+!!          allpassed=allpassed .and. test(&
 !!          &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
 !!          &"*a*b*ba*ca*aaaa*fa*ga*gggg*b*",&
-!!          &.false.))
-!!          allpassed=and(allpassed, test(&
+!!          &.false.)
+!!          allpassed=allpassed .and. test(&
 !!          &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
 !!          &"*a*b*ba*ca*aaaa*fa*ga*ggg*b*",&
-!!          &.true.))
-!!          allpassed=and(allpassed, test("aaabbaabbaab", "*aabbaa*a*", .true.))
-!!          allpassed=and(allpassed, test("a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", "a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.))
-!!          allpassed=and(allpassed, test("aaaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.))
-!!          allpassed=and(allpassed, test("aaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .false.))
-!!          allpassed=and(allpassed, test(&
+!!          &.true.)
+!!          allpassed=allpassed .and. test("aaabbaabbaab", "*aabbaa*a*", .true.)
+!!          allpassed=allpassed .and. test("a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", "a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.)
+!!          allpassed=allpassed .and. test("aaaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.)
+!!          allpassed=allpassed .and. test("aaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .false.)
+!!          allpassed=allpassed .and. test(&
 !!          &"abc*abcd*abcde*abcdef*abcdefg*abcdefgh*abcdefghi*abcdefghij*abcdefghijk*abcdefghijkl*abcdefghijklm*abcdefghijklmn",&
 !!          & "abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*",&
-!!          &.false.))
-!!          allpassed=and(allpassed, test(&
+!!          &.false.)
+!!          allpassed=allpassed .and. test(&
 !!          &"abc*abcd*abcde*abcdef*abcdefg*abcdefgh*abcdefghi*abcdefghij*abcdefghijk*abcdefghijkl*abcdefghijklm*abcdefghijklmn",&
 !!          &"abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*",&
-!!          &.true.))
-!!          allpassed=and(allpassed, test("abc*abcd*abcd*abc*abcd", "abc*abc*abc*abc*abc", .false.))
-!!          allpassed=and(allpassed, test( "abc*abcd*abcd*abc*abcd*abcd*abc*abcd*abc*abc*abcd", &
+!!          &.true.)
+!!          allpassed=allpassed .and. test("abc*abcd*abcd*abc*abcd", "abc*abc*abc*abc*abc", .false.)
+!!          allpassed=allpassed .and. test( "abc*abcd*abcd*abc*abcd*abcd*abc*abcd*abc*abc*abcd", &
 !!          &"abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abcd",&
-!!          &.true.))
-!!          allpassed=and(allpassed, test("abc", "********a********b********c********", .true.))
-!!          allpassed=and(allpassed, test("********a********b********c********", "abc", .false.))
-!!          allpassed=and(allpassed, test("abc", "********a********b********b********", .false.))
-!!          allpassed=and(allpassed, test("*abc*", "***a*b*c***", .true.))
+!!          &.true.)
+!!          allpassed=allpassed .and. test("abc", "********a********b********c********", .true.)
+!!          allpassed=allpassed .and. test("********a********b********c********", "abc", .false.)
+!!          allpassed=allpassed .and. test("abc", "********a********b********b********", .false.)
+!!          allpassed=allpassed .and. test("*abc*", "***a*b*c***", .true.)
 !!
 !!          ! A case-insensitive algorithm test.
-!!          ! allpassed=and(allpassed, test("mississippi", "*issip*PI", .true.))
+!!          ! allpassed=allpassed .and. test("mississippi", "*issip*PI", .true.)
 !!       enddo
 !!
 !!       if (allpassed)then
@@ -749,9 +756,7 @@ CONTAINS
 !!       else
 !!          write(*,'(a)')"Failed"
 !!       endif
-!! !===================================================================================================================================
 !!    contains
-!! !===================================================================================================================================
 !!    ! This is a test program for wildcard matching routines.  It can be used
 !!    ! either to test a single routine for correctness, or to compare the timings
 !!    ! of two (or more) different wildcard matching routines.
@@ -793,7 +798,7 @@ CONTAINS
 !===================================================================================================================================
 function matchw(tame,wild)
 
-character(len=*),parameter::ident_5="&
+character(len=*),parameter::ident_6="&
 &@(#)M_strings::matchw(3f): function compares text strings, one of which can have wildcards ('*' or '?')."
 
 logical                    :: matchw
@@ -911,116 +916,114 @@ integer :: i
 
   do i=1,nReps
       ! Cases with repeating character sequences.
-      allpassed=and(allpassed, test("a*abab", "a*b", .true.))
+      allpassed=allpassed .and. test("a*abab", "a*b", .true.)
       !!cycle
-      allpassed=and(allpassed, test("ab", "*?", .true.))
-      allpassed=and(allpassed, test("abc", "*?", .true.))
-      allpassed=and(allpassed, test("abcccd", "*ccd", .true.))
-      allpassed=and(allpassed, test("bLah", "bLaH", .false.))
-      allpassed=and(allpassed, test("mississippi", "*sip*", .true.))
-      allpassed=and(allpassed, test("xxxx*zzzzzzzzy*f", "xxx*zzy*f", .true.))
-      allpassed=and(allpassed, test("xxxx*zzzzzzzzy*f", "xxxx*zzy*fffff", .false.))
-      allpassed=and(allpassed, test("mississipissippi", "*issip*ss*", .true.))
-      allpassed=and(allpassed, test("xxxxzzzzzzzzyf", "xxxx*zzy*fffff", .false.))
-      allpassed=and(allpassed, test("xxxxzzzzzzzzyf", "xxxx*zzy*f", .true.))
-      allpassed=and(allpassed, test("xyxyxyzyxyz", "xy*z*xyz", .true.))
-      allpassed=and(allpassed, test("xyxyxyxyz", "xy*xyz", .true.))
-      allpassed=and(allpassed, test("mississippi", "mi*sip*", .true.))
-      allpassed=and(allpassed, test("ababac", "*abac*", .true.))
-      allpassed=and(allpassed, test("ababac", "*abac*", .true.))
-      allpassed=and(allpassed, test("aaazz", "a*zz*", .true.))
-      allpassed=and(allpassed, test("a12b12", "*12*23", .false.))
-      allpassed=and(allpassed, test("a12b12", "a12b", .false.))
-      allpassed=and(allpassed, test("a12b12", "*12*12*", .true.))
+      allpassed=allpassed .and. test("ab", "*?", .true.)
+      allpassed=allpassed .and. test("abc", "*?", .true.)
+      allpassed=allpassed .and. test("abcccd", "*ccd", .true.)
+      allpassed=allpassed .and. test("bLah", "bLaH", .false.)
+      allpassed=allpassed .and. test("mississippi", "*sip*", .true.)
+      allpassed=allpassed .and. test("xxxx*zzzzzzzzy*f", "xxx*zzy*f", .true.)
+      allpassed=allpassed .and. test("xxxx*zzzzzzzzy*f", "xxxx*zzy*fffff", .false.)
+      allpassed=allpassed .and. test("mississipissippi", "*issip*ss*", .true.)
+      allpassed=allpassed .and. test("xxxxzzzzzzzzyf", "xxxx*zzy*fffff", .false.)
+      allpassed=allpassed .and. test("xxxxzzzzzzzzyf", "xxxx*zzy*f", .true.)
+      allpassed=allpassed .and. test("xyxyxyzyxyz", "xy*z*xyz", .true.)
+      allpassed=allpassed .and. test("xyxyxyxyz", "xy*xyz", .true.)
+      allpassed=allpassed .and. test("mississippi", "mi*sip*", .true.)
+      allpassed=allpassed .and. test("ababac", "*abac*", .true.)
+      allpassed=allpassed .and. test("aaazz", "a*zz*", .true.)
+      allpassed=allpassed .and. test("a12b12", "*12*23", .false.)
+      allpassed=allpassed .and. test("a12b12", "a12b", .false.)
+      allpassed=allpassed .and. test("a12b12", "*12*12*", .true.)
 
       ! Additional cases where the '*' char appears in the tame string.
-      allpassed=and(allpassed, test("*", "*", .true.))
-      allpassed=and(allpassed, test("a*r", "a*", .true.))
-      allpassed=and(allpassed, test("a*ar", "a*aar", .false.))
+      allpassed=allpassed .and. test("*", "*", .true.)
+      allpassed=allpassed .and. test("a*r", "a*", .true.)
+      allpassed=allpassed .and. test("a*ar", "a*aar", .false.)
 
       ! More double wildcard scenarios.
-      allpassed=and(allpassed, test("XYXYXYZYXYz", "XY*Z*XYz", .true.))
-      allpassed=and(allpassed, test("missisSIPpi", "*SIP*", .true.))
-      allpassed=and(allpassed, test("mississipPI", "*issip*PI", .true.))
-      allpassed=and(allpassed, test("xyxyxyxyz", "xy*xyz", .true.))
-      allpassed=and(allpassed, test("miSsissippi", "mi*sip*", .true.))
-      allpassed=and(allpassed, test("miSsissippi", "mi*Sip*", .false.))
-      allpassed=and(allpassed, test("abAbac", "*Abac*", .true.))
-      allpassed=and(allpassed, test("abAbac", "*Abac*", .true.))
-      allpassed=and(allpassed, test("aAazz", "a*zz*", .true.))
-      allpassed=and(allpassed, test("A12b12", "*12*23", .false.))
-      allpassed=and(allpassed, test("a12B12", "*12*12*", .true.))
-      allpassed=and(allpassed, test("oWn", "*oWn*", .true.))
+      allpassed=allpassed .and. test("XYXYXYZYXYz", "XY*Z*XYz", .true.)
+      allpassed=allpassed .and. test("missisSIPpi", "*SIP*", .true.)
+      allpassed=allpassed .and. test("mississipPI", "*issip*PI", .true.)
+      allpassed=allpassed .and. test("xyxyxyxyz", "xy*xyz", .true.)
+      allpassed=allpassed .and. test("miSsissippi", "mi*sip*", .true.)
+      allpassed=allpassed .and. test("miSsissippi", "mi*Sip*", .false.)
+      allpassed=allpassed .and. test("abAbac", "*Abac*", .true.)
+      allpassed=allpassed .and. test("aAazz", "a*zz*", .true.)
+      allpassed=allpassed .and. test("A12b12", "*12*23", .false.)
+      allpassed=allpassed .and. test("a12B12", "*12*12*", .true.)
+      allpassed=allpassed .and. test("oWn", "*oWn*", .true.)
 
       ! Completely tame (no wildcards) cases.
-      allpassed=and(allpassed, test("bLah", "bLah", .true.))
+      allpassed=allpassed .and. test("bLah", "bLah", .true.)
 
       ! Simple mixed wildcard tests suggested by IBMer Marlin Deckert.
-      allpassed=and(allpassed, test("a", "*?", .true.))
+      allpassed=allpassed .and. test("a", "*?", .true.)
 
       ! More mixed wildcard tests including coverage for false positives.
-      allpassed=and(allpassed, test("a", "??", .false.))
-      allpassed=and(allpassed, test("ab", "?*?", .true.))
-      allpassed=and(allpassed, test("ab", "*?*?*", .true.))
-      allpassed=and(allpassed, test("abc", "?**?*?", .true.))
-      allpassed=and(allpassed, test("abc", "?**?*&?", .false.))
-      allpassed=and(allpassed, test("abcd", "?b*??", .true.))
-      allpassed=and(allpassed, test("abcd", "?a*??", .false.))
-      allpassed=and(allpassed, test("abcd", "?**?c?", .true.))
-      allpassed=and(allpassed, test("abcd", "?**?d?", .false.))
-      allpassed=and(allpassed, test("abcde", "?*b*?*d*?", .true.))
+      allpassed=allpassed .and. test("a", "??", .false.)
+      allpassed=allpassed .and. test("ab", "?*?", .true.)
+      allpassed=allpassed .and. test("ab", "*?*?*", .true.)
+      allpassed=allpassed .and. test("abc", "?**?*?", .true.)
+      allpassed=allpassed .and. test("abc", "?**?*&?", .false.)
+      allpassed=allpassed .and. test("abcd", "?b*??", .true.)
+      allpassed=allpassed .and. test("abcd", "?a*??", .false.)
+      allpassed=allpassed .and. test("abcd", "?**?c?", .true.)
+      allpassed=allpassed .and. test("abcd", "?**?d?", .false.)
+      allpassed=allpassed .and. test("abcde", "?*b*?*d*?", .true.)
 
       ! Single-character-match cases.
-      allpassed=and(allpassed, test("bLah", "bL?h", .true.))
-      allpassed=and(allpassed, test("bLaaa", "bLa?", .false.))
-      allpassed=and(allpassed, test("bLah", "bLa?", .true.))
-      allpassed=and(allpassed, test("bLaH", "?Lah", .false.))
-      allpassed=and(allpassed, test("bLaH", "?LaH", .true.))
+      allpassed=allpassed .and. test("bLah", "bL?h", .true.)
+      allpassed=allpassed .and. test("bLaaa", "bLa?", .false.)
+      allpassed=allpassed .and. test("bLah", "bLa?", .true.)
+      allpassed=allpassed .and. test("bLaH", "?Lah", .false.)
+      allpassed=allpassed .and. test("bLaH", "?LaH", .true.)
 
       ! Many-wildcard scenarios.
-      allpassed=and(allpassed, test(&
+      allpassed=allpassed .and. test(&
       &"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",&
       &"a*a*a*a*a*a*aa*aaa*a*a*b",&
-      &.true.))
-      allpassed=and(allpassed, test(&
+      &.true.)
+      allpassed=allpassed .and. test(&
       &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
       &"*a*b*ba*ca*a*aa*aaa*fa*ga*b*",&
-      &.true.))
-      allpassed=and(allpassed, test(&
+      &.true.)
+      allpassed=allpassed .and. test(&
       &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
       &"*a*b*ba*ca*a*x*aaa*fa*ga*b*",&
-      &.false.))
-      allpassed=and(allpassed, test(&
+      &.false.)
+      allpassed=allpassed .and. test(&
       &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
       &"*a*b*ba*ca*aaaa*fa*ga*gggg*b*",&
-      &.false.))
-      allpassed=and(allpassed, test(&
+      &.false.)
+      allpassed=allpassed .and. test(&
       &"abababababababababababababababababababaacacacacacacacadaeafagahaiajakalaaaaaaaaaaaaaaaaaffafagaagggagaaaaaaaab",&
       &"*a*b*ba*ca*aaaa*fa*ga*ggg*b*",&
-      &.true.))
-      allpassed=and(allpassed, test("aaabbaabbaab", "*aabbaa*a*", .true.))
-      allpassed=and(allpassed, test("a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", "a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.))
-      allpassed=and(allpassed, test("aaaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.))
-      allpassed=and(allpassed, test("aaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .false.))
-      allpassed=and(allpassed, test(&
+      &.true.)
+      allpassed=allpassed .and. test("aaabbaabbaab", "*aabbaa*a*", .true.)
+      allpassed=allpassed .and. test("a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", "a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.)
+      allpassed=allpassed .and. test("aaaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .true.)
+      allpassed=allpassed .and. test("aaaaaaaaaaaaaaaa", "*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*", .false.)
+      allpassed=allpassed .and. test(&
       &"abc*abcd*abcde*abcdef*abcdefg*abcdefgh*abcdefghi*abcdefghij*abcdefghijk*abcdefghijkl*abcdefghijklm*abcdefghijklmn",&
       & "abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*",&
-      &.false.))
-      allpassed=and(allpassed, test(&
+      &.false.)
+      allpassed=allpassed .and. test(&
       &"abc*abcd*abcde*abcdef*abcdefg*abcdefgh*abcdefghi*abcdefghij*abcdefghijk*abcdefghijkl*abcdefghijklm*abcdefghijklmn",&
       &"abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*",&
-      &.true.))
-      allpassed=and(allpassed, test("abc*abcd*abcd*abc*abcd", "abc*abc*abc*abc*abc", .false.))
-      allpassed=and(allpassed, test( "abc*abcd*abcd*abc*abcd*abcd*abc*abcd*abc*abc*abcd", &
+      &.true.)
+      allpassed=allpassed .and. test("abc*abcd*abcd*abc*abcd", "abc*abc*abc*abc*abc", .false.)
+      allpassed=allpassed .and. test( "abc*abcd*abcd*abc*abcd*abcd*abc*abcd*abc*abc*abcd", &
       &"abc*abc*abc*abc*abc*abc*abc*abc*abc*abc*abcd",&
-      &.true.))
-      allpassed=and(allpassed, test("abc", "********a********b********c********", .true.))
-      allpassed=and(allpassed, test("********a********b********c********", "abc", .false.))
-      allpassed=and(allpassed, test("abc", "********a********b********b********", .false.))
-      allpassed=and(allpassed, test("*abc*", "***a*b*c***", .true.))
+      &.true.)
+      allpassed=allpassed .and. test("abc", "********a********b********c********", .true.)
+      allpassed=allpassed .and. test("********a********b********c********", "abc", .false.)
+      allpassed=allpassed .and. test("abc", "********a********b********b********", .false.)
+      allpassed=allpassed .and. test("*abc*", "***a*b*c***", .true.)
 
       ! A case-insensitive algorithm test.
-      ! allpassed=and(allpassed, test("mississippi", "*issip*PI", .true.))
+      ! allpassed=allpassed .and. test("mississippi", "*issip*PI", .true.)
    enddo
 
    if (allpassed)then
@@ -1210,7 +1213,7 @@ end subroutine test_matchw
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident_6="&
+character(len=*),parameter::ident_7="&
 &@(#)M_strings::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
 
 !  John S. Urban
@@ -1508,7 +1511,7 @@ end subroutine test_split
 !===================================================================================================================================
 FUNCTION chomp(source_string,token,delimiters)
 
-character(len=*),parameter::ident_7="@(#)M_strings::chomp(3f): Tokenize a string : JSU- 20151030"
+character(len=*),parameter::ident_8="@(#)M_strings::chomp(3f): Tokenize a string : JSU- 20151030"
 
 character(len=*)                         :: source_string    ! string to tokenize
 character(len=:),allocatable,intent(out) :: token            ! returned token
@@ -1706,7 +1709,7 @@ end subroutine test_chomp
 !===================================================================================================================================
 subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
 
-character(len=*),parameter::ident_8="@(#)M_strings::delim(3f): parse a string and store tokens into an array"
+character(len=*),parameter::ident_9="@(#)M_strings::delim(3f): parse a string and store tokens into an array"
 
 !
 !     given a line of structure " par1 par2 par3 ... parn "
@@ -2041,7 +2044,7 @@ end subroutine crack_cmd
 !===================================================================================================================================
 function replace(targetline,old,new,ierr,cmd,range) result (newline)
 
-character(len=*),parameter::ident_9="@(#)M_strings::replace(3f): Globally replace one substring for another in string"
+character(len=*),parameter::ident_10="@(#)M_strings::replace(3f): Globally replace one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
@@ -2272,7 +2275,7 @@ end subroutine test_replace
 !===================================================================================================================================
 subroutine substitute(targetline,old,new,ierr,start,end)
 
-character(len=*),parameter::ident_10="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
+character(len=*),parameter::ident_11="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*)               :: targetline         ! input line to be changed
@@ -2551,7 +2554,7 @@ subroutine change(target_string,cmd,ierr)
 ! a null old_string implies "beginning of string"
 !===================================================================================================================================
 
-character(len=*),parameter::ident_11="@(#)M_strings::change(3f): change a character string like a line editor"
+character(len=*),parameter::ident_12="@(#)M_strings::change(3f): change a character string like a line editor"
 
 character(len=*),intent(inout)   :: target_string          ! line to be changed
 character(len=*),intent(in)      :: cmd                    ! contains the instructions changing the string
@@ -2730,7 +2733,7 @@ end subroutine test_change
 FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(strtok_status)
 ! JSU- 20151030
 
-character(len=*),parameter::ident_12="@(#)M_strings::strtok(3f): Tokenize a string"
+character(len=*),parameter::ident_13="@(#)M_strings::strtok(3f): Tokenize a string"
 
 character(len=*),intent(in)  :: source_string    ! Source string to tokenize.
 character(len=*),intent(in)  :: delimiters       ! list of separator characters. May change between calls
@@ -3128,7 +3131,7 @@ elemental integer function len_white(string)
 !                still need instead of LEN_TRIM() because some systems stil pad CHARACTER with NULL
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident_13="@(#)M_strings::len_white(3f): return position of last non-blank/non-null character in string"
+character(len=*),parameter::ident_14="@(#)M_strings::len_white(3f): return position of last non-blank/non-null character in string"
 
 character(len=*),intent(in):: string ! input string to determine length of
 integer                    :: i10
@@ -3205,7 +3208,7 @@ end subroutine test_len_white
 function crop(strin) result (strout)
 use M_journal, only : journal
 
-character(len=*),parameter::ident_14="@(#)M_strings::crop(3f): trim leading and trailings blanks from string"
+character(len=*),parameter::ident_15="@(#)M_strings::crop(3f): trim leading and trailings blanks from string"
 
 character(len=*),intent(in)  :: strin
 character(len=:),allocatable :: strout
@@ -3301,7 +3304,7 @@ end subroutine test_crop
 !===================================================================================================================================
 PURE FUNCTION transliterate(instr,old_set,new_set) RESULT(outstr)
 
-character(len=*),parameter::ident_15="@(#)M_strings::transliterate(3f): replace characters from old set with new set"
+character(len=*),parameter::ident_16="@(#)M_strings::transliterate(3f): replace characters from old set with new set"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 CHARACTER(LEN=*),INTENT(IN)  :: instr                             ! input string to change
@@ -3455,7 +3458,7 @@ end subroutine test_transliterate
 function rotate13 (input)
 implicit none
 
-character(len=*),parameter::ident_16="&
+character(len=*),parameter::ident_17="&
 &@(#)M_strings::rotate13(3f): converts a character to its ROT13 equivalent, which is a trivial encryption."
 
 character(len=*),intent(in) :: input
@@ -3557,7 +3560,7 @@ end subroutine test_rotate13
 !===================================================================================================================================
 pure function join(str,sep,trm,left,right) result (string)
 
-character(len=*),parameter::ident_17="&
+character(len=*),parameter::ident_18="&
 &@(#)M_strings::join(3f): append an array of character variables with specified separator into a single CHARACTER variable"
 
 character(len=*),intent(in)          :: str(:)
@@ -3665,7 +3668,7 @@ end subroutine test_join
 !===================================================================================================================================
 elemental function reverse(string ) result (rev)
 
-character(len=*),parameter::ident_18="@(#)M_strings::reverse(3f): Return a string reversed"
+character(len=*),parameter::ident_19="@(#)M_strings::reverse(3f): Return a string reversed"
 
 character(len=*),intent(in)    :: string   ! string to reverse
 character(len=len(string))     :: rev      ! return value (reversed string)
@@ -3764,7 +3767,7 @@ end subroutine test_reverse
 !===================================================================================================================================
 elemental pure function upper_quoted(str) result (string)
 
-character(len=*),parameter::ident_19="&
+character(len=*),parameter::ident_20="&
 &@(#)M_strings::upper_quoted(3f): elemental function converts string to miniscule skipping strings quoted per Fortran syntax rules"
 
 character(len=*), intent(in)   :: str     ! The input string
@@ -3875,7 +3878,7 @@ end function upper_quoted
 ! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
 elemental pure function upper(str,begin,end) result (string)
 
-character(len=*),parameter::ident_20="@(#)M_strings::upper(3f): Changes a string to uppercase"
+character(len=*),parameter::ident_21="@(#)M_strings::upper(3f): Changes a string to uppercase"
 
 character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
 integer, intent(in), optional :: begin,end
@@ -3988,7 +3991,7 @@ end subroutine test_upper
 !===================================================================================================================================
 elemental pure function lower(str,begin,end) result (string)
 
-character(len=*),parameter::ident_21="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
+character(len=*),parameter::ident_22="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
 
 character(*), intent(In)     :: str
 character(len(str))          :: string
@@ -4135,7 +4138,7 @@ end subroutine test_lower
 !===================================================================================================================================
 pure function a2s(array)  result (string)
 
-character(len=*),parameter::ident_22="@(#)M_strings::a2s(3fp): function to copy char array to string"
+character(len=*),parameter::ident_23="@(#)M_strings::a2s(3fp): function to copy char array to string"
 
 character(len=1),intent(in) :: array(:)
 character(len=SIZE(array))  :: string
@@ -4149,7 +4152,7 @@ end function a2s
 !===================================================================================================================================
 pure function s2a(string)  RESULT (array)
 
-character(len=*),parameter::ident_23="@(#)M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array"
+character(len=*),parameter::ident_24="@(#)M_strings::s2a(3fp): function to copy string(1:Clen(string)) to char array"
 
 character(len=*),intent(in) :: string
 character(len=1)            :: array(len(string))
@@ -4267,7 +4270,7 @@ end subroutine test_switch
 pure function s2c(string)  RESULT (array)
 use,intrinsic :: ISO_C_BINDING, only : C_CHAR
 
-character(len=*),parameter::ident_24="@(#)M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator"
+character(len=*),parameter::ident_25="@(#)M_strings::s2c(3f): copy string(1:Clen(string)) to char array with null terminator"
 
 character(len=*),intent(in)     :: string
 
@@ -4327,7 +4330,7 @@ function c2s(c_string_pointer) result(f_string)
 ! If the C string is null, it returns "NULL", similar to C's "(null)" printed in similar cases:
 use, intrinsic :: iso_c_binding, only: c_ptr,c_f_pointer,c_char,c_null_char
 
-character(len=*),parameter::ident_25="&
+character(len=*),parameter::ident_26="&
 &@(#)M_strings::c2s(3f): copy pointer to C char array till a null is encountered to a Fortran string up to 4096 characters"
 
 integer,parameter                             :: max_length=4096
@@ -4412,7 +4415,7 @@ end subroutine test_c2s
 function indent(line)
 implicit none
 
-character(len=*),parameter::ident_26="@(#)M_strings::indent(3f): find number of leading spaces in a string"
+character(len=*),parameter::ident_27="@(#)M_strings::indent(3f): find number of leading spaces in a string"
 
 integer                        :: indent
 character(len=*),intent(in)    :: line
@@ -4496,7 +4499,7 @@ function visible(input) result(output)
 character(len=*),intent(in)  :: input
 character(len=:),allocatable :: output
 
-character(len=*),parameter::ident_27="&
+character(len=*),parameter::ident_28="&
 &@(#)M_strings::visible(3f) expand escape sequences in a string to control and meta-control representations"
 
 integer                      :: i
@@ -4645,7 +4648,7 @@ function expand(line,escape) result(lineout)
 USE ISO_C_BINDING ,ONLY: c_horizontal_tab
 implicit none
 
-character(len=*),parameter::ident_28="@(#)M_strings::expand(3f): return string with escape sequences expanded"
+character(len=*),parameter::ident_29="@(#)M_strings::expand(3f): return string with escape sequences expanded"
 
 character(len=*)                      :: line
 character(len=1),intent(in),optional  :: escape ! escape character. Default is backslash
@@ -4728,7 +4731,7 @@ end function expand
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_expand()
 
-character(len=*),parameter::ident_29="@(#)M_strings::test_expand(3f): test filter to expand escape sequences in input lines"
+character(len=*),parameter::ident_30="@(#)M_strings::test_expand(3f): test filter to expand escape sequences in input lines"
 
 integer :: i
 character(len=80) :: line
@@ -4827,7 +4830,7 @@ end subroutine test_expand
 !===================================================================================================================================
 subroutine notabs(INSTR,OUTSTR,ILEN)
 
-character(len=*),parameter::ident_30="&
+character(len=*),parameter::ident_31="&
 &@(#)M_strings::notabs(3f): convert tabs to spaces while maintaining columns, remove CRLF chars"
 
 CHARACTER(LEN=*),INTENT(IN)   :: instr        ! input line to scan for tab characters
@@ -4957,7 +4960,7 @@ end subroutine test_notabs
 !===================================================================================================================================
 pure function adjustc(string,length)
 
-character(len=*),parameter::ident_31="@(#)M_strings::adjustc(3f): center text"
+character(len=*),parameter::ident_32="@(#)M_strings::adjustc(3f): center text"
 
 !>
 !! PROCEDURE   adjustc(3f)
@@ -5102,7 +5105,7 @@ end subroutine test_adjustc
 !===================================================================================================================================
 function nospace(line)
 
-character(len=*),parameter::ident_32="@(#)M_strings::nospace(3f): remove all whitespace from input string"
+character(len=*),parameter::ident_33="@(#)M_strings::nospace(3f): remove all whitespace from input string"
 
 character(len=*),intent(in)    ::  line             ! remove whitespace from this string and return it
 character(len=:),allocatable   ::  nospace          ! returned string
@@ -5226,7 +5229,7 @@ end subroutine test_nospace
 !===================================================================================================================================
 function stretch(line,length,pattern,suffix) result(strout)
 
-character(len=*),parameter::ident_33="@(#)M_strings::stretch(3f): return string padded to at least specified length"
+character(len=*),parameter::ident_34="@(#)M_strings::stretch(3f): return string padded to at least specified length"
 
 character(len=*),intent(in)                  :: line
 integer,intent(in)                           :: length
@@ -5340,7 +5343,7 @@ end subroutine test_stretch
 !===================================================================================================================================
 function atleast(line,length,pattern) result(strout)
 
-character(len=*),parameter::ident_34="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+character(len=*),parameter::ident_35="@(#)M_strings::atleast(3f): return string padded to at least specified length"
 
 character(len=*),intent(in)                :: line
 integer,intent(in)                         :: length
@@ -5421,7 +5424,7 @@ end subroutine test_atleast
 !===================================================================================================================================
 function lenset(line,length) result(strout)
 
-character(len=*),parameter::ident_35="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
+character(len=*),parameter::ident_36="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
@@ -5498,7 +5501,7 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-character(len=*),parameter::ident_36="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+character(len=*),parameter::ident_37="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in)     :: str1
 character(len=*),intent(in)     :: str2
@@ -5600,7 +5603,7 @@ end subroutine test_merge_str
 !elemental pure function compact(str,char) result (outstr)
 function compact(str,char) result (outstr)
 
-character(len=*),parameter::ident_37="@(#)M_strings::compact(3f): Converts white-space to single spaces"
+character(len=*),parameter::ident_38="@(#)M_strings::compact(3f): Converts white-space to single spaces"
 
 character(len=*),intent(in)          :: str
 character(len=*),intent(in),optional :: char
@@ -5780,7 +5783,7 @@ end subroutine test_compact
 !===================================================================================================================================
 elemental function noesc(INSTR)
 
-character(len=*),parameter::ident_38="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
+character(len=*),parameter::ident_39="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
 
 character(len=*),intent(in) :: INSTR      ! string that might contain nonprintable characters
 character(len=len(instr))   :: noesc
@@ -5884,7 +5887,7 @@ end subroutine test_noesc
 !===================================================================================================================================
 subroutine a2r(chars,valu,ierr)
 
-character(len=*),parameter::ident_39="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
+character(len=*),parameter::ident_40="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
 
 character(len=*),intent(in) :: chars                      ! input string
 real,intent(out)            :: valu                       ! value read from input string
@@ -5897,7 +5900,7 @@ end subroutine a2r
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
 
-character(len=*),parameter::ident_40="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
+character(len=*),parameter::ident_41="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
 
 character(len=*),intent(in) :: chars                      ! input string
 integer,intent(out)         :: valu                       ! value read from input string
@@ -5910,7 +5913,7 @@ end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr,onerr)
 
-character(len=*),parameter::ident_41="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
+character(len=*),parameter::ident_42="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
 
 !     1989,2016 John S. Urban.
 !
@@ -6198,7 +6201,7 @@ end subroutine test_string_to_value
 doubleprecision function s2v(chars,ierr,onerr)
 !  1989 John S. Urban
 
-character(len=*),parameter::ident_42="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
+character(len=*),parameter::ident_43="@(#)M_strings::s2v(3f): returns doubleprecision number from string"
 
 
 character(len=*),intent(in)  :: chars
@@ -6599,7 +6602,7 @@ end subroutine test_value_to_string
 ! very odd compiler problems in many (but not all) programs using this routine; GNU Fortran (GCC) 5.4.0; 20161030
 function v2s_bug(gval) result(outstr)
 
-character(len=*),parameter::ident_43="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
+character(len=*),parameter::ident_44="@(#)M_strings::v2s_bug(3f): function returns string given numeric value"
 
 class(*),intent(in)          :: gval                         ! input value to convert to a string
 character(len=:),allocatable :: outstr                       ! output string to generate
@@ -6636,7 +6639,7 @@ end subroutine test_v2s_bug
 !===================================================================================================================================
 function d2s(dvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_44="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
+character(len=*),parameter::ident_45="@(#)M_strings::d2s(3fp): private function returns string given doubleprecision value"
 
 doubleprecision,intent(in)   :: dvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -6652,7 +6655,7 @@ end function d2s
 !===================================================================================================================================
 function r2s(rvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_45="@(#)M_strings::r2s(3fp): private function returns string given real value"
+character(len=*),parameter::ident_46="@(#)M_strings::r2s(3fp): private function returns string given real value"
 
 real,intent(in)              :: rvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -6668,7 +6671,7 @@ end function r2s
 !===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_46="@(#)M_strings::i2s(3fp): private function returns string given integer value"
+character(len=*),parameter::ident_47="@(#)M_strings::i2s(3fp): private function returns string given integer value"
 
 integer,intent(in)           :: ivalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -6684,7 +6687,7 @@ end function i2s
 !===================================================================================================================================
 function l2s(lvalue,fmt) result(outstr)
 
-character(len=*),parameter::ident_47="@(#)M_strings::l2s(3fp): private function returns string given logical value"
+character(len=*),parameter::ident_48="@(#)M_strings::l2s(3fp): private function returns string given logical value"
 
 logical,intent(in)           :: lvalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -6848,7 +6851,7 @@ end subroutine test_v2s
 function isNumber(string,msg,verbose)
 implicit none
 
-character(len=*),parameter::ident_48="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
+character(len=*),parameter::ident_49="@(#)M_strings::isnumber(3f): Determines if a string is a number of not."
 
 character(len=*),intent(in)    :: string
 character(len=:),intent(out),allocatable,optional :: msg
@@ -7031,7 +7034,7 @@ end subroutine test_isnumber
 !===================================================================================================================================
 subroutine trimzeros(string)
 
-character(len=*),parameter::ident_49="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
+character(len=*),parameter::ident_50="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -7142,7 +7145,7 @@ subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
 implicit none
 
-character(len=*),parameter::ident_50="&
+character(len=*),parameter::ident_51="&
 &@(#)M_strings::listout(3f): copy icurve_lists to icurve_expanded expanding negative numbers to ranges (1 -10 means 1 thru 10)"
 
 !   Created: 19971231
@@ -7714,7 +7717,7 @@ end subroutine test_unquote
 !===================================================================================================================================
 function describe(ch) result (string)
 
-character(len=*),parameter::ident_51="@(#)M_strings::describe(3f): return string describing long name of a single character"
+character(len=*),parameter::ident_52="@(#)M_strings::describe(3f): return string describing long name of a single character"
 
 character(len=1),intent(in)   :: ch
 character(len=:),allocatable  :: string
@@ -8002,7 +8005,7 @@ end subroutine test_describe
 subroutine getvals(line,values,icount,ierr)
 implicit none
 
-character(len=*),parameter::ident_52="@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable"
+character(len=*),parameter::ident_53="@(#)M_strings::getvals(3f): read arbitrary number of values from a character variable"
 
 ! JSU 20170831
 
@@ -8177,7 +8180,7 @@ implicit none
 !   Quits if encounters any errors in read.
 !----------------------------------------------------------------------------------------------------------------------------------
 
-character(len=*),parameter::ident_53="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
+character(len=*),parameter::ident_54="@(#)M_strings::string_to_values(3f): reads an array of numbers from a numeric string"
 
 character(len=*),intent(in)  :: line          ! input string
 integer,intent(in)           :: iread         ! maximum number of values to try to read into values
@@ -8347,7 +8350,7 @@ end subroutine test_string_to_values
 !===================================================================================================================================
 function s2vs(string,delim) result(darray)
 
-character(len=*),parameter::ident_54="@(#)M_strings::s2vs(3f): function returns array of values from a string"
+character(len=*),parameter::ident_55="@(#)M_strings::s2vs(3f): function returns array of values from a string"
 
 character(len=*),intent(in)        :: string                       ! keyword to retrieve value for from dictionary
 character(len=*),optional          :: delim                        ! delimiter characters
@@ -8399,7 +8402,7 @@ end subroutine test_s2vs
 !===================================================================================================================================
 elemental function isprint(onechar)
 
-character(len=*),parameter::ident_55="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
+character(len=*),parameter::ident_56="@(#)M_strings::isprint(3f): indicates if input character is a printable ASCII character"
 
 character,intent(in) :: onechar
 logical              :: isprint
@@ -8511,15 +8514,16 @@ end subroutine test_isprint
 !!##LICENSE
 !!    Public Domain
 !===================================================================================================================================
-function msg(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
+function msg_scalar(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-character(len=*),parameter::ident_56="@(#)M_strings::msg(3f): writes a message to a string composed of any standard scalar types"
+character(len=*),parameter::ident_57="&
+&@(#)M_strings::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
 class(*),intent(in),optional  :: generic6 ,generic7 ,generic8 ,generic9
 logical,intent(in),optional   :: nospace
-character(len=:), allocatable :: msg
+character(len=:), allocatable :: msg_scalar
 character(len=4096)           :: line
 integer                       :: istart
 integer                       :: increment
@@ -8544,7 +8548,7 @@ integer                       :: increment
    if(present(generic7))call print_generic(generic7)
    if(present(generic8))call print_generic(generic8)
    if(present(generic9))call print_generic(generic9)
-   msg=trim(line)
+   msg_scalar=trim(line)
 contains
 !===================================================================================================================================
 subroutine print_generic(generic)
@@ -8559,9 +8563,6 @@ class(*),intent(in),optional :: generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
-      !type is (real(kind=real256));     write(line(istart:),'(1pg0)') generic
-      !type is (real);                   write(line(istart:),'(1pg0)') generic
-      !type is (doubleprecision);        write(line(istart:),'(1pg0)') generic
       type is (logical);                write(line(istart:),'(1l)') generic
       type is (character(len=*));       write(line(istart:),'(a)') trim(generic)
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
@@ -8569,13 +8570,76 @@ class(*),intent(in),optional :: generic
    istart=len_trim(line)+increment
 end subroutine print_generic
 !===================================================================================================================================
-end function msg
+end function msg_scalar
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+function msg_one(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
+implicit none
+
+character(len=*),parameter::ident_58="&
+&@(#)M_strings::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
+
+class(*),intent(in)           :: generic1(:)
+class(*),intent(in),optional  :: generic2(:), generic3(:), generic4(:), generic5(:)
+class(*),intent(in),optional  :: generic6(:), generic7(:), generic8(:), generic9(:)
+logical,intent(in),optional   :: nospace
+character(len=:), allocatable :: msg_one
+character(len=4096)           :: line
+integer                       :: istart
+integer                       :: increment
+   if(present(nospace))then
+      if(nospace)then
+         increment=1
+      else
+         increment=2
+      endif
+   else
+      increment=2
+   endif
+
+   istart=1
+   line=' '
+   call print_generic(generic1)
+   if(present(generic2))call print_generic(generic2)
+   if(present(generic3))call print_generic(generic3)
+   if(present(generic4))call print_generic(generic4)
+   if(present(generic5))call print_generic(generic5)
+   if(present(generic6))call print_generic(generic6)
+   if(present(generic7))call print_generic(generic7)
+   if(present(generic8))call print_generic(generic8)
+   if(present(generic9))call print_generic(generic9)
+   msg_one=trim(line)
+contains
+!===================================================================================================================================
+subroutine print_generic(generic)
+!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
+use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
+class(*),intent(in),optional :: generic(:)
+integer :: i
+   select type(generic)
+      type is (integer(kind=int8));     write(line(istart:),'("[",*(i0,1x))') generic
+      type is (integer(kind=int16));    write(line(istart:),'("[",*(i0,1x))') generic
+      type is (integer(kind=int32));    write(line(istart:),'("[",*(i0,1x))') generic
+      type is (integer(kind=int64));    write(line(istart:),'("[",*(i0,1x))') generic
+      type is (real(kind=real32));      write(line(istart:),'("[",*(1pg0,1x))') generic
+      type is (real(kind=real64));      write(line(istart:),'("[",*(1pg0,1x))') generic
+      type is (real(kind=real128));     write(line(istart:),'("[",*(1pg0,1x))') generic
+      type is (logical);                write(line(istart:),'("[",*(1l,1x))') generic
+      type is (character(len=*));       write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
+      type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
+   end select
+   line=trim(line)//"]"
+   istart=len_trim(line)+increment
+end subroutine print_generic
+!===================================================================================================================================
+end function msg_one
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 elemental function isgraph(onechar)
 
-character(len=*),parameter::ident_57="&
+character(len=*),parameter::ident_59="&
 &@(#)M_strings::isgraph(3f) :indicates if character is printable ASCII character excluding space"
 
 character,intent(in) :: onechar
@@ -8625,7 +8689,7 @@ end subroutine test_isgraph
 !===================================================================================================================================
 elemental function isalpha(ch) result(res)
 
-character(len=*),parameter::ident_58="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
+character(len=*),parameter::ident_60="@(#)M_strings::isalpha(3f): Return .true. if character is a letter and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8677,7 +8741,7 @@ end subroutine test_isalpha
 !===================================================================================================================================
 elemental function isxdigit(ch) result(res)
 
-character(len=*),parameter::ident_59="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
+character(len=*),parameter::ident_61="@(#)M_strings::isxdigit(3f): returns .true. if c is a hexadecimal digit (0-9,a-f, or A-F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8730,7 +8794,7 @@ end subroutine test_isxdigit
 !===================================================================================================================================
 elemental function isdigit(ch) result(res)
 
-character(len=*),parameter::ident_60="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
+character(len=*),parameter::ident_62="@(#)M_strings::isdigit(3f): Returns .true. if ch is a digit (0-9) and .false. otherwise"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8781,7 +8845,7 @@ end subroutine test_isdigit
 !===================================================================================================================================
 elemental function isblank(ch) result(res)
 
-character(len=*),parameter::ident_61="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
+character(len=*),parameter::ident_63="@(#)M_strings::isblank(3f): returns .true. if character is a blank (space or horizontal tab)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8832,7 +8896,7 @@ end subroutine test_isblank
 !===================================================================================================================================
 elemental function isascii(ch) result(res)
 
-character(len=*),parameter::ident_62="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
+character(len=*),parameter::ident_64="@(#)M_strings::isascii(3f): returns .true. if character is in the range char(0) to char(127)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8883,7 +8947,7 @@ end subroutine test_isascii
 !===================================================================================================================================
 elemental function isspace(ch) result(res)
 
-character(len=*),parameter::ident_63="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
+character(len=*),parameter::ident_65="@(#)M_strings::isspace(3f): true if null,space,tab,return,new line,vertical tab, or formfeed"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8939,7 +9003,7 @@ end subroutine test_isspace
 !===================================================================================================================================
 elemental function iscntrl(ch) result(res)
 
-character(len=*),parameter::ident_64="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
+character(len=*),parameter::ident_66="@(#)M_strings::iscntrl(3f): true if a delete or ordinary control character(0x7F or 0x00-0x1F)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -8991,7 +9055,7 @@ end subroutine test_iscntrl
 !===================================================================================================================================
 elemental function ispunct(ch) result(res)
 
-character(len=*),parameter::ident_65="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
+character(len=*),parameter::ident_67="@(#)M_strings::ispunct(3f): true if a printable punctuation character (isgraph(c)&&"
 
 character,intent(in) :: ch
 logical              :: res
@@ -9047,7 +9111,7 @@ end subroutine test_ispunct
 !===================================================================================================================================
 pure elemental function isupper(ch) result(res)
 
-character(len=*),parameter::ident_66="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
+character(len=*),parameter::ident_68="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -9100,7 +9164,7 @@ end subroutine test_isupper
 !===================================================================================================================================
 elemental function islower(ch) result(res)
 
-character(len=*),parameter::ident_67="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
+character(len=*),parameter::ident_69="@(#)M_strings::islower(3f): returns true if character is a miniscule letter (a-z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -9220,7 +9284,7 @@ end subroutine test_islower
 !===================================================================================================================================
 elemental function isalnum(ch) result(res)
 
-character(len=*),parameter::ident_68="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
+character(len=*),parameter::ident_70="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
 
 character,intent(in)       :: ch
 logical                    :: res
@@ -9334,7 +9398,7 @@ character(len=*),intent(out) :: y
 integer,intent(in)           :: b,a
 integer                      :: temp
 
-character(len=*),parameter::ident_69="&
+character(len=*),parameter::ident_71="&
 &@(#)M_strings::base(3f): convert whole number string in base [2-36] to string in alternate base [2-36]"
 
 base=.true.
@@ -9490,7 +9554,7 @@ end subroutine test_base
 logical function decodebase(string,basein,out_baseten)
 implicit none
 
-character(len=*),parameter::ident_70="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+character(len=*),parameter::ident_72="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -9663,7 +9727,7 @@ end subroutine test_decodebase
 logical function codebase(inval10,outbase,answer)
 implicit none
 
-character(len=*),parameter::ident_71="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
+character(len=*),parameter::ident_73="@(#)M_strings::codebase(3f): convert whole number in base 10 to string in base [2-36]"
 
 integer,intent(in)           :: inval10
 integer,intent(in)           :: outbase
@@ -9747,7 +9811,7 @@ end subroutine test_codebase
 !===================================================================================================================================
 function todecimal(base, instr)
 
-character(len=*),parameter::ident_72="@(#)M_strings::todecimal(3f): given string and base return decimal integer"
+character(len=*),parameter::ident_74="@(#)M_strings::todecimal(3f): given string and base return decimal integer"
 
 ! based on an example at rosetta code.
 character(len=36),parameter  :: alphanum = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -9771,7 +9835,7 @@ end function todecimal
 !===================================================================================================================================
 function tobase(base, number)
 
-character(len=*),parameter::ident_73="@(#)M_strings::todecimal(3f): given integer and base return string"
+character(len=*),parameter::ident_75="@(#)M_strings::todecimal(3f): given integer and base return string"
 
 ! based on an example at rosetta code.
 character(len=36),parameter  :: alphanum = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -9888,7 +9952,7 @@ end function tobase
 !===================================================================================================================================
 function fmt(source_string,length)
 
-character(len=*),parameter::ident_74="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"
+character(len=*),parameter::ident_76="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"
 
 character(len=*),intent(in)       :: source_string
 integer,intent(in)                :: length
@@ -10220,7 +10284,7 @@ contains
 !
 function construct_from_fill(chars,len)
 
-character(len=*),parameter::ident_75="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
+character(len=*),parameter::ident_77="@(#)M_strings::construct_from_fill(3f): construct TYPE(STRING)"
 
 character(len=*),intent(in),optional :: chars
 integer,intent(in),optional          :: len
@@ -10244,7 +10308,7 @@ end function construct_from_fill
 !===================================================================================================================================
 function oop_len(self) result (length)
 
-character(len=*),parameter::ident_76="@(#)M_strings::oop_len(3f): length of string"
+character(len=*),parameter::ident_78="@(#)M_strings::oop_len(3f): length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -10255,7 +10319,7 @@ end function oop_len
 !===================================================================================================================================
 function oop_len_trim(self) result (length)
 
-character(len=*),parameter::ident_77="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
+character(len=*),parameter::ident_79="@(#)M_strings::oop_len_trim(3f): trimmed length of string"
 
 class(string),intent(in)    :: self
 integer                     :: length
@@ -10266,7 +10330,7 @@ end function oop_len_trim
 !===================================================================================================================================
 function oop_switch(self) result (array)
 
-character(len=*),parameter::ident_78="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
+character(len=*),parameter::ident_80="@(#)M_strings::oop_switch(3f): convert string to array of single characters"
 
 class(string),intent(in)    :: self
 character(len=1)            :: array(len(self%str))
@@ -10277,7 +10341,7 @@ end function oop_switch
 !===================================================================================================================================
 function oop_index(self,substring,back) result (location)
 
-character(len=*),parameter::ident_79="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
+character(len=*),parameter::ident_81="@(#)M_strings::oop_index(3f): find starting position of a substring in a string"
 
 class(string),intent(in)    :: self
 character(len=*),intent(in) :: substring
@@ -10294,7 +10358,7 @@ end function oop_index
 !===================================================================================================================================
 function oop_upper(self) result (string_out)
 
-character(len=*),parameter::ident_80="@(#)M_strings::oop_upper(3f): convert string to uppercase"
+character(len=*),parameter::ident_82="@(#)M_strings::oop_upper(3f): convert string to uppercase"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10305,7 +10369,7 @@ end function oop_upper
 !===================================================================================================================================
 function oop_lower(self) result (string_out)
 
-character(len=*),parameter::ident_81="@(#)M_strings::oop_lower(3f): convert string to miniscule"
+character(len=*),parameter::ident_83="@(#)M_strings::oop_lower(3f): convert string to miniscule"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10316,7 +10380,7 @@ end function oop_lower
 !===================================================================================================================================
 function oop_expand(self,escape_char) result (string_out)
 
-character(len=*),parameter::ident_82="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
+character(len=*),parameter::ident_84="@(#)M_strings::oop_expand(3f): expand common escape sequences by calling expand(3f)"
 
 class(string),intent(in)      :: self
 character,intent(in),optional :: escape_char
@@ -10332,7 +10396,7 @@ end function oop_expand
 !===================================================================================================================================
 function oop_trim(self) result (string_out)
 
-character(len=*),parameter::ident_83="@(#)M_strings::oop_trim(3f): trim trailing spaces"
+character(len=*),parameter::ident_85="@(#)M_strings::oop_trim(3f): trim trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10343,7 +10407,7 @@ end function oop_trim
 !===================================================================================================================================
 function oop_crop(self) result (string_out)
 
-character(len=*),parameter::ident_84="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
+character(len=*),parameter::ident_86="@(#)M_strings::oop_crop(3f): crop leading and trailing spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10354,7 +10418,7 @@ end function oop_crop
 !===================================================================================================================================
 function oop_reverse(self) result (string_out)
 
-character(len=*),parameter::ident_85="@(#)M_strings::oop_reverse(3f): reverse string"
+character(len=*),parameter::ident_87="@(#)M_strings::oop_reverse(3f): reverse string"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10365,7 +10429,7 @@ end function oop_reverse
 !===================================================================================================================================
 function oop_adjustl(self) result (string_out)
 
-character(len=*),parameter::ident_86="@(#)M_strings::oop_adjustl(3f): adjust string to left"
+character(len=*),parameter::ident_88="@(#)M_strings::oop_adjustl(3f): adjust string to left"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10376,7 +10440,7 @@ end function oop_adjustl
 !===================================================================================================================================
 function oop_adjustr(self) result (string_out)
 
-character(len=*),parameter::ident_87="@(#)M_strings::oop_adjustr(3f): adjust string to right"
+character(len=*),parameter::ident_89="@(#)M_strings::oop_adjustr(3f): adjust string to right"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10387,7 +10451,7 @@ end function oop_adjustr
 !===================================================================================================================================
 function oop_adjustc(self,length) result (string_out)
 
-character(len=*),parameter::ident_88="@(#)M_strings::oop_adjustc(3f): adjust string to center"
+character(len=*),parameter::ident_90="@(#)M_strings::oop_adjustc(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10403,7 +10467,7 @@ end function oop_adjustc
 !===================================================================================================================================
 function oop_int(self) result (value)
 
-character(len=*),parameter::ident_89="@(#)M_strings::oop_int(3f): string to integer"
+character(len=*),parameter::ident_91="@(#)M_strings::oop_int(3f): string to integer"
 
 class(string),intent(in)     :: self
 integer                      :: value
@@ -10415,7 +10479,7 @@ end function oop_int
 !===================================================================================================================================
 function oop_real(self) result (value)
 
-character(len=*),parameter::ident_90="@(#)M_strings::oop_real(3f): string to real"
+character(len=*),parameter::ident_92="@(#)M_strings::oop_real(3f): string to real"
 
 class(string),intent(in)     :: self
 real                         :: value
@@ -10427,7 +10491,7 @@ end function oop_real
 !===================================================================================================================================
 function oop_dble(self) result (value)
 
-character(len=*),parameter::ident_91="@(#)M_strings::oop_dble(3f): string to double"
+character(len=*),parameter::ident_93="@(#)M_strings::oop_dble(3f): string to double"
 
 class(string),intent(in)     :: self
 doubleprecision              :: value
@@ -10439,7 +10503,7 @@ end function oop_dble
 !===================================================================================================================================
 function oop_compact(self,char) result (string_out)
 
-character(len=*),parameter::ident_92="@(#)M_strings::oop_compact(3f): adjust string to center"
+character(len=*),parameter::ident_94="@(#)M_strings::oop_compact(3f): adjust string to center"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10456,7 +10520,7 @@ end function oop_compact
 !===================================================================================================================================
 function oop_substitute(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_93="&
+character(len=*),parameter::ident_95="&
 &@(#)M_strings::oop_substitute(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -10471,7 +10535,7 @@ end function oop_substitute
 !===================================================================================================================================
 function oop_transliterate(self,old,new) result (string_out)
 
-character(len=*),parameter::ident_94="&
+character(len=*),parameter::ident_96="&
 &@(#)M_strings::oop_transliterate(3f): change all occurrences of oldstring to newstring non-recursively"
 
 class(string),intent(in)     :: self
@@ -10485,7 +10549,7 @@ end function oop_transliterate
 !===================================================================================================================================
 function oop_atleast(self,length) result (string_out)
 
-character(len=*),parameter::ident_95="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
+character(len=*),parameter::ident_97="@(#)M_strings::oop_atleast(3f): set string to at least specified length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10497,7 +10561,7 @@ end function oop_atleast
 !===================================================================================================================================
 function oop_lenset(self,length) result (string_out)
 
-character(len=*),parameter::ident_96="@(#)M_strings::oop_lenset(3f): set string to specific length"
+character(len=*),parameter::ident_98="@(#)M_strings::oop_lenset(3f): set string to specific length"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10509,7 +10573,7 @@ end function oop_lenset
 !===================================================================================================================================
 function oop_matchw(self,pattern) result (answer)
 
-character(len=*),parameter::ident_97="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
+character(len=*),parameter::ident_99="@(#)M_strings::oop_matchw(3f): test if wildcard pattern matches string"
 
 class(string),intent(in)     :: self
 character(len=*),intent(in)  :: pattern
@@ -10521,7 +10585,7 @@ end function oop_matchw
 !===================================================================================================================================
 function oop_notabs(self) result (string_out)
 
-character(len=*),parameter::ident_98="&
+character(len=*),parameter::ident_100="&
 &@(#)M_strings::oop_notabs(3f): expand tab characters assuming tab stops every eight(8) characters"
 
 class(string),intent(in)     :: self
@@ -10536,7 +10600,7 @@ end function oop_notabs
 !===================================================================================================================================
 function oop_noesc(self) result (string_out)
 
-character(len=*),parameter::ident_99="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
+character(len=*),parameter::ident_101="@(#)M_strings::oop_noesc(3f): replace non-printable characters with spaces"
 
 class(string),intent(in)     :: self
 type(string)                 :: string_out
@@ -10547,7 +10611,7 @@ end function oop_noesc
 !===================================================================================================================================
 function p(self) result (string_out)
 
-character(len=*),parameter::ident_100="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
+character(len=*),parameter::ident_102="@(#)M_strings::oop_p(3f): return CHARACTER string from TYPE(STRING)"
 
 class(string),intent(in)     :: self
 character(len=len(self%str)) :: string_out
@@ -10561,7 +10625,7 @@ subroutine init_string(self)
 ! allow for TYPE(STRING) object to be initialized.
 !
 
-character(len=*),parameter::ident_101="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
+character(len=*),parameter::ident_103="@(#)M_strings::init_dt(3f): initialize TYPE(STRING)"
 
 class(string)                        :: self
    self%str=''
@@ -10573,7 +10637,7 @@ end subroutine init_string
 !===================================================================================================================================
 function string_plus_value(self,value) result (other)
 
-character(len=*),parameter::ident_102="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
+character(len=*),parameter::ident_104="@(#)M_strings::string_plus_value(3f): add value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -10591,7 +10655,7 @@ end function string_plus_value
 !===================================================================================================================================
 function string_minus_value(self,value) result (other)
 
-character(len=*),parameter::ident_103="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
+character(len=*),parameter::ident_105="@(#)M_strings::string_minus_value(3f): subtract value from TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -10613,7 +10677,7 @@ end function string_minus_value
 !===================================================================================================================================
 function string_append_value(self,value) result (other)
 
-character(len=*),parameter::ident_104="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
+character(len=*),parameter::ident_106="@(#)M_strings::string_append_value(3f): append value to TYPE(STRING)"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -10631,7 +10695,7 @@ end function string_append_value
 !===================================================================================================================================
 function string_multiply_value(self,value) result (other)
 
-character(len=*),parameter::ident_105="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
+character(len=*),parameter::ident_107="@(#)M_strings::string_multiply_value(3f): multiply TYPE(STRING) value times"
 
 class(string),intent(in)      :: self
 type(string)                  :: other
@@ -10647,7 +10711,7 @@ end function string_multiply_value
 !===================================================================================================================================
 logical function eq(self,other)
 
-character(len=*),parameter::ident_106="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
+character(len=*),parameter::ident_108="@(#)M_strings::eq(3f): compare derived type string objects (eq,lt,gt,le,ge,ne)"
 
    class(string),intent(in) :: self
    type(string),intent(in)  :: other
