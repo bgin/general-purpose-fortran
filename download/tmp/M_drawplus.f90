@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 !>
 !!##NAME
 !!    M_drawplus(3f) - [M_drawplus] Additional routines using the M_DRAW graphics library
@@ -3317,7 +3330,7 @@ real                          :: ymin
       call journal('sc',line(:len_trim(line)),i80)
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
-     icount=0  ! clear X11 key buffer on X11 on Linux (anybody else need this?)
+     icount=0  ! clear X11 key buffer on X11 on 1 (anybody else need this?)
 100  continue  ! flush key presses in case someone has been clicking around
      idum=checkkey()
      icount=icount+1

@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 !>
 !!##NAME
 !!    M_units(3fm) - [M_units::INTRO] convert between various physical units
@@ -1938,7 +1951,7 @@ end function inf128
 !!         ALT1: block
 !!         integer :: x = 2143289344
 !!            print *, transfer(x, 1.0)    ! prints "nan" on i686
-!!         blockend ALT1
+!!         endblock ALT1
 !!
 !!      end program demo_nan
 !!

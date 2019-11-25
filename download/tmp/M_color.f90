@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 !>
 !! <h1> <img src="images/swirl.gif" height="140" width="140" > Fortran color module M_color</h1>
 !!
@@ -1758,7 +1771,7 @@ character(len=20)                      :: newname
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! returns name in ECHONAME; which is usually not useful unless NAME represents an integer string.
 ! Note that an integer converted to a string can be used to go sequentially thru the names until NEWNAME="Unknown"
-! Color names can generally be listed using showrgb(1) in GNU/Linux and Unix environments that support X11 Windows:
+! Color names can generally be listed using showrgb(1) in GNU/1 and Unix environments that support X11 Windows:
 
 ! A structure would normally be used for the data; but a large SELECT is easy to maintain.
 ! a numeric name is an alias for each color to facilitate going thru them sequentially since they are not an array.

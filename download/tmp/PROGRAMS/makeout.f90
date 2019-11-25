@@ -179,7 +179,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sun, Nov 17th, 2019 3:17:50 AM>',&
+'@(#)COMPILED:       Mon, Nov 25th, 2019 5:57:05 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -425,7 +425,7 @@ character(len=:),allocatable    :: COMMAND_LINE
       &'                                                   ',&
       &'$(PROG): $(OBJS)                                   ',&
       &'                                                   ',&
-      &'\t$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)   ',&
+      &'\t-$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)||echo "ouch: $@.f90 " ',&
       &'                                                   ',&
       &'clean:                                             ',&
       &'\trm -f $(PROG) $(CPROG) $(OBJS) *.mod             ',&
@@ -475,7 +475,7 @@ character(len=:),allocatable    :: COMMAND_LINE
       &'                                                   ',&
       &'$(PROG): $(LIBRARY)                                ',&
       &'                                                   ',&
-      &'\t$(F90) $(LDFLAGS) $@.f90 -L. -l$(LIB) -o $@ $(LIBS)',&
+      &'\t-$(F90) $(LDFLAGS) $@.f90 -L. -l$(LIB) -o $@ $(LIBS)',&
       &'                                                   ',&
       &'$(LIBRARY): $(OBJS)                                ',&
       &'\t$(AR) $(ARFLAGS) $@ $^                           ',&
@@ -698,7 +698,7 @@ subroutine printmakevar(varname,default)
 !!
 !!  given environment variable name and default value look in environment
 !!  table for the variable and if it is set override the default, then
-!!  print the value as "VARNAME = VALUE" in makefile
+!!  print the value as "VARNAME := VALUE" in makefile
 !===================================================================================================================================
 implicit none
 character(len=*),intent(in)     :: varname
@@ -713,14 +713,14 @@ character(len=*),intent(in)     :: default
       thevalue(:)=' '                                                                 ! keep current size but make it blank
       call get_environment_variable (name=trim(varname),value=thevalue)               ! get the variable value
       if(thevalue.ne.'')then
-         write(io,'(a," = ",a)')trim(varname),trim(thevalue)
+         write(io,'(a," := ",a)')trim(varname),trim(thevalue)
       else
-         write(io,'(a," = ",a)')trim(varname),trim(default)
+         write(io,'(a," := ",a)')trim(varname),trim(default)
       endif
    elseif(istatus.eq.1)then                                                           ! variable does not exist so use default
-      write(io,'(a," = ",a)')trim(varname),trim(default)
+      write(io,'(a," := ",a)')trim(varname),trim(default)
    else                                                                               ! variable is defined as blank
-      write(io,'(a," = ")')trim(varname)
+      write(io,'(a," := ")')trim(varname)
    endif
 end subroutine printmakevar
 end program makeout

@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 !>
 !!##NAME
 !!    readgif(3f) - [M_readgif] read a GIF file

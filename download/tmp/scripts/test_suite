@@ -1,6 +1,7 @@
 #!/bin/bash
 ################################################################################
 #set -x
+PATH=$PATH:$(dirname $0)
 ################################################################################
 HELP(){
 (txt2man -T||cat) <<\EOF
@@ -85,7 +86,7 @@ esac
 #-------------------------------------------
 [ "$VERBOSE" = 'TRUE' ] && cat $UUID.f90
 LIBS='-lncurses -ltinit -lsqlite3 -lreadline -lX11'
-LIBS='-lncurses         -lsqlite3 -lreadline -lX11'
+LIBS=$(if_library_found ncurses tinit sqlite3 readline X11 )
 echo "TEST SUITE FOR $SUBNAME"
 (
    exec 2>&1

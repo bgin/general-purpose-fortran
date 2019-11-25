@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 !>
 !!##NAME
 !!     M_fixedform(3fm) - [NCURSES] convert a text block into a TUI (screen interface)

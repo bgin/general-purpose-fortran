@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 !>
 !!##NAME
 !!    M_debug(3fm) - [M_debug] a collection of Fortran routines for supporting code development by
@@ -223,7 +236,7 @@ public unit_check_msg
 public msg
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! DUPLICATED FROM M_STRINGS(3FM) TO PREVENT CIRCULAR DEPENDENCY
-character(len=*),parameter::ident_1="@(#)M_strings::msg(3f): {msg_scalar,msg_one}"
+character(len=*),parameter::ident="@(#)M_strings::msg(3f): {msg_scalar,msg_one}"
 
 interface msg
    module procedure msg_scalar, msg_one
@@ -278,7 +291,7 @@ contains
 subroutine unit_check_msg(name,g1, g2, g3, g4, g5, g6, g7, g8, g9)
 implicit none
 
-character(len=*),parameter::ident_2="&
+character(len=*),parameter::ident="&
 &@(#)M_debug::unit_check_msg(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: name
@@ -364,7 +377,7 @@ end subroutine unit_check_msg
 function msg_scalar(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-character(len=*),parameter::ident_3="&
+character(len=*),parameter::ident="&
 &@(#)M_strings::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
@@ -425,7 +438,7 @@ end function msg_scalar
 function msg_one(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-character(len=*),parameter::ident_4="&
+character(len=*),parameter::ident="&
 &@(#)M_strings::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
 
 class(*),intent(in)           :: generic1(:)
@@ -567,7 +580,7 @@ end function msg_one
 subroutine stderr(msg, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9)
 implicit none
 
-character(len=*),parameter::ident_5="@(#)M_debug::stderr(3f): writes a message to standard error using a standard f2003 method"
+character(len=*),parameter::ident="@(#)M_debug::stderr(3f): writes a message to standard error using a standard f2003 method"
 
 class(*),intent(in),optional :: msg
 class(*),intent(in),optional :: generic1 ,generic2 ,generic3 ,generic4 ,generic5
@@ -670,7 +683,7 @@ end subroutine stderr
 !===================================================================================================================================
 subroutine fstop(ierr,stdout,stderr)
 
-character(len=*),parameter::ident_6="@(#)M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message"
+character(len=*),parameter::ident="@(#)M_debug::fstop(3f): calls 'STOP VALUE' passing in a value (1-32), with optional message"
 
 integer,intent(in)                   :: ierr
 character(len=*),optional,intent(in) :: stdout
@@ -867,7 +880,7 @@ end subroutine fstop
 !===================================================================================================================================
 subroutine unit_check(name,logical_expression,msg)
 
-character(len=*),parameter::ident_7="@(#)M_debug::unit_check(3f):if .not.expression call 'goodbad NAME bad' & stop program"
+character(len=*),parameter::ident="@(#)M_debug::unit_check(3f):if .not.expression call 'goodbad NAME bad' & stop program"
 
 character(len=*),intent(in)          :: name
 logical,intent(in)                   :: logical_expression
@@ -976,7 +989,7 @@ end subroutine unit_check
 !===================================================================================================================================
 subroutine unit_check_start(name,options,msg)
 
-character(len=*),parameter::ident_8="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
+character(len=*),parameter::ident="@(#)M_debug::unit_check_start(3f): call 'goodbad NAME start'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: options
@@ -1074,7 +1087,7 @@ end subroutine unit_check_start
 !===================================================================================================================================
 subroutine unit_check_done(name,opts,msg)
 
-character(len=*),parameter::ident_9="@(#)M_debug::unit_check_done(3f): call 'goodbad NAME bad'"
+character(len=*),parameter::ident="@(#)M_debug::unit_check_done(3f): call 'goodbad NAME bad'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
@@ -1174,7 +1187,7 @@ end subroutine unit_check_done
 !===================================================================================================================================
 subroutine unit_check_bad(name,opts,msg)
 
-character(len=*),parameter::ident_10="@(#)M_debug::unit_check_bad(3f): call 'goodbad NAME bad'"
+character(len=*),parameter::ident="@(#)M_debug::unit_check_bad(3f): call 'goodbad NAME bad'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
@@ -1245,7 +1258,7 @@ end subroutine unit_check_bad
 !===================================================================================================================================
 subroutine unit_check_good(name,opts,msg)
 
-character(len=*),parameter::ident_11="@(#)M_debug::unit_check_good(3f): call 'goodbad NAME good'"
+character(len=*),parameter::ident="@(#)M_debug::unit_check_good(3f): call 'goodbad NAME good'"
 
 character(len=*),intent(in)          :: name
 character(len=*),intent(in),optional :: opts
@@ -1324,7 +1337,7 @@ end subroutine unit_check_good
 !===================================================================================================================================
 subroutine pdec(string)
 
-character(len=*),parameter::ident_12="@(#)M_debug::pdec(3f): write ASCII Decimal Equivalent (ADE) numbers vertically beneath string"
+character(len=*),parameter::ident="@(#)M_debug::pdec(3f): write ASCII Decimal Equivalent (ADE) numbers vertically beneath string"
 
 character(len=*),intent(in) :: string   ! the string to print
 integer                     :: ilen     ! number of characters in string to print
@@ -1346,7 +1359,7 @@ end subroutine pdec
 !===================================================================================================================================
 function atleast(line,length) result(strout)
 
-character(len=*),parameter::ident_13="@(#)M_debug::atleast(3fp): return string padded to at least specified length"
+character(len=*),parameter::ident="@(#)M_debug::atleast(3fp): return string padded to at least specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
