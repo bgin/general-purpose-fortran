@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!    M_system(3fm) - [M_system::INTRO] Fortran interface to C system interface
@@ -155,10 +142,10 @@
 !!          o fortranposix.
 !===================================================================================================================================
 module M_system
-use,intrinsic     :: iso_c_binding, only : c_float, c_int, c_char
-use,intrinsic     :: iso_c_binding, only : c_ptr, c_f_pointer, c_null_char, c_null_ptr
+use,intrinsic     :: iso_c_binding,   only : c_float, c_int, c_char
+use,intrinsic     :: iso_c_binding,   only : c_ptr, c_f_pointer, c_null_char, c_null_ptr
 use,intrinsic     :: iso_c_binding
-use iso_fortran_env, only : int8, int16, int32, int64
+use,intrinsic     :: iso_fortran_env, only : int8, int16, int32, int64 !!, real32, real64, real128, dp=>real128
 
 implicit none
 private
@@ -1391,21 +1378,20 @@ end function system_utime
 !!       (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!       subroutine system_realpath(input,output,ierr)
+!!       function system_realpath(input) result(output)
 !!
-!!        character(len=*),intent(in)              :: input
-!!        character(len=:),allocatable,intent(out) :: output
-!!        integer,intent(out)                      :: ierr
+!!        character(len=*),intent(in)  :: input
+!!        character(len=:),allocatable :: output
 !!##DESCRIPTION
 !!        system_realpath(3f) calls the C routine realpath(3c) to obtain the absolute pathname of given path
 !!##OPTIONS
 !!
 !!        INPUT     pathname to resolve
+!!
 !!##RETURN VALUE
 !!        OUTPUT    The absolute pathname of the given input pathname.
 !!                  The pathname shall contain no components that are dot or dot-dot,
-!!                  or are symbolic links.
-!!        IERR      is not zero if an error occurs.
+!!                  or are symbolic links. It is equal to the NULL character if an error occurred.
 !!
 !!##EXAMPLE
 !!
@@ -1418,7 +1404,6 @@ end function system_utime
 !!    character(len=:),allocatable :: pathi,patho
 !!    integer                      :: i
 !!    integer                      :: filename_length
-!!    integer                      :: ierr
 !!       do i = 1, command_argument_count()
 !!          ! get pathname from command line arguments
 !!          call get_command_argument (i , length=filename_length)
@@ -1426,8 +1411,8 @@ end function system_utime
 !!          call get_command_argument (i , value=pathi)
 !!          !
 !!          ! resolve each pathname
-!!          call system_realpath(pathi,patho,ierr)
-!!          if(ierr.eq.0)then
+!!          patho=system_realpath(pathi)
+!!          if(patho.ne.char(0))then
 !!             write(*,*)trim(pathi),'=>',trim(patho)
 !!          else
 !!             call system_perror('*system_realpath* error for pathname '//trim(pathi)//':')
@@ -1437,7 +1422,7 @@ end function system_utime
 !!       enddo
 !!       ! if there were no pathnames give resolve the pathname "."
 !!       if(i.eq.1)then
-!!          call system_realpath('.',patho,ierr)
+!!          patho=system_realpath('.')
 !!          write(*,*)'.=>',trim(patho)
 !!       endif
 !!    end program demo_system_realpath
@@ -1454,35 +1439,29 @@ end function system_utime
 !!   *system_realpath* error for pathname NotThere:: No such file or directory
 !!   NotThere=>NotThere
 !===================================================================================================================================
-subroutine system_realpath(input,output,ierr)
+function system_realpath(input) result(string)
 
 character(len=*),parameter::ident_3="&
 &@(#)M_system::system_realpath(3f):call realpath(3c) to get pathname of current working directory"
 
-character(len=*),intent(in)              :: input
-character(len=:),allocatable,intent(out) :: output
-integer,intent(out)                      :: ierr
-integer(kind=c_long),parameter           :: length=4097_c_long
-character(kind=c_char,len=1)             :: buffer(length)
+character(len=*),intent(in)    :: input
+type(c_ptr)                    :: c_output
+character(len=:),allocatable   :: string
 interface
-   function c_realpath(c_input,c_output) bind(c,name="my_realpath") result(ierr)
+   function c_realpath(c_input) bind(c,name="my_realpath") result(c_buffer)
       import c_char, c_size_t, c_ptr, c_int
       character(kind=c_char) ,intent(in)  :: c_input(*)
-      character(kind=c_char) ,intent(out) :: c_output(*)
-      integer(c_int)                      :: ierr
+      type(c_ptr)                         :: c_buffer
    end function
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   buffer=' '
-   ierr=c_realpath(str2arr(trim(input)),buffer)
-   if(ierr.ne.0)then
-      output=input
-      ierr=-1
+   c_output=c_realpath(str2arr(trim(input)))
+   if(.not.c_associated(c_output))then
+      string=char(0)
    else
-      output=trim(arr2str(buffer))
-      ierr=0
+      string=C2F_string(c_output)
    endif
-end subroutine system_realpath
+end function system_realpath
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2897,10 +2876,11 @@ end function system_rename
 !!    use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
 !!    use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
 !!    use M_system, only : DEFFILEMODE, ACCESSPERMS
+!!    use,intrinsic     :: iso_fortran_env, only : int64
 !!    implicit none
 !!    integer         :: ierr
 !!    integer         :: status
-!!    integer(kind=8) :: buffer(13)
+!!    integer(kind=int64) :: buffer(13)
 !!       !Setting Read Permissions for User, Group, and Others
 !!       ! The following example sets read permissions for the owner, group, and others.
 !!       open(file='_test1',unit=10)
@@ -4520,7 +4500,7 @@ end function system_getlogin
 !!
 !!   function system_perm(mode) result (perms)
 !!
-!!    integer(kind=8),intent(in)   :: MODE
+!!    integer(kind=int64),intent(in)   :: MODE
 !!    character(len=:),allocatable :: PERMS
 !!
 !!##DESCRIPTION
@@ -4538,9 +4518,10 @@ end function system_getlogin
 !!
 !!    program demo_system_perm
 !!    use M_system, only : system_perm, system_stat
+!!    use,intrinsic     :: iso_fortran_env, only : int64
 !!    implicit none
 !!    character(len=4096) :: string
-!!    integer(kind=8)     :: values(13)
+!!    integer(kind=int64)     :: values(13)
 !!    integer             :: ierr
 !!    character(len=:),allocatable :: perms
 !!       values=0
@@ -4698,9 +4679,10 @@ end function system_getgrgid
 !!    program demo_system_getpwuid
 !!    use M_system, only : system_getpwuid
 !!    use M_system, only : system_getuid
+!!    use,intrinsic     :: iso_fortran_env, only : int64
 !!    implicit none
 !!    character(len=:),allocatable :: name
-!!    integer(kind=8)              :: uid
+!!    integer(kind=int64)              :: uid
 !!       uid=system_getuid()
 !!       name=system_getpwuid(uid)
 !!       write(*,'("login[",a,"] has UID ",i0)')name,uid
@@ -4824,7 +4806,7 @@ end function C2F_string
 !!   CALL SYSTEM_STAT(NAME, VALUES [, STATUS],[DEBUG])
 !!
 !!    character(len=*),intent(in)          :: NAME
-!!    integer(kind=8),intent(out)          :: values(13)
+!!    integer(kind=int64),intent(out)      :: values(13)
 !!    integer,optional,intent(out)         :: status
 !!    integer,intent(in)                   :: debug
 !!
@@ -4868,13 +4850,14 @@ end function C2F_string
 !!
 !!    use M_system, only : system_stat, system_getpwuid, system_getgrgid
 !!    use M_time, only :   fmtdate, u2d
+!!    use iso_fortran_env, only : int32, int64
 !!    implicit none
 !!
-!!    integer(kind=8)  :: buff(13)
-!!    integer(kind=4)  :: status
+!!    integer(kind=int64)  :: buff(13)
+!!    integer(kind=int32)  :: status
 !!    character(len=*),parameter :: fmt_date='year-month-day hour:minute:second'
 !!
-!!    integer(kind=8) :: &
+!!    integer(kind=int64) :: &
 !!       Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
 !!       Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
 !!       Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated
@@ -4941,7 +4924,7 @@ character(len=*),parameter::ident_33="@(#)M_system::system_stat(3f): call stat(3
 
 character(len=*),intent(in)          :: pathname
 
-integer(kind=8),intent(out)          :: values(13)
+integer(kind=int64),intent(out)      :: values(13)
 integer(kind=c_long)                 :: cvalues(13)
 
 integer,optional,intent(out)         :: ierr
@@ -5012,8 +4995,8 @@ integer,intent(in),optional  :: lun
 integer                      :: lun_local
 character(len=*),parameter   :: dfmt='year-month-dayThour:minute:second'
 integer                      :: ierr
-integer(kind=8)              :: values(13)
-integer(kind=8) :: &
+integer(kind=int64)              :: values(13)
+integer(kind=int64) :: &
    Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
    Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
    Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated
@@ -5369,7 +5352,7 @@ integer                      :: ierr
       call get_command_argument (i , value=pathi)
 !
 ! resolve each pathname
-      call system_realpath(pathi,patho,ierr)
+      patho=system_realpath(pathi)
       if(ierr.eq.0)then
          write(*,*)trim(pathi),'=>',trim(patho)
       else
@@ -5380,7 +5363,7 @@ integer                      :: ierr
    enddo
 ! if there were no pathnames give resolve the pathname "."
    if(i.eq.1)then
-      call system_realpath('.',patho,ierr)
+      patho=system_realpath('.')
       write(*,*)'.=>',trim(patho)
    endif
    call unit_check_start('system_realpath',msg='')
@@ -5463,10 +5446,10 @@ end subroutine test_system_chdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_chmod()
 
-integer         :: ierr
-integer         :: status
-integer(kind=8) :: buffer(13)
-integer         :: ios
+integer             :: ierr
+integer             :: status
+integer(kind=int64) :: buffer(13)
+integer             :: ios
 character(len=4096) :: message
 
 !Setting Read Permissions for User, Group, and Others
@@ -5650,7 +5633,7 @@ integer                      :: ierr
 end subroutine test_system_getenv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getgrgid()
-integer(kind=8) :: gid
+integer(kind=int64)          :: gid
 character(len=:),allocatable :: name
    gid=system_getgid()
    name=system_getgrgid( gid )
@@ -5699,7 +5682,7 @@ end subroutine test_system_getlogin
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_getpwuid()
 character(len=:),allocatable :: name
-integer(kind=8)              :: uid
+integer(kind=int64)          :: uid
    uid=system_getuid()
    name=system_getpwuid(uid)
    write(*,'("login[",a,"] has UID ",i0)')name,uid
@@ -5895,7 +5878,7 @@ end subroutine test_system_opendir
 subroutine test_system_perm()
 
 character(len=4096) :: string
-integer(kind=8)     :: values(13)
+integer(kind=int64) :: values(13)
 integer             :: ierr
 character(len=:),allocatable :: perms
    values=0
@@ -6176,10 +6159,10 @@ subroutine test_system_stat()
 
 use M_time, only :   fmtdate, u2d
 
-integer(kind=8)  :: buff(13)
-integer(kind=4)  :: status
+integer(kind=int64)  :: buff(13)
+integer(kind=int32)  :: status
 character(len=*),parameter :: fmt_date='year-month-day hour:minute:second'
-integer(kind=8) :: &
+integer(kind=int64)  :: &
    Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
    Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
    Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated

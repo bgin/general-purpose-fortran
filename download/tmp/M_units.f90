@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!    M_units(3fm) - [M_units::INTRO] convert between various physical units
@@ -298,7 +285,7 @@ contains
 !>
 !!##NAME
 !!    c2f(3f) - [M_units:TEMPERATURE] convert Celsius to Fahrenheit
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function c2f(celsius)
@@ -330,7 +317,7 @@ contains
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function c2f(celsius)
@@ -344,7 +331,7 @@ end function c2f
 !>
 !!##NAME
 !!    f2c(3f) - [M_units:TEMPERATURE] convert Fahrenheit to Celsius
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function f2c(fahrenheit)
@@ -377,7 +364,7 @@ end function c2f
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function f2c(fahrenheit)
@@ -393,7 +380,7 @@ end function f2c
 !>
 !!##NAME
 !!    r2d(3f) - [M_units:TRIGONOMETRY] convert radians to degrees
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function r2d(radians)
@@ -427,7 +414,7 @@ end function f2c
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental doubleprecision function r2d_i(iradians)
@@ -460,7 +447,7 @@ end function r2d_r
 !>
 !!##NAME
 !!    d2r(3f) - [M_units:TRIGONOMETRY] convert degrees to radians
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function d2r(degrees)
@@ -495,7 +482,7 @@ end function r2d_r
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function d2r_r(degrees)
@@ -530,7 +517,7 @@ end function d2r_i
 !>
 !!##NAME
 !!    sind(3f) - [M_units:TRIGONOMETRY] calculate sine of value in degrees
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function sind(degrees)
@@ -573,7 +560,7 @@ end function d2r_i
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function sind(angle_in_degrees)
@@ -588,8 +575,8 @@ end function sind
 !***********************************************************************************************************************************
 !>
 !!##NAME
-!!    cosd(3f) - [M_units:TRIGONOMETRY] calculate sine of value in degrees
-!!    (LICENSE:MIT)
+!!    cosd(3f) - [M_units:TRIGONOMETRY] calculate cosine of value in degrees
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function cosd(degrees)
@@ -632,7 +619,7 @@ end function sind
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function cosd(angle_in_degrees)
@@ -648,7 +635,7 @@ end function cosd
 !>
 !!##NAME
 !!    tand(3f) - [M_units:TRIGONOMETRY] calculate tangent of value in degrees
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function tand(degrees)
@@ -681,7 +668,7 @@ end function cosd
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function tand(angle_in_degrees)
@@ -697,7 +684,7 @@ end function tand
 !>
 !!##NAME
 !!    asind(3f) - [M_units:TRIGONOMETRY] calculate arcsine of value in degrees
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function asind(value)
@@ -728,7 +715,7 @@ end function tand
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function asind(x)
@@ -744,7 +731,7 @@ end function asind
 !>
 !!##NAME
 !!    acosd(3f) - [M_units:TRIGONOMETRY] calculate arccosine of value in degrees
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function acosd(value)
@@ -776,7 +763,7 @@ end function asind
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function acosd(x)
@@ -792,7 +779,7 @@ end function acosd
 !>
 !!##NAME
 !!    atand(3f) - [M_units:TRIGONOMETRY] calculate arctangent of value in degrees
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function atand(value)
@@ -825,7 +812,7 @@ end function acosd
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function atand(x)
@@ -841,7 +828,7 @@ end function atand
 !>
 !!##NAME
 !!    atan2d(3f) - [M_units:TRIGONOMETRY] calculate arctangent of the complex number X + i Y
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function atan2d(x,y)
@@ -875,7 +862,7 @@ end function atand
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 elemental real function atan2d(x,y)
@@ -896,7 +883,7 @@ end function atan2d
 !>
 !!##NAME
 !!    feet_to_meters(3f) - [M_units:LENGTH] converts a measurement in feet to meters
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental doubleprecision function feet_to_meters(feet)
@@ -935,7 +922,7 @@ end function atan2d
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 elemental function feet_to_meters(feet)
 character(len=*),parameter::ident_16="@(#)M_units::feet_to_meters(3f): converts a measurement in feet to meters"
@@ -953,7 +940,7 @@ end function feet_to_meters
 !>
 !!##NAME
 !!    meters_to_feet(3f) - [M_units:LENGTH] converts a measurement in meters to feet
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental real function meters_to_feet(meters)
@@ -987,7 +974,7 @@ end function feet_to_meters
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 elemental function meters_to_feet(meters)
 character(len=*),parameter::ident_17="@(#)M_units::meters_to_feet(3f): converts a measurement in meters to feet"
@@ -1003,7 +990,7 @@ end function meters_to_feet
 !>
 !!##NAME
 !!     cartesian_to_spherical(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to ISO polar coordinates
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
@@ -1054,7 +1041,7 @@ end function meters_to_feet
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine cartesian_to_spherical(x,y,z,radius,inclination,azimuth)
 implicit none
@@ -1077,7 +1064,7 @@ end subroutine cartesian_to_spherical
 !>
 !!##NAME
 !!     spherical_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert ISO polar coordinates to Cartesian coordinates
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
@@ -1129,7 +1116,7 @@ end subroutine cartesian_to_spherical
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine spherical_to_cartesian(radius,inclination,azimuth,x,y,z)
 implicit none
@@ -1153,7 +1140,7 @@ end subroutine spherical_to_cartesian
 !>
 !!##NAME
 !!     cartesian_to_polar(3f) - [M_units:TRIGONOMETRY] convert Cartesian coordinates to polar coordinates
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine cartesian_to_polar(x,y,radius,inclination)
@@ -1200,7 +1187,7 @@ end subroutine spherical_to_cartesian
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine cartesian_to_polar(x,y,radius,inclination)
 implicit none
@@ -1220,7 +1207,7 @@ end subroutine cartesian_to_polar
 !>
 !!##NAME
 !!     polar_to_cartesian(3f) - [M_units:TRIGONOMETRY] convert polar coordinates to Cartesian coordinates
-!!     (LICENSE:MIT)
+!!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    subroutine polar_to_cartesian(radius,inclination,x,y)
@@ -1268,7 +1255,7 @@ end subroutine cartesian_to_polar
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 subroutine polar_to_cartesian(radius,inclination,x,y)
 implicit none
@@ -1289,7 +1276,7 @@ end subroutine polar_to_cartesian
 !>
 !!##NAME
 !!    atomnum2symbol(3f) - [M_units:SYMBOLS] return element symbol given atomic number
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine atomnum2symbol(atomnum,symbol)
@@ -1436,7 +1423,7 @@ end subroutine polar_to_cartesian
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine atomnum2symbol(atomnum,symbol)
@@ -1473,7 +1460,7 @@ end subroutine atomnum2symbol
 !>
 !!##NAME
 !!    symbol2atomnum(3f) - [M_units:SYMBOLS] return atomic number given element symbol name
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!   subroutine symbol2atomnum(symbol,atomnum)
@@ -1511,7 +1498,7 @@ end subroutine atomnum2symbol
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine symbol2atomnum(symbol,atomnum)
@@ -1553,7 +1540,7 @@ end subroutine symbol2atomnum
 !>
 !!##NAME
 !!    pounds_to_kilograms(3f) - [M_units:MASS] - converts a measurement in pounds-mass to kilograms.
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1603,7 +1590,7 @@ end subroutine symbol2atomnum
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 elemental function pounds_to_kilograms ( pounds )
 character(len=*),parameter::ident_24="@(#)M_units::pounds_to_kilograms(3f): converts a measurement in pounds to kilograms."
@@ -1619,7 +1606,7 @@ end function pounds_to_kilograms
 !>
 !!##NAME
 !!    norm_angle_rad(3f) - [M_units:TRIGONOMETRY] Return input angle given in radians as angle between 0 and 2pi
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental function norm_angle_rad(ang) result(rev)
@@ -1656,7 +1643,7 @@ end function pounds_to_kilograms
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 elemental function norm_angle_rad(ang)
 
@@ -1785,7 +1772,7 @@ end function norm_angle_360_integer
 !>
 !!##NAME
 !!    inf(3f) - [M_units] return an inf (Infinity)
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function inf(value)
@@ -1848,7 +1835,7 @@ end function norm_angle_360_integer
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function inf32(value)
 use,intrinsic :: iso_fortran_env, only: real32
@@ -1889,7 +1876,7 @@ end function inf128
 !>
 !!##NAME
 !!    nan(3f) - [M_units] return a NaN (Not a number)
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function nan(value)
@@ -1962,7 +1949,7 @@ end function inf128
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 function nan32(value)
 use,intrinsic :: iso_fortran_env, only: real32
@@ -2077,7 +2064,7 @@ end function is_even
 !>
 !!##NAME
 !!    is_nan(3f) - [M_units] determine if integer is a Nan (Not a Number) value
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental pure logical is_nan(value)
@@ -2093,12 +2080,17 @@ end function is_even
 !!
 !!     program demo_is_nan
 !!     use M_units, only : is_nan
-!!     real :: x=huge(0.0d0)
-!!     character(len=3) :: line='NaN'
+!!     real :: x
+!!     character(len=*),parameter   :: linei='Infinity'
+!!     character(len=*),parameter   :: line='NaN'
+!!     character(len=:),allocatable :: readable
 !!     real,parameter :: arr(*)=[-100.0,100.0,huge(0.0)]
+!!        readable=linei
+!!        read(readable,*)x
 !!        write(*,*)is_nan(x),x   ! note Infinity is not a Nan
 !!        write(*,*)is_nan(-x),-x
-!!        read(line,*)x
+!!        readable=line
+!!        read(readable,*)x
 !!        write(*,*)is_nan(x),x
 !!        write(*,*)x==x,x  ! note Nan is never equal to another value
 !!        write(*,*)is_nan(arr),arr
@@ -2114,7 +2106,7 @@ end function is_even
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 elemental pure function is_nan(x)
 !!use IEEE_EXCEPTIONS, only : ieee_support_nan ! is IEEE NaNs supported?

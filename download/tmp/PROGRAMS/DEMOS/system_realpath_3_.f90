@@ -5,7 +5,6 @@
           character(len=:),allocatable :: pathi,patho
           integer                      :: i
           integer                      :: filename_length
-          integer                      :: ierr
              do i = 1, command_argument_count()
                 ! get pathname from command line arguments
                 call get_command_argument (i , length=filename_length)
@@ -13,8 +12,8 @@
                 call get_command_argument (i , value=pathi)
                 !
                 ! resolve each pathname
-                call system_realpath(pathi,patho,ierr)
-                if(ierr.eq.0)then
+                patho=system_realpath(pathi)
+                if(patho.ne.char(0))then
                    write(*,*)trim(pathi),'=>',trim(patho)
                 else
                    call system_perror('*system_realpath* error for pathname '//trim(pathi)//':')
@@ -24,7 +23,7 @@
              enddo
              ! if there were no pathnames give resolve the pathname "."
              if(i.eq.1)then
-                call system_realpath('.',patho,ierr)
+                patho=system_realpath('.')
                 write(*,*)'.=>',trim(patho)
              endif
           end program demo_system_realpath

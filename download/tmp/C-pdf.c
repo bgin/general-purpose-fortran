@@ -78,7 +78,7 @@ extern FILE     *_draw_outfile();
 
 /* How to convert degrees to radians */
 #ifndef PI
-#define PI  3.14159265358979323844
+#define PI      3.14159265358979323846264338327950288419716939937510
 #endif
 
 #define d2r(x)     ((x) * PI / 180.0)

@@ -153,7 +153,7 @@ static FILE     *fpP6;
 #define MIN(x,y)  ((x) < (y) ? (x) : (y))
 #define ABS(x)    ((x) < 0 ? -(x) : (x))
 #ifndef PI
-#define PI  3.14159265358979323844
+#define PI      3.14159265358979323846264338327950288419716939937510
 #endif
 
 static int X_SIZE, Y_SIZE, LAST; /* size of graphics array */

@@ -1,17 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 subroutine paranoia(precis)
 use M_journal, only : journal
 character(len=*),parameter :: ident="@(#)paranoia(3f): call doublprecision or real versions of paranoia"

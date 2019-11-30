@@ -1632,7 +1632,7 @@ integer                                      :: ipos2
              exit
            enddo
            if (.not.(j.eq.i-1.and.j.ne.1))then
-              i1=get_integer_from_string(newl,j+1,i-1)
+              i1=get_integer_from_string(newl(j+1:i-1))
            endif
         endif
         do l=i+len_trim(ops(numop)),len_trim(newl)
@@ -1975,8 +1975,8 @@ function get_integer_from_string(line,start_col,end_col) !@(#)get_integer_from_s
    endif
    ipos1=min(max(1,ipos1),len(line))
 
-   if(present(start_col))then
-      ipos2=start_col
+   if(present(end_col))then
+      ipos2=end_col
    else
       ipos2=len(line)
    endif
@@ -2110,6 +2110,9 @@ character(len=1),allocatable   :: text(:) ! array to hold file in memory
          flush(unit=G_iout,iostat=ios)
          G_scratch_filename=trim(uniq(get_tmp()//'_scratch.'))  !! THIS HAS TO BE A UNIQUE NAME -- IMPROVE THIS
          call process_open_write(trim(sget('filter_cmd'))//'>'//trim(G_scratch_filename),G_fp,ierr)  ! open process to read from
+         if(ierr.lt.0)then
+            call stop_ufpp('*ufpp:filter* ERROR - FILTER COMMAND FAILED TO OPEN PROCESS:'//trim(G_SOURCE))
+         endif
       else
          call stop_ufpp('*ufpp:filter* ERROR - FILTER COMMAND BLOCK ENCOUNTERED BUT SYSTEM COMMANDS NOT ENABLED:'//trim(G_SOURCE))
       endif
@@ -3649,7 +3652,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Sat, Nov 23rd, 2019 9:26:17 PM>',&
+'@(#)COMPILED:       Fri, Nov 29th, 2019 9:58:00 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -3713,8 +3716,11 @@ integer                        :: ierr
 !----------------------------------------------------------------------------------------------------------------------------------=
    case('null')                                ! do not write
 !----------------------------------------------------------------------------------------------------------------------------------=
-   case('shell')                                ! do not write
+   case('shell')
       call process_writeline(trim(line),G_fp,ierr)
+      if(ierr.lt.0)then
+         call stop_ufpp('*ufpp:stop* ERROR(ch) - FAILED TO WRITE TO PROCESS:'//trim(line))
+      endif
 !----------------------------------------------------------------------------------------------------------------------------------=
    case('variable')
       buff=trim(line)                          ! do not make a line over 132 characters. Trim input line if needed

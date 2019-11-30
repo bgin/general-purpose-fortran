@@ -1,5 +1,5 @@
 " @(#) advanced vi(1) configuration file 
-set shell=/usr/bin/bash
+set shell=/bin/bash
  "==============================================================================
  " where to put scratch files (lots of room so do not run out of scratch space)
 " set directory=/tmp

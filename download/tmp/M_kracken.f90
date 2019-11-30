@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2687,12 +2674,12 @@ integer        :: ier
    call store('MY_LOGICAL3','.true. .false. .false. .true.','define',ier)
    call store('BAD','.bad.','define',ier)
    call store('BLANK',' ','define',ier)
-   call unit_check('lgets',all(lgets('MY_LOGICAL_TRUE').eqv.[.true.]),      msg=msg('MY_LOGICAL_TRUE'))
-   call unit_check('lgets',all(lgets('MY_LOGICAL_FALSE').eqv.[.false.]),    msg=msg('MY_LOGICAL_FALSE'))
+   call unit_check('lgets',all(lgets('MY_LOGICAL_TRUE').eqv.[.true.,.true.]),             msg=msg('MY_LOGICAL_TRUE'))
+   call unit_check('lgets',all(lgets('MY_LOGICAL_FALSE').eqv.[.false.]),                  msg=msg('MY_LOGICAL_FALSE'))
    call unit_check('lgets',all(lgets('MY_LOGICAL3').eqv.[.true.,.false.,.false.,.true.]), msg=msg('MY_LOGICAL3'))
-   call unit_check('lgets',all(lgets('NOTTHERE').eqv.[.false.]),            msg=msg('NOTTHERE'))
-   call unit_check('lgets',all(lgets('BAD').eqv.[.false.]),                 msg=msg('BAD'))
-   call unit_check('lgets',all(lgets('BLANK').eqv.[.true.]),                msg=msg('BLANK'))
+   call unit_check('lgets',all(lgets('NOTTHERE').eqv.[.false.]),                          msg=msg('NOTTHERE'))
+   call unit_check('lgets',all(lgets('BAD').eqv.[.false.]),                               msg=msg('BAD'))
+   call unit_check('lgets',all(lgets('BLANK').eqv.[.true.]),                              msg=msg('BLANK'))
    call unit_check_done('lgets',msg='')
 end subroutine test_lgets
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

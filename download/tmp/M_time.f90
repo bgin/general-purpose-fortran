@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -3435,6 +3422,7 @@ end subroutine test_d2u
 !!    Public Domain
 !===================================================================================================================================
 function u2d(unixtime) result (dat)
+use iso_fortran_env, only : int64
 
 character(len=*),parameter::ident_23="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
 
@@ -3446,7 +3434,7 @@ integer                        :: ierr
    if(present(unixtime))then
       select type(unixtime)
       type is (integer);             local_unixtime=unixtime
-      type is (integer(kind=8));     local_unixtime=unixtime
+      type is (integer(kind=int64)); local_unixtime=unixtime
       type is (real);                local_unixtime=unixtime
       type is (real(kind=realtime)); local_unixtime=unixtime
       end select

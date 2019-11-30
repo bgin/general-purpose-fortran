@@ -2,10 +2,11 @@
           use M_path, only   : path
           use M_system, only : system_getpwuid, system_getgrgid
           use M_time,   only : fmtdate, u2d
+          use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
           character(len=*),parameter               :: fmt_date='year-month-day hour:minute:second'
           type(path)                               :: file
           character(len=:),allocatable             :: filename
-          integer(kind=8)                          :: buff(14)
+          integer(kind=int64)                      :: buff(14)
           integer                                  :: i
              do i = 1 , command_argument_count()
                 call getname(i,filename)

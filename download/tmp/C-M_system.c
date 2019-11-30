@@ -141,24 +141,8 @@ void my_flush(void){
    fflush(stdout);
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
-int my_realpath (char *symlinkpath, char *actualpath) {
-   int length;
-   int ierr;
-   char *gotpath;
-   gotpath = realpath (symlinkpath, NULL);
-   if (gotpath != NULL) {
-      /* ... use gotpath ... */
-      length = (int) strlen (actualpath);
-      actualpath = malloc(sizeof (gotpath));
-      strncpy (actualpath, gotpath, length);
-      free (gotpath);
-      return (0);
-   } else {
-      /* ... handle error ... */
-      length = (int) strlen (symlinkpath);
-      strncpy (actualpath, symlinkpath, length);
-      return (-1);
-   }
+char* my_realpath (char *symlinkpath) {
+   return(realpath (symlinkpath, NULL));
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
 /*

@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !===================================================================================================================================
 ! This module and the example function squarei() that uses it shows how you
 ! can use polymorphism to allow arguments of different types generically
@@ -499,7 +486,7 @@ end function anyscalar_to_real
 !>
 !!##NAME
 !!
-!!    anyinteger_to_64bit(3f) - [M_anything] convert integer any kind to integer(kind=64)
+!!    anyinteger_to_64bit(3f) - [M_anything] convert integer any kind to integer(kind=int64)
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -520,7 +507,7 @@ end function anyscalar_to_real
 !!
 !!##OPTIONS
 !!
-!!    VALUEIN  input argument of a procedure to convert to type INTEGER(KIND=64).
+!!    VALUEIN  input argument of a procedure to convert to type INTEGER(KIND=int64).
 !!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64.
 !!##RESULTS
 !!             The value of VALUIN converted to INTEGER(KIND=INT64).
@@ -588,6 +575,8 @@ end function anyinteger_to_64bit
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine test_suite_M_anything()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
 !! setup
    call test_anyinteger_to_64bit()
    call test_anyscalar_to_real()
@@ -600,8 +589,6 @@ contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyinteger_to_64bit()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 call unit_check_start('anyinteger_to_64bit',msg='')
 call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int8)) .eq.127_int64, msg=msg(huge(0_int8)))
 call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int16)).eq.32767_int64, msg=msg(huge(0_int16)))
@@ -612,8 +599,6 @@ end subroutine test_anyinteger_to_64bit
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyscalar_to_double()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 real :: infinity
 !!character(len=*),parameter :: line='infinity'
 character(len=8)           :: line='infinity'
@@ -633,8 +618,6 @@ end subroutine test_anyscalar_to_double
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyscalar_to_real()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 real :: infinity
 !!character(len=*),parameter :: line='infinity'
 character(len=8)           :: line='infinity'
@@ -654,9 +637,6 @@ call unit_check_done('anyscalar_to_real',msg='')
 end subroutine test_anyscalar_to_real
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anything_to_bytes()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 call unit_check_start('anything_to_bytes',msg='')
 call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0_int8))      .eq. transfer(huge(0_int8),'A')),  msg=msg(''))
 call  unit_check('anything_to_bytes',any(anything_to_bytes(huge(0_int16))     .eq. transfer(huge(0_int16),'A')),  msg=msg(''))
@@ -669,8 +649,6 @@ call unit_check_done('anything_to_bytes',msg='')
 end subroutine test_anything_to_bytes
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_empty
-use M_debug, only: unit_check_start, unit_check
-use M_debug, only: unit_check_good, unit_check_bad, unit_check_done, msg
 !!use M_anything, only : empty, assignment(=)
 implicit none
 doubleprecision,allocatable  :: d(:)
@@ -724,7 +702,6 @@ integer                      :: answer
 end subroutine test_empty
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine check_ints(answer,ints)
-use M_debug, only : unit_check, msg
 integer,intent(in),allocatable :: ints(:)
 integer,intent(in) :: answer
    !  if mask test fails, change database status for specified entry to -1 and stop program, else continue
@@ -734,7 +711,6 @@ integer,intent(in) :: answer
 end subroutine check_ints
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine check_strs(answer,strs)
-use M_debug, only : unit_check, unit_check_level, msg
 integer,intent(in)           :: answer
 character(len=:),allocatable,intent(in)  :: strs(:)
 integer k

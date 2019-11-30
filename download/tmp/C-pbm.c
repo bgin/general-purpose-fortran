@@ -204,7 +204,7 @@ extern  FILE     *draw_fp;
 #define byte unsigned char
 
 #ifndef PI
-#define PI  3.14159265358979323844
+#define PI      3.14159265358979323846264338327950288419716939937510
 #endif
 
 

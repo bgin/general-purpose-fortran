@@ -2,13 +2,14 @@
 
           use M_system, only : system_stat, system_getpwuid, system_getgrgid
           use M_time, only :   fmtdate, u2d
+          use iso_fortran_env, only : int32, int64
           implicit none
 
-          integer(kind=8)  :: buff(13)
-          integer(kind=4)  :: status
+          integer(kind=int64)  :: buff(13)
+          integer(kind=int32)  :: status
           character(len=*),parameter :: fmt_date='year-month-day hour:minute:second'
 
-          integer(kind=8) :: &
+          integer(kind=int64) :: &
              Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
              Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
              Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated

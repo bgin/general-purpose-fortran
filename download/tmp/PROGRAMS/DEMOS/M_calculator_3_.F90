@@ -4,6 +4,7 @@
                  !
                  use M_calculator, only: jucalc,iclen_calc
                  use M_calculator, only : rnum0
+                 use M_calculator, only : set_mysub, set_myfunc
                  implicit none
                  integer, parameter        :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
                  character(len=iclen_calc) :: event, line
@@ -88,6 +89,8 @@
                  integer                      :: ier
 
                  integer                      :: iwhich
+                 integer                      :: i10
+                 integer                      :: ilen
                  character(len=iclen_calc)    :: temp1
                     fval=0.0d0
                  !-----------------------------------------------------------------------

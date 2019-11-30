@@ -188,6 +188,7 @@ character(len=80),allocatable  :: usage(:)
 usage=[ character(len=80) :: &
 'NAME                                                                            ',&
 '     what(1f) - [DEVELOPER] extract SCCS-style metadata from a file             ',&
+'     (LICENSE:PD)                                                               ',&
 '                                                                                ',&
 'SYNOPSIS                                                                        ',&
 '     what [ filename(s) [ -s] [ -q] [ -html|-table] ] | [ [ -help] [ -version] ]',&
@@ -248,6 +249,10 @@ usage=[ character(len=80) :: &
 '        1     No matches found.                                                 ',&
 '                                                                                ',&
 'ENVIRONMENT VARIABLES                                                           ',&
+'AUTHOR                                                                          ',&
+'     John S. Urban                                                              ',&
+'LICENSE                                                                         ',&
+'     Public Domain                                                              ',&
 '                                                                                ',&
 'SEE ALSO                                                                        ',&
 '   The following commands can help identify file contents                       ',&

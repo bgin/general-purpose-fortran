@@ -1,8 +1,9 @@
           program demo_system_perm
           use M_system, only : system_perm, system_stat
+          use,intrinsic     :: iso_fortran_env, only : int64
           implicit none
           character(len=4096) :: string
-          integer(kind=8)     :: values(13)
+          integer(kind=int64)     :: values(13)
           integer             :: ierr
           character(len=:),allocatable :: perms
              values=0

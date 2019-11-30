@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!       M_Compare_Float_Numbers - [M_Compare_Float_Numbers] perform relational comparisons on real numbers

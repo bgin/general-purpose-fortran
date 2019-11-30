@@ -179,7 +179,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    create Makefile for current directory>',&
 '@(#)VERSION:        1.0, 2017-12-09>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Nov 25th, 2019 5:57:05 AM>',&
+'@(#)COMPILED:       Fri, Nov 29th, 2019 9:58:23 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -417,8 +417,8 @@ character(len=:),allocatable    :: COMMAND_LINE
    else
       write(io,'(a)')'all: $(PROG) $(CPROG)'
    endif
-   write(io,'(a)')expand('\ttest -e scripts/test_suite && chmod u+xr scripts/test_suite||echo "test_suite not found"')
-   write(io,'(a)')expand('\tPATH="`pwd`/scripts:$$PATH"; which test_suite && test_suite -l test_suite_log.txt')
+   write(io,'(a)')expand('\t@test -e scripts/test_suite && chmod u+xr scripts/test_suite||echo "test_suite not found"')
+   write(io,'(a)')expand('\tPATH="`pwd`/scripts:$$PATH"; which test_suite && env F90=$(F90) test_suite -l test_suite_log.txt')
 !----------------------------------------------------------------------------------------------------------------------------------
    if(libname.eq.'')then
    fixed=[character(len=132) :: &

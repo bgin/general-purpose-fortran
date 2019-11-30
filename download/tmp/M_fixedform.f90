@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!     M_fixedform(3fm) - [NCURSES] convert a text block into a TUI (screen interface)
@@ -205,7 +192,7 @@ module M_fixedform
 use,intrinsic :: ISO_C_BINDING
 private
    integer,parameter :: pg_lines=2000, pg_columns=256          ! upper limits for user input file data
-   character(len=pg_columns)         :: msg                    ! message to appear in status bar
+   character(len=pg_columns)         :: mesg                    ! message to appear in status bar
    type(C_PTR)                       :: big_pd
    character(len=pg_columns),target  :: page_pd(pg_lines)=' '  ! array to hold user definition of form
 
@@ -281,7 +268,7 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
    integer(C_INT)                       :: previous ! copy of pch if present, else zero
 !-----------------------------------------------------------------------------------------------------------------------------------
    character(len=256)        :: searchstring
-   character(len=128)        :: msg
+   character(len=128)        :: mesg
    integer                   :: ierr
    integer                   :: r
    integer(C_INT)            :: ix,iy
@@ -318,7 +305,7 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
       previous=0
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   msg=""
+   mesg=""
    call getyx(stdscr,iy,ix)
 !-----------------------------------------------------------------------------------------------------------------------------------
    call cursor2pad(iy,ix,py,px,cell)                  ! convert screen cursor to pad position and get cell data
@@ -332,10 +319,10 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
    call inbox(ix,iy,ibox)
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(ch >= KEY_F(1).and. ch <= KEY_F(64) )then       ! Without keypad enabled this will not get to us either
-      write(msg,'(a,i0)')"Function Key ",ch-KEY_F0
+      write(mesg,'(a,i0)')"Function Key ",ch-KEY_F0
 !-----------------------------------------------------------------------------------------------------------------------------------
    elseif(ch>=33 .and. ch<=126)then   ! regular printable character
-      write(msg,'(a,a)')"regular character ",char(ch)
+      write(mesg,'(a,a)')"regular character ",char(ch)
       if(vi_mode.or.(.not.isunderline))then           ! if in vi(1) mode or character underneath is not an underline field
          select case(char(ch))
          !=================================================================
@@ -365,19 +352,19 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
                call move_pd(0,-1,'L')
             endif
          !=================================================================
-         case('g') ; call home_pad();msg=trim(msg)//' : home form'         ! "home" user data
+         case('g') ; call home_pad();mesg=trim(mesg)//' : home form'         ! "home" user data
          case('i') ; call insert_in_underline()                            ! <
          case('n') ; call find_next()                                      ! next input field
-         case('N') ; call space_bar(msg);call find_next()                  ! change menu; then next input field
+         case('N') ; call space_bar(mesg);call find_next()                  ! change menu; then next input field
          case('p') ; call find_previous()                                  ! previous input field
-         case('P') ; call space_bar(msg);call find_previous()              ! change menu; then previous input field
+         case('P') ; call space_bar(mesg);call find_previous()              ! change menu; then previous input field
          case('q') ; call my_exit()                                        ! quit with prompt
          case('r') ; call replace_in_underline()                           !
          case('R') ; call replace_in_underline()                           !
          case('x') ; if(isunderline)then
                         call delete_in_underline()
                      else
-                        call space_bar(msg)
+                        call space_bar(mesg)
                      endif
          case('z') ; call move_pd(iy,0,'L')                                ! current line to top of screen, like z<CR> or z+
          case('Z') ; call move_pd(iy-((LINES-1)-button_lines),0,'L')       ! current line to bottom of screen, like z-
@@ -394,12 +381,12 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
          !=================================================================
          case('/')
             call promptfor(char(ch),searchstring)
-            msg=searchstring
+            mesg=searchstring
             call searchfor(big_pd,searchstring)                           ! search for string in window starting at current position
          !=================================================================
          case(':')
             call promptfor(char(ch),searchstring)
-            msg=searchstring
+            mesg=searchstring
          !=================================================================
          end select
       else
@@ -415,143 +402,143 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
 !-----------------------------------------------------------------------------------------------------------------------------------
    else
       SELECT CASE (ch)
-      case (key_break ) ; msg="break"
-      case (key_down ) ; msg="down: Down arrow key"
+      case (key_break ) ; mesg="break"
+      case (key_down ) ; mesg="down: Down arrow key"
             if(iy.ge.LINES-1)then
                call move_pd(1,0,'L')
             else
                ierr=move(iy+1,ix)
             endif
-      case (key_up ) ; msg="up: Up arrow key"
+      case (key_up ) ; mesg="up: Up arrow key"
             if(iy.gt.0)then
                ierr=move(iy-1,ix)
             else
                call move_pd(-1,0,'L')
             endif
-      case (key_left ) ; msg="left: Left arrow key"
+      case (key_left ) ; mesg="left: Left arrow key"
             if(ix.gt.0)then
                ierr=move(iy,ix-1)
             else
                call move_pd(0,-1,'L')
             endif
-      case (key_right ) ; msg="right: Right arrow key"
+      case (key_right ) ; mesg="right: Right arrow key"
             if(ix.lt.COLS-1)then
                ierr=move(iy,ix+1)
             else
                call move_pd(0,1,'L')
             endif
-      case (key_home ) ; msg="home: home key"
+      case (key_home ) ; mesg="home: home key"
          call home_pad()                                       ! "home" user data
-      case (key_backspace )     ; msg="backspace"  ! not on all PC keyboards
+      case (key_backspace )     ; mesg="backspace"  ! not on all PC keyboards
          if(ix.gt.0)then
             ierr=move(iy,ix-1)
          else
             call move_pd(0,-1,'L')
          endif
-      case (key_f0 )            ; msg="f0: function keys; 64 reserved"
-      case (key_dl )            ; msg="dl: delete line"
-      case (key_il )            ; msg="il: insert line"
-      case (key_dc )            ; msg="dc: delete character"
+      case (key_f0 )            ; mesg="f0: function keys; 64 reserved"
+      case (key_dl )            ; mesg="dl: delete line"
+      case (key_il )            ; mesg="il: insert line"
+      case (key_dc )            ; mesg="dc: delete character"
          if(isunderline) call delete_in_underline()
-      case (key_ic )            ; msg="ic: insert char or enter ins mode"
+      case (key_ic )            ; mesg="ic: insert char or enter ins mode"
          if(isunderline) call insert_in_underline()
-      case (key_eic )           ; msg="eic: exit insert char mode"
-      case (key_clear )         ; msg="clear: clear screen"
-      case (key_eos )           ; msg="eos: clear to end of screen"
-      case (key_eol )           ; msg="eol: clear to end of line"
-      case (key_sf )            ; msg="sf: scroll 1 line forward"
+      case (key_eic )           ; mesg="eic: exit insert char mode"
+      case (key_clear )         ; mesg="clear: clear screen"
+      case (key_eos )           ; mesg="eos: clear to end of screen"
+      case (key_eol )           ; mesg="eol: clear to end of line"
+      case (key_sf )            ; mesg="sf: scroll 1 line forward"
          call move_pd(1,0,'L')
-      case (key_sr )            ; msg="sr: scroll 1 line back (reverse)"
+      case (key_sr )            ; mesg="sr: scroll 1 line back (reverse)"
          call move_pd(-1,0,'L')
-      case (key_npage )         ; msg="npage: next page"
+      case (key_npage )         ; mesg="npage: next page"
          call move_pd(1,0,'P')
-      case (key_ppage )         ; msg="ppage: previous page"
+      case (key_ppage )         ; mesg="ppage: previous page"
          call move_pd(-1,0,'P')
-      case (key_stab )          ; msg="stab: set tab"
-      case (key_ctab )          ; msg="ctab: clear tab"
-      case (key_catab )         ; msg="catab: clear all tabs"
-      case (key_enter )         ; msg="enter: enter or send" ! unreliable
+      case (key_stab )          ; mesg="stab: set tab"
+      case (key_ctab )          ; mesg="ctab: clear tab"
+      case (key_catab )         ; mesg="catab: clear all tabs"
+      case (key_enter )         ; mesg="enter: enter or send" ! unreliable
          if(ibox.eq.0)then
-            call space_bar(msg)
+            call space_bar(mesg)
          else
             call button_action()
             if(ibox.eq.5)return
          endif
-      case (key_sreset )        ; msg="sreset: soft/reset" ! unreliable
-      case (key_reset )         ; msg="reset: reset/hard reset" ! unreliable
-      case (key_print )         ; msg="print: print/copy"
+      case (key_sreset )        ; mesg="sreset: soft/reset" ! unreliable
+      case (key_reset )         ; mesg="reset: reset/hard reset" ! unreliable
+      case (key_print )         ; mesg="print: print/copy"
          call printit()
-      case (key_ll )            ; msg="ll: home down/bottom (lower left)"
-      case (key_a1 )            ; msg="a1:"
-      case (key_a3 )            ; msg="a3:"
-      case (key_b2 )            ; msg="b2:"
-      case (key_c1 )            ; msg="c1:"
-      case (key_c3 )            ; msg="c3:"
-      case (key_btab )          ; msg="btab: Back tab key"
+      case (key_ll )            ; mesg="ll: home down/bottom (lower left)"
+      case (key_a1 )            ; mesg="a1:"
+      case (key_a3 )            ; mesg="a3:"
+      case (key_b2 )            ; mesg="b2:"
+      case (key_c1 )            ; mesg="c1:"
+      case (key_c3 )            ; mesg="c3:"
+      case (key_btab )          ; mesg="btab: Back tab key"
                call find_previous()
-      case (key_beg )           ; msg="beg: beginning key"
-      case (key_cancel )        ; msg="cancel: cancel key"
-      case (key_close )         ; msg="close: close key"
-      case (key_command )       ; msg="command: command key"
-      case (key_copy )          ; msg="copy: copy key"
-      case (key_create )        ; msg="create: create key"
-      case (key_end )           ; msg="end: end key"
-         call message(msg)                  ! draw message line
+      case (key_beg )           ; mesg="beg: beginning key"
+      case (key_cancel )        ; mesg="cancel: cancel key"
+      case (key_close )         ; mesg="close: close key"
+      case (key_command )       ; mesg="command: command key"
+      case (key_copy )          ; mesg="copy: copy key"
+      case (key_create )        ; mesg="create: create key"
+      case (key_end )           ; mesg="end: end key"
+         call message(mesg)                  ! draw message line
          call extract_answers_tabs()
          ierr=flash()
          return
-      case (key_exit )          ; msg="exit: exit key"
-      case (key_find )          ; msg="find: find key"
-      case (key_help )          ; msg="help: help key"
-      case (key_mark )          ; msg="mark: mark key"
-      case (key_message )       ; msg="message: message key"
-      case (key_move )          ; msg="move: move key"
-      case (key_next )          ; msg="next: next object key"
-      case (key_open )          ; msg="open: open key"
-      case (key_options )       ; msg="options: options key"
-      case (key_previous )      ; msg="previous: previous object key"
-      case (key_redo )          ; msg="redo: redo key"
-      case (key_reference )     ; msg="reference: reference key"
-      case (key_refresh )       ; msg="refresh: refresh key"
+      case (key_exit )          ; mesg="exit: exit key"
+      case (key_find )          ; mesg="find: find key"
+      case (key_help )          ; mesg="help: help key"
+      case (key_mark )          ; mesg="mark: mark key"
+      case (key_message )       ; mesg="message: message key"
+      case (key_move )          ; mesg="move: move key"
+      case (key_next )          ; mesg="next: next object key"
+      case (key_open )          ; mesg="open: open key"
+      case (key_options )       ; mesg="options: options key"
+      case (key_previous )      ; mesg="previous: previous object key"
+      case (key_redo )          ; mesg="redo: redo key"
+      case (key_reference )     ; mesg="reference: reference key"
+      case (key_refresh )       ; mesg="refresh: refresh key"
          ierr=refresh()
-      case (key_replace )       ; msg="replace: replace key"
-      case (key_restart )       ; msg="restart: restart key"
-      case (key_resume )        ; msg="resume: resume key"
-      case (key_save )          ; msg="save: save key"
-      case (key_sbeg )          ; msg="sbeg: shifted beginning key"
-      case (key_scancel )       ; msg="scancel: shifted cancel key"
-      case (key_scommand )      ; msg="scommand: shifted command key"
-      case (key_scopy )         ; msg="scopy: shifted copy key"
-      case (key_screate )       ; msg="screate: shifted create key"
-      case (key_sdc )           ; msg="sdc: shifted delete char key"
-      case (key_sdl )           ; msg="sdl: shifted delete line key"
-      case (key_select )        ; msg="select: select key"
-      case (key_send )          ; msg="send: shifted end key"
-      case (key_seol )          ; msg="seol: shifted clear line key"
-      case (key_sexit )         ; msg="sexit: shifted exit key"
-      case (key_sfind )         ; msg="sfind: shifted find key"
-      case (key_shelp )         ; msg="shelp: shifted help key"
-      case (key_shome )         ; msg="shome: shifted home key"
-      case (key_sic )           ; msg="sic: shifted input key"
-      case (key_sleft )         ; msg="sleft: shifted left arrow key"
+      case (key_replace )       ; mesg="replace: replace key"
+      case (key_restart )       ; mesg="restart: restart key"
+      case (key_resume )        ; mesg="resume: resume key"
+      case (key_save )          ; mesg="save: save key"
+      case (key_sbeg )          ; mesg="sbeg: shifted beginning key"
+      case (key_scancel )       ; mesg="scancel: shifted cancel key"
+      case (key_scommand )      ; mesg="scommand: shifted command key"
+      case (key_scopy )         ; mesg="scopy: shifted copy key"
+      case (key_screate )       ; mesg="screate: shifted create key"
+      case (key_sdc )           ; mesg="sdc: shifted delete char key"
+      case (key_sdl )           ; mesg="sdl: shifted delete line key"
+      case (key_select )        ; mesg="select: select key"
+      case (key_send )          ; mesg="send: shifted end key"
+      case (key_seol )          ; mesg="seol: shifted clear line key"
+      case (key_sexit )         ; mesg="sexit: shifted exit key"
+      case (key_sfind )         ; mesg="sfind: shifted find key"
+      case (key_shelp )         ; mesg="shelp: shifted help key"
+      case (key_shome )         ; mesg="shome: shifted home key"
+      case (key_sic )           ; mesg="sic: shifted input key"
+      case (key_sleft )         ; mesg="sleft: shifted left arrow key"
          call move_pd(0,-1,'L')
-      case (key_smessage )      ; msg="smessage: shifted message key"
-      case (key_smove )         ; msg="smove: shifted move key"
-      case (key_snext )         ; msg="snext: shifted next key"
-      case (key_soptions )      ; msg="soptions: shifted options key"
-      case (key_sprevious )     ; msg="sprevious: shifted prev key"
-      case (key_sprint )        ; msg="sprint: shifted print key"
-      case (key_sredo )         ; msg="sredo: shifted redo key"
-      case (key_sreplace )      ; msg="sreplace: shifted replace key"
-      case (key_sright )        ; msg="sright: shifted right arrow"
+      case (key_smessage )      ; mesg="smessage: shifted message key"
+      case (key_smove )         ; mesg="smove: shifted move key"
+      case (key_snext )         ; mesg="snext: shifted next key"
+      case (key_soptions )      ; mesg="soptions: shifted options key"
+      case (key_sprevious )     ; mesg="sprevious: shifted prev key"
+      case (key_sprint )        ; mesg="sprint: shifted print key"
+      case (key_sredo )         ; mesg="sredo: shifted redo key"
+      case (key_sreplace )      ; mesg="sreplace: shifted replace key"
+      case (key_sright )        ; mesg="sright: shifted right arrow"
          call move_pd(0,1,'L')
-      case (key_srsume )        ; msg="srsume: shifted resume key"
-      case (key_ssave )         ; msg="ssave: shifted save key"
-      case (key_ssuspend )      ; msg="ssuspend: shifted suspend key"
-      case (key_sundo )         ; msg="sundo: shifted undo key"
-      case (key_suspend )       ; msg="suspend: suspend key"
-      case (key_undo )          ; msg="undo: undo key"
-      case (key_mouse )         ; msg="mouse: mouse key"
+      case (key_srsume )        ; mesg="srsume: shifted resume key"
+      case (key_ssave )         ; mesg="ssave: shifted save key"
+      case (key_ssuspend )      ; mesg="ssuspend: shifted suspend key"
+      case (key_sundo )         ; mesg="sundo: shifted undo key"
+      case (key_suspend )       ; mesg="suspend: suspend key"
+      case (key_undo )          ; mesg="undo: undo key"
+      case (key_mouse )         ; mesg="mouse: mouse key"
          ierr=getmouse(eek)
          !ierr=mvaddch(eek%y,eek%x,int(ichar('*'),C_LONG))
          !------------------------       !! some of this is not needed
@@ -568,7 +555,7 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
          !------------------------
          call inbox(ix,iy,ibox)
          if(ibox.eq.0)then
-            call space_bar(msg)      ! maybe clicked on a menu option
+            call space_bar(mesg)      ! maybe clicked on a menu option
          else
             call button_action(eek)
             if(ibox.eq.5)return
@@ -579,14 +566,14 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
          ierr=napms(100)          ! pause for 1/10 of a second
          ierr = curs_set(r)       ! second, reset the cursor
          !------------------------
-      case (key_resize )        ; msg="resize: window resize"
+      case (key_resize )        ; mesg="resize: window resize"
           call redraw()
-      case (key_event )         ; msg="event: event key"
-      case (key_max )           ; msg="max: undo key"
+      case (key_event )         ; mesg="event: event key"
+      case (key_max )           ; mesg="max: undo key"
       CASE DEFAULT
-        msg=""
+        mesg=""
       END SELECT
-      if(msg == "" )then
+      if(mesg == "" )then
          SELECT CASE (ch)
          !------------------------------------------
          !WARNING: SOMETIMES ALTERNATES ARE USED
@@ -595,104 +582,104 @@ recursive subroutine process_keypress(ch,pch) ! @(#) take an appropriate action 
          !1E (RS)  ctrl ^ RECORD SEPARATOR   ctrl-=
          !7F (DEL) ctrl ? DELETE
          !------------------------------------------
-            CASE(0) ; msg="NUL '\0' ctrl-@  NULL"
-            CASE(1) ; msg="SOH      ctrl-A  START OF HEADING"
-            CASE(2) ; msg="STX      ctrl-B  START OF TEXT"
+            CASE(0) ; mesg="NUL '\0' ctrl-@  NULL"
+            CASE(1) ; mesg="SOH      ctrl-A  START OF HEADING"
+            CASE(2) ; mesg="STX      ctrl-B  START OF TEXT"
                call move_pd(-1,0,'P')
-            CASE(3) ; msg="ETX      ctrl-C  END OF TEXT"
+            CASE(3) ; mesg="ETX      ctrl-C  END OF TEXT"
                !call my_exit()
                ierr=def_prog_mode()                                           ! Save the tty modes
                ierr=refresh()                                                 ! clear screen
                ierr=endwin()                                                  ! End curses mode
                write(*,*)'EXIT'
                stop
-            CASE(4) ; msg="EOT      ctrl-D  END OF TRANSMISSION"
+            CASE(4) ; mesg="EOT      ctrl-D  END OF TRANSMISSION"
                call move_pd(1,0,'H')
-            CASE(5) ; msg="ENQ      ctrl-E  ENQUIRY"
+            CASE(5) ; mesg="ENQ      ctrl-E  ENQUIRY"
                call move_pd(1,0,'L')
-            CASE(6) ; msg="ACK      ctrl-F  ACKNOWLEDGE"
+            CASE(6) ; mesg="ACK      ctrl-F  ACKNOWLEDGE"
                call move_pd(1,0,'P')
-            CASE(7) ; msg="BEL '\a  ctrl-G  BELL'"
+            CASE(7) ; mesg="BEL '\a  ctrl-G  BELL'"
                ierr=beep()
-            CASE(8) ; msg="BS  '\b' ctrl-H  BACKSPACE"
+            CASE(8) ; mesg="BS  '\b' ctrl-H  BACKSPACE"
                if(ix.gt.0)then
                   ierr=move(iy,ix-1)
                else
                   call move_pd(0,-1,'L')
                endif
-            CASE(9) ; msg="HT  '\t' ctrl-I  HORIZONTAL TABULATION"
+            CASE(9) ; mesg="HT  '\t' ctrl-I  HORIZONTAL TABULATION"
                call find_next()
-            CASE(10) ; msg="LF '\n' ctrl-J  LINE FEED"
-               call space_bar(msg)
+            CASE(10) ; mesg="LF '\n' ctrl-J  LINE FEED"
+               call space_bar(mesg)
                call find_next()
-            CASE(11) ; msg="VT '\v' ctrl-K  VERTICAL TABULATION"
-            CASE(12) ; msg="FF '\f' ctrl-L  FORM FEED or NEW PAGE"
+            CASE(11) ; mesg="VT '\v' ctrl-K  VERTICAL TABULATION"
+            CASE(12) ; mesg="FF '\f' ctrl-L  FORM FEED or NEW PAGE"
                call move_pd(0,-1,'L')
-            CASE(13) ; msg="CR '\r' ctrl-M  CARRIAGE RETURN"
-               call message(msg)                  ! draw message line
+            CASE(13) ; mesg="CR '\r' ctrl-M  CARRIAGE RETURN"
+               call message(mesg)                  ! draw message line
                call extract_answers_tabs()
                ierr=flash()
                return
-            CASE(14) ; msg="SO      ctrl-N  SHIFT OUT"
+            CASE(14) ; mesg="SO      ctrl-N  SHIFT OUT"
                call find_next()
-            CASE(15) ; msg="SI      ctrl-O  SHIFT IN"
+            CASE(15) ; mesg="SI      ctrl-O  SHIFT IN"
                call printit()
-            CASE(16) ; msg="DLE     ctrl-P  DATA LINK ESCAPE"
+            CASE(16) ; mesg="DLE     ctrl-P  DATA LINK ESCAPE"
                call find_previous()
-            CASE(17) ; msg="DC1     ctrl-Q  DEVICE CONTROL 1"
+            CASE(17) ; mesg="DC1     ctrl-Q  DEVICE CONTROL 1"
                call my_exit()                                        ! quit
-            CASE(18) ; msg="DC2     ctrl-R  DEVICE CONTROL 2"
+            CASE(18) ; mesg="DC2     ctrl-R  DEVICE CONTROL 2"
                call move_pd(0,1,'L')
-            CASE(19) ; msg="DC3     ctrl-S  DEVICE CONTROL 3"
-               call message(msg)                  ! draw message line
+            CASE(19) ; mesg="DC3     ctrl-S  DEVICE CONTROL 3"
+               call message(mesg)                  ! draw message line
                call extract_answers_tabs()
                ierr=flash()
                return
-            CASE(20) ; msg="DC4     ctrl-T  DEVICE CONTROL 4"
-            CASE(21) ; msg="NAK     ctrl-U  NEGATIVE ACKNOWLEDGE"
+            CASE(20) ; mesg="DC4     ctrl-T  DEVICE CONTROL 4"
+            CASE(21) ; mesg="NAK     ctrl-U  NEGATIVE ACKNOWLEDGE"
                call move_pd(-1,0,'H')
-            CASE(22) ; msg="SYN     ctrl-V  SYNCHRONOUS IDLE"
+            CASE(22) ; mesg="SYN     ctrl-V  SYNCHRONOUS IDLE"
                vi_mode=.true.
-               msg=trim(msg)// ' :: vi mode on'
-            CASE(23) ; msg="ETB     ctrl-W  END OF TRANSMISSION BLOCK"
-            CASE(24) ; msg="CAN     ctrl-X  CANCEL"
+               mesg=trim(mesg)// ' :: vi mode on'
+            CASE(23) ; mesg="ETB     ctrl-W  END OF TRANSMISSION BLOCK"
+            CASE(24) ; mesg="CAN     ctrl-X  CANCEL"
                if(isunderline) call delete_in_underline()
-            CASE(25) ; msg="EM      ctrl-Y  END OF MEDIUM"
+            CASE(25) ; mesg="EM      ctrl-Y  END OF MEDIUM"
                call move_pd(-1,0,'L')
-            CASE(26) ; msg="SUB     ctrl-Z  SUBSTITUTE"
+            CASE(26) ; mesg="SUB     ctrl-Z  SUBSTITUTE"
                call nc_errmessage("TEST of nc_errmessage")
-            CASE(27) ; msg="ESC     ctrl-[  ESCAPE"
+            CASE(27) ; mesg="ESC     ctrl-[  ESCAPE"
                !call my_exit()    !! gets called too often by undefined function keys, which often send sequences starting with esc
                if(vi_mode)then
                   vi_mode=.false.
-                  msg=trim(msg)// ' :: vi mode off'
+                  mesg=trim(mesg)// ' :: vi mode off'
                else
                   vi_mode=.true.
-                  msg=trim(msg)// ' :: vi mode on'
+                  mesg=trim(mesg)// ' :: vi mode on'
                endif
-            CASE(28) ; msg="FS      ctrl-\  FILE SEPARATOR"
-            CASE(29) ; msg="GS      ctrl-]  GROUP SEPARATOR"
-            CASE(30) ; msg="RS      ctrl-^  RECORD SEPARATOR"
-            CASE(31) ; msg="US      ctrl-_  UNIT SEPARATOR"
-            CASE(32) ; msg="SPACE"
+            CASE(28) ; mesg="FS      ctrl-\  FILE SEPARATOR"
+            CASE(29) ; mesg="GS      ctrl-]  GROUP SEPARATOR"
+            CASE(30) ; mesg="RS      ctrl-^  RECORD SEPARATOR"
+            CASE(31) ; mesg="US      ctrl-_  UNIT SEPARATOR"
+            CASE(32) ; mesg="SPACE"
                if(isunderline)then
                   ierr=mvwaddch(big_pd,py,px,ior(ch8,attr))
                   ierr=move(iy,ix+1)
                   call refresh_pd()                                                 ! refresh so can see change in display
                else
-                  call space_bar(msg)
+                  call space_bar(mesg)
                endif
-            CASE(127) ; msg="DEL"
+            CASE(127) ; mesg="DEL"
          CASE DEFAULT
-            msg=""
+            mesg=""
          END SELECT
-         if(msg == "" )then
-            write(msg,'(a,i0)') "UNKNOWN: The key value is ",ch
+         if(mesg == "" )then
+            write(mesg,'(a,i0)') "UNKNOWN: The key value is ",ch
          endif
       endif
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call message(msg)                  ! draw message line
+   call message(mesg)                  ! draw message line
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 subroutine button_action(eek)
@@ -701,20 +688,20 @@ type(MEVENT),optional     :: eek
    select case(ibox)
    case(1) ! help
    case(2) ! home
-      msg=trim(msg)//' : home form'         ! "home" user data
+      mesg=trim(mesg)//' : home form'         ! "home" user data
       call home_pad()
    case(3) ! next page
-      msg="npage: next page"
+      mesg="npage: next page"
       if(present(eek))then
          select case(eek%bstate)
             case (BUTTON1_PRESSED,BUTTON1_RELEASED,BUTTON1_CLICKED,BUTTON1_DOUBLE_CLICKED)
-               msg=trim(msg)//" BUTTON 1"
+               mesg=trim(mesg)//" BUTTON 1"
                call move_pd(1,0,'P')
             case (BUTTON2_PRESSED,BUTTON2_RELEASED,BUTTON2_CLICKED,BUTTON2_DOUBLE_CLICKED)
-               msg=trim(msg)//" BUTTON 2"
+               mesg=trim(mesg)//" BUTTON 2"
                call move_pd(1,0,'P')
             case (BUTTON3_PRESSED,BUTTON3_RELEASED,BUTTON3_CLICKED,BUTTON3_DOUBLE_CLICKED)
-               msg=trim(msg)//" BUTTON 3"
+               mesg=trim(mesg)//" BUTTON 3"
                call move_pd(1,0,'P')
             case default
                call move_pd(1,0,'P')
@@ -723,17 +710,17 @@ type(MEVENT),optional     :: eek
          call move_pd(1,0,'P')
       endif
    case(4) ! previous page
-      msg="ppage: previous page"
+      mesg="ppage: previous page"
       if(present(eek))then
          select case(eek%bstate)
             case (BUTTON1_PRESSED,BUTTON1_RELEASED,BUTTON1_CLICKED,BUTTON1_DOUBLE_CLICKED)
-               msg=trim(msg)//" BUTTON 1"
+               mesg=trim(mesg)//" BUTTON 1"
                call move_pd(-1,0,'P')
             case (BUTTON2_PRESSED,BUTTON2_RELEASED,BUTTON2_CLICKED,BUTTON2_DOUBLE_CLICKED)
-               msg=trim(msg)//" BUTTON 2"
+               mesg=trim(mesg)//" BUTTON 2"
                call move_pd(-1,0,'P')
             case (BUTTON3_PRESSED,BUTTON3_RELEASED,BUTTON3_CLICKED,BUTTON3_DOUBLE_CLICKED)
-               msg=trim(msg)//" BUTTON 3"
+               mesg=trim(mesg)//" BUTTON 3"
                call move_pd(-1,0,'P')
             case default
                call move_pd(-1,0,'P')
@@ -742,8 +729,8 @@ type(MEVENT),optional     :: eek
          call move_pd(-1,0,'P')
       endif
    case(5) ! submit
-      msg="SUBMIT"
-      call message(msg)                  ! draw message line
+      mesg="SUBMIT"
+      call message(mesg)                  ! draw message line
       call extract_answers_tabs()
       ierr=flash()
    end select
@@ -863,7 +850,7 @@ subroutine replace_in_underline
    integer(C_INT)            :: ich_dum
    character(LEN=1)          :: ch_dum
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call message(msg)                      ! draw message set by process_key(3f) now because going to read more keys
+   call message(mesg)                      ! draw message set by process_key(3f) now because going to read more keys
    call getyx(stdscr,hy,hx)               ! cache initial cursor position
    call cursor2pad(hy,hx,py,px,cell)      ! convert screen cursor to pad position and get cell data
    call get_cell_components(cell,hattr,hpair,ich_dum,ch_dum)
@@ -881,8 +868,8 @@ subroutine replace_in_underline
       endif
       cellread=getch()
       if(cellread>=32 .and. cellread<=126)then                          ! insert regular character and stay in replace mode
-         write(msg,'(a,a)')"REPLACE regular character ",char(cellread)  ! write message bar message
-         call message(msg)
+         write(mesg,'(a,a)')"REPLACE regular character ",char(cellread)  ! write message bar message
+         call message(mesg)
          cellread=ior(cellread,hattr)                                   ! add original attributes to character read from keyboard
          ierr=mvwaddch(big_pd,py,px,cellread)                           ! replace character
          if(px>=end_of_underline)then
@@ -927,7 +914,7 @@ subroutine insert_in_underline
    character(LEN=1)          :: ch_dum
    integer(C_INT)            :: start_of_underline, end_of_underline
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call message(msg)                      ! draw message set by process_key(3f) now because going to read more keys
+   call message(mesg)                      ! draw message set by process_key(3f) now because going to read more keys
    call getyx(stdscr,hy,hx)               ! cache initial cursor position
    call cursor2pad(hy,hx,py,px,cell)      ! convert screen cursor to pad position and get cell data
    call getmaxyx(big_pd,my,mx)            ! size of the specified window as defined (all of it, even if subsection being displayed)
@@ -943,8 +930,8 @@ subroutine insert_in_underline
       if(cellread>=32 .and. cellread<=126)then                          ! insert regular printable character and stay in insert mode
          ierr=mvwdelch(big_pd,py,end_of_underline)                      ! delete last underline character
          ierr=wmove(big_pd,py,px)                                       ! restore cursor position after deleting end of underlines
-         write(msg,'(a,a)')"INSERT regular character ",char(cellread)   ! write message bar message
-         call message(msg)
+         write(mesg,'(a,a)')"INSERT regular character ",char(cellread)   ! write message bar message
+         call message(mesg)
          cellread=ior(cellread,hattr)                                   ! add original attributes to character read from keyboard
          ierr=winsch(big_pd,cellread)                                   ! insert character at current position
          if(px==end_of_underline)then
@@ -960,10 +947,10 @@ subroutine insert_in_underline
          case (key_backspace,key_left,8,key_right,key_dc )              ! do normal action but do not leave insert mode
             call process_keypress(int(cellread,C_INT))
          CASE(27)                                                       ! exit insert mode and do not do normal action
-            msg=("ESC     ctrl-[  : EXIT insert mode")
+            mesg=("ESC     ctrl-[  : EXIT insert mode")
             exit INFINITE
          case (key_ic )                                                 ! exit insert mode if insert key pressed
-            msg=("ic: insert char or enter ins mode : EXIT insert mode")
+            mesg=("ic: insert char or enter ins mode : EXIT insert mode")
             exit INFINITE
          case default                                                   ! do normal action and exit insert mode
             call process_keypress(int(cellread,C_INT))
@@ -991,11 +978,11 @@ end subroutine home_pad
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine promptfor(prefix,msg)  ! go to message bar and read string
+subroutine promptfor(prefix,mesg)  ! go to message bar and read string
    use M_ncurses
    implicit none
    character(len=*),intent(in) :: prefix
-   character(len=*)            :: msg
+   character(len=*)            :: mesg
    integer(C_INT)              :: iline                                   ! line number to print at
    integer(C_INT)              :: hy,hx                                   ! store cursor position at start of this routine
    integer(C_INT)              :: ierr
@@ -1010,10 +997,10 @@ subroutine promptfor(prefix,msg)  ! go to message bar and read string
    ierr=printw("%s"//C_NULL_CHAR,trim(prefix)//C_NULL_CHAR)               ! print prefix across window
    ierr=refresh()
    ierr=echo()                                                            ! turn on echoing so can see string as it is entered
-   msg=' '
-   ierr=getnstr(msg,len(msg)-1)                                           ! read the string
-   ii=index(msg,char(0))                                                  ! find null in C string
-   if(ii.ne.0)msg(ii:)=' '
+   mesg=' '
+   ierr=getnstr(mesg,len(mesg)-1)                                           ! read the string
+   ii=index(mesg,char(0))                                                  ! find null in C string
+   if(ii.ne.0)mesg(ii:)=' '
    ierr=noecho()                                                          ! turn echoing back off
    ierr=attroff(COLOR_PAIR(11))                                           ! turn off message color attributes
    ierr=move(hy,hx)                                                       ! restore cursor position
@@ -1073,10 +1060,10 @@ end subroutine searchfor
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine message(msg)  ! a message is printed with every key stroke and by explicit calls to this routine
+subroutine message(mesg)  ! a message is printed with every key stroke and by explicit calls to this routine
    use M_ncurses           ! in the fifth line from the bottom, which is considered to be the message bar
    implicit none
-   character(len=*),intent(in) :: msg
+   character(len=*),intent(in) :: mesg
    character(len=256)          :: longmsg
    integer(C_INT)              :: iline ! line number to print at
    integer(C_INT)              :: sy,sx                                   ! store cursor position at start of this routine
@@ -1091,7 +1078,7 @@ subroutine message(msg)  ! a message is printed with every key stroke and by exp
    call getyx(stdscr,sy,sx)                                               ! cache current position
    call inbox(sx,sy,ibox)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   longmsg=msg
+   longmsg=mesg
    iline=LINES-button_lines                                               ! decide which line is the message bar
    ierr=move(iline,0_C_INT)                                               ! move to message line
    ierr=attron(COLOR_PAIR(11))                                            ! set color attributes for message line
@@ -1117,16 +1104,16 @@ end subroutine message
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine errmessage(msg) ! exit screen mode to use WRITE(3f) to print a message and then read a line to create a pause
+subroutine errmessage(mesg) ! exit screen mode to use WRITE(3f) to print a message and then read a line to create a pause
    use M_ncurses
    implicit none
-   character(len=*),intent(in) :: msg
+   character(len=*),intent(in) :: mesg
    integer                     :: ierr    ! return value for most ncurses(3c) functions
    integer                     :: ios     ! status return of READ(3f)
    ierr=def_prog_mode()                   ! Save the tty modes
    ierr=refresh()
   ierr=endwin()                           ! End curses mode temporarily
-   write(*,*)msg
+   write(*,*)mesg
    read(*,'(a)',iostat=ios)
    ierr=refresh() ! Back to curses. You can once again use the full capabilities of curses; and the screen resumes where it was
    call refresh_pd()
@@ -1367,19 +1354,19 @@ subroutine loaddata(filename) ! populate the form array definition pointed to by
    character(len=len(page_ptr(1))) :: buffer     ! a buffer for reading a line from the input file
    integer                         :: ios        ! I/O error status flag returned by READ(3f)
    integer                         :: ilen
-   character(len=2046)             :: msg
+   character(len=2046)             :: mesg
 !-----------------------------------------------------------------------------------------------------------------------------------
-   OPEN(UNIT=10,FILE=trim(filename),ACTION='read',ACCESS='sequential',FORM='formatted',IOSTAT=ios,IOMSG=msg,STATUS='old')
+   OPEN(UNIT=10,FILE=trim(filename),ACTION='read',ACCESS='sequential',FORM='formatted',IOSTAT=ios,IOMSG=mesg,STATUS='old')
    if(ios.ne.0)then
       write(*,*)'E-R-R-O-R: COULD NOT OPEN FILE '//trim(filename)
-      write(*,'(" IOSTAT=",i0,1x,":",a)')ios,trim(msg)
+      write(*,'(" IOSTAT=",i0,1x,":",a)')ios,trim(mesg)
       stop
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    icount_ptr=0
    longline_pd=1
    INFINITE: do
-      read(10,'(a)',iostat=ios,iomsg=msg)buffer                       ! read line of user data
+      read(10,'(a)',iostat=ios,iomsg=mesg)buffer                       ! read line of user data
       if(ios.ne.0) exit INFINITE                                      ! end on any non-zero error from READ(3f)
       call nc_notabs(buffer,page_ptr(icount_ptr+1),ilen)              ! expand tabs and remove DOS line terminators
       longline_pd=max(longline_pd,ilen)                               ! keep track of longest line read in
@@ -1730,10 +1717,10 @@ end subroutine extract_answers_namelist
 !-----------------------------------------------------------------------------------------------------------------------------------
 !<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>-
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine space_bar(msg) ! @(#) if on a menu button clear any menu buttons connected to it and toggle it
+subroutine space_bar(mesg) ! @(#) if on a menu button clear any menu buttons connected to it and toggle it
    use M_ncurses
    implicit none
-   character(len=128)        :: msg
+   character(len=128)        :: mesg
    integer                   :: i,j
    integer                   :: ierr
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -1746,18 +1733,18 @@ subroutine space_bar(msg) ! @(#) if on a menu button clear any menu buttons conn
    cell=winch(big_pd)
    call get_cell_components(cell,attr,pair,ich,ch)
    call getyx(big_pd,i,j)                             ! cache current position
-   write(msg,'("CHANGE:CH=",a," PAIR=",i0," ATTR=",i0," LOC=",i0,1x,i0)')ch,pair,attr,i,j
+   write(mesg,'("CHANGE:CH=",a," PAIR=",i0," ATTR=",i0," LOC=",i0,1x,i0)')ch,pair,attr,i,j
    if((iand(attr,A_ALTCHARSET).eq.A_ALTCHARSET).and.(ch.eq.'`'))then  ! if character is ` this is a menu diamond bullet
       if(iand(attr,A_STANDOUT).eq.A_STANDOUT)then
          attr=ieor(attr,A_STANDOUT)                                   ! attr=attr-A_STANDOUT; remove the attribute
          ierr=wchgat(big_pd, 1_C_INT, attr, pair , C_NULL_PTR)        ! remove A_STANDOUT from attributes
-         msg=trim(msg)//' Turn OFF menu option'
+         mesg=trim(mesg)//' Turn OFF menu option'
       else
          call clear_radio(i,j)
          ierr=wmove(big_pd,i,j)
          attr=ior(attr,A_STANDOUT)                                    ! Add A_STANDOUT to attributes
          ierr=wchgat(big_pd, 1_C_INT, attr, pair, C_NULL_PTR)
-         msg=trim(msg)//' Turn ON menu option'
+         mesg=trim(mesg)//' Turn ON menu option'
       endif
       call refresh_pd()                                               ! refresh so can see change in menu button display
    endif

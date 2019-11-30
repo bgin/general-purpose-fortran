@@ -4,10 +4,11 @@
           use M_system, only : R_GRP,R_OTH,R_USR,RWX_G,RWX_O
           use M_system, only : RWX_U,W_GRP,W_OTH,W_USR,X_GRP,X_OTH,X_USR
           use M_system, only : DEFFILEMODE, ACCESSPERMS
+          use,intrinsic     :: iso_fortran_env, only : int64
           implicit none
           integer         :: ierr
           integer         :: status
-          integer(kind=8) :: buffer(13)
+          integer(kind=int64) :: buffer(13)
              !Setting Read Permissions for User, Group, and Others
              ! The following example sets read permissions for the owner, group, and others.
              open(file='_test1',unit=10)

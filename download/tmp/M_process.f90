@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!    M_process(3fm) - [M_process] Fortran Module for calling process-related C functions from Fortran
@@ -68,12 +55,12 @@
 !!
 !!##OPTIONS
 !!
-!!    cmd          command passed to system to start process
-!!    fp           C file pointer returned by process_open_*()
-!!    string       data line to send or receive from process
-!!    ierr         error flag returned.
-!!                 process_writeline(3f) : negative indicates an error
-!!                 process_readline(3f)  : Non-zero indicates an error
+!!    cmd      command passed to system to start process
+!!    fp       C file pointer returned by process_open_*()
+!!    string   data line to send or receive from process
+!!    ierr     error flag returned.
+!!             process_writeline(3f) : negative indicates an error
+!!             process_readline(3f)  : Non-zero indicates an error
 !!
 !!    maximum character value length is currently 4096
 !!
@@ -296,11 +283,10 @@
 !!    end program test
 !!
 !!##SEE ALSO
-!!
-!!       o PIPES: pipe(3c), popen(3c), pclose(3c), fflush(3c)
-!!       o NAMED PIPES: mkfifo(3c), mknod(3c)
-!!       o SUBPROCESSES: fork(3c)
-!!       o OTHER: fflush(3c)
+!!    o PIPES: pipe(3c), popen(3c), pclose(3c), fflush(3c)
+!!    o NAMED PIPES: mkfifo(3c), mknod(3c)
+!!    o SUBPROCESSES: fork(3c)
+!!    o OTHER: fflush(3c)
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -320,6 +306,7 @@ module M_process
 ! only: c_int, c_char, c_null_char, c_associated, c_ptr, c_null_ptr, c_new_line
 use, intrinsic :: ISO_C_BINDING
 implicit none
+
 character(len=*),parameter::ident_1="@(#)M_process(3fm): call C process open,close,read,write functions"
 
 PRIVATE
@@ -542,29 +529,32 @@ character(len=*),parameter::ident_4="@(#)M_process::process_open(3fp): open proc
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
-   subroutine process_close(fp,ierr)
-character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close process"
-      ! DO NOT MAKE fp INTENT(IN)
-      type(streampointer) :: fp           ! file pointer returned for process
-      integer(c_int) ::  ios
-      integer :: ierr
-!-----------------------------------------------------------------------------------------------------------------------------------
-      ierr=fflush(fp%handle)
-      ios=0
+subroutine process_close(fp,ierr)
 
-      if (.not.c_associated(fp%handle)) then
-         write(*,*)'*process_close* process not found'
-      else
+character(len=*),parameter::ident_5="@(#)M_process::process_close(3f): close process"
+
+type(streampointer) :: fp           ! file pointer returned for process ! DO NOT MAKE fp INTENT(IN)
+integer(c_int)      :: ios
+integer,intent(out) :: ierr
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ios=0_c_int
+
+   if (.not.c_associated(fp%handle)) then
+      write(*,*)'*process_close* process not found'
+   else
+      ios=fflush(fp%handle)
+      if(ierr.ge.0)then
          ios=system_pclose(fp%handle)
       endif
+   endif
 
-      if(process_debug)then
-         write(*,*) '*process_close* Closed pipe with status ',ios
-      endif
+   if(process_debug)then
+      write(*,*) '*process_close* Closed pipe with status ',ios
+   endif
 
-      ierr=min(-1_c_int,ios)
+   ierr=ios
 
-   end subroutine process_close
+end subroutine process_close
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()-
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -748,7 +738,6 @@ character(len=*),intent(in)    :: writefrom
 type(streampointer),intent(in) :: fp
 integer,intent(out)            :: ierr
 logical,intent(in),optional    :: trm
-integer                        :: ios
 logical                        :: trm_local
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(trm))then
@@ -764,11 +753,9 @@ logical                        :: trm_local
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(ierr.lt.0)then
-      ios = system_pclose(fp%handle)
       if(process_debug)then
-         write(*,*) '*process_writeline_scalar* Closed pipe with status ',ios
+         write(*,*) '*process_writeline_scalar* Closed pipe with status ',ierr
       endif
-      ierr=min(-1,ios)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(ierr.eq.0)then
@@ -825,8 +812,8 @@ character(len=:),allocatable :: string ! hold results, assuming sufficient memor
 character(len=4096) :: line            ! long enough to hold any expected line
    call unit_check_start('process_close',msg='')
    string=''
-   call process_close(fp,ierr)             ! not open yet
-   call unit_check('process_close', ierr.ne.0, msg=msg('close process before opening it',ierr))
+   !!call process_close(fp,ierr)             ! not open yet
+   !!call unit_check('process_close', ierr.ne.0, msg=msg('close process before opening it',ierr))
    call process_open_read('echo A;echo B;echo C',fp,ierr)    ! open process to read from
    do                                      ! read output of process till end
       call process_readline(line,fp,ierr)
@@ -835,8 +822,7 @@ character(len=4096) :: line            ! long enough to hold any expected line
    enddo
    call unit_check_msg('process_close','string=',string )
    call process_close(fp,ierr)             ! Wrap up
-   !!call unit_check('process_close', ierr.ne.0, msg=msg('close process that has finished MIGHT CHANGE',ierr))
-   call unit_check('process_close', ierr.ne.0, msg=msg('close process again',ierr))
+   call unit_check('process_close', ierr.eq.0, msg=msg('close process ',ierr))
    call process_open_write('cat',fp,ierr)    ! open process to write to that is not terminated
    call process_close(fp,ierr)
    !!call unit_check('process_close', ierr.eq.0, msg=msg('close process that is open',ierr))
@@ -878,11 +864,8 @@ character(len=256)           :: line
    ! start shell with command that finishes immediately (special case, would just use execute_command_line(3f) intrinsic)
    call process_open_write('echo one >_scratch_.txt;echo two >>_scratch_.txt',fp,ierr)    ! open process to write to
    call unit_check('process_open_write', ierr.eq.0, msg=msg('ierr=',ierr))
-   !!call process_writeline('echo already closed',fp,ierr)
-   !!call unit_check('process_open_write', ierr.ne.0, msg=msg('should already be closed, ierr=',ierr))
-! unit_check:       process_open_write   FAILURE : should already be closed, ierr= 0
    call process_close(fp,ierr)
-   call unit_check('process_open_write', ierr.ne.0, msg=msg('should already be closed, ierr=',ierr))
+   call unit_check('process_open_write', ierr.eq.0, msg=msg('no error on close, ierr=',ierr))
    ! check expected file
    open(newunit=lun,file='_scratch_.txt')
    read(lun,'(a)',iostat=ios)line
@@ -898,7 +881,7 @@ character(len=256)           :: line
    call process_writeline('echo four >>_scratch_.txt',fp,ierr)
    call unit_check('process_open_write', ierr.ge.0, msg=msg('write of "echo four >>_scratch_.txt", ierr=',ierr))
    call process_close(fp,ierr)
-   call unit_check('process_open_write', ierr.ne.0, msg=msg('should now be closed, ierr=',ierr))
+   call unit_check('process_open_write', ierr.eq.0, msg=msg('should now be closed, ierr=',ierr))
    ! check expected file
    open(newunit=lun,file='_scratch_.txt')
    read(lun,'(a)',iostat=ios)line

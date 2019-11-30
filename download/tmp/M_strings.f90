@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!    M_strings(3f) - [M_strings:INTRO] Fortran string module
@@ -5855,7 +5842,7 @@ end subroutine test_noesc
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns real value from string
+!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from string
 !!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -5866,7 +5853,7 @@ end subroutine test_noesc
 !!     integer|real|doubleprecision,intent(out) :: valu
 !!     integer,intent(out)                      :: ierr
 !!##DESCRIPTION
-!!       returns a real value from a numeric character string.
+!!       returns a numeric value from a numeric character string.
 !!
 !!       works with any g-format input, including integer, real, and
 !!       exponential. If the input string begins with "B", "Z", or "O"

@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -55,7 +42,7 @@ module M_f2kcli
 !!
 !!  Copyright Interactive Software Services Ltd. 2001
 !!
-!!  Platform     : Unix/1
+!!  Platform     : Unix/Linux
 !!  Compiler     : Any Fortran 9x compiler supporting IARGC/GETARG
 !!                 which counts the first true command line argument
 !!                 after the program name as argument number one.

@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!    M_overload(3fm) - [M_overload] overloads of standard operators and intrinsic procedures
@@ -85,6 +72,10 @@
 !!     dble("STRING") works
 !!     == works like .eqv. for LOGICAL values
 !!     /= works like .neqv. for LOGICAL values
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 module m_overload
 use M_strings, only : s2v
@@ -325,7 +316,6 @@ use M_debug, only : unit_check_level
    else
       call unit_check_bad('ints_s2v')                                              ! returned value not equal to expected value
    endif
-   call unit_check_done('ints_s2v',msg='')
 end subroutine test_ints_s2v
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_real_s2v()

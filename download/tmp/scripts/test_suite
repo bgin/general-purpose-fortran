@@ -92,9 +92,9 @@ echo "TEST SUITE FOR $SUBNAME"
    exec 2>&1
    if [ -e libGPF_C.a ]
    then
-      gfortran $UUID.f90 -I. -L. -J. -lGPF -lGPF_C -o $UUID $LIBS
+      $F90 $UUID.f90 -I. -L. -lGPF -lGPF_C -o $UUID $LIBS
    else
-      gfortran $UUID.f90 -I. -L. -J. -lGPF -o $UUID $LIBS
+      $F90 $UUID.f90 -I. -L. -lGPF -o $UUID $LIBS
    fi
    [ -e $UUID ] && $UUID
    rm -f $UUID $UUID.f90
@@ -196,6 +196,7 @@ then
         exit
 fi
 ################################################################################
+export F90=${F90:-'gfortran -g0'}
 (
 NAMES=${*:-$(ls *.o )}
 SUBNAMES=''

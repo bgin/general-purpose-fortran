@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!   jucalc - [M_calculator] parse calculator expression and return numeric or string value

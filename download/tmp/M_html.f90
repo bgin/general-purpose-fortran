@@ -1,16 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 !>
 !!##NAME
 !!    M_html(3fm) - [M_html] a module of routines to help write output as HTML documents
