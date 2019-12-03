@@ -1,12 +1,14 @@
 module M_csv
-use M_strings, only   : substitute, v2s
-use M_anything, only : anyscalar_to_double
 implicit none
 private
-character(len=1),public       :: G_separator   =','
-character(len=10),save,public :: G_quotes      ='default'
-integer,save,public           :: G_LUN
+character(len=1),public       :: CSV_separator   =','
+character(len=10),save,public :: CSV_quotes      ='default'
+character(len=30),save,public :: CSV_true        ='TRUE'
+character(len=30),save,public :: CSV_false       ='FALSE'
+integer,save,public           :: CSV_LUN         = 6
+integer,save                  :: G_linecolumn    = 1
 
+! STILL WRITING THIS. JUST DOES SIMPLE WRITES TO FAR
 !     This module uses the following default rules:
 !     - items are always separated by a single comma (,)
 !     - string items are delimited by double quotes (")
@@ -34,8 +36,6 @@ integer,save,public           :: G_LUN
 ! subroutine csv_close
 
 !     module for reading and writing CSV-files
-!
-!     For convenience, the generic name "csv_write" can be used instead of the individual routines.
 !
 !     The file to write to must already be opened as a LU-number is passed.
 !
@@ -66,7 +66,113 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!   csv(3f) - [M_csv] prints up to 20 standard scalar types to a CSV file
+!!   csv_write(3f) - [M_csv] prints intrisic type to a file assigned to LUN CSV_LUN
+!!   (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!
+!!   function write_csv(g1,g2,g3,..g20|g(:)|g(:,:))
+!!
+!!    class(*),intent(in),optional           :: g1, g2, g3, g4, g5, g6, g7, g8, g9, g10
+!!                                           &  g11,g12,g13,g14,g15,g16,g17,g18,g19,g20
+!!       or
+!!    class(*),intent(in),optional           :: g(:)
+!!       or
+!!    class(*),intent(in),optional           :: g(:,:)
+!!
+!!
+!!##DESCRIPTION
+!!
+!!   write_csv(3f) writes values in CSV(Comma-Separated Values) format. Either up to
+!!   twenty scalar values, a vector, or a matrix is allowed as an argument(s).
+!!
+!!   The data is written to the LUN CSV_LUN, which is assumed to have been opened
+!!   by the program.
+!!
+!!##OPTIONS
+!!   g[1-20]  optional values to print the value of. May
+!!            be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
+!!            or CHARACTER. The line is not advanced.
+!!   g(:)     a vector is written as a list of values. The line is not advanced.
+!!   g(:,:)   each row becomes an output line.
+!!
+!!   If no arguments are provided the current line is terminated.
+!!
+!!##EXAMPLES
+!!
+!!
+!!  Sample program:
+!!
+!!    program  demo_csv_write
+!!    !
+!!    use M_csv,     only : csv_write
+!!    use M_csv,     only : CSV_lun, CSV_TRUE, CSV_FALSE
+!!    implicit none
+!!    integer                :: i
+!!    integer                :: v
+!!    integer                :: iarr(10)=[(i*10,i=1,size(iarr))]
+!!    real,dimension(3,4)    :: rand2d
+!!    integer,dimension(3,4) :: array2d
+!!
+!!       open(newunit=CSV_lun,file='csv_test.csv')
+!!       CSV_true='TRUE'
+!!       CSV_false='FALSE'
+!!
+!!       ! a number of scalar values in a row
+!!       do i = 0,8
+!!          v = 10**i
+!!          call csv_write( v )
+!!       enddo
+!!       call csv_write() ! end line
+!!
+!!       ! strings, some with double-quotes in them
+!!       call csv_write( 'Aha','"Aha"','Aha "!"')
+!!       call csv_write() ! end line
+!!
+!!       ! lots of types
+!!       call csv_write('string',.true.,.false.,111,23.45,10.20e15)
+!!       call csv_write(3456.78901234d0,cmplx(huge(0.0),tiny(0.0)))
+!!       call csv_write() ! end line
+!!
+!!       call csv_write(1.234)                   ! scalars
+!!       call csv_write(1.234d0)
+!!       call csv_write([1,2,3,4,5,6,7,8,9,10])  ! a vector
+!!       call csv_write()                        ! end line
+!!
+!!       call csv_write(iarr)         ! a vector
+!!       call csv_write() ! end line  ! even a vector needs a line end
+!!
+!!       call random_number( rand2d ) ! a table is written one row per line
+!!       array2d = int( rand2d*100.0)
+!!       call csv_write( array2d)
+!!
+!!       close( unit=CSV_lun)
+!!
+!!    end program demo_csv_write
+!!
+!!   Results:
+!!
+!!    1,10,100,1000,10000,100000,1000000,10000000,100000000
+!!    "Aha","""Aha""","Aha ""!"""
+!!    "string",TRUE,FALSE,111,23.4500008,1.01999997E+16,3456.7890123400002,3.40282347E+38,1.17549435E-38
+!!    1.23399997,1.2340000000000000,1,2,3,4,5,6,7,8,9,10
+!!    10,20,30,40,50,60,70,80,90,100
+!!    64,95,86,28
+!!    78,94,18,36
+!!    10,89,6,86
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
+!!   csv(3f) - [M_csv] prints up to 20 standard scalar types to a string in CSV style
+!!   (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!
@@ -84,11 +190,11 @@ contains
 !!   and Fortran does not (yet) support recursive I/O.
 !!
 !!##OPTIONS
-!!   g[1-20]  optional value to print the value of after the message. May
+!!   g[1-20]  optional values to print the value of. May
 !!            be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
-!!            EPOCH or CHARACTER.
+!!            or CHARACTER.
 !!##RETURNS
-!!   csv     description to print
+!!   csv     a string in CSV (Comma-Separated Values) format representing the input values
 !!
 !!##EXAMPLES
 !!
@@ -100,18 +206,31 @@ contains
 !!    implicit none
 !!    character(len=:),allocatable :: pr
 !!
-!!       pr=csv('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
-!!       write(*,'(a)')pr
-!!       pr=csv('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
-!!       write(*,'(a)')pr
-!!       pr=csv('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
-!!       write(*,'(a)')pr
-!!       pr=csv('complex         :',cmplx(huge(0.0),tiny(0.0)) )
-!!       write(*,'(a)')pr
+!!       write(*,*)'LIST-DIRECTED:'
+!!       write(*,*,DELIM='QUOTE')'string',.true.,.false.,111,23.45,10.20e15,3456.78901234d0,cmplx(huge(0.0),tiny(0.0))
 !!
-!!       write(*,*)csv('program will now stop')
+!!       write(*,*)'G0:'
+!!       write(*,'(*(g0:","))')'string',.true.,.false.,111,23.45,10.20e15,3456.78901234d0,cmplx(huge(0.0),tiny(0.0))
+!!
+!!       write(*,*)'CSV:'
+!!       pr=csv('string',.true.,.false.,111,23.45,10.20e15,3456.78901234d0,cmplx(huge(0.0),tiny(0.0)) )
+!!       write(*,'(a)')pr
 !!
 !!    end program demo_csv
+!!
+!!   Results:
+!!
+!!     LIST-DIRECTED:
+!!     "string" T F         111   23.4500008       1.01999997E+16   3456.7890123400002        (3.402823466E+38,1.175494351E-38)
+!!     G0:
+!!    string,T,F,111,23.4500008,0.101999997E+17,3456.7890123400002,0.340282347E+39,0.117549435E-37
+!!     CSV:
+!!    "string",TRUE,FALSE,111,23.4500008,1.01999997E+16,3456.7890123400002,3.40282347E+38,1.17549435E-38
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !===================================================================================================================================
 function csv(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15, g16, g17, g18, g19, g20)
@@ -156,7 +275,7 @@ contains
 subroutine print_g(generic)
 !use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
-class(*),intent(in),optional :: generic
+class(*),intent(in) :: generic
 
 !select case(rank(generic))
 !case(0)
@@ -168,12 +287,12 @@ class(*),intent(in),optional :: generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
-      type is (logical);                write(line(istart:),'(1l)') generic
+      type is (logical);                write(line(istart:),'(a)') trim(merge(CSV_true,CSV_false,generic))
       type is (character(len=*));       write(line(istart:),'(a)') quote(generic)
-      type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
+      type is (complex);                write(line(istart:),'(1pg0,a,1pg0)') real(generic),CSV_separator,aimag(generic)
    end select
    if(istart.ne.1)then
-      line(istart-1:istart-1)=','
+      line(istart-1:istart-1)=CSV_separator
    endif
    istart=len_trim(line)+increment
 !   case(1)
@@ -186,169 +305,210 @@ end function csv
 !===================================================================================================================================
 !>
 !!##NAME
-!!      csv_write_scalar(3fp) - Write a single integer/real/double precision real to the CSV-file
+!!    csv_write_scalar(3fp) - Write a scalar intrinsic value to the CSV-file
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
+!!   subroutine csv_write_scalar( value, advance, lun )
+!!
+!!    class(*),intent(in),optional    :: value
+!!    logical,intent(in),optional     :: advance
+!!    integer,intent(in),optional     :: lun
 !!##DESCRIPTION
-!!       The value is written to the current record of the CSV-file
+!!    The value is written to the current record of the CSV-file
 !!##OPTION
 !!      lun        LU-number of the CSV-file
 !!      value      Value to write
 !!      advance    Advance (.true.) or not, so that more items can be
-!!##OUTPUT
-!!                 written to the same record
+!!                 written to the same record. Default is .FALSE. .
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_csv_write_scalar
+!!    use M_csv, only : csv_write_scalar
+!!
+!!    end program demo_csv_write_scalar
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
-subroutine csv_write_scalar( value, advance, lun )
+subroutine csv_write_scalar(g1,g2,g3,g4,g5,g6,g7,g8,g9,g10,g11,g12,g13,g14,g15,g16,g17,g18,g19,g20)
+class(*),intent(in),optional ::  g1  ,g2  ,g3  ,g4  ,g5,  g6  ,g7  ,g8  ,g9, g10
+class(*),intent(in),optional :: g11 ,g12 ,g13 ,g14 ,g15, g16 ,g17 ,g18 ,g19, g20
+character(len=:),allocatable :: string
 
-class(*),intent(in)             :: value
-logical,intent(in),optional     :: advance
-integer,intent(in),optional     :: lun
-   character(len=3)             :: advance_local
-   character(len=:),allocatable :: separator
-   integer                      :: lun_local
-   character(len=:),allocatable :: outstr
+   if(.not.present(g1))then                                                               ! end current line
+      G_linecolumn=1
+      write(CSV_LUN,*)
+   else                                                                                   ! convert values to a string
+      string=csv(g1,g2,g3,g4,g5,g6,g7,g8,g9,g10,g11,g12,g13,g14,g15,g16,g17,g18,g19,g20)
 
-   if(present(lun))then
-      lun_local=lun
-   else
-      lun_local=G_lun
-   endif
-   if(present(advance))then
-      if(advance.eqv..true.)then
-         advance_local='yes'
-      else
-         advance_local='no '
+      if(G_linecolumn.ne.1)then
+         string=CSV_separator//string
       endif
-   else
-      advance_local='no '
-   endif
-   if(advance_local.eq.'yes')then
-      separator=''
-   else
-      separator=G_separator
-   endif
-   select type(value)
-   type is (integer)
-   type is (real)
-   type is (character(len=*))
-      allocate(character(len=2*len(value)) :: outstr)
-      outstr(:)=' '
-      outstr(:len(value))=value
-      call substitute(outstr,'"','""')
-      write(lun_local,'(a)',advance=advance_local) '"'//trim(outstr)//'"'//separator
-      return
-   type is (doubleprecision)
-   end select
 
-   write(lun_local,'(a)',advance=advance_local) '"'//trim(adjustl(v2s(anyscalar_to_double(value))))//'"'//separator
+      write(CSV_LUN,'(a)',advance='no') string
+      G_linecolumn=G_linecolumn+len(string)
+   endif
 
 end subroutine csv_write_scalar
 !>
 !!##NAME
 !!   csv_write_row(3f) - [M_csv] Write a one-dimensional array of items to the CSV-file
+!!   (LICENSE:PD)
 !!##SYNOPSIS
 !!
+!!   Use M_csv, only : csv_write_row, CSV_LUN
+!!   subroutine csv_write_row( array )
+!!
+!!    class(*),intent(in)            :: array(:)
+!!
 !!##OPTIONS
-!!       lun        LU-number of the CSV-file
-!!       array      Array to write
-!!       advance    Advance (.true.) or not, so that more items can be
-!!                  written to the same record
+!!       array      Array to write of any type supported by csv(3f).
 !!##RESULT
 !!       The array is written to the current record of the CSV-file
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_csv_write_row
+!!    use M_csv,     only : csv_write, CSV_lun
+!!    implicit none
+!!
+!!       CSV_lun=6
+!!       call csv_write( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] )
+!!       call csv_write()
+!!       call csv_write(iarr)
+!!       call csv_write()
+!!
+!!    end program demo_csv_write_row
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
-subroutine csv_write_row( array, advance, lun )
-class(*),intent(in)            :: array(:)
-logical,intent(in),optional    :: advance
-integer,intent(in),optional    :: lun
-   logical                     :: advance_local
-   integer                     :: i
-   integer                     :: ii
-   integer                     :: lun_local
+subroutine csv_write_row( array )
+class(*),intent(in) :: array(:)
+   integer          :: i
 
-   advance_local = .true.
-   if ( present(advance) ) advance_local = advance
-   lun_local = G_lun
-   if ( present(lun) ) lun_local = lun
-   write(6,*)'got here b ',advance,anyscalar_to_double(array)
-   ii=size(array)
-   do i = 1,ii-1
-      write(6,*)'got here b.2 ',i,advance,anyscalar_to_double(array(i))
-      call csv_write_scalar( array(i), advance=.false. ,lun=lun_local)
+   do i = 1,size(array)
+      call csv_write_scalar( array(i) )
    enddo
-   write(6,*)'got here c',ii
-   call csv_write_scalar( array(ii), advance=advance_local, lun=lun_local )
 
 end subroutine csv_write_row
 !>
 !!##NAME
 !!   csv_write_table(3f) - [M_csv] Write a two-dimensional array of items to the CSV-file
+!!   (LICENSE:PD)
 !!##SYNOPSIS
 !!
+!!   use M_csv, only : csv_write_table, CSV_LUN
+!!
+!!    subroutine csv_write_table(array)
+!!    class(*),intent(in) :: array(:,:)
+!!##DESCRIPTION
+!!    Write a two-dimensional array of intrinsic scalars to LUN CSV_LUN in
+!!    CSV (Comma-Separated Values) format.
 !!##OPTIONS
-!!       array      Array to write
-!!       lun        LU-number of the CSV-file
+!!    array      Array to write in CSV format. May be of any type
+!!               supported by csv(3f).
 !!
 !!##RESULT
-!!       The array is written to the current CSV-file. One row
-!!       generates one line of the file.
+!!    The array is written to the current CSV-file assumed open as LUN CSV_LUN.
+!!    One row generates one line of the file.
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!    program demo_csv_write_table
+!!    use M_csv,     only : csv_write, CSV_LUN
+!!    implicit none
+!!    real, dimension(8,14)    :: rand2d
+!!    integer, dimension(8,14) :: array2d
+!!
+!!       ! open CSV file
+!!       open(newunit=CSV_LUN,file='csv_test.csv')
+!!
+!!       ! file an array with random values
+!!       call random_number(rand2d)
+!!       array2d = int(rand2d*100.0)
+!!
+!!       ! write the array in CSV format
+!!       call csv_write(array2d)
+!!
+!!       ! close the file
+!!       close(unit=CSV_LUN)
+!!
+!!    end program demo_csv_write_table
+!!
+!!  Sample output
+!!
+!!    35,24,93,51,60,76,14,50,52,94,75,36,39,26
+!!    73,91,85,71,84,27,41,6,0,37,66,88,96,44
+!!    56,44,66,61,77,40,75,5,18,12,40,96,23,85
+!!    45,66,60,28,73,39,71,23,73,44,19,0,77,63
+!!    25,89,72,28,55,32,42,46,22,77,57,86,91,79
+!!    46,86,37,18,71,86,83,34,14,80,25,45,62,10
+!!    12,80,77,53,18,94,56,50,42,37,48,41,25,98
+!!    97,17,74,58,35,33,27,27,39,60,46,11,38,87
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
-subroutine csv_write_table( array, lun )
-class(*),intent(in)             :: array(:,:)
-integer,intent(in),optional     :: lun
-    integer                     :: i
-    integer                     :: lun_local
-    lun_local=G_lun
-    if(present(lun))lun_local=lun
-    write(6,*)'got here a.1 ',size(array,2)
-    write(6,*)'got here a.2 ',size(array,1)
-    write(6,*)'got here a.3 ',anyscalar_to_double(array)
-    write(6,*)'got here a.3.a ',anyscalar_to_double(array(:,1))
-    write(6,*)'got here a.3.b ',anyscalar_to_double(array(:,2))
-    write(6,*)'got here a.3.c ',anyscalar_to_double(array(:,3))
-    write(6,*)'got here a.3.d ',anyscalar_to_double(array(:,4))
-    write(6,*)'got here a.3.e ',anyscalar_to_double(array(1,:))
-    write(6,*)'got here a.3.f ',anyscalar_to_double(array(2,:))
-    write(6,*)'got here a.3.g ',anyscalar_to_double(array(3,:))
-    do i = 1,size(array,2)
-        write(6,*)'got here a.4 ',anyscalar_to_double(array(:,i))
-        call csv_write_row( array(:,i), advance=.true., lun=lun_local )
-    enddo
+subroutine csv_write_table(array)
+class(*),intent(in) :: array(:,:)
+integer             :: i,j
+   do i = 1,size(array,dim=1)
+      do j=1,size(array,dim=2)
+         call csv_write( array(i,j) )
+      enddo
+      call csv_write_scalar()
+   enddo
 end subroutine csv_write_table
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_csv()
-
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
 !! setup
+   call test_csv()
    call test_csv_write_row()
    call test_csv_write_scalar()
    call test_csv_write_table()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_csv_write_row()
+subroutine test_csv()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-   call unit_check_start('csv_write_row',msg='')
-   !!call unit_check('csv_write_row', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('csv_write_row',msg='')
-end subroutine test_csv_write_row
+   call unit_check_start('csv',msg='')
+   !!call unit_check('csv', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('csv',msg='')
+end subroutine test_csv
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_csv_write_scalar()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('csv_write_scalar',msg='')
    !!call unit_check('csv_write_scalar', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('csv_write_scalar',msg='')
 end subroutine test_csv_write_scalar
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_csv_write_row()
+
+   call unit_check_start('csv_write_row',msg='')
+   !!call unit_check('csv_write_row', 0.eq.0. msg=msg('checking',100))
+   call unit_check_done('csv_write_row',msg='')
+end subroutine test_csv_write_row
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_csv_write_table()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('csv_write_table',msg='')
    !!call unit_check('csv_write_table', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('csv_write_table',msg='')

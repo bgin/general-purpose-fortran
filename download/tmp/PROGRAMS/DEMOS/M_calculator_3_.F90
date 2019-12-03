@@ -117,6 +117,7 @@
                  integer, parameter          :: k_dbl = SELECTED_REAL_KIND(15,300) ! real*8
                  integer,intent(in)          :: n
                  real(kind=k_dbl),intent(in) :: fval(n)
-                    c=0.0
+                    c=0.0_k_dbl
                  end function c
+                 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
                  end program demo_M_calculator

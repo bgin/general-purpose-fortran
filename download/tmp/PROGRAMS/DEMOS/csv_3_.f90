@@ -3,15 +3,14 @@
           implicit none
           character(len=:),allocatable :: pr
 
-             pr=csv('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
-             write(*,'(a)')pr
-             pr=csv('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
-             write(*,'(a)')pr
-             pr=csv('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
-             write(*,'(a)')pr
-             pr=csv('complex         :',cmplx(huge(0.0),tiny(0.0)) )
-             write(*,'(a)')pr
+             write(*,*)'LIST-DIRECTED:'
+             write(*,*,DELIM='QUOTE')'string',.true.,.false.,111,23.45,10.20e15,3456.78901234d0,cmplx(huge(0.0),tiny(0.0))
 
-             write(*,*)csv('program will now stop')
+             write(*,*)'G0:'
+             write(*,'(*(g0:","))')'string',.true.,.false.,111,23.45,10.20e15,3456.78901234d0,cmplx(huge(0.0),tiny(0.0))
+
+             write(*,*)'CSV:'
+             pr=csv('string',.true.,.false.,111,23.45,10.20e15,3456.78901234d0,cmplx(huge(0.0),tiny(0.0)) )
+             write(*,'(a)')pr
 
               end program demo_csv

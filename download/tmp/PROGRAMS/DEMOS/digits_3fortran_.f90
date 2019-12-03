@@ -1,8 +1,8 @@
            program demo_digits
                integer :: i = 12345
                real :: x = 3.143
-               real(8) :: y = 2.33
-               print *, digits(i)
-               print *, digits(x)
-               print *, digits(y)
+               doubleprecision :: y = 2.33d0
+               print *,'default integer:        ', digits(i)
+               print *,'default real:           ', digits(x)
+               print *,'default doubleprecision:', digits(y)
            end program demo_digits

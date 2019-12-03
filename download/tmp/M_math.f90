@@ -42,7 +42,7 @@ private
   public stddev         ! standard deviation
   ! COMPARING AND ROUNDING FLOATING POINT VALUES
   public accdig         ! compare two real numbers only up to a specified number of digits
-  public almost         ! function compares two real numbers only up to a specified number of digits
+  public almost         ! function compares two numbers only up to a specified number of digits
   public dp_accdig      ! compare two double numbers only up to a specified number of digits
   public in_margin      ! check if two reals are approximately equal using a relative margin
   public round          ! round val to specified number of significant digits
@@ -5066,23 +5066,28 @@ end function stddev
 !>
 !!##NAME
 !!    almost(3f) - [M_math] return true or false if two numbers agree up to specified number of digits
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    function almost(x,y,digits)
-!!    real,intent(in) :: x,y
-!!    real,intent(in) :: rdigits
-!!    logical,intent(in),optional :: verbose
-!!    logical                     :: almost
+!!
+!!     class(*),intent(in)         :: x,y
+!!     class(*),intent(in)         :: rdigits
+!!     logical,intent(in),optional :: verbose
+!!     logical                     :: almost
 !!
 !!##DESCRIPTION
-!!    Returns true or false depending on whether the two numbers given agree to within the specified
-!!    number of digits as calculated by ACCDIG(3f).
+!!    Returns true or false depending on whether the two numbers given agree
+!!    to within the specified number of digits as calculated by ACCDIG(3f).
 !!##OPTIONS
 !!    x,y      expected and calculated values to be compared
-!!    rdigits  real number representing number of digits of precision to compare
-!!    verbose  optional value that specifies to print the results of the comparison if TRUE.
+!!    rdigits  real number representing number of digits of precision
+!!             to compare
+!!    verbose  optional value that specifies to print the results of the
+!!             comparison if TRUE.
 !!##RETURNS
-!!    almost   TRUE if the input values compare up to the specified number of values
+!!    almost   TRUE if the input values compare up to the specified number
+!!             of values
 !!##EXAMPLE
 !!
 !!   sample:
@@ -5118,18 +5123,27 @@ end function stddev
 !!     *accdig* significant digit request too high= 8.00000000
 !!     *almost* for values 1.23456776 1.23000002 agreement of 2.43020344 digits out of requested 8.0
 !!            8   F
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 function almost(x,y,digits,verbose)
+use M_anything, only : todp=>anyscalar_to_real128
+use M_strings,  only : msg
+
 character(len=*),parameter::ident_21="&
-&@(#)M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling ACCDIG(3f)"
-real,intent(in)             :: x,y
-real,intent(in)             :: digits
+&@(#)M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling DP_ACCDIG(3f)"
+
+class(*),intent(in)         :: x,y
+class(*),intent(in)         :: digits
 logical,intent(in),optional :: verbose
 logical                     :: almost
 
-   logical                  :: verbose_local
-   real                     :: acurcy
-   integer                  :: ind
+logical                     :: verbose_local
+real                        :: acurcy
+real                        :: digits_local
+integer                     :: ind
 
    if(present(verbose))then
       verbose_local=verbose
@@ -5137,11 +5151,28 @@ logical                     :: almost
       verbose_local=.false.
    endif
 
-   call accdig(x,y,digits,acurcy,ind)
-
-   if(verbose_local)then
-      write(*,*)'*almost* for values ',x,y,' agreement of ',acurcy,' digits out of requested ',digits
-   endif
+   digits_local=todp(digits)
+   acurcy=0.0
+   select type(x)
+   type is(real)
+      select type(y)
+      type is(real)
+         call accdig(x,y,digits_local,acurcy,ind)
+         if(verbose_local)then
+            write(*,*)'*almost* for values ',x,y,' agreement of ',acurcy,' digits out of requested ',digits_local
+         endif
+      class default
+         call dp_accdig(x,y,digits_local,acurcy,ind)
+         if(verbose_local)then
+            write(*,*)'*almost* for values ',msg(x),' ',msg(y),' agreement of ',acurcy,' digits out of requested ',digits_local
+         endif
+      end select
+   class default
+      call dp_accdig(x,y,digits,acurcy,ind)
+      if(verbose_local)then
+         write(*,*)'*almost* for values ',msg(x),' ',msg(y),' agreement of ',acurcy,' digits out of requested ',digits_local
+      endif
+   end select
 
    if(ind.eq.0)then
       almost=.true.
@@ -5156,10 +5187,11 @@ end function almost
 !>
 !!##NAME
 !!      accdig(3f) - [M_math] compare two real numbers only up to a specified number of digits
+!!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
-!!       subroutine accdig(x,y,rdgits,acurcy,ind)
+!!       subroutine accdig(x,y,digio,acurcy,ind)
 !!
 !!        real,intent(in)     :: X
 !!        real,intent(in)     :: Y
@@ -5263,7 +5295,6 @@ end function almost
 !!       enddo
 !!    end program demo_accdig
 !!
-!!##NOTES
 !!##REFERENCES
 !!
 !!   based on ...
@@ -5281,14 +5312,12 @@ end function almost
 !!            JSU     VERSION - February, 1991.
 !!
 !!##DEPENDENCIES
-!!         o M_journal(),log10(), abs(1)
+!!    o M_journal(),log10(), abs(1)
 !!
-!!##FILES
-!!      o libGPF.a
-!!##LEGAL RESTRICTIONS
-!!      none
-!!##QA
-!!    o Authors: David Hogben, John S. Urban
+!!##AUTHOR
+!!    David Hogben, John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -5296,62 +5325,65 @@ end function almost
 SUBROUTINE accdig(X,Y,digi0,ACURCY,IND)
 use M_journal, only : journal
 implicit none
-character(len=*),parameter::ident_22="@(#)M_math::accdig(3f): compare two real numbers only up to a specified number of digits"
-!     INPUT ...
-      real,intent(in) :: x           ! First  of two real numbers to be compared.
-      real,intent(in) :: y           ! Second of two real numbers to be compared.
-      real,intent(in) :: digi0       ! Number of digits to be satisfied in relative tolerance.
-!     OUTPUT ...
-      integer,intent(out) :: ind     ! = 0, If tolerance is     satisfied.
-                                     ! = 1, If tolerance is not satisfied.
-      real,intent(out) :: acurcy     ! = - LOG10 (ABS((X-Y)/Y)))
 
-      real     ::  diff
-      real     ::  digi
-      integer  ::  ireal_significant_digits
-!     ==================================================================
-      ireal_significant_digits=int(log10(2.**digits(0.0))) ! maximum number of significant digits in a real number.
-      digi=digi0
-      if(digi.le.0)then
-         call journal('sc','*accdig* bad number of significant digits=',digi)
-         digi=ireal_significant_digits
-      else if(digi .gt. ireal_significant_digits)then
-         call journal('sc','*accdig* significant digit request too high=',digi)
-         digi=min(digi,real(ireal_significant_digits))
-      endif
-!     ..................................................................
-      diff = x - y
-      if (diff .eq. 0.0) then
-         acurcy = digi
-      else if (y .eq. 0.0) then
-         acurcy = - log10 (abs (x))
-      else
-         acurcy = - log10 ( abs(diff) ) + log10 ( abs(y) )
-      endif
-!     ..................................................................
-      if (acurcy .lt. digi ) then
-         ind = 1
-      else
-         ind = 0
-      endif
-!     ..................................................................
+character(len=*),parameter::ident_22="@(#)M_math::accdig(3f): compare two real numbers only up to a specified number of digits"
+
+!     INPUT ...
+real,intent(in) :: x           ! First  of two real numbers to be compared.
+real,intent(in) :: y           ! Second of two real numbers to be compared.
+real,intent(in) :: digi0       ! Number of digits to be satisfied in relative tolerance.
+!     OUTPUT ...
+integer,intent(out) :: ind     ! = 0, If tolerance is     satisfied.
+! = 1, If tolerance is not satisfied.
+real,intent(out)    :: acurcy  ! = - LOG10(ABS((X-Y)/Y)))
+
+real     :: diff
+real     :: digi
+integer  :: ireal_significant_digits
+!-----------------------------------------------------------------------------------------------------------------------------------
+   ireal_significant_digits=int(log10(2.**digits(0.0))) ! maximum number of significant digits in a real number.
+   digi=digi0
+   if(digi.le.0)then
+      call journal('sc','*accdig* bad number of significant digits=',digi)
+      digi=ireal_significant_digits
+   elseif(digi .gt. ireal_significant_digits)then
+      call journal('sc','*accdig* significant digit request too high=',digi)
+      digi=min(digi,real(ireal_significant_digits))
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   diff = x - y
+   if(diff .eq. 0.0) then
+      acurcy = digi
+   elseif(y .eq. 0.0) then
+      acurcy = - log10(abs(x))
+   else
+      acurcy = - log10(abs(diff)) + log10(abs(y))
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(acurcy .lt. digi ) then
+      ind = 1
+   else
+      ind = 0
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
 END SUBROUTINE accdig
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
-!!      dp_accdig(3f) - [M_math] compare two DOUBLEPRECISION numbers only up to a specified number of digits
+!!      dp_accdig(3f) - [M_math] compare two numbers only up to a specified number of digits
+!!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
-!!       subroutine dp_accdig(x,y,rdgits,acurcy,ind)
+!!       subroutine dp_accdig(x,y,digio,acurcy,ind)
 !!
-!!        doubleprecision,intent(in)  :: X
-!!        doubleprecision,intent(in)  :: Y
-!!        real,intent(in)             :: DIGI0
-!!        doubleprecision,intent(out) :: acurcy
-!!        integer,intent(out)         :: ind
+!!        class(*),intent(in)  :: X
+!!        class(*),intent(in)  :: Y
+!!        class(*),intent(in)  :: DIGI0
+!!        real,intent(out)     :: acurcy
+!!        integer,intent(out)  :: ind
 !!
 !!##DESCRIPTION
 !!
@@ -5373,7 +5405,7 @@ END SUBROUTINE accdig
 !!            ACURCY=-log10(X-Y)       if X != Y and Y = 0
 !!            ACURCY=8                 if X=Y
 !!
-!!            ACURCY is never less than -8 or greater than 8
+!!            ACURCY is never less than -8 or greater than 8 for REAL values
 !!
 !!    TOLERANCE ...
 !!         X and Y are considered equal within DIGI0 relative tolerance,
@@ -5420,7 +5452,7 @@ END SUBROUTINE accdig
 !!    doubleprecision :: a, b
 !!    integer         :: i10, i20, i30
 !!    integer         :: ind, ind1, ind2
-!!    doubleprecision :: acurcy, acurcy1, acurcy2
+!!    real            :: acurcy, acurcy1, acurcy2
 !!    doubleprecision :: vals(9)
 !!    data vals/ &
 !!      &1.234680d0,   1.2345378d0,  2.2234568d0, 1.2345678d0, &
@@ -5471,58 +5503,59 @@ END SUBROUTINE accdig
 !!
 !!##FILES
 !!      o libGPF.a
-!!##LEGAL RESTRICTIONS
-!!      none
-!!##QA
-!!    o Authors: David Hogben, John S. Urban
+!! Authors
+!!      David Hogben, John S. Urban
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
-SUBROUTINE dp_accdig (x,y,digi0,ACURCY,IND)
-use M_journal, only  : journal
-use M_anything, only : anyscalar_to_double
+SUBROUTINE dp_accdig(x,y,digi0,ACURCY,IND)
+use,intrinsic :: iso_fortran_env, only : real128
+use M_journal,  only : journal
+use M_anything, only : anyscalar_to_real128
 implicit none
 
-character(len=*),parameter::ident_23="@(#)M_math::dp_accdig(3f): compare two double values only up to a specified number of digits"
+character(len=*),parameter::ident_23="@(#)M_math::dp_accdig(3f): compare two values only up to a specified number of digits"
 
 !  INPUT ...
-   class(*),intent(in)         :: x           ! FIRST  OF TWO DOUBLE NUMBERS TO BE COMPARED.
-   class(*),intent(in)         :: y           ! SECOND OF TWO DOUBLE NUMBERS TO BE COMPARED.
-   class(*),intent(in)         :: digi0       ! NUMBER OF DIGITS TO BE SATISFIED IN RELATIVE TOLERANCE.
+class(*),intent(in)  :: x           ! FIRST  OF TWO NUMBERS TO BE COMPARED.
+class(*),intent(in)  :: y           ! SECOND OF TWO NUMBERS TO BE COMPARED.
+class(*),intent(in)  :: digi0       ! NUMBER OF DIGITS TO BE SATISFIED IN RELATIVE TOLERANCE.
 
-   doubleprecision             :: x_local
-   doubleprecision             :: y_local
+real(kind=real128)   :: x_local
+real(kind=real128)   :: y_local
 
 !  OUTPUT ...
-   integer,intent(out)         :: ind         ! = 0, IF TOLERANCE IS     SATISFIED.
+integer,intent(out)  :: ind         ! = 0, IF TOLERANCE IS     SATISFIED.
                                               ! = 1, IF TOLERANCE IS NOT SATISFIED.
-   doubleprecision,intent(out) :: acurcy      ! = - LOG10 (ABS((x_local-y_local)/y_local)))
-   doubleprecision             ::  diff
-   doubleprecision             ::  digi
-   integer                     ::  idble_significant_digits
-!  ==================================================================
-   x_local=anyscalar_to_double(x)
-   y_local=anyscalar_to_double(y)
-   digi=anyscalar_to_double(digi0)
-!  ==================================================================
-   idble_significant_digits=int(log10(2.0**digits(0.0d0))) ! MAXIMUM NUMBER OF SIGNIFICANT DIGITS IN A DOUBLE NUMBER.
+real,intent(out)     :: acurcy      ! = - LOG10(ABS((x_local-y_local)/y_local)))
+real(kind=real128)   :: diff
+real(kind=real128)   :: digi
+integer              :: idble_significant_digits
+!-----------------------------------------------------------------------------------------------------------------------------------
+   x_local=anyscalar_to_real128(x)
+   y_local=anyscalar_to_real128(y)
+   digi=anyscalar_to_real128(digi0)
+!-----------------------------------------------------------------------------------------------------------------------------------
+   idble_significant_digits=int(log10(2.0_real128**digits(0.0_real128))) ! MAXIMUM NUMBER OF SIGNIFICANT DIGITS IN A REAL128 NUMBER.
    if(digi.le.0)then
-      call journal('sc','*dp_accdig* bad number of significant digits=',dble(digi))
+      call journal('sc','*dp_accdig* bad number of significant digits=',real(digi,kind=real128))
       digi=idble_significant_digits
-   else if(digi .gt. idble_significant_digits)then
-      call journal('sc','*dp_accdig* significant digit request too high=',dble(digi))
-      digi=min(digi,dble(idble_significant_digits))
+   elseif(digi .gt. idble_significant_digits)then
+      call journal('sc','*dp_accdig* significant digit request too high=',real(digi,kind=real128))
+      digi=min(digi,real(idble_significant_digits,kind=real128))
    endif
    diff = x_local - y_local
-   if (diff .eq. 0.0) then
+   if(diff .eq. 0.0_real128) then
       acurcy = digi
-   else if (y_local .eq. 0.0) then
-      acurcy = - log10 (abs (x_local))
+   elseif(y_local .eq. 0.0_real128) then
+      acurcy = - log10(abs(x_local))
    else
-      acurcy = - log10 ( abs(diff) ) + log10 ( abs(y_local) )
+      acurcy = - log10(abs(diff)) + log10(abs(y_local))
    endif
-   if (acurcy .lt. digi ) then
+   if(acurcy .lt. digi ) then
       ind = 1
    else
       ind = 0
@@ -6602,67 +6635,77 @@ end function complex_invert_4x4
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_math()
-
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
 !! setup
 ! GEOMETRY
-   call test_citer              ! determine various geometric properties of circle segment given radius and area of the segment.
-   call test_envelope           ! Find the vertices (in clockwise order) of a polygon enclosing the points [((x(i), y(i), i=1,n)].
-   call test_inpolygon          ! Subroutine to determine whether or not a point is in a polygon
-   call test_locpt              ! find if a point is inside a polygonal path
-   call test_poly_intercept     ! find points where a line intersects a polygon
-   call test_polyarea           ! find area of a polygon
-   call test_polyarea_shoelace  ! find area of a polygon using shoelace algorithm
-   call test_polyarea_mid_point ! find area of a polygon
-   call test_closest            ! find point closest to target
-   call test_hypot              ! Euclidean distance
+   call test_citer()              ! determine various geometric properties of circle segment given radius and area of the segment.
+   call test_envelope()           ! Find the vertices (in clockwise order) of a polygon enclosing the points [((x(i), y(i), i=1,n)].
+   call test_inpolygon()          ! Subroutine to determine whether or not a point is in a polygon
+   call test_locpt()              ! find if a point is inside a polygonal path
+   call test_poly_intercept()     ! find points where a line intersects a polygon
+   call test_polyarea()           ! find area of a polygon
+   call test_polyarea_shoelace()  ! find area of a polygon using shoelace algorithm
+   call test_polyarea_mid_point() ! find area of a polygon
+   call test_closest()            ! find point closest to target
+   call test_hypot()              ! Euclidean distance
 ! FIT
-   call test_julfit             ! linear least square fit
-   call test_julfit1            ! linear least square fit(y=a*x+b)
-   call test_lowess             ! data smoothing using locally weighted regression
-   call test_splift             ! fits a spline to the n data points given in x and y
-   call test_splint             ! interpolates and twice differentiates a cubic spline
-   call test_linearint          ! linear interpolation
+   call test_julfit()             ! linear least square fit
+   call test_julfit1()            ! linear least square fit(y=a*x+b)
+   call test_lowess()             ! data smoothing using locally weighted regression
+   call test_splift()             ! fits a spline to the n data points given in x and y
+   call test_splint()             ! interpolates and twice differentiates a cubic spline
+   call test_linearint()          ! linear interpolation
 ! FITS
-   call test_ju_polfit
-   call test_ju_pvalue
-   call test_glstsq
-!  private gcsgau1
-!  private gcsgau2
+   call test_ju_polfit()
+   call test_ju_pvalue()
+   call test_glstsq()
+!  private gcsgau1()
+!  private gcsgau2()
 ! INTEGRATE
-   call test_qhfg
-   call test_qhsg
-   call test_qtfg
-   call test_trapezoidal_integral
+   call test_qhfg()
+   call test_qhsg()
+   call test_qtfg()
+   call test_trapezoidal_integral()
 ! STATISTICS
-   call test_extremum       ! find the minimum and maximum value in a real array
-   call test_bds            ! basic descriptive statistics
-   call test_ncr            ! number of combinations of size R from N cases
-   call test_skekurx        ! skew and kurtosis variant
-   call test_skekur1        ! skew and kurtosis variant
-   call test_stddev         ! standard deviation
+   call test_extremum()       ! find the minimum and maximum value in a real array
+   call test_bds()            ! basic descriptive statistics
+   call test_ncr()            ! number of combinations of size R from N cases
+   call test_skekurx()        ! skew and kurtosis variant
+   call test_skekur1()        ! skew and kurtosis variant
+   call test_stddev()         ! standard deviation
 ! COMPARING AND ROUNDING FLOATING POINT VALUES
-   call test_accdig         ! compare two real numbers only up to a specified number of digits
-   call test_almost         ! function compares two real numbers only up to a specified number of digits
-   call test_dp_accdig      ! compare two double numbers only up to a specified number of digits
-   call test_in_margin      ! check if two reals are approximately equal using a relative margin
-   call test_round          ! round val to specified number of significant digits
-   call test_scale1         ! given xmin,xmax,n, find new range xminp xmaxp divisible into ~ n linear intervals of size dist
-   call test_scale3         ! find nice log range, typically for an axis
+   call test_accdig()         ! compare two real numbers only up to a specified number of digits
+   call test_almost()         ! function compares two numbers only up to a specified number of digits
+   call test_dp_accdig()      ! compare two double numbers only up to a specified number of digits
+   call test_in_margin()      ! check if two reals are approximately equal using a relative margin
+   call test_round()          ! round val to specified number of significant digits
+   call test_scale1()         ! given xmin,xmax,n, find new range xminp xmaxp divisible into ~ n linear intervals of size dist
+   call test_scale3()         ! find nice log range, typically for an axis
 ! MATRIX
-   call test_invert_2x2     ! directly invert 2x2 matrix
-   call test_invert_3x3     ! directly invert 3x3 matrix
-   call test_invert_4x4     ! directly invert 4x4 matrix
-   call test_magic_square   ! create magic squares
+   call test_invert_2x2()     ! directly invert 2x2 matrix
+   call test_invert_3x3()     ! directly invert 3x3 matrix
+   call test_invert_4x4()     ! directly invert 4x4 matrix
+   call test_complex_invert_2x2()
+   call test_complex_invert_3x3()
+   call test_complex_invert_4x4()
+   call test_double_invert_2x2()
+   call test_double_invert_3x3()
+   call test_double_invert_4x4()
+   call test_integer_invert_2x2()
+   call test_integer_invert_3x3()
+   call test_integer_invert_4x4()
+   call test_real_invert_2x2()
+   call test_real_invert_3x3()
+   call test_real_invert_4x4()
+   call test_magic_square()   ! create magic squares
 ! POLYNOMIAL
-   call test_quadratic      ! return roots of quadratic equation even if complex
-
+   call test_quadratic()      ! return roots of quadratic equation even if complex
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_invert_2x2()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('invert_2x2',msg='')
    !!call unit_check('invert_2x2', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('invert_2x2',msg='')
@@ -6670,8 +6713,6 @@ end subroutine test_invert_2x2
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_invert_3x3()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('invert_3x3',msg='')
    !!call unit_check('invert_3x3', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('invert_3x3',msg='')
@@ -6679,8 +6720,6 @@ end subroutine test_invert_3x3
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_invert_4x4()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('invert_4x4',msg='')
    !!call unit_check('invert_4x4', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('invert_4x4',msg='')
@@ -6688,8 +6727,6 @@ end subroutine test_invert_4x4
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_accdig()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('accdig',msg='')
    !!call unit_check('accdig', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('accdig',msg='')
@@ -6697,8 +6734,6 @@ end subroutine test_accdig
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_almost()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('almost',msg='')
    !!call unit_check('almost', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('almost',msg='')
@@ -6706,8 +6741,6 @@ end subroutine test_almost
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_bds()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('bds',msg='')
    !!call unit_check('bds', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('bds',msg='')
@@ -6715,8 +6748,6 @@ end subroutine test_bds
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_citer()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('citer',msg='')
    !!call unit_check('citer', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('citer',msg='')
@@ -6724,8 +6755,6 @@ end subroutine test_citer
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_complex_invert_2x2()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('complex_invert_2x2',msg='')
    !!call unit_check('complex_invert_2x2', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('complex_invert_2x2',msg='')
@@ -6733,8 +6762,6 @@ end subroutine test_complex_invert_2x2
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_complex_invert_3x3()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('complex_invert_3x3',msg='')
    !!call unit_check('complex_invert_3x3', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('complex_invert_3x3',msg='')
@@ -6742,8 +6769,6 @@ end subroutine test_complex_invert_3x3
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_complex_invert_4x4()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('complex_invert_4x4',msg='')
    !!call unit_check('complex_invert_4x4', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('complex_invert_4x4',msg='')
@@ -6751,8 +6776,6 @@ end subroutine test_complex_invert_4x4
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_double_invert_2x2()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('double_invert_2x2',msg='')
    !!call unit_check('double_invert_2x2', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('double_invert_2x2',msg='')
@@ -6760,8 +6783,6 @@ end subroutine test_double_invert_2x2
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_double_invert_3x3()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('double_invert_3x3',msg='')
    !!call unit_check('double_invert_3x3', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('double_invert_3x3',msg='')
@@ -6769,8 +6790,6 @@ end subroutine test_double_invert_3x3
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_double_invert_4x4()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('double_invert_4x4',msg='')
    !!call unit_check('double_invert_4x4', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('double_invert_4x4',msg='')
@@ -6778,8 +6797,6 @@ end subroutine test_double_invert_4x4
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dp_accdig()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('dp_accdig',msg='')
    !!call unit_check('dp_accdig', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('dp_accdig',msg='')
@@ -6787,8 +6804,6 @@ end subroutine test_dp_accdig
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_envelope()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('envelope',msg='')
    !!call unit_check('envelope', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('envelope',msg='')
@@ -6796,8 +6811,6 @@ end subroutine test_envelope
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_extremum()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('extremum',msg='')
    !!call unit_check('extremum', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('extremum',msg='')
@@ -6805,8 +6818,6 @@ end subroutine test_extremum
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_glstsq()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('glstsq',msg='')
    !!call unit_check('glstsq', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('glstsq',msg='')
@@ -6814,8 +6825,6 @@ end subroutine test_glstsq
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_in_margin()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('in_margin',msg='')
    !!call unit_check('in_margin', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('in_margin',msg='')
@@ -6823,8 +6832,6 @@ end subroutine test_in_margin
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_inpolygon()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('inpolygon',msg='')
    !!call unit_check('inpolygon', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('inpolygon',msg='')
@@ -6832,8 +6839,6 @@ end subroutine test_inpolygon
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_integer_invert_2x2()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('integer_invert_2x2',msg='')
    !!call unit_check('integer_invert_2x2', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('integer_invert_2x2',msg='')
@@ -6841,8 +6846,6 @@ end subroutine test_integer_invert_2x2
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_integer_invert_3x3()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('integer_invert_3x3',msg='')
    !!call unit_check('integer_invert_3x3', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('integer_invert_3x3',msg='')
@@ -6850,8 +6853,6 @@ end subroutine test_integer_invert_3x3
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_integer_invert_4x4()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('integer_invert_4x4',msg='')
    !!call unit_check('integer_invert_4x4', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('integer_invert_4x4',msg='')
@@ -6859,8 +6860,6 @@ end subroutine test_integer_invert_4x4
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_ju_polfit()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('ju_polfit',msg='')
    !!call unit_check('ju_polfit', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('ju_polfit',msg='')
@@ -6868,8 +6867,6 @@ end subroutine test_ju_polfit
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_ju_pvalue()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('ju_pvalue',msg='')
    !!call unit_check('ju_pvalue', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('ju_pvalue',msg='')
@@ -6877,8 +6874,6 @@ end subroutine test_ju_pvalue
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_julfit()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('julfit',msg='')
    !!call unit_check('julfit', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('julfit',msg='')
@@ -6886,8 +6881,6 @@ end subroutine test_julfit
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_julfit1()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('julfit1',msg='')
    !!call unit_check('julfit1', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('julfit1',msg='')
@@ -6895,8 +6888,6 @@ end subroutine test_julfit1
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_linearint()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('linearint',msg='')
    !!call unit_check('linearint', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('linearint',msg='')
@@ -6904,8 +6895,6 @@ end subroutine test_linearint
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_locpt()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('locpt',msg='')
    !!call unit_check('locpt', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('locpt',msg='')
@@ -6913,8 +6902,6 @@ end subroutine test_locpt
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_lowess()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('lowess',msg='')
    !!call unit_check('lowess', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('lowess',msg='')
@@ -6922,8 +6909,6 @@ end subroutine test_lowess
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_magic_square()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('magic_square',msg='')
    !!call unit_check('magic_square', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('magic_square',msg='')
@@ -6931,8 +6916,6 @@ end subroutine test_magic_square
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_ncr()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('ncr',msg='')
    !!call unit_check('ncr', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('ncr',msg='')
@@ -6940,8 +6923,6 @@ end subroutine test_ncr
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_poly_intercept()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('poly_intercept',msg='')
    !!call unit_check('poly_intercept', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('poly_intercept',msg='')
@@ -6949,8 +6930,6 @@ end subroutine test_poly_intercept
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_polyarea()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('polyarea',msg='')
    !!call unit_check('polyarea', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('polyarea',msg='')
@@ -6958,8 +6937,6 @@ end subroutine test_polyarea
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_polyarea_mid_point()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('polyarea_mid_point',msg='')
    !!call unit_check('polyarea_mid_point', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('polyarea_mid_point',msg='')
@@ -6967,8 +6944,6 @@ end subroutine test_polyarea_mid_point
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_polyarea_shoelace()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('polyarea_shoelace',msg='')
    !!call unit_check('polyarea_shoelace', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('polyarea_shoelace',msg='')
@@ -6976,8 +6951,6 @@ end subroutine test_polyarea_shoelace
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_hypot()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('hypot',msg='')
    !!call unit_check('hypot', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('hypot',msg='')
@@ -6985,8 +6958,6 @@ end subroutine test_hypot
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_qhfg()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('qhfg',msg='')
    !!call unit_check('qhfg', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('qhfg',msg='')
@@ -6994,8 +6965,6 @@ end subroutine test_qhfg
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_qhsg()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('qhsg',msg='')
    !!call unit_check('qhsg', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('qhsg',msg='')
@@ -7003,8 +6972,6 @@ end subroutine test_qhsg
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_qtfg()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('qtfg',msg='')
    !!call unit_check('qtfg', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('qtfg',msg='')
@@ -7012,8 +6979,6 @@ end subroutine test_qtfg
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_trapezoidal_integral()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('trapezoidal_integral',msg='')
    !!call unit_check('trapezoidal_integral', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('trapezoidal_integral',msg='')
@@ -7021,8 +6986,6 @@ end subroutine test_trapezoidal_integral
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_quadratic()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('quadratic',msg='')
    !!call unit_check('quadratic', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('quadratic',msg='')
@@ -7030,8 +6993,6 @@ end subroutine test_quadratic
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_real_invert_2x2()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('real_invert_2x2',msg='')
    !!call unit_check('real_invert_2x2', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('real_invert_2x2',msg='')
@@ -7039,8 +7000,6 @@ end subroutine test_real_invert_2x2
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_real_invert_3x3()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('real_invert_3x3',msg='')
    !!call unit_check('real_invert_3x3', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('real_invert_3x3',msg='')
@@ -7048,8 +7007,6 @@ end subroutine test_real_invert_3x3
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_real_invert_4x4()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('real_invert_4x4',msg='')
    !!call unit_check('real_invert_4x4', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('real_invert_4x4',msg='')
@@ -7057,8 +7014,6 @@ end subroutine test_real_invert_4x4
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_round()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('round',msg='')
    !!call unit_check('round', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('round',msg='')
@@ -7066,8 +7021,6 @@ end subroutine test_round
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_scale1()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('scale1',msg='')
    !!call unit_check('scale1', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('scale1',msg='')
@@ -7075,8 +7028,6 @@ end subroutine test_scale1
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_scale3()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('scale3',msg='')
    !!call unit_check('scale3', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('scale3',msg='')
@@ -7084,8 +7035,6 @@ end subroutine test_scale3
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_skekur1()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('skekur1',msg='')
    !!call unit_check('skekur1', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('skekur1',msg='')
@@ -7093,8 +7042,6 @@ end subroutine test_skekur1
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_skekurx()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('skekurx',msg='')
    !!call unit_check('skekurx', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('skekurx',msg='')
@@ -7102,8 +7049,6 @@ end subroutine test_skekurx
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_splift()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('splift',msg='')
    !!call unit_check('splift', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('splift',msg='')
@@ -7111,8 +7056,6 @@ end subroutine test_splift
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_splint()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('splint',msg='')
    !!call unit_check('splint', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('splint',msg='')
@@ -7120,8 +7063,6 @@ end subroutine test_splint
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_stddev()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('stddev',msg='')
    !!call unit_check('stddev', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('stddev',msg='')

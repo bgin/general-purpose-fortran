@@ -156,6 +156,7 @@
 !!    101 format(a,t57,g0)
 !!    !!
 !!    end program demo_M_units
+!!
 !!   Results:
 !!
 !!    >   0.00000000       45.0000000       90.0000000       270.000000       180.000000
@@ -527,7 +528,7 @@ end function d2r_i
 !!    Calculate sine of input value in degrees
 !!
 !!##OPTIONS
-!!    degrees    any standard scalar value supported by anyscalar_to_real(3f)
+!!    degrees    any standard scalar value supported by anyscalar_to_double(3f)
 !!
 !!##EXAMPLE
 !!
@@ -567,9 +568,9 @@ elemental real function sind(angle_in_degrees)
 
 character(len=*),parameter::ident_9="@(#)M_units::sind(3f): sin(3f) with degrees as input instead of radians"
 
-class(*),intent(in)           :: angle_in_degrees
-real                       :: angle_in_degrees_local
-   angle_in_degrees_local=anyscalar_to_real(angle_in_degrees)
+class(*),intent(in)  :: angle_in_degrees
+real                 :: angle_in_degrees_local
+   angle_in_degrees_local=anyscalar_to_double(angle_in_degrees)
    sind=sin(angle_in_degrees_local*degrees_to_radians)
 end function sind
 !***********************************************************************************************************************************
@@ -586,7 +587,7 @@ end function sind
 !!    Calculate cosine of input value in degrees
 !!
 !!##OPTIONS
-!!    degrees    any standard scalar value supported by anyscalar_to_real(3f).
+!!    degrees    any standard scalar value supported by anyscalar_to_double(3f).
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -626,9 +627,9 @@ elemental real function cosd(angle_in_degrees)
 
 character(len=*),parameter::ident_10="@(#)M_units::cosd(3f): cos(3f) with degrees as input instead of radians"
 
-class(*),intent(in)           :: angle_in_degrees
-real                       :: angle_in_degrees_local
-   angle_in_degrees_local=anyscalar_to_real(angle_in_degrees)
+class(*),intent(in) :: angle_in_degrees
+real                :: angle_in_degrees_local
+   angle_in_degrees_local=anyscalar_to_double(angle_in_degrees)
    cosd=cos(angle_in_degrees_local*degrees_to_radians)
 end function cosd
 !***********************************************************************************************************************************
@@ -638,14 +639,14 @@ end function cosd
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!    elemental real function tand(degrees)
+!! elemental real function tand(degrees)
 !!
 !!     class(*),intent(in) :: degrees
 !!##DESCRIPTION
 !!    Calculate tangent of input value in degrees
 !!
 !!##OPTIONS
-!!    degrees    any standard scalar value supported by anyscalar_to_real(3f).
+!!    degrees    any standard scalar value supported by anyscalar_to_double(3f).
 !!##EXAMPLE
 !!
 !!   Sample program
@@ -654,14 +655,25 @@ end function cosd
 !!    use M_units, only :  tand
 !!    implicit none
 !!       write(*,*)'With REAL array input    ', &
-!!         &tand([ 0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 180.0, 270.0 ])
+!!         & tand([ 0.0, 15.0, 30.0, 45.0, 60.0, 75.0, 90.0, 180.0, 270.0 ])
 !!       write(*,*)'With INTEGER array input ', &
-!!         &tand([0,15,30,45,60,75,90,180,270])
+!!         & tand([0,15,30,45,60,75,90,180,270])
 !!       write(*,*)'With DOUBLEPRECISION     ', &
-!!         &tand(0.0d0),tand(15.0d0),tand(90.0/3.0d0),tand(90.0/2.0d0),&
-!!       & tand(60.0d0),tand(75.0d0),&
-!!       & tand(90.0d0),tand(180.0d0),tand(270.0d0)
+!!         & tand(0.0d0),tand(15.0d0),tand(90.0/3.0d0),tand(90.0/2.0d0),&
+!!         & tand(60.0d0),tand(75.0d0),&
+!!         & tand(90.0d0),tand(180.0d0),tand(270.0d0)
 !!    end program demo_tand
+!!   Results:
+!!
+!!    With REAL array input    0.00000000   0.267949194   0.577350259
+!!    1.00000000    1.73205078    3.73205090    1.63312395E+16
+!!    -1.22464685E-16  5.44374649E+15
+!!    With INTEGER array input  0.00000000   0.267949194   0.577350259
+!!    1.00000000    1.73205078    3.73205090    1.63312395E+16
+!!    -1.22464685E-16  5.44374649E+15
+!!    With DOUBLEPRECISION    0.00000000   0.267949194   0.577350259
+!!    1.00000000    1.73205078    3.73205090    1.63312395E+16
+!!    -1.22464685E-16  5.44374649E+15
 !!
 !!   Results
 !!
@@ -675,9 +687,9 @@ elemental real function tand(angle_in_degrees)
 
 character(len=*),parameter::ident_11="@(#)M_units::tand(3f): tan(3f) with degrees as input instead of radians"
 
-class(*),intent(in)           :: angle_in_degrees
-real                       :: angle_in_degrees_local
-   angle_in_degrees_local=anyscalar_to_real(angle_in_degrees)
+class(*),intent(in) :: angle_in_degrees
+real                :: angle_in_degrees_local
+   angle_in_degrees_local=anyscalar_to_double(angle_in_degrees)
    tand=tan(angle_in_degrees_local*degrees_to_radians)
 end function tand
 !***********************************************************************************************************************************
@@ -695,7 +707,7 @@ end function tand
 !!    value to radians from degrees and calls asin(3f).
 !!
 !!##OPTIONS
-!!    value    any standard scalar value supported by anyscalar_to_real(3f)
+!!    value    any standard scalar value supported by anyscalar_to_double(3f)
 !!
 !!##EXAMPLE
 !!
@@ -722,9 +734,9 @@ elemental real function asind(x)
 
 character(len=*),parameter::ident_12="@(#)M_units::asind(3f): asin(3f) with degrees as output instead of radians"
 
-class(*),intent(in)           :: x
-real                          :: x_local
-   x_local=anyscalar_to_real(x)
+class(*),intent(in) :: x
+real                :: x_local
+   x_local=anyscalar_to_double(x)
    asind=asin(x_local)/degrees_to_radians
 end function asind
 !***********************************************************************************************************************************
@@ -742,7 +754,7 @@ end function asind
 !!    from degrees to radians and calls acos(3f).
 !!
 !!##OPTIONS
-!!    value    any standard scalar value supported by anyscalar_to_real(3f)
+!!    value    any standard scalar value supported by anyscalar_to_double(3f)
 !!
 !!##EXAMPLE
 !!
@@ -770,9 +782,9 @@ elemental real function acosd(x)
 
 character(len=*),parameter::ident_13="@(#)M_units::acosd(3f): calculate arc-cos of angle in degrees"
 
-class(*),intent(in)           :: x
-real                          :: x_local
-   x_local=anyscalar_to_real(x)
+class(*),intent(in) :: x
+real                :: x_local
+   x_local=anyscalar_to_double(x)
    acosd=acos(x_local)/degrees_to_radians
 end function acosd
 !***********************************************************************************************************************************
@@ -790,7 +802,7 @@ end function acosd
 !!    converts the output to degrees from radians.
 !!
 !!##OPTIONS
-!!    value    any standard scalar value supported by anyscalar_to_real(3f)
+!!    value    any standard scalar value supported by anyscalar_to_double(3f)
 !!
 !!##EXAMPLE
 !!
@@ -819,9 +831,9 @@ elemental real function atand(x)
 
 character(len=*),parameter::ident_14="@(#)M_units::atand(3f): result is arc-tangent of angle in degrees"
 
-class(*),intent(in)           :: x
-real                          :: x_local
-   x_local=anyscalar_to_real(x)
+class(*),intent(in) :: x
+real                :: x_local
+   x_local=anyscalar_to_double(x)
    atand=atan(x_local)/degrees_to_radians
 end function atand
 !***********************************************************************************************************************************
@@ -843,8 +855,8 @@ end function atand
 !!    in degrees. It calls atan2(3f) and converts the output from radians to degrees.
 !!
 !!##OPTIONS
-!!    X    any standard scalar value supported by anyscalar_to_real(3f)
-!!    Y    any standard scalar value supported by anyscalar_to_real(3f)
+!!    X    any standard scalar value supported by anyscalar_to_double(3f)
+!!    Y    any standard scalar value supported by anyscalar_to_double(3f)
 !!
 !!##EXAMPLE
 !!
@@ -869,12 +881,12 @@ elemental real function atan2d(x,y)
 
 character(len=*),parameter::ident_15="@(#)M_units::atan2d(3f): calculate arc-tangent of angle in degrees"
 
-class(*),intent(in)           :: x
-class(*),intent(in)           :: y
-real                       :: x_local
-real                       :: y_local
-   x_local=anyscalar_to_real(x)
-   y_local=anyscalar_to_real(y)
+class(*),intent(in) :: x
+class(*),intent(in) :: y
+real                :: x_local
+real                :: y_local
+   x_local=anyscalar_to_double(x)
+   y_local=anyscalar_to_double(y)
    atan2d=atan2(x_local,y_local)/degrees_to_radians
 end function atan2d
 !***********************************************************************************************************************************
@@ -1886,6 +1898,16 @@ end function inf128
 !!##DESCRIPTION
 !!    Return a NaN (Not a number) value. The type returned will be the same
 !!    kind as the passed value.
+!!
+!!    At some point, the IEEE interface should work, with something like
+!!
+!!     use,intrinsic :: ieee_arithmetic, only : ieee_value, ieee_quiet_nan
+!!     use,intrinsic :: ieee_arithmetic, only : ieee_support_nan
+!!
+!!     if(IEEE_SUPPORT_NAN(x))then        ! Are IEEE NaNs supported?
+!!        x=IEEE_VALUE(x,ieee_quiet_nan)  ! Generate an IEEE value.
+!!     endif
+!!
 !!##OPTIONS
 !!    value  A real value whose kind is used to define the kind of the
 !!           returned value.
@@ -1897,52 +1919,59 @@ end function inf128
 !!
 !!    Sample program
 !!
-!!      program demo_nan
-!!      use,intrinsic :: iso_fortran_env, only: real32, real64, real128
-!!      use M_units, only : nan
-!!      implicit none
-!!      real(kind=real32)  :: r32
-!!      real(kind=real64)  :: r64
-!!      real(kind=real128) :: r128
-!!      character(len=256) :: message
-!!      integer            :: ios
+!!    program demo_nan
+!!    use,intrinsic :: iso_fortran_env, only: real32, real64, real128
+!!    use M_units, only : nan
+!!    implicit none
+!!    real(kind=real32)  :: r32
+!!    real(kind=real64)  :: r64
+!!    real(kind=real128) :: r128
+!!    character(len=256) :: message
+!!    integer            :: ios
 !!
-!!         r32=nan(0.0_real32)
-!!         r64=nan(0.0_real64)
-!!         r128=nan(0.0_real128)
+!!       r32=nan(0.0_real32)
+!!       r64=nan(0.0_real64)
+!!       r128=nan(0.0_real128)
 !!
-!!         ! examples printing the NaN values
-!!         ! list directed format
-!!         write(*,*,iomsg=message,iostat=ios)r32,r64,r128
-!!         if(ios.ne.0)write(*,*)trim(message)
-!!         ! hexadecimal format to show different kinds
-!!         write(*,'(z0)',iomsg=message,iostat=ios)r32,r64,r128
-!!         if(ios.ne.0)write(*,*)trim(message)
-!!         ! G0 format
-!!         write(*,'(g0)',iomsg=message,iostat=ios)r32,r64,r128
-!!         if(ios.ne.0)write(*,*)trim(message)
-!!         ! if a specific numeric field is used
-!!         write(*,'(f3.1)',iomsg=message,iostat=ios)r32,r64,r128
-!!         if(ios.ne.0)write(*,*)trim(message)
-!!         ! if format is less than three characters
-!!         write(*,'(f2.1)',iomsg=message,iostat=ios)r32,r64,r128
-!!         if(ios.ne.0)write(*,*)trim(message)
+!!       ! examples printing the NaN values
+!!       ! list directed format
+!!       write(*,*,iomsg=message,iostat=ios)r32,r64,r128
+!!       if(ios.ne.0)write(*,*)trim(message)
+!!       ! hexadecimal format to show different kinds
+!!       write(*,'(*(z0,1x))',iomsg=message,iostat=ios)r32,r64,r128
+!!       if(ios.ne.0)write(*,*)trim(message)
+!!       ! G0 format
+!!       write(*,'(*(g0,1x))',iomsg=message,iostat=ios)r32,r64,r128
+!!       if(ios.ne.0)write(*,*)trim(message)
+!!       ! if a specific numeric field is used
+!!       write(*,'(*(f3.1,1x))',iomsg=message,iostat=ios)r32,r64,r128
+!!       if(ios.ne.0)write(*,*)trim(message)
+!!       ! if format is less than three characters
+!!       write(*,'(*(f2.1,1x))',iomsg=message,iostat=ios)r32,r64,r128
+!!       if(ios.ne.0)write(*,*)trim(message)
 !!
-!!         ! an option to terminate a program when a NaN is encountered
-!!         ! (if X is NaN the comparison with 0. is always false.)
-!!         if (.not.(r32<=0.0) .and. .not.(r32>=0.0))then
-!!            write(*,*)'found nan'
-!!            stop
-!!         endif
+!!       ! an option to terminate a program when a NaN is encountered
+!!       ! (if X is NaN the comparison with 0. is always false.)
+!!       if (.not.(r32<=0.0) .and. .not.(r32>=0.0))then
+!!          write(*,*)'found nan'
+!!          stop
+!!       endif
 !!
-!!         ALT1: block
-!!         integer :: x = 2143289344
-!!            print *, transfer(x, 1.0)    ! prints "nan" on i686
-!!         endblock ALT1
+!!       ALT1: block
+!!          integer :: x = 2143289344
+!!          print *, transfer(x, 1.0)    ! prints "nan" on i686
+!!       endblock ALT1
 !!
-!!      end program demo_nan
+!!    end program demo_nan
 !!
 !!   Results:
+!!
+!!                  NaN                       NaN                                           NaN
+!!    7FC00000 7FF8000000000000 7FFF8000000000000000000000000000
+!!    NaN NaN NaN
+!!    NaN NaN NaN
+!!    ** ** **
+!!     found nan
 !!
 !!##SEE ALSO
 !!      IS_NAN(3f)
@@ -1961,10 +1990,10 @@ character(len=3),save :: STRING='NaN'
 real(kind=real32) :: nan32,value
    read(STRING,*)nan32
    ! (if X is NaN the comparison with 0. is always false.)
-   if ( (nan32<=0.0_real32) .or. (nan32>=0.0_real32) )then
-      write(*,*)'nan(3f) did not produce a nan'
-      stop
-   endif
+   !if ( (nan32<=0.0_real32) .or. (nan32>=0.0_real32) )then
+   !   write(*,*)'nan(3f) did not produce a nan'
+   !   stop
+   !endif
 end function nan32
 !===================================================================================================================================
 function nan64(value)
@@ -1977,10 +2006,10 @@ character(len=3),save :: STRING='NaN'
 real(kind=real64) :: nan64,value
    read(STRING,*)nan64
    ! (if X is NaN the comparison with 0. is always false.)
-   if ( (nan64<=0.0_real64) .or. (nan64>=0.0_real64) )then
-      write(*,*)'nan(3f) did not produce a nan'
-      stop
-   endif
+   !if ( (nan64<=0.0_real64) .or. (nan64>=0.0_real64) )then
+   !   write(*,*)'nan(3f) did not produce a nan'
+   !   stop
+   !endif
 end function nan64
 !===================================================================================================================================
 function nan128(value)
@@ -1993,10 +2022,10 @@ character(len=3),save :: STRING='NaN'
 real(kind=real128) :: nan128,value
    read(STRING,*)nan128
    ! (if X is NaN the comparison with 0. is always false.)
-   if ( (nan128<=0.0_real128) .or. (nan128>=0.0_real128) )then
-      write(*,*)'nan(3f) did not produce a nan'
-      stop
-   endif
+   !if ( (nan128<=0.0_real128) .or. (nan128>=0.0_real128) )then
+   !   write(*,*)'nan(3f) did not produce a nan'
+   !   stop
+   !endif
 end function nan128
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2110,7 +2139,7 @@ end function is_even
 !===================================================================================================================================
 elemental pure function is_nan(x)
 !!use IEEE_EXCEPTIONS, only : ieee_support_nan ! is IEEE NaNs supported?
-use IEEE_ARITHMETIC, only : IEEE_IS_NAN       ! Determine if value is IEEE Not-a-Number.
+use,intrinsic :: IEEE_ARITHMETIC, only : IEEE_IS_NAN       ! Determine if value is IEEE Not-a-Number.
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 
 character(len=*),parameter::ident_36="@(#)M_units::is_nan(3f): determine if value is  IEEE Not-a-Number"

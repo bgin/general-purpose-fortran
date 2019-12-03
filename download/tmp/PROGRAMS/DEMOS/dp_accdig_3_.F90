@@ -5,7 +5,7 @@
           doubleprecision :: a, b
           integer         :: i10, i20, i30
           integer         :: ind, ind1, ind2
-          doubleprecision :: acurcy, acurcy1, acurcy2
+          real            :: acurcy, acurcy1, acurcy2
           doubleprecision :: vals(9)
           data vals/ &
             &1.234680d0,   1.2345378d0,  2.2234568d0, 1.2345678d0, &

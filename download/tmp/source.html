@@ -74,6 +74,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_anything.f90">M_anything.f90</a></td>
 <td>
+	M_anything::anyscalar_to_real128(3f): convert integer or real parameter of any kind to real128<br/>
 	M_anything::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
 	M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real<br/>
 	M_anything::anyinteger_to_64(3f): convert integer parameter of any kind to 64-bit integer<br/>
@@ -374,9 +375,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_math::skekur1(3f): variant on calculating skewness and kurtosis of an array<br/>
 	M_math::skekurx(3f): COMPUTE UNBIASED ESTIMATOR OF THE POPULATION SKEWNESS AND KURTOSIS<br/>
 	M_math::stddev(3f): find standard deviation of a real array<br/>
-	M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling ACCDIG(3f)<br/>
+	M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling DP_ACCDIG(3f)<br/>
 	M_math::accdig(3f): compare two real numbers only up to a specified number of digits<br/>
-	M_math::dp_accdig(3f): compare two double values only up to a specified number of digits<br/>
+	M_math::dp_accdig(3f): compare two values only up to a specified number of digits<br/>
 	M_math::in_margin(3f): check if two reals are approximately equal using a relative margin<br/>
 	 M_math::round(3f): round val to specified number of significant digits<br/>
 	M_math::scale1(3f):given xmin,xmax,n, find new range xminp xmaxp divisible into approximately n linear intervals of size dist<br/>

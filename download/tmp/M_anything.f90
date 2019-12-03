@@ -22,6 +22,7 @@ integer,parameter        :: dp=kind(0.0d0)
 
 public anyinteger_to_64bit  ! convert integer parameter of any kind to 64-bit integer
 public anyscalar_to_real    ! convert integer or real parameter of any kind to real
+public anyscalar_to_real128 ! convert integer or real parameter of any kind to real128
 public anyscalar_to_double  ! convert integer or real parameter of any kind to doubleprecision
 public test_suite_M_anything
 public anything_to_bytes
@@ -296,6 +297,96 @@ end function  anything_to_bytes_scalar
 !===================================================================================================================================
 !>
 !!##NAME
+!!    anyscalar_to_real128(3f) - [M_anything] convert integer or real parameter of any kind to real128
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    pure elemental function anyscalar_to_real128(valuein) result(d_out)
+!!
+!!     class(*),intent(in) :: valuein
+!!     real(kind=128)      :: d_out
+!!
+!!##DESCRIPTION
+!!
+!!    This function uses polymorphism to allow input arguments of different
+!!    types. It is used to create other procedures that can take many
+!!    scalar arguments as input options.
+!!
+!!##OPTIONS
+!!
+!!    VALUEIN  input argument of a procedure to convert to type REAL128.
+!!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64,
+!!             kind=real32, kind=real64, or kind=real128
+!!##RESULTS
+!!
+!!    D_OUT    The value of VALUIN converted to REAL128 (assuming
+!!             it is actually in the range of type REAL128).
+!!
+!!##EXAMPLE
+!!
+!!
+!!   Sample program
+!!
+!!     program demo_anyscalar_to_real128
+!!     use iso_fortran_env, only : int8, int16, int32, int64
+!!     use iso_fortran_env, only : real32, real64, real128
+!!     implicit none
+!!        ! call same function with many scalar input types
+!!        write(*,*)squarei(2_int8)
+!!        write(*,*)squarei(2_int16)
+!!        write(*,*)squarei(2_int32)
+!!        write(*,*)squarei(2_int64)
+!!        write(*,*)squarei(2_real32)
+!!        write(*,*)squarei(2_real64)
+!!        write(*,*)squarei(2_real128)
+!!     contains
+!!
+!!     function squarei(invalue) result (dvalue)
+!!     use M_anything, only : anyscalar_to_real128
+!!     class(*),intent(in)  :: invalue
+!!     real(kind=real128)   :: invalue_local
+!!     real(kind=real128)   :: dvalue
+!!        invalue_local=anyscalar_to_real128(invalue)
+!!        dvalue=invalue_local*invalue_local
+!!     end function squarei
+!!
+!!     end program demo_anyscalar_to_real128
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+pure elemental function anyscalar_to_real128(valuein) result(d_out)
+use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
+implicit none
+
+character(len=*),parameter::ident_3="&
+&@(#)M_anything::anyscalar_to_real128(3f): convert integer or real parameter of any kind to real128"
+
+class(*),intent(in)          :: valuein
+real(kind=real128)           :: d_out
+character(len=3)             :: readable
+   select type(valuein)
+   type is (integer(kind=int8));   d_out=real(valuein,kind=real128)
+   type is (integer(kind=int16));  d_out=real(valuein,kind=real128)
+   type is (integer(kind=int32));  d_out=real(valuein,kind=real128)
+   type is (integer(kind=int64));  d_out=real(valuein,kind=real128)
+   type is (real(kind=real32));    d_out=real(valuein,kind=real128)
+   type is (real(kind=real64));    d_out=real(valuein,kind=real128)
+   type is (real(kind=real128));   d_out=valuein
+   class default
+    !!d_out=huge(0.0_real128)
+    readable='NaN'
+    read(readable,*)d_out
+    !!stop '*M_anything::anyscalar_to_real128: unknown type'
+   end select
+end function anyscalar_to_real128
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!>
+!!##NAME
 !!    anyscalar_to_double(3f) - [M_anything] convert integer or real parameter of any kind to doubleprecision
 !!    (LICENSE:PD)
 !!
@@ -360,7 +451,7 @@ pure elemental function anyscalar_to_double(valuein) result(d_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 
-character(len=*),parameter::ident_3="&
+character(len=*),parameter::ident_4="&
 &@(#)M_anything::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision"
 
 class(*),intent(in)       :: valuein
@@ -456,7 +547,7 @@ pure elemental function anyscalar_to_real(valuein) result(r_out)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 
-character(len=*),parameter::ident_4="@(#)M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real"
+character(len=*),parameter::ident_5="@(#)M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real"
 
 class(*),intent(in) :: valuein
 real                :: r_out
@@ -557,7 +648,7 @@ pure elemental function anyinteger_to_64bit(intin) result(ii38)
 use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 
-character(len=*),parameter::ident_5="@(#)M_anything::anyinteger_to_64(3f): convert integer parameter of any kind to 64-bit integer"
+character(len=*),parameter::ident_6="@(#)M_anything::anyinteger_to_64(3f): convert integer parameter of any kind to 64-bit integer"
 
 class(*),intent(in)     :: intin
    integer(kind=int64) :: ii38
