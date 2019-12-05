@@ -124,10 +124,10 @@ void my_readdir(DIR *dirp, char *filename, int *err){
    length = 0;
 
    if ((dp = readdir (dirp)) != NULL) {
-      length=(int)strlen(dp->d_name);
+      length=(int)strlen(dp->d_name)+1;
       strncpy(filename,dp->d_name,length);
    }else{
-      err=&errno; /*When the end of the directory is encountered, a null pointer is returned and errno is not changed.*/
+      err=-1; /*When the end of the directory is encountered, a null pointer is returned and errno is not changed.*/
    }
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/
@@ -189,7 +189,7 @@ size_t length_copy;
       length_out=strlen(*ep);
       length_copy=MIN(length_in,length_out);
 
-      strncpy(variable,*ep,length_copy);
+      strncpy(variable,*ep,length_copy+1);
       *ep++;
    }
 }

@@ -1,17 +1,67 @@
+program today
+implicit none
+   call main()
+contains
+subroutine help_usage(l_help)
+implicit none
+character(len=*),parameter     :: ident="@(#)help_usage(3f): prints help information"
+logical,intent(in)             :: l_help
+character(len=:),allocatable :: help_text(:)
+integer                        :: i
+logical                        :: stopit=.false.
+stopit=.false.
+if(l_help)then
+help_text=[ CHARACTER(LEN=128) :: &
+'NAME                                                                            ',&
+'       today(1f) - [TIME] output current time for uses such as file suffixes.   ',&
+'       (LICENSE:PD)                                                             ',&
+'SYNOPSIS                                                                        ',&
+'       today format|--help|--version|--options                                  ',&
+'DESCRIPTION                                                                     ',&
+'       Outputs the current date using the specified format. Typically used      ',&
+'       to generate a string to be used in building filenames containing         ',&
+'       date information.                                                        ',&
+'OPTIONS                                                                         ',&
+'       format     any allowable format for the fmtdate(3) routine. Enter        ',&
+'                  "-" to get a list on stdout. defaults to "YMD".               ',&
+'       --help     display this help and exit                                    ',&
+'       --version  output version information and exit                           ',&
+'       --options  display allowed options for building a format                 ',&
+'EXAMPLE                                                                         ',&
+'       Sample commands:                                                         ',&
+'                                                                                ',&
+'        cp myfile myfile.`today`                                                ',&
+'        find . -ls > MANIFEST.`today epoch`                                     ',&
+'        mkdir `today YMDhms`                                                    ',&
+'        today yearmonthdayhourminutesecond                                      ',&
+'        today --options                       # show formatting options         ',&
+'AUTHOR                                                                          ',&
+'   John S. Urban                                                                ',&
+'LICENSE                                                                         ',&
+'   Public Domain                                                                ',&
+'']
+   WRITE(*,'(a)')(trim(help_text(i)),i=1,size(help_text))
+   stop ! if -help was specified, stop
+endif
+end subroutine help_usage
+!-----------------------------------------------------------------------------------------------------------------------------------
 !>
 !!##NAME
 !!        today(1f) - [TIME] output current time for uses such as file suffixes.
 !!        (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!        today [format]
+!!        today format|--help|--version|--options
 !!##DESCRIPTION
 !!        Outputs the current date using the specified format. Typically used
 !!        to generate a string to be used in building filenames containing
 !!        date information.
 !!##OPTIONS
-!!        format   any allowable format for the fmtdate(3) routine. Enter
-!!                 "-" to get a list on stdout. defaults to "YMD".
+!!        format     any allowable format for the fmtdate(3) routine. Enter
+!!                   "-" to get a list on stdout. defaults to "YMD".
+!!        --help     display this help and exit
+!!        --version  output version information and exit
+!!        --options  display allowed options for building a format
 !!##EXAMPLE
 !!
 !!        Sample commands:
@@ -19,7 +69,8 @@
 !!         cp myfile myfile.`today`
 !!         find . -ls > MANIFEST.`today epoch`
 !!         mkdir `today YMDhms`
-!!         today -                              # show formatting options
+!!         today yearmonthdayhourminutesecond
+!!         today --options                       # show formatting options
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -40,41 +91,32 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    output current time for uses such as file suffixes.>',&
 '@(#)VERSION:        1.0, 2009>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 9:57:35 PM>',&
+'@(#)COMPILED:       Wed, Dec 4th, 2019 8:54:36 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
 endif
 end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
-program today
-use M_time, only : now, fmtdate_usage
-implicit none
+subroutine main()
+use M_time,    only : now, fmtdate_usage
+use M_kracken, only : kracken, lget, sget                      ! add command-line parser module
 
 character(len=*),parameter::ident_1="@(#)today(1f): output current time for uses such as file suffixes."
 
-character(len=:),allocatable :: arguments
 character(len=:),allocatable :: options
-integer                      :: arguments_length
-integer                      :: i
-   call get_command(length=arguments_length)              ! get command line length
-   allocate(character(len=arguments_length) :: arguments) ! allocate string big enough to hold command line
-   call get_command(command=arguments)                    ! get command line as a string
-   arguments=adjustl(arguments)                           ! JIC:: trim leading spaces just in case
-
-   i=index(arguments,' ')                                 ! remove command verb from command line assuming verb name exists
-   if(i.eq.0)then                                         ! if options are blank set a default
-      options='YMD'
+   call kracken('today','-help .F. -version .F. -options .F.') ! define command arguments,default values and crack command line
+   call help_usage(lget('today_help'))                         ! if -help option is present, display help text and exit
+   call help_version(lget('today_version'))                    ! if -version option is present, display version text and exit
+   if(lget('today_options'))then                               ! special option to list date format documentation
+      call fmtdate_usage()                                     ! see all formatting options
    else
-      options=arguments(i+1:)
+      options= sget('today_oo')                                ! get -oo STRING
+      if(options.eq.'')then                                    ! if options are blank set a default
+         write(*,'(a)')now('YMD')                              ! display current date using format from command line
+      else
+         write(*,'(a)')now(options)                            ! display current date using format from command line
+      endif
    endif
-
-   if(options.eq.'-')then                                 ! special option to list date format documentation
-      call fmtdate_usage()                                ! see all formatting options
-   else
-      write(*,'(a)')now(options)                          ! display current date using format from command line
-   endif
-
-   deallocate(arguments)                                  ! JIC:: releasing string
-
+end subroutine main
 end program today

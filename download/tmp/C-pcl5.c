@@ -157,7 +157,7 @@ static int PCL5_common_init(int minx, int maxx, int miny, int maxy) {
         sprintf(pcl5[P_CLEAR], "\033%%%%1A\033E\n\033&l2A\033&l1O\033%%%%1B\nIP%d,%d,%d,%d;SC0,%d,0,%d;",
         minx, miny, maxx, maxy, vdevice.sizeSx, vdevice.sizeSy);
 
-        fprintf(draw_fp,pcl5[P_CLEAR]);
+        fprintf(draw_fp,"%s",pcl5[P_CLEAR]);
         fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
         fprintf(draw_fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
         fprintf(draw_fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
@@ -210,7 +210,7 @@ static int PCL5_common_initp(int minx,int maxx,int miny,int maxy) {
         sprintf(pcl5[P_CLEAR], "\033%%%%1A\033E\n\033&l2A\033&l1O\033%%%%1B\nIP%d,%d,%d,%d;SC0,%d,0,%d;RO90;",
         minx, miny, maxx, maxy, vdevice.sizeSx, vdevice.sizeSy);
 
-        fprintf(draw_fp,pcl5[P_CLEAR]);
+        fprintf(draw_fp,"%s",pcl5[P_CLEAR]);
         fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
         fprintf(draw_fp,"NP256;\n"); /* Establish the number of pens in the HPGL/2 palette*/
         fprintf(draw_fp,"CR0,255,0,255,0,255;\n"); /* set color range for relative color data in the HPGL/2 palette*/
@@ -324,7 +324,7 @@ static int HPGL2_draw(int x, int y) {
  */
 static int HPGL2_exit(void) {
         fprintf(draw_fp, plotcmds[P_PEN], 0);
-        fprintf(draw_fp, plotcmds[P_EXIT]);
+        fprintf(draw_fp, "%s",plotcmds[P_EXIT]);
         fflush(draw_fp);
 
         if (draw_fp != stdout && draw_fp != stderr ){
@@ -343,7 +343,7 @@ static int HPGL2_exit(void) {
  */
 static int HPGL2_clear(void) {
         if (drawn){
-                fprintf(draw_fp, plotcmds[P_CLEAR]);
+                fprintf(draw_fp, "%s",plotcmds[P_CLEAR]);
         }
         drawn = 0;
         return(UNUSED);
@@ -445,11 +445,11 @@ static int HPGL2_char(char c) {
         if (plotlstx != vdevice.cpVx || plotlsty != vdevice.cpVy)
                 fprintf(draw_fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
 
-        fprintf(draw_fp, plotcmds[P_BEGTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_BEGTXT]);
 
         fprintf(draw_fp, "%c", c);
 
-        fprintf(draw_fp, plotcmds[P_ENDTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_ENDTXT]);
 
         plotlstx = plotlsty = -1111111;
         drawn = 1;
@@ -462,11 +462,11 @@ static int HPGL2_string(char *s) {
         if (plotlstx != vdevice.cpVx || plotlsty != vdevice.cpVy)
                 fprintf(draw_fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
 
-        fprintf(draw_fp, plotcmds[P_BEGTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_BEGTXT]);
 
         fputs(s, draw_fp);
 
-        fprintf(draw_fp, plotcmds[P_ENDTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_ENDTXT]);
 
         plotlstx = plotlsty = -1111111;
         drawn = 1;
@@ -483,7 +483,7 @@ static int HPGL2_fill(int n, int x[], int y[]) {
         if (plotlstx != x[0] || plotlsty != y[0])
                 fprintf(draw_fp, plotcmds[P_MOVE], x[0], y[0]);      /* update current position if needed */
 
-        fprintf(draw_fp, plotcmds[P_FILL]);                          /* enter polygon mode */
+        fprintf(draw_fp, "%s",plotcmds[P_FILL]);                          /* enter polygon mode */
 
         move_draw=P_DRAW;
         for (i = 1; i < n; i++){
@@ -491,7 +491,7 @@ static int HPGL2_fill(int n, int x[], int y[]) {
                 if (x[i] == xclose && y[i] == yclose && (i != (n-1)) )
                 {
                    fprintf(draw_fp, plotcmds[P_DRAW], x[i], y[i]);   /* define polygon vertices */
-                   fprintf(draw_fp, plotcmds[P_BREAKFILL]);          /* end subpolygon */
+                   fprintf(draw_fp, "%s",plotcmds[P_BREAKFILL]);          /* end subpolygon */
                    move_draw=P_MOVE;                            /* move to first point in next subpolygon */
                 }else{
                    fprintf(draw_fp, plotcmds[move_draw],x[i],y[i]);  /* define polygon vertices */
@@ -499,7 +499,7 @@ static int HPGL2_fill(int n, int x[], int y[]) {
                 }
         }
 
-        fprintf(draw_fp, plotcmds[P_ENDFILL]);                       /* end polygon and fill it */
+        fprintf(draw_fp, "%s",plotcmds[P_ENDFILL]);                       /* end polygon and fill it */
 
         fprintf(draw_fp, plotcmds[P_MOVE], x[n-1], y[n-1]);          /* current position should be last one moved to, not x0,y0 */
 

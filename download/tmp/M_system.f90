@@ -3523,8 +3523,8 @@ interface
    subroutine c_readdir(c_dir, c_filename,c_ierr) bind (C,NAME='my_readdir')
       import c_char, c_int, c_ptr
       type(c_ptr),value                   :: c_dir
-      character(kind=c_char),intent(out)  :: c_filename(*)
-      integer(kind=c_int),intent(out)     :: c_ierr
+      character(kind=c_char)              :: c_filename(*)
+      integer(kind=c_int)                 :: c_ierr
    end subroutine c_readdir
 end interface
 
@@ -5953,6 +5953,7 @@ logical                      :: found1,found2
    found1=.false.
    found2=.false.
 !--- create two scratch files of known names
+
    open(newunit=lun,file='__scratch_1__',iostat=ios,iomsg=message)
    if(ios.eq.0)then
       write(lun,*)'SCRATCH FILE 1'
@@ -5960,6 +5961,7 @@ logical                      :: found1,found2
       call unit_check_msg('system_readdir','error:',message)
    endif
    close(unit=lun,iostat=ios,iomsg=message)
+
    open(newunit=lun,file='__scratch_2__',iostat=ios,iomsg=message)
    if(ios.eq.0)then
       write(lun,*)'SCRATCH FILE 2'
@@ -5970,16 +5972,22 @@ logical                      :: found1,found2
 
 !--- open directory stream to read from
    call system_opendir('.',dir,ierr)
+   call unit_check('system_opendir', ierr.eq.0, msg=msg('system_opendir ierr=',ierr))
 !--- read directory stream and look for scratch file names
       do
          call system_readdir(dir,filename,ierr)
          if(filename.eq.' ') exit
+         call unit_check('system_readdir', ierr.eq.0, msg=msg('system_readdir ierr=',ierr,'filename=',filename))
          if(ierr.ne.0) exit
          if(filename.eq.'__scratch_1__')found1=.true.
          if(filename.eq.'__scratch_2__')found2=.true.
       enddo
 !--- close directory stream
    call system_closedir(dir,ierr)
+   call unit_check('system_readdir', ierr.eq.0, msg=msg('system_closedir ierr=',ierr))
+
+   call unit_check('system_readdir', found1, msg=msg('__scratch__1',found1))
+   call unit_check('system_readdir', found2, msg=msg('__scratch__2',found2))
 
 !--- remove scratch files
    open(newunit=lun,file='__scratch_1__',iostat=ios,iomsg=message)
@@ -5987,8 +5995,6 @@ logical                      :: found1,found2
    open(newunit=lun,file='__scratch_2__',iostat=ios,iomsg=message)
    close(unit=lun,iostat=ios,iomsg=message,status='delete')
 
-   call unit_check('system_readdir', found1, msg=msg('__scratch__1',found1))
-   call unit_check('system_readdir', found2, msg=msg('__scratch__2',found2))
    call unit_check_done('system_readdir',msg='')
 end subroutine test_system_readdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT

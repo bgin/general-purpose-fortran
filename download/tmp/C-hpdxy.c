@@ -168,7 +168,7 @@ static int PCL_common_init(int minx, int maxx, int miny, int maxy) {
         sprintf(CLEAR_DEVICE, "\033%%%%1A\033E\n\033&l2A\033&l1O\033%%%%1B\nIP %d,%d,%d,%d;SC 0,%d,0,%d;",
         minx, miny, maxx, maxy, vdevice.sizeSx, vdevice.sizeSy);
 
-        fprintf(draw_fp,CLEAR_DEVICE);
+        fprintf(draw_fp,"%s",CLEAR_DEVICE);
         fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
 
         plotcmds = pcl;
@@ -190,7 +190,7 @@ static int PCL_common_initp(int minx, int maxx, int miny, int maxy) {
         sprintf(CLEAR_DEVICE, "\033%%%%1A\033E\n\033&l2A\033&l1O\033%%%%1B\nIP %d,%d,%d,%d;SC 0,%d,0,%d;RO 90;",
         minx, miny, maxx, maxy, vdevice.sizeSx, vdevice.sizeSy);
 
-        fprintf(draw_fp,CLEAR_DEVICE);
+        fprintf(draw_fp,"%s",CLEAR_DEVICE);
         fprintf(draw_fp,"TR0;\n"); /* transparency mode off, white areas are opaque */
 
         plotcmds = pcl;
@@ -296,7 +296,7 @@ static int DXY_init(void) {
 
         drawn = 0;
 
-        fprintf(draw_fp, plotcmds[P_RESET]);
+        fprintf(draw_fp, "%s",plotcmds[P_RESET]);
 
         return(1);
 }
@@ -323,7 +323,7 @@ static int PLOT_draw(int x, int y) {
  */
 static int PLOT_exit(void) {
         fprintf(draw_fp, plotcmds[P_PEN], 0);
-        fprintf(draw_fp, plotcmds[P_EXIT]);
+        fprintf(draw_fp, "%s",plotcmds[P_EXIT]);
         fflush(draw_fp);
 
         if (draw_fp != stdout && draw_fp != stderr ){
@@ -346,7 +346,7 @@ static int PLOT_clear(void) {
                   CLEAR_DEVICE is plotcmds[P_CLEAR]) expanded
                   to a fixed string for this device format
                 */
-                 fprintf(draw_fp, CLEAR_DEVICE);
+                 fprintf(draw_fp,"%s", CLEAR_DEVICE);
         }
         drawn = 0;
         return(UNUSED);
@@ -445,11 +445,11 @@ static int PLOT_char(char c) {
         if (plotlstx != vdevice.cpVx || plotlsty != vdevice.cpVy)
                 fprintf(draw_fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
 
-        fprintf(draw_fp, plotcmds[P_BEGTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_BEGTXT]);
 
         fprintf(draw_fp, "%c", c);
 
-        fprintf(draw_fp, plotcmds[P_ENDTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_ENDTXT]);
 
         plotlstx = plotlsty = -1111111;
         drawn = 1;
@@ -462,11 +462,11 @@ static int PLOT_string(char *s) {
         if (plotlstx != vdevice.cpVx || plotlsty != vdevice.cpVy)
                 fprintf(draw_fp, plotcmds[P_MOVE], vdevice.cpVx, vdevice.cpVy);
 
-        fprintf(draw_fp, plotcmds[P_BEGTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_BEGTXT]);
 
         fputs(s, draw_fp);
 
-        fprintf(draw_fp, plotcmds[P_ENDTXT]);
+        fprintf(draw_fp, "%s",plotcmds[P_ENDTXT]);
 
         plotlstx = plotlsty = -1111111;
         drawn = 1;
@@ -483,7 +483,7 @@ static int PLOT_fill(int n, int x[], int y[]) {
         if (plotlstx != x[0] || plotlsty != y[0])
                 fprintf(draw_fp, plotcmds[P_MOVE], x[0], y[0]);      /* update current position if needed */
 
-        fprintf(draw_fp, plotcmds[P_FILL]);                          /* enter polygon mode */
+        fprintf(draw_fp, "%s",plotcmds[P_FILL]);                          /* enter polygon mode */
 
         move_draw=P_DRAW;
         for (i = 1; i < n; i++){
@@ -491,7 +491,7 @@ static int PLOT_fill(int n, int x[], int y[]) {
                 if (x[i] == xclose && y[i] == yclose && (i != (n-1)) )
                 {
                    fprintf(draw_fp, plotcmds[P_DRAW], x[i], y[i]);   /* define polygon vertices */
-                   fprintf(draw_fp, plotcmds[P_BREAKFILL]);          /* end subpolygon */
+                   fprintf(draw_fp, "%s",plotcmds[P_BREAKFILL]);          /* end subpolygon */
                    move_draw=P_MOVE;                            /* move to first point in next subpolygon */
                 }else{
                    fprintf(draw_fp, plotcmds[move_draw],x[i],y[i]);  /* define polygon vertices */
@@ -499,7 +499,7 @@ static int PLOT_fill(int n, int x[], int y[]) {
                 }
         }
 
-        fprintf(draw_fp, plotcmds[P_ENDFILL]);                       /* end polygon and fill it */
+        fprintf(draw_fp, "%s",plotcmds[P_ENDFILL]);                       /* end polygon and fill it */
 
         fprintf(draw_fp, plotcmds[P_MOVE], x[n-1], y[n-1]);          /* current position should be last one moved to, not x0,y0 */
 

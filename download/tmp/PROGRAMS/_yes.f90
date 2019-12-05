@@ -64,16 +64,16 @@ logical                        :: stopit=.false.
 stopit=.false.
 if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
-'@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
-'@(#)PROGRAM:        _yes(1)>',&
-'@(#)DESCRIPTION:    output a string repeatedly until killed or limit is reached>',&
-'@(#)VERSION:        1.0, 20150508>',&
-'@(#)AUTHOR:         John S. Urban>',&
-'@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
-'@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 10:05:55 PM>',&
+'@(#)PRODUCT:         GPF (General Purpose Fortran) utilities and examples>',&
+'@(#)PROGRAM:         _yes(1)>',&
+'@(#)DESCRIPTION:     output a string repeatedly until killed or limit is reached>',&
+'@(#)VERSION:         1.0, 20150508>',&
+'@(#)AUTHOR:          John S. Urban>',&
+'@(#)REPORTING BUGS:  http://www.urbanjost.altervista.org/>',&
+'@(#)HOME PAGE:       http://www.urbanjost.altervista.org/index.html>',&
+'@(#)LICENSE:         Public Domain. This is free software: you are free to change and redistribute it.>',&
+'@(#)                 There is NO WARRANTY, to the extent permitted by law.>',&
+'@(#)COMPILED:       Wed, Dec 4th, 2019 9:00:54 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
