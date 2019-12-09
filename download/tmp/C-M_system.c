@@ -115,19 +115,19 @@ int my_chown(char *filename, long long int uid, long long int gid){
 /*
    wrapper around readdir(3c) for a call from Fortran
 */
-void my_readdir(DIR *dirp, char *filename, int *err){
+void my_readdir(DIR *dirp, char *filename, int *ierr){
 
    struct dirent *dp;
    int length;
 
-   err = 0;
+   *ierr = 0;
    length = 0;
 
    if ((dp = readdir (dirp)) != NULL) {
       length=(int)strlen(dp->d_name)+1;
       strncpy(filename,dp->d_name,length);
    }else{
-      err=-1; /*When the end of the directory is encountered, a null pointer is returned and errno is not changed.*/
+      *ierr = -1; /*When the end of the directory is encountered, a null pointer is returned and errno is not changed.*/
    }
 }
 /*--------------------------------------------------------------------------------------------------------------------------------*/

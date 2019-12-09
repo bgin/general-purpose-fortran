@@ -2191,18 +2191,20 @@ real    :: xt
       DO 10 I = 1,NM1
          L = I + 1
          IT = I
-         DO 6 IN = L,N
+         DO IN = L,N
             if(ABS(X(IT,I))-ABS(X(IN,I))) 5,6,6
 5           IT = IN
 6        CONTINUE
+         enddo
          if(X(IT,I)) 8,7,8
 7        N = 0
          RETURN
 8        if(IT - I) 17,17,16
-16       DO 9 IN = I,NP1
+16       DO IN = I,NP1
             XT = X(I,IN)
             X(I,IN) = X(IT,IN)
-9        X(IT,IN) = XT
+            X(IT,IN) = XT
+         enddo
 17       DO 10 J = L,N
             RATIO = X(J,I)/X(I,I)
             DO 10 K = L,NP1
@@ -2211,9 +2213,11 @@ real    :: xt
          DX = 0.0
          K = N - I + 1
          if(I-1) 40,40,20
-20       DO 30 J = 2,I
+20       continue
+         DO J = 2,I
             L = N + 2 - J
-30       DX = DX + X(K,L) * X(L,NP1)
+            DX = DX + X(K,L) * X(L,NP1)
+         enddo
 40    X(K,NP1) =(-X(K,NP1) - DX) / X(K,K)
       RETURN
 END SUBROUTINE SOLUT
@@ -2346,19 +2350,23 @@ real    :: y
 !     CHECK LINE LENGTH (IF ZERO RETURN)
       if(DX) 10,20,15
 !     IF NEGATIVE MAKE DELTA LIKEWISE
-10    DLT = -DLT
+10    continue
+      DLT = -DLT
 !     COMPUTE NUMBER OF LINE POINTS
-15    N = INT(ABS(DX/DLT) + 1.0)
+15    continue
+      N = INT(ABS(DX/DLT) + 1.0)
 !     CURVE FITTING PLOT LOOP
-      DO 17  IV= 1,N
+      DO IV= 1,N
          Y = A*X**E + B*X**F + C*X**G + D*X**H
          CALL PLOT(X,Y,I3)
          X = X + DLT
-17    I3 = 2
+         I3 = 2
+      enddo
 !     PLOT EXPLICIT FINAL POINT AND RETURN
       Y = A*XF**E + B*XF**F + C*XF**G +D*XF**H
       CALL PLOT(XF,Y,2)
-20    RETURN
+20    continue
+      RETURN
 END SUBROUTINE CURVX
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2494,19 +2502,22 @@ real    :: yf
 !     CHECK LINE LENGTH (IF ZERO RETURN)
       if(DY) 10,20,15
 !     IF NEGATIVE MAKE DELTA LIKEWISE
-10    DLT = -DLT
+10    continue
+      DLT = -DLT
 !     COMPUTE NUMBER OF LINE POINTS
-15    N = INT(ABS(DY/DLT) + 1.0)
+15    continue
+      N = INT(ABS(DY/DLT) + 1.0)
 !     CURVE FITTING PLOT LOOP
-      DO 17  IV= 1,N
+      DO IV= 1,N
          X = A*Y**E + B*Y**F + C*Y**G + D*Y**H
          CALL PLOT(X,Y,I3)
          Y = Y + DLT
-17    I3 = 2
+         I3 = 2
+      enddo
 !     PLOT EXPLICIT FINAL POINT AND RETURN
       X = A*YF**E + B*YF**F + C*YF**G +D*YF**H
       CALL PLOT(X,YF,2)
-20    RETURN
+20    continue
 END SUBROUTINE CURVY
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2598,11 +2609,12 @@ real,save    :: uy2 = 0.0
       BY=VY2-UUY1-AY
       N=10.*D+1.0
       D=1.0/FLOAT (N)
-      DO 9 I=1,N
+      DO I=1,N
          T=T+D
          X=((AX*T+BX)*T+UUX1)*T+X1
          Y=((AY*T+BY)*T+UUY1)*T+Y1
-9     CALL PLOT(X,Y,2)
+         CALL PLOT(X,Y,2)
+      enddo
 END SUBROUTINE FIT4
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2819,29 +2831,39 @@ real    :: yn1
       IS=-1
       NT= ABS(J)
       if(J) 2,1,2
-1     NT=1
-2     if(DF-DL) 3,3,4
-3     NF=1
+1     continue
+      NT=1
+2     continue
+      if(DF-DL) 3,3,4
+3     continue
+      NF=1
       NA=NT
       GOTO 5
-4     KK=-KK
+4     continue
+      KK=-KK
       NF=NL
       NL=1
       NA=((N-1)/NT)*NT+NT-N+1
-5     IF  (J) 6,7,8
-6     ICA=3
+5     continue
+      IF  (J) 6,7,8
+6     continue
+      ICA=3
       ISA=-1
       LSW=1
       GOTO 9
-7     NA=LDX
-8     ICA=2
+7     continue
+      NA=LDX
+8     continue
+      ICA=2
       ISA=-2
       LSW=0
-9     XN1=(X(NF)-XMIN)/DX
+9     continue
+      XN1=(X(NF)-XMIN)/DX
       YN1=(Y(NF)-YMIN)/DY
       NF=NF+KK
       if(NN) 10,10,25
-10    X0=XN1
+10    continue
+      X0=XN1
       Y0=YN1
       LP=NL
       NLP=LP-KK
@@ -2853,8 +2875,10 @@ real    :: yn1
       SU=U
       SV=V
       if(X(NFP)-X(LP)) 13,12,13
-12    if(Y(NFP)-Y(LP)) 13,25,13
-13    NFP=NLP-KK
+12    continue
+      if(Y(NFP)-Y(LP)) 13,25,13
+13    continue
+      NFP=NLP-KK
       SU=(X(NLP)-X(NFP))/DX
       SV=(Y(NLP)-Y(NFP))/DY
       CALL REFLX(U1,V1,SU,SV)
@@ -2871,29 +2895,40 @@ real    :: yn1
          XN=XN1
          YN=YN1
          if(N-I) 11,11,14
-14       XN1=(X(NF)-XMIN)/DX
+14       continue
+         XN1=(X(NF)-XMIN)/DX
          YN1=(Y(NF)-YMIN)/DY
-11       NW=NA-NT
+11       continue
+         NW=NA-NT
          if(NW) 29,26,26
-29       if(LSW) 17,26,17
-26       if(NN) 16,24,15
-15       CALL PLOT(XN,YN,IC)
+29       continue
+         if(LSW) 17,26,17
+26       continue
+         if(NN) 16,24,15
+15       continue
+         CALL PLOT(XN,YN,IC)
          GOTO 20
-16       if(IC-2) 15,17,15
-17       if(N-I) 27,27,18
-27       U2=SU
+16       continue
+         if(IC-2) 15,17,15
+17       continue
+         if(N-I) 27,27,18
+27       continue
+         U2=SU
          V2=SV
          GOTO 19
-18       U2=XN1-XN
+18       continue
+         U2=XN1-XN
          V2=YN1-YN
-19       CALL FIT4(X0,Y0,XN,YN,U1,V1,U2,V2)
+19       continue
+         CALL FIT4(X0,Y0,XN,YN,U1,V1,U2,V2)
          U1=U
          V1=V
          U=U2
          V=V2
          X0=XN
          Y0=YN
-20       NA=NA+1
+20       continue
+         NA=NA+1
          if(NW) 22,28,22
 !
 !  THE FOLLOWING CALL TO THE 'SYMBOL' ROUTINE HAS BEEN MODIFIED TO
@@ -2901,12 +2936,15 @@ real    :: yn1
 !  7 ARGUMENTS; ON THE CDC, 'SYMBOL' HAS 6 ARGUMENTS. THE ADDITIONAL
 !  ARGUMENT IN THIS CALL IS 'IBCD'.
 !
-28       CALL SYMBOL(XN,YN,0.08,IBCD,INTEQ,0.0,-1)
+28       continue
+         CALL SYMBOL(XN,YN,0.08,IBCD,INTEQ,0.0,-1)
          NA=1
-22       IC=ICA
-      NF=NF+KK
+22       continue
+         IC=ICA
+         NF=NF+KK
       enddo
-24    RETURN
+24    continue
+      RETURN
 END SUBROUTINE FLINE
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=

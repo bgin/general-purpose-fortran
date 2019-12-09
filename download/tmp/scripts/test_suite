@@ -1,7 +1,13 @@
 #!/bin/bash
 ################################################################################
 #set -x
-PATH=$PATH:$(dirname $0)
+HERE=$(dirname $0)
+PATH=$PATH:$HERE
+################################################################################
+if [ ! -x $HERE/if_library_found ]
+then
+   chmod a+xr $HERE/if_library_found
+fi
 ################################################################################
 HELP(){
 (txt2man -T||cat) <<\EOF
@@ -65,7 +71,9 @@ use M_debug
 unit_check_command=''
 unit_check_keep_going=.true.
 unit_check_level=0
+   write(*,*)'STARTED $SUBNAME'
    call ${SUBNAME}
+   write(*,*)'COMPLETED $SUBNAME'
 end program runtest
 EOF
 ;;
@@ -77,7 +85,9 @@ use M_debug
 unit_check_command=''
 unit_check_keep_going=.true.
 unit_check_level=0
+   write(*,*)'STARTED $SUBNAME'
    call ${SUBNAME}
+   write(*,*)'COMPLETED $SUBNAME'
 end program runtest
 EOF
 ;;
@@ -92,9 +102,17 @@ echo "TEST SUITE FOR $SUBNAME"
    exec 2>&1
    if [ -e libGPF_C.a ]
    then
+      (
+      #set +x
+      #echo "$F90 $UUID.f90 -I. -L. -lGPF -lGPF_C -o $UUID $LIBS"
       $F90 $UUID.f90 -I. -L. -lGPF -lGPF_C -o $UUID $LIBS
+      )
    else
+      (
+      #set +x
+      #echo "$F90 $UUID.f90 -I. -L. -lGPF -o $UUID $LIBS"
       $F90 $UUID.f90 -I. -L. -lGPF -o $UUID $LIBS
+      )
    fi
    [ -e $UUID ] && $UUID
    rm -f $UUID $UUID.f90

@@ -60,18 +60,29 @@
 !!    if(int('1234')               .eq.1234)                      write(*,*)'int("STRING") works '
 !!    if(real('1234.56789')        .EqualTo.1234.56789)           write(*,*)'real("STRING") works '
 !!    if(dble('1234.5678901234567').EqualTo.1234.5678901234567d0) write(*,*)'dble("STRING") works '
+!!
 !!    if (.true. == .true. )  write(*,*)'== works like .eqv. for LOGICAL values'
 !!    if (.true. /= .false. ) write(*,*)'/= works like .neqv. for LOGICAL values'
+!!
+!!    write(*,*)int(['111','222'])+333
+!!    write(*,*)real(['111.111','222.222'])+333.333
+!!    write(*,*)dble(['111.111d0','222.222d0'])+333.333d0
+!!    write(*,*)dble([character(len=10) :: '111','222.222','333.333d0'])+444.444d0
 !!
 !!    end program demo_M_overload
 !!
 !!   Expected output:
 !!
-!!     int("STRING") works
-!!     real("STRING") works
-!!     dble("STRING") works
-!!     == works like .eqv. for LOGICAL values
-!!     /= works like .neqv. for LOGICAL values
+!!    int("STRING") works
+!!    real("STRING") works
+!!    dble("STRING") works
+!!    == works like .eqv. for LOGICAL values
+!!    /= works like .neqv. for LOGICAL values
+!!            444         555
+!!      444.444000       555.554993
+!!      444.44400000000002        555.55500000000006
+!!      555.44399999999996        666.66600000000005        777.77700000000004
+!!
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -183,6 +194,8 @@ end function dbles_s2v
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_overload()
+use M_debug,                 only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug,                 only : unit_check_level
 use M_math,                  only : almost
 use M_compare_float_numbers, only : operator(.EqualTo.)
 
@@ -199,8 +212,6 @@ use M_compare_float_numbers, only : operator(.EqualTo.)
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_boolean_equal()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 !use M_overload,              only : operator(==)
    call unit_check_start('boolean_equal',' &
          & -description "overload == to take LOGICAL arguments" &
@@ -217,8 +228,6 @@ use M_debug, only : unit_check_level
 end subroutine test_boolean_equal
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_boolean_notequal()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 !use M_overload,              only : operator(/=)
    call unit_check_start('boolean_notequal',' &
          & -description "overload /= to take LOGICAL arguments" &
@@ -235,8 +244,6 @@ use M_debug, only : unit_check_level
 end subroutine test_boolean_notequal
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dble_s2v()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 !use M_overload,              only : int, real, dble
    call unit_check_start('dble_s2v',' &
          & -description "overload dble() to take string arguments" &
@@ -258,8 +265,6 @@ use M_debug, only : unit_check_level
 end subroutine test_dble_s2v
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dbles_s2v()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 !use M_overload,              only : int, real, dble
    call unit_check_start('dbles_s2v',' &
          & -description "overload dble() to take string arguments" &
@@ -281,8 +286,6 @@ use M_debug, only : unit_check_level
 end subroutine test_dbles_s2v
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_int_s2v()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 !use M_overload,              only : int, real, dble
    call unit_check_start('int_s2v',' &
          & -description "overload INT() to take string arguments" &
@@ -299,8 +302,7 @@ use M_debug, only : unit_check_level
 end subroutine test_int_s2v
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_ints_s2v()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
+integer,allocatable :: ibug(:)
    call unit_check_start('ints_s2v',' &
          & -description "overload INT() to take string arguments" &
          & -section 3  &
@@ -311,7 +313,9 @@ use M_debug, only : unit_check_level
          &  -ccall        n &
          &  -archive      GPF.a &
          & ')
-   if(all(int(['100','200']).eq. [100,200]))then
+   !!if(all(int(['100','200']).eq. [100,200]))then
+   ibug=int(['100','200'])
+   if(all(ibug.eq. [100,200]))then
       call unit_check_good('ints_s2v')                                             ! string passed to int
    else
       call unit_check_bad('ints_s2v')                                              ! returned value not equal to expected value
@@ -319,9 +323,6 @@ use M_debug, only : unit_check_level
 end subroutine test_ints_s2v
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_real_s2v()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 !use M_overload,              only : int, real, dble
    call unit_check_start('real_s2v','&
          & -description "overload REAL() to take string arguments" &
@@ -343,9 +344,6 @@ use M_debug, only : unit_check_level
 end subroutine test_real_s2v
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_reals_s2v()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 !use M_overload,              only : int, real, dble
    call unit_check_start('reals_s2v','&
          & -description "overload REAL() to take string arguments" &

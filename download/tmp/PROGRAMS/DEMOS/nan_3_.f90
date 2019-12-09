@@ -1,13 +1,12 @@
-       program demo_nan use,intrinsic :: iso_fortran_env, only: real32, real64, real128 use M_units, only : nan implicit none
-
-       real(kind=real32)
-              :: r32
-
-       real(kind=real64)
-              :: r64 real(kind=real128) :: r128 character(len=256) :: message
-
-       integer
-              :: ios
+          program demo_nan
+          use,intrinsic :: iso_fortran_env, only: real32, real64, real128
+          use M_units, only : nan
+          implicit none
+          real(kind=real32)  :: r32
+          real(kind=real64)  :: r64
+          real(kind=real128) :: r128
+          character(len=256) :: message
+          integer            :: ios
 
              r32=nan(0.0_real32)
              r64=nan(0.0_real64)
@@ -42,4 +41,4 @@
                 print *, transfer(x, 1.0)    ! prints "nan" on i686
              endblock ALT1
 
-       end program demo_nan
+              end program demo_nan

@@ -4550,7 +4550,7 @@ doubleprecision :: x, y, z
    Y=DNUM0('CI = 10 * sin(3.1416/4)')
    Z=DNUM0('CI')
    call unit_check_start('dnum0',msg='')
-   if(almost(z,10*sin(3.1416d0/4.0d0),35,verbose=.true.))continue
+   !!JUST PRINT VALUES!!if(almost(z,10*sin(3.1416d0/4.0d0),35,verbose=.true.))continue
    call unit_check('dnum0', y.eq.z.and.almost(y,10*sin(3.1416d0/4d0),15),&
            & msg=msg('checking CI',dnum0('CI'),dnum0('10*sin(3.1416/4)'),10*sin(3.1416d0/4.0d0)))
    call unit_check_done('dnum0',msg='')

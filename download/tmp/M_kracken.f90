@@ -2559,12 +2559,12 @@ integer        :: ier
    call store('MY_DOUBLE2',-1234.0d-20,'define',ier)
    call store('BAD','nN3.3','define',ier)
    call store('BLANK',' ','define',ier)
-   call unit_check('dget', dget('MY_DOUBLE1').eq.huge(0.0d0), msg=msg('MY_DOUBLE1',dget('MY_DOUBLE1')))
+   call unit_check('dget', dget('MY_DOUBLE1').eq.huge(0.0d0*0.999999999999d0), msg=msg('MY_DOUBLE1',dget('MY_DOUBLE1')))
    call unit_check('dget', dget('MY_DOUBLE2').eq.-1234.0d-20, msg=msg('MY_DOUBLE2',dget('MY_DOUBLE2')))
    call unit_check('dget', dget('NOTTHERE').eq.0,             msg=msg('NOTTHERE',dget('NOTTHERE')))
    call unit_check('dget', ieee_is_nan(dget('BAD')),          msg=msg('BAD',dget('BAD')))
    call unit_check('dget', dget('BLANK').eq.0,                msg=msg('BLANK',dget('BLANK')))
-   call unit_check_done('dgets',msg='')
+   call unit_check_done('dget',msg='')
 end subroutine test_dget
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dgets()

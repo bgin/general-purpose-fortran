@@ -1917,7 +1917,7 @@ end function inf128
 !!           value.
 !!##EXAMPLE
 !!
-!!    Sample program
+!!   Sample program
 !!
 !!    program demo_nan
 !!    use,intrinsic :: iso_fortran_env, only: real32, real64, real128

@@ -303,29 +303,38 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
 !     way log does. Such  arguments  are unexceptional for j0, j1, and jn.
 !     ---------
 42 IF (X) 604,44,59
-44 IF (MASK1.EQ.2) GO TO 50
-   DO 48 IK=1,KO
-48 T2(IK) = -bigval
+44 continue
+   IF (MASK1.EQ.2) GO TO 50
+   DO IK=1,KO
+      T2(IK) = -bigval
+   enddo
    RSLT2  = -bigval
    RETURN
-50 DO 52 IK=1,KO
-52 T2(IK) = bigval
+50 continue
+   DO IK=1,KO
+      T2(IK) = bigval
+   enddo
    RSLT2  = bigval
    RETURN
 !     ---------
 !     FILL OUT ARRAY FOR J(X) OR I(X) WHEN (NO.NE.0).
 !     ---------
-54 DO 56 IK=2,KO
-56 T1(IK) = 0.0d0
+54 continue
+   DO IK=2,KO
+      T1(IK) = 0.0d0
+   enddo
    RSLT1 = 0.0d0
    T1(1) = 1.0d0
    IF (MASK2.EQ.0) RETURN
    GO TO 44
-58 X = ABS(X)
-59 MO = IABS(NO)
+58 continue
+   X = ABS(X)
+59 continue
+   MO = IABS(NO)
    IMO = MO
    IF (X-1.0d0) 60,71,71
-60 IF (MASK1.EQ.2) GO TO 175
+60 continue
+   IF (MASK1.EQ.2) GO TO 175
 !     ---------
 !     USE SERIES TO DETERMINE J(N) AND J(N-1) WHEN ARGUMENT IS SMALL,
 !     THEN USE RECURRENCE TO DETERMINE REMAINING FUNCTION VALUES.
@@ -337,7 +346,8 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
    A0 = 1.0D0
    ILOOP = 1
    GO TO 63
-61 A0 = 1.0D0
+61 continue
+   A0 = 1.0D0
    IEND = MO-1
    DO IK=1,IEND
       XK = IK
@@ -347,7 +357,8 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
    DX2 = 1.0D0/(A0*DXORD)
    A0 = 1.0D0/A0
    ILOOP = 1
-63 SUMJIN = DX2
+63 continue
+   SUMJIN = DX2
    DX = X
    DXX = 0.25D0*DX*DX
    DO IK=1,200
@@ -414,8 +425,9 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
 80 I2 = I2-1
    GO TO 79
 81 SUM = T1(1)
-   DO 82 J=3,IMO,2
-82 SUM = SUM + 2.0d0*T1(J)
+   DO J=3,IMO,2
+      SUM = SUM + 2.0d0*T1(J)
+   enddo
    F = 1.0d0/SUM
 83 IF (NO) 86,84,84
 84 IF (XX) 90,32,92
@@ -424,11 +436,14 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
 92 IF (MASK2.EQ.0) GO TO 93
    GO TO 300
 93 IF (X - 1.0d0) 96,94,94
-94 DO 95 J=1,KO
-95 T1(J) = T1(J)*F
+94 continue
+   DO J=1,KO
+     T1(J) = T1(J)*F
+   enddo
 96 IF (MO.EQ.0) GO TO 98
-   DO 97 J=2,KO,2
-97 T1(J) = T1(J)*SIGN
+   DO J=2,KO,2
+      T1(J) = T1(J)*SIGN
+   enddo
 98 RSLT1 = T1(KO)
    X = XX
    RETURN
@@ -445,14 +460,17 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
    F=F-2.0d0
    GO TO 153
 155 SUM = T1(1)
-   DO 170 J=2,IMO
-170 SUM = SUM + 2.0d0*T1(J)
+   DO J=2,IMO
+      SUM = SUM + 2.0d0*T1(J)
+   enddo
    F = 1.0d0/SUM*EXP(X)
    IF (XX) 171,32,172
 171 SIGN = -SIGN
-172 DO 173 J=1,KO,2
+172 continue
+   DO J=1,KO,2
       T1(J) = T1(J)*F
-173 T1(J+1) = T1(J+1)*F*SIGN
+      T1(J+1) = T1(J+1)*F*SIGN
+   enddo
    RSLT1 = T1(KO)
    IF (MASK2.NE.0) GO TO 400
    X = XX
@@ -466,27 +484,29 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
    GO TO 180
 177 A0 = 1.0D0
    IEND = MO - 1
-   DO 178 IK=1,IEND
+   DO IK=1,IEND
       XK = IK
       DXK = XK
       A0 = A0*DXK
-178 CONTINUE
+   enddo
    DX2 = 1.0D0/(A0*DXORD)
    A0 = 1.0D0/A0
    ILOOP = 1
 180 SUMJIN = DX2
    DX = X
    DXX = 0.25D0*DX*DX
-   DO 182 IK=1,200
+   DO IK=1,200
       XK = IK
       DXK = XK
       TEMP = DX2*DXX/(DXK*(DXORD+DXK))
       SUMJIN = SUMJIN + TEMP
       DCHK = abs(TEMP/SUMJIN)
       IF (DCHK - 1.0D0-20) 184,181,181
-181   DX2 = TEMP
-182 CONTINUE
-184 IF (ILOOP.GT.1) GO TO 185
+181   continue
+    DX2 = TEMP
+   enddo
+184 continue
+    IF (ILOOP.GT.1) GO TO 185
    T1(KO) = dble(SUMJIN*(0.5D0*DX)**MO)
    IF (MO.EQ.0) GO TO 188
    ILOOP = 2
@@ -494,20 +514,23 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
    XORD = MO-1
    DXORD = XORD
    GO TO 180
-185 T1(KO-1) = dble(SUMJIN*(0.5D0*DX)**(MO-1))
+185 continue
+    T1(KO-1) = dble(SUMJIN*(0.5D0*DX)**(MO-1))
    IF (KO.LE.2) GO TO 188
    IEND = KO-2
-   DO 187 IK=1,IEND
+   DO IK=1,IEND
       NK = KO-IK
       XNKM1 = NK-1
       T1(NK-1) = 2.0d0*XNKM1 *T1(NK)/X + T1(NK+1)
-187 CONTINUE
+   enddo
 188 IF (XX) 189,32,190
 189 SIGN = -SIGN
 190 IF (MO.EQ.0) GO TO 194
-   DO 192 J=2,KO,2
-192 T1(J) = T1(J)*SIGN
-194 RSLT1 = T1(KO)
+   DO J=2,KO,2
+      T1(J) = T1(J)*SIGN
+   enddo
+194 continue
+    RSLT1 = T1(KO)
    IF (MASK2.NE.0) GO TO 400
    X = XX
    RETURN
@@ -519,7 +542,7 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
    DXX = DX*DX/64.0D0
    DX2 = 1.0D0
    TEMP = C(1)
-   DO 3010 J=2,19
+   DO J=2,19
       DX2 = DX2*DXX
       A0 = C(J)*DX2
       TEMP = TEMP + A0
@@ -527,11 +550,14 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
 3005  DCHK = abs(A0/TEMP)
       IF (DCHK - 1.0D0-20) 3015,3010,3010
 3010 CONTINUE
+   enddo
 3015 A0 = (2.0D0/PI)*LOG(DX)
    T2(1) = A0*T1(1) + TEMP
    GO TO 321
-301 DO 302 J=1,IMO
-302 T1(J) = T1(J)*F
+301 continue
+   DO J=1,IMO
+      T1(J) = T1(J)*F
+   enddo
    SUMJ1 = 0.0d0
    SUMJ2 = 0.0d0
    IF (IMO.LE.80) GO TO 305
@@ -541,32 +567,40 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
 304 KEND = KO/2
    GO TO 306
 305 KEND = IMO/2
-306 DO 307 N=1,KEND,2
+306 continue
+    DO N=1,KEND,2
       XN = N
-307 SUMJ1 = SUMJ1 + T1(2*N+1)/XN
-   DO 308 N=2,KEND,2
+      SUMJ1 = SUMJ1 + T1(2*N+1)/XN
+   enddo
+   DO N=2,KEND,2
       XN = N
-308 SUMJ2 = SUMJ2 + T1(2*N+1)/XN
+      SUMJ2 = SUMJ2 + T1(2*N+1)/XN
+   enddo
    SUMJN = 2.0d0*(SUMJ2-SUMJ1)
    T2(1) = 2.0d0/PI*(T1(1)*(log(X/2.0d0) + EULER) - SUMJN)
-321 IF (MO.GT.0) GO TO 309
+321 continue
+    IF (MO.GT.0) GO TO 309
    RSLT1 = T1(1)
    RSLT2 = T2(1)
    X = XX
    RETURN
-309 T2(2) = (T1(2)*T2(1) - 2.0d0/(PI*X))/T1(1)
+309 continue
+    T2(2) = (T1(2)*T2(1) - 2.0d0/(PI*X))/T1(1)
    IF (MO.EQ.1) GO TO 311
    NORD = KO-1
-   DO 310 N=2,NORD
+   DO N=2,NORD
       XN = N-1
       T2(N+1) = (2.0d0*XN)/X*T2(N) - T2(N-1)
-310 CONTINUE
-311 DO 312 J=2,KO,2
-312 T2(J) = T2(J)*SIGN
+    enddo
+311 continue
+    DO J=2,KO,2
+      T2(J) = T2(J)*SIGN
+   enddo
    RSLT2 = T2(KO)
    IF (MASK2.EQ.1) GO TO 315
-   DO 313 J=2,KO,2
-313 T1(J) = T1(J)*SIGN
+   DO J=2,KO,2
+      T1(J) = T1(J)*SIGN
+   enddo
    RSLT1 = T1(KO)
 315 X = XX
    RETURN
@@ -575,20 +609,21 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
    IF (X-6.0d0)  410,410,440
 410 DXX = DX*DX/64.0D0
    TEMP = 0.0D0
-   DO 420 J=1,18
+   DO J=1,18
       DX2 = DX2*DXX
       A0 = A(J)*DX2
       TEMP = TEMP + A0
       DCHK = A0/TEMP
       IF (DCHK - 1.0D0-20) 430,420,420
 420 CONTINUE
+    enddo
 430 A0 = -(EULER + LOG(0.5D0*DX))
    T2(1) = A0*T1(1) + TEMP
    IF (NO.EQ.0) GO TO 490
    GO TO 480
 440 DXX = 10.0D0/DX - 1.0D0
    TEMP = B(1)
-   DO 460 J=2,21
+   DO J=2,21
       DX2 = DX2*DXX
       A0 = B(J)*DX2
       TEMP = TEMP + A0
@@ -596,28 +631,35 @@ DATA (C(I),I=1,19)/          -0.73804295108687506715D-01,            &
 450   DCHK = abs(A0/TEMP)
       IF (DCHK - 1.0D0-20) 470,460,460
 460 CONTINUE
+   enddo
 470 T2(1) = SQRT(PI/(2.0d0*DX))*exp(-DX)*TEMP
    IF (NO.EQ.0) GO TO 490
 480 T2(2) = (1.0d0/X - T2(1)*T1(2))/T1(1)
    IF (KO.LE.2) GO TO 490
    NORD = KO-1
-   DO 485 N=2,NORD
+   DO N=2,NORD
       XN = N-1
       T2(N+1) = (2.0d0*XN)/X *T2(N) + T2(N-1)
-485 CONTINUE
-490 RSLT2 = T2(KO)
+   enddo
+490 continue
+   RSLT2 = T2(KO)
    X = XX
    RETURN
-600 IERR=5
+600 continue
+   IERR=5
    RETURN
-602 X=XX
+602 continue
+   X=XX
    IERR=3
    RETURN
-604 IERR=4
+604 continue
+   IERR=4
    RETURN
-606 IERR=2
+606 continue
+   IERR=2
    RETURN
-608 IERR=1
+608 continue
+   IERR=1
    RETURN
 END SUBROUTINE BES
 !===================================================================================================================================
@@ -688,40 +730,51 @@ doubleprecision :: xx
    IF(N)150,15,10
 10 IF(X)160,20,20
 15 IF(X)160,17,20
-17 RETURN
+17 continue
+   RETURN
 !
 !     DEFINE TOLERANCE
 !
-20 TOL=1.d-6
+20 continue
+   TOL=1.d-6
 !
 !     IF ARGUMENT GT 12 AND GT N, USE ASYMPTOTIC FORM
 !
    IF(X-12.0d0)40,40,30
-30 IF(X-dble(N))40,40,110
+30 continue
+   IF(X-dble(N))40,40,110
 !
 !     COMPUTE FIRST TERM OF SERIES AND SET INITIAL VALUE OF THE SUM
 !
-40 XX=X/2.0d0
+40 continue
+   XX=X/2.0d0
    TERM=1.00d0
    IF(N) 70,70,55
-55 DO 60 I=1,N
+55 continue
+   DO I=1,N
       FI=I
       IF(ABS(TERM)-1.0d-68)56,60,60
-56    IER=3
+56    continue
+      IER=3
       BI=0.0d0
       RETURN
-60 TERM=TERM*XX/FI
-70 BI=TERM
+60    continue
+      TERM=TERM*XX/FI
+   enddo
+70 continue
+   BI=TERM
    XX=XX*XX
 !
 !     COMPUTE TERMS, STOPPING WHEN ABS(TERM) LE ABS(SUM OF TERMS)
 !     TIMES TOLERANCE
 !
-   DO 90 K=1,1000
+   DO K=1,1000
       IF(ABS(TERM)-ABS(BI*TOL))100,100,80
-80    FK=K*(N+K)
+80    continue
+      FK=K*(N+K)
       TERM=TERM*(XX/FK)
-90 BI=BI+TERM
+      BI=BI+TERM
+   enddo
 !
 !     RETURN BI AS ANSWER
 !
@@ -729,18 +782,22 @@ doubleprecision :: xx
 !
 !     X GT 12 AND X GT N, SO USE ASYMPTOTIC APPROXIMATION
 !
-110 FN=4*N*N
+110 continue
+   FN=4*N*N
    IF(X-170.0d0)115,111,111
-111 IER=4
+111 continue
+   IER=4
    RETURN
 115 XX=1.0d0/(8.0d0*X)
    TERM=1.0d0
    BI=1.0d0
-   DO 130 K=1,30
+   DO K=1,30
       IF(ABS(TERM)-ABS(TOL*BI))140,140,120
-120   FK=(2*K-1)**2
+120   continue
+      FK=(2*K-1)**2
       TERM=TERM*XX*(FK-FN)/dble(K)
-130 BI=BI+TERM
+      BI=BI+TERM
+   enddo
 !
 !     SIGNIFICANCE LOST AFTER 30 TERMS, TRY SERIES
 !
@@ -857,7 +914,7 @@ doubleprecision :: x
 !     SET UPPER LIMIT OF M
 !
    MMAX=NTEST
-   DO 190 M=MZERO,MMAX,3
+   DO M=MZERO,MMAX,3
 !
 !     SET F(M),F(M-1)
 !
@@ -869,7 +926,7 @@ doubleprecision :: x
       GO TO 130
 120   JT=1
 130   M2=M-2
-      DO 160 K=1,M2
+      DO K=1,M2
          MK=M-K
          BMK=2.0d0*dble(MK)*FM1/X-FM
          FM=FM1
@@ -878,14 +935,17 @@ doubleprecision :: x
 140      BJ=BMK
 150      JT=-JT
          S=1.0d0+JT
-160   ALPHA=ALPHA+BMK*S
+         ALPHA=ALPHA+BMK*S
+      enddo
       BMK=2.0d0*FM1/X-FM
       IF(N)180,170,180
 170   BJ=BMK
 180   ALPHA=ALPHA+BMK
       BJ=BJ/ALPHA
       IF(ABS(BJ-BPREV)-ABS(D*BJ))200,200,190
-190 BPREV=BJ
+190 continue
+    BPREV=BJ
+    enddo
    IER=3
 200 RETURN
 END SUBROUTINE BESJ
@@ -1151,8 +1211,9 @@ doubleprecision :: x2j
    B=1.0d0/X
    C=SQRT(B)
    T(1)=B
-   DO 26 L=2,12
-26 T(L)=T(L-1)*B
+   DO L=2,12
+      T(L)=T(L-1)*B
+   enddo
    IF(N-1)27,29,27
 !
 !     COMPUTE KO USING POLYNOMIAL APPROXIMATION
@@ -1177,13 +1238,15 @@ doubleprecision :: x2j
 !
 !     FROM KO,K1 COMPUTE KN USING RECURRENCE RELATION
 !
-31 DO 35 J=2,N
+31 continue
+   DO J=2,N
       GJ=2.d0*(dble(J)-1.d0)*G1/X+G0
       IF(GJ-1.0d70)33,33,32
 32    IER=4
       GO TO 34
 33    G0=G1
-35 G1=GJ
+      G1=GJ
+   enddo
 34 BK=GJ
    RETURN
 36 B=X/2.d0
@@ -1197,12 +1260,13 @@ doubleprecision :: x2j
    X2J=1.0d0
    FACT=1.0d0
    HJ=0.0d0
-   DO 40 J=1,6
+   DO J=1,6
       RJ=1.0d0/dble(J)
       X2J=X2J*C
       FACT=FACT*RJ*RJ
       HJ=HJ+RJ
-40 G0=G0+X2J*FACT*(HJ-A)
+      G0=G0+X2J*FACT*(HJ-A)
+   enddo
    IF(N)43,42,43
 42 BK=G0
    RETURN
@@ -1213,14 +1277,16 @@ doubleprecision :: x2j
    FACT=1.0d0
    HJ=1.0d0
    G1=1.0d0/X+X2J*(0.5d0+A-HJ)
-   DO 50 J=2,8
+   DO J=2,8
       X2J=X2J*C
       RJ=1.0d0/dble(J)
       FACT=FACT*RJ*RJ
       HJ=HJ+RJ
-50 G1=G1+X2J*FACT*(0.50d0+(A-HJ)*dble(J))
+      G1=G1+X2J*FACT*(0.50d0+(A-HJ)*dble(J))
+   enddo
    IF(N-1)31,52,31
-52 BK=G1
+52 continue
+   BK=G1
    RETURN
 END SUBROUTINE BESK
 !===================================================================================================================================
@@ -1364,30 +1430,33 @@ doubleprecision :: yc
    SUM=0.0d0
    TERM=T
    Y0=T
-   DO 70 L=1,15
+   DO L=1,15
       IF(L-1)50,60,50
 50    SUM=SUM+1.0d0/dble(L-1)
 60    FL=L
       TS=T-SUM
       TERM=(TERM*(-X2)/FL**2)*(1.0d0-1.0d0/(FL*TS))
-70 Y0=Y0+TERM
+      Y0=Y0+TERM
+   enddo
    TERM = XX*(T-0.5d0)
    SUM=0.0d0
    Y1=TERM
-   DO 80 L=2,16
+   DO L=2,16
       SUM=SUM+1.0d0/dble(L-1)
       FL=L
       FL1=FL-1.0d0
       TS=T-SUM
       TERM=(TERM*(-X2)/(FL1*FL))*((TS-0.5d0/FL)/(TS+0.5d0/FL1))
-80 Y1=Y1+TERM
+      Y1=Y1+TERM
+   enddo
    PI2=2.0d0/PI
    Y0=PI2*Y0
    Y1=-PI2/X+PI2*Y1
 !
 !     CHECK IF ONLY Y0 OR Y1 IS DESIRED
 !
-90 IF(N-1)100,100,130
+90 continue
+   IF(N-1)100,100,130
 !
 !     RETURN EITHER Y0 OR Y1 AS REQUIRED
 !

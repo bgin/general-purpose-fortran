@@ -133,6 +133,9 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 'EXAMPLE                                                                         ',&
 '  Sample usage:                                                                 ',&
+'   # if do not have xterm settings set might need to enter                      ',&
+'   setxt -xrdb|xrdb -merge                                                      ',&
+'   # and then try the commands in xterm(1) windows launched after this          ',&
 '                                                                                ',&
 '   setxt # bring up screen interface                                            ',&
 '   setxt -fn ''*--14*-c-*''  # find a font of specified size                    ',&
@@ -263,6 +266,9 @@ end subroutine help_usage
 !!##EXAMPLE
 !!
 !!   Sample usage:
+!!    # if do not have xterm settings set might need to enter
+!!    setxt -xrdb|xrdb -merge
+!!    # and then try the commands in xterm(1) windows launched after this
 !!
 !!    setxt # bring up screen interface
 !!    setxt -fn '*--14*-c-*'  # find a font of specified size
@@ -295,7 +301,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180408>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 10:11:47 PM>',&
+'@(#)COMPILED:       Sun, Dec 8th, 2019 7:46:49 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

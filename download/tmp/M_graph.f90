@@ -319,7 +319,7 @@ contains
 !!                 Version 2.0 20-JAN-1994 17:13:12.80
 !!                 Version 3.0 Wed Jun 12 10:34:11 MDT 1996
 !===================================================================================================================================
-SUBROUTINE graph(X,Y,NDP,NDL,F,C,NC); implicit none
+SUBROUTINE graph(X,Y,NDP,NDL,F,C,NC)
 
 character(len=*),parameter::ident_1="@(#)M_graph::graph(3f): routine for plotting lines"
 
@@ -563,13 +563,13 @@ real     :: zval
    IF (NL.GT.NDL) NL=NDL
    JXAUTO=F(3)         ! AUTO SCALE X, 0=YES/SMOOTH,-1=NO/USER
 !                   1=YES/NO SMOOTH
-   IF (JXAUTO.LT.0.0) THEN  ! INPUT X AXIS SCALE FACTORS
+   IF (JXAUTO.LT.0) THEN  ! INPUT X AXIS SCALE FACTORS
       XM=F(4)          ! MIN X (OTHERWISE RETURNED)
       XX=F(5)          ! MAX X
    ENDIF
    JYAUTO=F(6)         ! AUTO SCALE Y, 0=YES/SMOOTH,-1=NO/USER
 !                   1=YES/NO SMOOTH
-   IF (JYAUTO.LT.0.0) THEN  ! INPUT Y AXIS SCALE FACTORS
+   IF (JYAUTO.LT.0) THEN  ! INPUT Y AXIS SCALE FACTORS
       YM=F(7)          ! MIN Y (OTHERWISE RETURNED)
       YX=F(8)          ! MAX Y
    ENDIF
@@ -1146,7 +1146,7 @@ END SUBROUTINE graph
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine draw_(xa,ya); implicit none
+subroutine draw_(xa,ya)
 real :: xa
 real :: ya
    call plot_(xa,ya,2)
@@ -1154,7 +1154,7 @@ end subroutine draw_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine move_(xa,ya); implicit none
+subroutine move_(xa,ya)
 real :: xa
 real :: ya
    call plot_(xa,ya,3)
@@ -1162,7 +1162,7 @@ end subroutine move_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine translate_(xa,ya); implicit none
+subroutine translate_(xa,ya)
 real :: xa
 real :: ya
    call plot_(xa,ya,-3)
@@ -1170,13 +1170,12 @@ end subroutine translate_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine color_(ic) ! implicit none
+subroutine color_(ic)
 use M_draw
-implicit none
 integer :: ic
-   IF (ic.GE.0) THEN
-      CALL COLOR(IC)           ! change color
-   ENDIF
+   if(ic.ge.0)then
+      call color(ic)  ! change color
+   endif
 end subroutine color_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1204,11 +1203,10 @@ end subroutine color_
 !!    VPX,VPY      coordinates of bottom left origin
 !!    ZOM          zoom factor
 !===================================================================================================================================
-subroutine graph_init(xmax0,ymax0,vpx,vpy,zom) ! implicit none
+subroutine graph_init(xmax0,ymax0,vpx,vpy,zom)
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
 use M_draw
 use M_drawplus, only : page
-implicit none
 
 character(len=*),parameter::ident_2="@(#)M_graph::graph_init(3f): initialize the longlib graphics plot package"
 
@@ -1252,7 +1250,7 @@ END SUBROUTINE graph_init
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE plot_(XPLOT0,YPLOT0,ISELECT0) ! implicit none
+SUBROUTINE plot_(XPLOT0,YPLOT0,ISELECT0)
 !
 !     PLOT is the central routine for controlling the plotting of lines.
 !     Any call to PLOT when graphics mode is not initialized is a dummy call.
@@ -1330,7 +1328,6 @@ SUBROUTINE plot_(XPLOT0,YPLOT0,ISELECT0) ! implicit none
 ! devices? CLEAR SHOULD BE SEPARATE FROM EJECT? EJECT RESETS, CLEAR JUST CLEARS?
 ! *************************************************************************
       use M_draw
-      implicit none
 integer            :: i110
 integer            :: i130
 integer            :: i30
@@ -1579,7 +1576,7 @@ END SUBROUTINE plot_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE range_(X,S,N,K,IX,XMIN,DX); implicit none
+SUBROUTINE range_(X,S,N,K,IX,XMIN,DX)
 !
 !     CREATES SMOOTHED LINEAR SCALE FACTORS FROM INPUT DATA
 !
@@ -1724,7 +1721,7 @@ END SUBROUTINE range_
 !!    (x,y) position. The special plot symbols (ASCII 0-31) are always
 !!    centered about the current position.
 !===================================================================================================================================
-SUBROUTINE symbol_(X,Y,S,T,A,NN,IS); implicit none
+SUBROUTINE symbol_(X,Y,S,T,A,NN,IS)
 !     WRITTEN BY: D. LONG  JAN 1991,1995   BYU
 !     THIS ROUTINE IS FORTRAN-77 COMPATIBLE WITH THE FOLLOWING
 !     EXCEPTIONS:
@@ -2091,7 +2088,7 @@ END SUBROUTINE symbol_
 !David Long
 !Wed Jun 12 10:34:11 MDT 1996
 !-------------------------------------------------------------------------------
-SUBROUTINE gridll_(X,Y,DX,DY,NX,NY,IF);implicit none
+SUBROUTINE gridll_(X,Y,DX,DY,NX,NY,IF)
 !
 !     ROUTINE TO PRODUCE LOGARITHMIC GRID
 !
@@ -2239,7 +2236,7 @@ END SUBROUTINE gridll_
 !-------------------------------------------------------------------------------
 !David Long
 !Wed Jun 12 10:34:11 MDT 1996
-SUBROUTINE axisc_(X0,Y0,T,N0,S0,A0,B0,C0,D0,E0,F0,ICOL);implicit none
+SUBROUTINE axisc_(X0,Y0,T,N0,S0,A0,B0,C0,D0,E0,F0,ICOL)
 !
 !     WRITTEN BY DGL  17-OCT-1983
 !     REVISED BY DGL  28-AUG-1987
@@ -2373,7 +2370,7 @@ CHARACTER(len=*) :: T
 !        ENDIF
    ENDIF
    ND=MOD(ABS(FA),1000.0)  ! NUMBER OF DIGITS
-   NG=100.*(MOD(ABS(FA),1000.)-ND+0.0001)! NUMBER OF DIGITS RIGHT OF D.P.
+   NG=100.0*(MOD(ABS(FA),1000.0)-ND+0.0001)! NUMBER OF DIGITS RIGHT OF D.P.
    IF (NG.GT.17) NG=NG/10  ! CORRECT INPUT SIMPLE ERRORS
    IF (FA.LT.0.0) ND=ND-4  ! EXPONENTIAL NOTATION
    IF (ND.LE.0) ND=NG
@@ -2471,8 +2468,8 @@ CHARACTER(len=*) :: T
 !     PLOT TITLE
 !
    IF (NC.NE.0) THEN
-      Y1=0.
-      X1=0.
+      Y1=0.0
+      X1=0.0
       call symbol_(X1,Y1,CS,T,0.,NC,-3) ! GET TITLE LENGTH
       DTX=(ABS(S0)-X1)/2.   ! CENTER TITLE
       IF (E1.NE.0.0) DTX=DTX-CS*3.0 ! ADD EXPONENT SPACE
@@ -2480,10 +2477,10 @@ CHARACTER(len=*) :: T
       call symbol_(ROTX(DTX,DTY),ROTY(DTX,DTY),CS,T,ANG,NC,-1)
       DTX=DTX+X1
    ELSE
-      DTX=ABS(S0)/2.
+      DTX=ABS(S0)/2.0
       IF (E1.NE.0.0) DTX=DTX-CS*3.0 ! ADD EXPONENT SPACE
    ENDIF
-   X1=DTX+CS/2.
+   X1=DTX+CS/2.0
    Y1=DTY
    IF (E1.EQ.0.0) GOTO 1000  ! NO EXPONENT
    IF(IABS(N0).GE.100000)CALL color_(ICOL(4))
@@ -2517,7 +2514,7 @@ end subroutine axisc_
 !David Long
 !Wed Jun 12 10:34:11 MDT 1996
 !-------------------------------------------------------------------------------
-SUBROUTINE rect_(X0,Y0,X1,Y1);implicit none
+SUBROUTINE rect_(X0,Y0,X1,Y1)
 real,intent(in) :: x0,y0, x1,y1
 !
 !     ROUTINE TO PLOT A RECTANGLE
@@ -2639,7 +2636,7 @@ END SUBROUTINE rect_
 !Wed Jun 12 10:34:11 MDT 1996
 !-------------------------------------------------------------------------------
 ! *************************************************************************
-SUBROUTINE newpen_(IP);implicit none
+SUBROUTINE newpen_(IP)
 !
 !     CHANGE PLOTTING LINE TYPE ON ALL DEVICES
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
@@ -2731,7 +2728,7 @@ END SUBROUTINE newpen_
 !David Long
 !Wed Jun 12 10:34:11 MDT 1996
 !-------------------------------------------------------------------------------
-SUBROUTINE axislg_(X0,Y0,A0,N0,S0,T0,C0,D0,ICOL); implicit none
+SUBROUTINE axislg_(X0,Y0,A0,N0,S0,T0,C0,D0,ICOL)
 !
 !     THIS ROUTINE PLOTS A LOG AXIS WITH EXPONENT LABELING
 !     MODIFIED FROM AXIS D.LONG 22-OCT-83 AT JPL
@@ -2797,7 +2794,7 @@ real     :: y0, y1, y2
    B6=B7
    B8=0.0
    IF(N0.LT.0)GOTO 10
-   B3=CS*4.
+   B3=CS*4.0
    B4=CS+0.08
    T2=T0
    GOTO 20
@@ -2825,26 +2822,26 @@ real     :: y0, y1, y2
       N1=MOD(N1,100)
       LABELS=.FALSE.
    ENDIF
-   N2=ABS(S0*D0)+.5     ! NUMBER OF TICKS
+   N2=ABS(S0*D0)+0.5     ! NUMBER OF TICKS
    XL=ABS(S0)/FLOAT(N2)    ! DISTANCE BETWEEN TICKS
    T1=T0*0.017453294
    T3=COS(T1)
    T4=SIN(T1)
-   HT3=COS(HOR*.017453294)
-   HT4=SIN(HOR*.017453294)
+   HT3=COS(HOR*0.017453294)
+   HT4=SIN(HOR*0.017453294)
    T6=T5*T3
    T5=T5*T4
 !
    IF (COLOR) CALL color_(ICOL(1)) !COLOR
-   S5=SIGN(1.,S0)*T5
-   S6=SIGN(1.,S0)*T6
+   S5=SIGN(1.0,S0)*T5
+   S6=SIGN(1.0,S0)*T6
    X1=X0
    Y1=Y0
    CALL move_(X1,Y1)
-   DO 100 I=1,N2      ! PLOT MAJOR TICKS
-      DO 100 J=2,10      ! PLOT MINOR TICKS
+   DO I=1,N2      ! PLOT MAJOR TICKS
+      DO J=2,10      ! PLOT MINOR TICKS
          AT=.6
-         IF (J.EQ.2) AT=1.
+         IF (J.EQ.2) AT=1.0
          X2=X1-S5*AT
          Y2=Y1+S6*AT
          CALL move_(X2,Y2)
@@ -2852,9 +2849,10 @@ real     :: y0, y1, y2
          AJ=ALOG10(FLOAT(J))-ALOG10(FLOAT(J-1))
          X1=X1+T3*XL*AJ
          Y1=Y1+T4*XL*AJ
-         IF (T0.EQ.90.) X1=X0
+         IF (T0.EQ.90.0) X1=X0
          CALL draw_(X1,Y1)
-100 CONTINUE
+      enddo
+   enddo
    X2=X1-S5
    Y2=Y1+S6
    CALL draw_(X2,Y2)
@@ -2888,7 +2886,7 @@ real     :: y0, y1, y2
    Y2=Y0+B1*T4+B3*T3
    IF (COLOR) CALL color_(ICOL(3)) !COLOR
    call symbol_(X2,Y2,CS,A0,T2,N1,-1)
-155 RETURN
+155 continue
 END SUBROUTINE axislg_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2920,7 +2918,7 @@ END SUBROUTINE axislg_
 ! David Long
 ! Wed Jun 12 10:34:11 MDT 1996
 ! ==================================================================================================================================
-INTEGER FUNCTION inbox_(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right); implicit none
+INTEGER FUNCTION inbox_(X,Y,X_BOTTOM_LEFT,Y_BOTTOM_LEFT,X_top_right,Y_top_right)
 !
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
 !     CHECKS TO SEE IF POINT X,Y IS IN RECTANGLE
@@ -2971,7 +2969,7 @@ END FUNCTION inbox_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE clipit_(IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX); implicit none
+SUBROUTINE clipit_(IVTB,XV2,YV2,AV1,AV2,XM,YM,XX,YX)
 !
 character(len=*),parameter::ident_4="@(#)M_graph::clipit(3f):clips a line segment partially visible"
 !
@@ -3008,7 +3006,7 @@ END SUBROUTINE clipit_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-SUBROUTINE trs_(XIN,YIN,XCON,YCON); implicit none
+SUBROUTINE trs_(XIN,YIN,XCON,YCON)
 real :: xin
 real :: yin
 real :: xcon
@@ -3090,7 +3088,7 @@ end SUBROUTINE trs_
 !David Long
 !Wed Jun 12 10:34:11 MDT 1996
 !-------------------------------------------------------------------------------
-SUBROUTINE number_(X,Y,HGHT,Z,T,F0,IPF); implicit none
+SUBROUTINE number_(X,Y,HGHT,Z,T,F0,IPF)
 !
 !     WRITTEN BY D. LONG    AUG, 1983 AT JPL
 !     REVISED: JUNE 1990
@@ -3126,23 +3124,25 @@ SUBROUTINE number_(X,Y,HGHT,Z,T,F0,IPF); implicit none
 !        =+1 X,Y ARE LOWER RIGHT CORNER
 !        =+2 NO PLOT OUTPUT
 !
-real     ::  alg
-real     ::  f
-real     ::  f0
-real     ::  fa
-real     ::  hg
-real     ::  hght
-integer  ::  i
-integer  ::  iff
-integer  ::  ipf
-integer  ::  nd
-integer  ::  nn
-real     ::  t
-real     ::  t1
-real     ::  x
-real     ::  y
-real     ::  z
-   CHARACTER B*18, FB*8, FB1*8  ! WORKING BUFFERS
+real      ::  alg
+real      ::  f
+real      ::  f0
+real      ::  fa
+real      ::  hg
+real      ::  hght
+integer   ::  i
+integer   ::  iff
+integer   ::  ipf
+integer   ::  nd
+integer   ::  nn
+real      ::  t
+real      ::  t1
+real      ::  x
+real      ::  y
+real      ::  z
+CHARACTER(len=18) :: B   ! WORKING BUFFERS
+CHARACTER(len=8)  :: FB  ! WORKING BUFFERS
+CHARACTER(len=7)  :: FB1 ! WORKING BUFFERS
 !
    IFF=0
    HG=HGHT
@@ -3159,7 +3159,7 @@ real     ::  z
    ELSE           ! PLOT FLOAT OR EXPON NUMBER
       F=ABS(FA)*1.000002
       NN=F
-      F=(F-NN)*100.
+      F=(F-NN)*100.0
       ND=F
    ENDIF
 10 continue
@@ -3181,25 +3181,25 @@ real     ::  z
    IF (FA.EQ.0.0) THEN  ! INTEGER
       I=Z
       FB=CHAR(NN-10*(NN/10)+48)//')'
-      FB1=FB
-      IF (NN/10.GT.0) FB=CHAR(NN/10+48)//FB1
-      FB1='(I'//FB
+      FB1=FB(1:1)
+      IF ((NN/10).GT.0) FB=CHAR(NN/10+48)//FB1(1:1)
+      FB1='(I'//FB(1:2)
       WRITE(B,FB1,ERR=90) I
    ELSE           ! FLOATING POINT OR EXPONENTIAL
       IF (NN.GT.1) THEN
          FB=CHAR(ND-10*(ND/10)+48)//')'
-         FB1=FB
-         IF (ND/10.GT.0) FB=CHAR(ND/10+48)//FB1
-         FB1=CHAR(NN-10*(NN/10)+48)//'.'//FB
-         FB=FB1
-         IF (NN/10.GT.0) FB=CHAR(NN/10+48)//FB1
+         FB1=FB(1:1)
+         IF ((ND/10).GT.0) FB=CHAR(ND/10+48)//FB1(1:1)
+         FB1=CHAR(NN-10*(NN/10)+48)//'.'//FB(1:2)
+         FB=FB1(1:4)
+         IF (NN/10.GT.0) FB=CHAR(NN/10+48)//FB1(1:4)
          IF (FA.GT.0.0) THEN
-            FB1='(F'//FB
+            FB1='(F'//FB(1:5)
          ELSE
-            FB1='(E'//FB
+            FB1='(E'//FB(1:5)
          ENDIF
       ELSE
-         IF (FA.GT.0.0) THEN
+         IF(FA.GT.0.0) THEN
             FB1='(F)'
          ELSE
             FB1='(E)'
@@ -3214,19 +3214,18 @@ real     ::  z
          enddo
       ENDIF
    ENDIF
-50 call symbol_(X,Y,HG,B,T1,NN,IPF)
+   call symbol_(X,Y,HG,B,T1,NN,IPF)
    RETURN
 90 continue
    DO I=1,18
       B(I:I)='*'
       IF (I.EQ.NN-ND) B(I:I)='.'
    enddo
-   GOTO 50
 END SUBROUTINE number_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine viewport_(xmin,xmax,ymin,ymax);implicit none
+subroutine viewport_(xmin,xmax,ymin,ymax)
 real,intent(in) :: xmin, xmax, ymin, ymax
    call plot_(xmin,ymin,-4)
    call plot_(xmax,ymax,4)
@@ -3234,21 +3233,21 @@ end subroutine viewport_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine width_(ic);implicit none
+subroutine width_(ic)
 integer,intent(in) :: ic
    call plot_(real(ic),0.0,7)
 end subroutine width_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dashscale_(ic);implicit none
+subroutine dashscale_(ic)
 integer,intent(in) :: ic
    call plot_(real(ic),0.0,1)
 end subroutine dashscale_
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-subroutine dashcode_(ic);implicit none
+subroutine dashcode_(ic)
 integer,intent(in) :: ic
    ! make so if call with 0 increment using ilineq?
    call plot_(real(ic),0.0,8)

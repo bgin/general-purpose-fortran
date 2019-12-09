@@ -3327,9 +3327,6 @@ end function system_mkdir
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 !>
 !!##NAME
 !!    system_opendir(3f) - [M_system] open directory stream by calling opendir(3c)
@@ -3455,24 +3452,33 @@ end subroutine system_opendir
 !!  integer,intent(out)                       :: ierr
 !!
 !!##DESCRIPTION
+!!
 !!    system_readdir(3f) returns the name of the directory entry at the
 !!    current position in the directory stream specified by the argument
 !!    DIR, and positions the directory stream at the next entry. It returns
 !!    a null name upon reaching the end of the directory stream.
 !!
-!!    The readdir() function does not return directory entries containing
-!!    empty names. If entries for dot or dot-dot exist, one entry is returned
-!!    for dot and one entry is returned for dot-dot.
+!!##OPTIONS
 !!
-!!    The entry is marked for update of the last data access timestamp each
-!!    time it is read.
+!!    DIR       A pointer to the directory opened by system_opendir(3f).
 !!
-!!    If IERR is set to non-zero on return, an error occurred.
+!!##RETURNS
 !!
-!!    least {NAME_MAX}+1 elements.
+!!    FILENAME  the name of the directory entry at the current position in
+!!              the directory stream specified by the argument DIR, and
+!!              positions the directory stream at the next entry.
 !!
-!!    reaching the end of the directory stream, the name is a blank name.
+!!              The readdir() function does not return directory entries
+!!              containing empty names. If entries for dot or dot-dot exist,
+!!              one entry is returned for dot and one entry is returned
+!!              for dot-dot.
 !!
+!!              The entry is marked for update of the last data access
+!!              timestamp each time it is read.
+!!
+!!              reaching the end of the directory stream, the name is a blank name.
+!!
+!!    IERR      If IERR is set to non-zero on return, an error occurred.
 !!
 !!##EXAMPLE
 !!

@@ -244,7 +244,8 @@ end subroutine bytes_to_anything
 function anything_to_bytes_arr(anything) result(chars)
 implicit none
 
-character(len=*),parameter::ident_1="@(#)M_haskeys::sdbm_hash(3fp): anything to bytes (an array of CHARACTER(LEN=1) variables)"
+character(len=*),parameter::ident_1="&
+&@(#)M_anything::anything_to_bytes_arr(3fp): any vector of intrinsics to bytes (an array of CHARACTER(LEN=1) variables)"
 
 class(*),intent(in)          :: anything(:)
 character(len=1),allocatable :: chars(:)
@@ -270,7 +271,8 @@ end function anything_to_bytes_arr
 function  anything_to_bytes_scalar(anything) result(chars)
 implicit none
 
-character(len=*),parameter::ident_2="@(#)M_haskeys::sdbm_hash(3fp): anything to bytes (an array of CHARACTER(LEN=1) variables)"
+character(len=*),parameter::ident_2="&
+&@(#)M_anything::anything_to_bytes_scalar(3fp): anything to bytes (an array of CHARACTER(LEN=1) variables)"
 
 class(*),intent(in)          :: anything
 character(len=1),allocatable :: chars(:)

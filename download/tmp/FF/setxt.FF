@@ -126,6 +126,9 @@ OPTIONS
 
 EXAMPLE
   Sample usage:
+   # if do not have xterm settings set might need to enter
+   setxt -xrdb|xrdb -merge
+   # and then try the commands in xterm(1) windows launched after this
 
    setxt # bring up screen interface
    setxt -fn '*--14*-c-*'  # find a font of specified size

@@ -192,7 +192,7 @@ static void draw_getdev(char *dev) {
    char    *device = "                       ";
    char    *M_DRAW_DEVICE;
    char    sdevice[100];
-   char    buf[100];
+   char    buf[133];
    char    dtmp[133];
    int xx, yy, xxo, yyo;
    int ifound;

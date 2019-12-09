@@ -60,15 +60,23 @@ void sqlite3_step_c(sqlite3_stmt **stmt, int *completion) {
    return ;
 }
 /**********************************************************************************************************************************/
-void sqlite3_errmsg_c(sqlite3 **db, char *errmsg) {
+void sqlite3_errmsg_c(sqlite3 **db, const char *errmsg) {
    errmsg = sqlite3_errmsg(*db) ;
    return ;
 }
 /**********************************************************************************************************************************/
+//int sqlite3_prepare(
+//  sqlite3 *db,            /* Database handle */
+//  const char *zSql,       /* SQL statement, UTF-8 encoded */
+//  int nByte,              /* Maximum length of zSql in bytes. */
+//  sqlite3_stmt **ppStmt,  /* OUT: Statement handle */
+//  const char **pzTail     /* OUT: Pointer to unused portion of zSql */
+//);
+
 int sqlite3_prepare_c(sqlite3 **db, char *command, sqlite3_stmt **stmt) {
    int   rc   ;
-   char *pstr ;
-   rc = sqlite3_prepare(*db, command, (-1), stmt, &pstr) ;
+   const char **pstr ;
+   rc = sqlite3_prepare(*db, command, (-1), stmt, pstr) ;
    return rc ;
 }
 /**********************************************************************************************************************************/
@@ -80,8 +88,8 @@ void sqlite3_column_count_c(sqlite3_stmt **stmt, int *count) {
 void sqlite3_column_name_type_c(sqlite3_stmt **stmt, int  *colidx, char **name, char **type) {
    int   rc   ;
 
-   *name = sqlite3_column_name(*stmt, *colidx) ;
-   *type = sqlite3_column_decltype(*stmt, *colidx) ;
+   *name = (char *)sqlite3_column_name(*stmt, *colidx) ;
+   *type = (char *)sqlite3_column_decltype(*stmt, *colidx) ;
    return ;
 }
 /**********************************************************************************************************************************/
@@ -118,7 +126,7 @@ double sqlite3_column_double_c(sqlite3_stmt **stmt, int colidx ) {
 }
 /**********************************************************************************************************************************/
 char *sqlite3_column_text_c( sqlite3_stmt **stmt, int colidx, char *text ) {
-   return sqlite3_column_text(*stmt, colidx ) ;
+   return (char *)sqlite3_column_text(*stmt, colidx ) ;
 }
 /**********************************************************************************************************************************/
 int sqlite3_get_table_1_c(sqlite3 **db, char *command, int *ncol, int *nrow, char *errmsg) {

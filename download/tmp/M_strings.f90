@@ -1026,11 +1026,6 @@ integer :: i
       ! allpassed=allpassed .and. test("mississippi", "*issip*PI", .true.)
    enddo
 
-   if (allpassed)then
-      write(*,'(a)')"Passed",nReps
-   else
-      write(*,'(a)')"Failed"
-   endif
    call unit_check('matchw',allpassed,msg='')
    call unit_check_done('matchw')
 !===================================================================================================================================
@@ -5895,7 +5890,15 @@ integer,intent(out)         :: ierr                       ! error flag (0 == no 
 doubleprecision             :: valu8
    valu8=0.0d0
    call a2d(chars,valu8,ierr,onerr=0.0d0)
-   valu=real(valu8)
+   if(ierr.eq.0)then
+      if(valu8.le.huge(valu))then
+         valu=real(valu8)
+      else
+         call journal('sc','*a2r*','- value too large',valu8,'>',huge(valu))
+         valu=huge(valu)
+         ierr=-1
+      endif
+   endif
 end subroutine a2r
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
@@ -5908,7 +5911,15 @@ integer,intent(out)         :: ierr                       ! error flag (0 == no 
 doubleprecision             :: valu8
    valu8=0.0d0
    call a2d(chars,valu8,ierr,onerr=0.0d0)
-   valu=int(valu8)
+   if(valu8.le.huge(valu))then
+      if(valu8.le.huge(valu))then
+         valu=int(valu8)
+      else
+         call journal('sc','*a2i*','- value too large',valu8,'>',huge(valu))
+         valu=huge(valu)
+         ierr=-1
+      endif
+   endif
 end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr,onerr)
@@ -5946,7 +5957,7 @@ character(len=3),save        :: nan_string='NaN'
       write(frmt,fmt)pnd-1                                      ! build format of form '(BN,Gn.0)'
       read(local_chars(:pnd-1),fmt=frmt,iostat=ierr,iomsg=msg)basevalue   ! try to read value from string
       if(decodebase(local_chars(pnd+1:),basevalue,ivalu))then
-         valu=real(ivalu)
+         valu=real(ivalu,kind=kind(0.0d0))
       else
          valu=0.0d0
          ierr=-1

@@ -709,7 +709,8 @@ character(len=*),parameter::ident_3="@(#)M_exec::regmatch(3f): return selected s
 
 integer, intent(in)                                :: match, matches(2,*)
 character(len=*), intent(in)                       :: string
-character(len=matches(2,match)-matches(1,match)+1) :: regmatch
+!!character(len=matches(2,match)-matches(1,match)+1) :: regmatch  ! intel internal compiler error version 19
+character(len=:),allocatable :: regmatch
 
    regmatch = string(matches(1,match):matches(2,match))
 

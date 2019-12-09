@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Mon, Dec 2nd, 2019 10:26:22 AM>',&
+'@(#)COMPILED:       Fri, Dec 6th, 2019 9:27:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -9104,10 +9104,23 @@ write(io,'(a)')'EXAMPLE'
 write(io,'(a)')''
 write(io,'(a)')'  Sample program:'
 write(io,'(a)')''
+write(io,'(a)')''
 write(io,'(a)')'   program demo_real'
-write(io,'(a)')'     complex :: x = (1.0, 2.0)'
-write(io,'(a)')'     print *, real(x), real(x,8)'
+write(io,'(a)')'      use,intrinsic :: iso_fortran_env, only : dp=>real64'
+write(io,'(a)')'      complex              :: zr = (1.0, 2.0)'
+write(io,'(a)')'      doubleprecision      :: xd=huge(3.0d0)'
+write(io,'(a)')'      complex(kind=dp) :: zd=cmplx(4.0e0_dp,5.0e0_dp,kind=dp)'
+write(io,'(a)')''
+write(io,'(a)')'      print *, real(zr), aimag(zr)'
+write(io,'(a)')'      print *, dble(zd), dimag(zd)'
+write(io,'(a)')''
+write(io,'(a)')'      write(*,*)xd,real(xd,kind=kind(0.0d0)),dble(xd)'
 write(io,'(a)')'   end program demo_real'
+write(io,'(a)')'  Results:'
+write(io,'(a)')''
+write(io,'(a)')'      1.00000000       2.00000000'
+write(io,'(a)')'      4.0000000000000000        5.0000000000000000'
+write(io,'(a)')'      1.7976931348623157E+308   1.7976931348623157E+308   1.7976931348623157E+308'
 write(io,'(a)')''
 write(io,'(a)')'STANDARD'
 write(io,'(a)')''
