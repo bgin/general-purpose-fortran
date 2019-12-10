@@ -4,6 +4,7 @@
 module M_time
 use M_strings, only : upper, lower,  substitute
 use M_debug, only : stderr
+use iso_fortran_env, only : int64
 implicit none
 private
 private stderr
@@ -3422,7 +3423,6 @@ end subroutine test_d2u
 !!    Public Domain
 !===================================================================================================================================
 function u2d(unixtime) result (dat)
-use iso_fortran_env, only : int64
 
 character(len=*),parameter::ident_23="@(#)M_time::u2d(3f): Given Unix Epoch Time returns DAT date-time array"
 
@@ -3547,8 +3547,8 @@ character(len=*),parameter::ident_24="&
 
 ! on this platform, (select_int_kind(i),i=1,100) returns
 ! 1:2=1 ,3:4=2 ,5:9=4 ,10:18= 8 ,19:38=16 ,39:=-1
+!integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 integer                  :: i
-integer,parameter        :: k(38)=[(selected_int_kind(i),i=1,38)]
 class(*),intent(in)               :: seconds
 logical,intent(in),optional       :: crop
 character(len=:),allocatable      :: dhms
@@ -3616,7 +3616,7 @@ doubleprecision                   :: dtime
             dtime=dtime+s2v(array(i))
          end select
       enddo
-      secsleft=int(dtime,kind=k(38))
+      secsleft=int(dtime,kind=int64)
    end select
 
    if(present(crop))then    ! whether to trim cases where(days=0) and (hours=0 when days=0) from output or always show dd-hh:mm:ss

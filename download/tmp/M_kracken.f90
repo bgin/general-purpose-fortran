@@ -2555,7 +2555,7 @@ use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,
 use M_debug, only : unit_check_level
 integer        :: ier
    call unit_check_start('dget',msg=' direct tests of dget(3f)')
-   call store('MY_DOUBLE1',huge(0.0d0),'define',ier)
+   call store('MY_DOUBLE1',huge(0.0d0)*0.999999999999d0,'define',ier)
    call store('MY_DOUBLE2',-1234.0d-20,'define',ier)
    call store('BAD','nN3.3','define',ier)
    call store('BLANK',' ','define',ier)

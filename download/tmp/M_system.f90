@@ -5842,7 +5842,7 @@ integer :: ierr
    call unit_check_start('system_mkdir',msg='make and remove _scratch/')
    ierr=system_mkdir('_scratch',IANY([R_USR,W_USR,X_USR]))
    call unit_check('system_mkdir', ierr.eq.0, msg=msg('make _scratch/, ierr=',ierr))
-   call unit_check_msg('system_mkdir',isdir('_scratch'),'looks like the directory was made')
+   call unit_check_msg('system_mkdir',system_isdir('_scratch'),'looks like the directory was made')
    call system_chdir('_scratch',ierr)
    call system_chdir('..',ierr)
    call unit_check_msg('system_mkdir',ierr.eq.0,'looks like it can be entered')
@@ -6118,18 +6118,18 @@ subroutine test_system_rmdir()
    character(len=*),parameter :: dirname='_scratch_rmdir'
 !! setup
    call unit_check_start('system_rmdir',msg='')
-   if(isdir(dirname))then ! TRY TO CREATE
+   if(system_isdir(dirname))then ! TRY TO CREATE
       call unit_check_msg('system_rmdir',dirname,'directory existed')
    endif
    ierr=system_mkdir(dirname,RWX_U)
    call unit_check('system_rmdir',ierr.eq.0,msg=msg('try to create',dirname))
-   call unit_check('system_rmdir',isdir(dirname),msg=msg('check if',dirname,'exists and is a directory'))
+   call unit_check('system_rmdir',system_isdir(dirname),msg=msg('check if',dirname,'exists and is a directory'))
 !! test
    ierr=system_rmdir(dirname) ! TRY TO REMOVE
    call unit_check('system_rmdir',ierr.eq.0,msg=msg('check ierr',ierr))
-   call unit_check('system_rmdir',.not.isdir(dirname),msg=msg('check if',dirname,'is still a directory'))
+   call unit_check('system_rmdir',.not.system_isdir(dirname),msg=msg('check if',dirname,'is still a directory'))
 
-   if(isdir(dirname))then
+   if(system_isdir(dirname))then
       call unit_check_bad('system_rmdir',msg=msg('testing went bad,',dirname,'is still a directory'))
    else
       ierr=system_rmdir(dirname) ! TRY TO REMOVE scratch directory when it should be gone
@@ -6139,17 +6139,6 @@ subroutine test_system_rmdir()
 
    call unit_check_done('system_rmdir',msg='')
 end subroutine test_system_rmdir
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-function isdir(dirname)
-character(len=*) :: dirname
-! a trick to be sure DIRNAME is a dir on systems supporting Unix-compatible pathnames
-logical :: isdir
-if(dirname.ne.'')then
-   inquire( file=trim(dirname)//"/.", exist=isdir )
-else
-   isdir=.false.
-endif
-end function isdir
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_setumask()
 
