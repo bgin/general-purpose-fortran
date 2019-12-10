@@ -554,8 +554,8 @@ real                        :: c1, c2, c3, r, g, b
 end subroutine hue
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_hue()
-use m_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
-use m_debug, only : unit_check_level, msg
+use M_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
+use M_debug, only : unit_check_level, msg
 implicit none
 real              :: c, m, y
 real              :: r, g, b
@@ -1139,7 +1139,7 @@ integer,intent(out)  :: status
 end subroutine rgbmono
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_rgbmono()
-use m_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
+use M_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
 real :: gray
 integer :: ierr
 call unit_check_start('rgbmono')
@@ -1629,7 +1629,7 @@ integer                       :: i
 end SUBROUTINE closest_color_name
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_closest_color_name()
-use m_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
+use M_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
 implicit none
 real              :: c, m, y
 real              :: r, g, b
@@ -1719,7 +1719,7 @@ end subroutine test_closest_color_name
 !!    A sample program:
 !!
 !!     program demo_color_name2rgb
-!!     use m_color, only : hue, color_name2rgb
+!!     use M_color, only : hue, color_name2rgb
 !!     implicit none
 !!     !
 !!     ! list colors known to colorname2rgb(3f) & corresponding RGB values
@@ -2331,7 +2331,7 @@ character(len=20)                      :: newname
 END SUBROUTINE color_name2rgb
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_color_name2rgb()
-use m_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
+use M_debug, only : unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start
 implicit none
 real              :: c, m, y
 real              :: r, g, b

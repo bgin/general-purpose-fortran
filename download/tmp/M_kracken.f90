@@ -2553,13 +2553,14 @@ contains
 subroutine test_dget()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
-integer        :: ier
+integer         :: ier
+doubleprecision :: dd=huge(0.0d0)*0.999999999999d0
    call unit_check_start('dget',msg=' direct tests of dget(3f)')
-   call store('MY_DOUBLE1',huge(0.0d0)*0.999999999999d0,'define',ier)
+   call store('MY_DOUBLE1',dd,'define',ier)
    call store('MY_DOUBLE2',-1234.0d-20,'define',ier)
    call store('BAD','nN3.3','define',ier)
    call store('BLANK',' ','define',ier)
-   call unit_check('dget', dget('MY_DOUBLE1').eq.huge(0.0d0*0.999999999999d0), msg=msg('MY_DOUBLE1',dget('MY_DOUBLE1')))
+   call unit_check('dget', dget('MY_DOUBLE1').eq.dd, msg=msg('MY_DOUBLE1',dget('MY_DOUBLE1'),'versus',dd))
    call unit_check('dget', dget('MY_DOUBLE2').eq.-1234.0d-20, msg=msg('MY_DOUBLE2',dget('MY_DOUBLE2')))
    call unit_check('dget', dget('NOTTHERE').eq.0,             msg=msg('NOTTHERE',dget('NOTTHERE')))
    call unit_check('dget', ieee_is_nan(dget('BAD')),          msg=msg('BAD',dget('BAD')))

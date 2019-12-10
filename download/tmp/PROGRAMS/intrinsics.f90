@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Dec 6th, 2019 9:27:39 PM>',&
+'@(#)COMPILED:       Tue, Dec 10th, 2019 3:20:16 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -5295,6 +5295,7 @@ write(io,'(a)')''
 write(io,'(a)')'   end program demo_get_command'
 write(io,'(a)')''
 write(io,'(a)')'  Sample execution:'
+write(io,'(a)')''
 write(io,'(a)')'     ./test_get_command  arguments    on the    command   line to   echo'
 write(io,'(a)')'     ./test_get_command arguments on the command line to echo'
 write(io,'(a)')'     # using the bash shell'

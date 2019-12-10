@@ -1393,6 +1393,8 @@ end subroutine xterm_get_position
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_xterm()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
 
 !! setup
    call test_xterm_clear()
@@ -1416,155 +1418,104 @@ subroutine test_suite_M_xterm()
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_clear()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_clear',msg='')
-   !!call unit_check('xterm_clear', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_clear', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_clear',msg='')
 end subroutine test_xterm_clear
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_colors()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_colors',msg='')
-   !!call unit_check('xterm_colors', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_colors', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_colors',msg='')
 end subroutine test_xterm_colors
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_font()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_font',msg='')
-   !!call unit_check('xterm_font', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_font', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_font',msg='')
 end subroutine test_xterm_font
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_geometry()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_geometry',msg='')
-   !!call unit_check('xterm_geometry', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_geometry', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_geometry',msg='')
 end subroutine test_xterm_geometry
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_get_colors()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_get_colors',msg='')
-   !!call unit_check('xterm_get_colors', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_get_colors', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_get_colors',msg='')
 end subroutine test_xterm_get_colors
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_get_font()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_get_font',msg='')
-   !!call unit_check('xterm_get_font', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_get_font', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_get_font',msg='')
 end subroutine test_xterm_get_font
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_get_geometry()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_get_geometry',msg='')
-   !!call unit_check('xterm_get_geometry', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_get_geometry', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_get_geometry',msg='')
 end subroutine test_xterm_get_geometry
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_get_iconstate()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_get_iconstate',msg='')
-   !!call unit_check('xterm_get_iconstate', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_get_iconstate', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_get_iconstate',msg='')
 end subroutine test_xterm_get_iconstate
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_get_pencolor()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_get_pencolor',msg='')
-   !!call unit_check('xterm_get_pencolor', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_get_pencolor', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_get_pencolor',msg='')
 end subroutine test_xterm_get_pencolor
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_get_position()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_get_position',msg='')
-   !!call unit_check('xterm_get_position', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_get_position', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_get_position',msg='')
 end subroutine test_xterm_get_position
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_keywords()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_keywords',msg='')
-   !!call unit_check('xterm_keywords', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_keywords', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_keywords',msg='')
 end subroutine test_xterm_keywords
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_labels()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_labels',msg='')
-   !!call unit_check('xterm_labels', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_labels', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_labels',msg='')
 end subroutine test_xterm_labels
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_occupancy()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_occupancy',msg='')
-   !!call unit_check('xterm_occupancy', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_occupancy', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_occupancy',msg='')
 end subroutine test_xterm_occupancy
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_pencolor()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_pencolor',msg='')
-   !!call unit_check('xterm_pencolor', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_pencolor', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_pencolor',msg='')
 end subroutine test_xterm_pencolor
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_position()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_position',msg='')
-   !!call unit_check('xterm_position', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_position', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_position',msg='')
 end subroutine test_xterm_position
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_width()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_width',msg='')
-   !!call unit_check('xterm_width', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_width', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_width',msg='')
 end subroutine test_xterm_width
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_xterm_xrdb()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('xterm_xrdb',msg='')
-   !!call unit_check('xterm_xrdb', 0.eq.0. msg=msg('checking',100))
+   !!call unit_check('xterm_xrdb', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('xterm_xrdb',msg='')
 end subroutine test_xterm_xrdb
 !===================================================================================================================================

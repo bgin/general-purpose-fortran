@@ -4,6 +4,7 @@ append("get_command_arguments_stack.3m_args.html");
 append("get_command_arguments_string.3m_args.html");
 append("get_namelist.3m_args.html");
 append("longest_command_argument.3m_args.html");
+append("print_dictionary.3m_args.html");
 append("ARGUMENTS.3.html");
 append("M_getopt.3.html");
 append("M_getopt_long.3.html");

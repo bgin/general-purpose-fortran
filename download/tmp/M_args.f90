@@ -1449,7 +1449,7 @@ end subroutine dictionary_to_namelist
 !===================================================================================================================================
 !>
 !!##NAME
-!!   print_dictionary(3f) - [M_args]print internal dictionary created by calls to get_namelist(3f)
+!!   print_dictionary(3f) - [ARGUMENTS:M_args] print internal dictionary created by calls to get_namelist(3f)
 !!   (LICENSE:PD)
 !!##SYNOPSIS
 !!

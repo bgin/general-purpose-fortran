@@ -1,5 +1,5 @@
            program demo_color_name2rgb
-           use m_color, only : hue, color_name2rgb
+           use M_color, only : hue, color_name2rgb
            implicit none
            !
            ! list colors known to colorname2rgb(3f) & corresponding RGB values
