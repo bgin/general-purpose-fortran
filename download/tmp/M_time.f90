@@ -3503,7 +3503,7 @@ end function get_timezone
 !!               be of type INTEGER, REAL, REAL(KIND=REALTIME), or CHARACTER.
 !!
 !!               CHARACTER strings may be of the form
-!!               NNdNNhNNmNNs. Case,spaces and underscores are
+!!               [NNd][NNh][NNm][NNs][NNw]. Case,spaces and underscores are
 !!               ignored. Allowed aliases for d,h,m, and s units are
 !!
 !!                   d -  days,day
@@ -3703,7 +3703,7 @@ end subroutine test_sec2days
 !!
 !!##DESCRIPTION
 !!      Given a string representing a duration of the form
-!!      "[-][[[dd-]hh:]mm:]ss"  or NNdNNhNNmNNsNNw
+!!      "[-][[[dd-]hh:]mm:]ss"  or [NNd][NNh][NNm[]NNs][NNw]
 !!      return a value representing seconds
 !!
 !!      If "dd-" is present, units for the numbers are assumed to
@@ -3730,7 +3730,7 @@ end subroutine test_sec2days
 !!      s,m,h, or d represents seconds, minutes, hours or days and w
 !!      represents a week. Allowed aliases for w,d,h,m, and s units are
 !!
-!!        NNdNNhNNmNNs
+!!        [NNd][NNh][NNm][NNs][NNw]
 !!
 !!          d -  days,day
 !!          m -  minutes,minute,min,mins

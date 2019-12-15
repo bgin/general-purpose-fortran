@@ -372,10 +372,13 @@ character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
    print *,'CONSTRUCTOR WITH A PARTIAL DAT ARRAY        ',otherdate%format()
 
    ! the init() method supports several methods
-   call otherdate%init()                           ! initialize to current time using INIT
-   call otherdate%init(type="now")                 ! initialize to current time using INIT
+   ! initialize to current time using INIT
+   call otherdate%init()
+   ! initialize to current time using INIT
+   call otherdate%init(type="now")
 
-   call otherdate%init(type="epoch")               ! initialize to beginning of Unix Epoch Time
+   ! initialize to beginning of Unix Epoch Time
+   call otherdate%init(type="epoch")
    ! Note
    ! currently, DATE_TIME DATE array is set to Unix Epoch start USING LOCAL TIMEZONE
    ! whereas default constructor is using default of Unix Epoch start using Z time (GMT or UTC time)
@@ -416,10 +419,14 @@ character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
    ! FORMATTED STRINGS (many strings possible. Takes the same format string as fmtdate(3f))
    write(*,*)
    write(*,*)'Formatted Strings (%format("STRING") -- see fmtdate(3f) for format descriptions'
-   write(*,303)'Short month............ ',event%format("%l")  ! abbreviated month name             %l  Dec
-   write(*,303)'Month.................. ',event%format("%L")  ! full month name                    %L  December
-   write(*,303)'Short week............. ',event%format("%w")  ! first three characters of weekday  %w  Sat
-   write(*,303)'Week .................. ',event%format("%W")  ! weekday name                       %W  Saturday
+   ! abbreviated month name             %l  Dec
+   write(*,303)'Short month............ ',event%format("%l")
+   ! full month name                    %L  December
+   write(*,303)'Month.................. ',event%format("%L")
+   ! first three characters of weekday  %w  Sat
+   write(*,303)'Short week............. ',event%format("%w")
+   ! weekday name                       %W  Saturday
+   write(*,303)'Week .................. ',event%format("%W")
    ! with no percent (%) characters
    write(*,303)'Calendar Time ......... ',event%format("Y-M-D h:m:s.x z")
    ! keywords with no percent (%) characters
@@ -427,7 +434,8 @@ character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
    write(*,*)event%format('Longer format.......... "%W, %L %d, %Y %H:%m:%s %N"') ! a nice friendly format
    303 format(1x,a,'"',a,'"')
 
-   dat=event%datout()            ! convert date_time to integer array (maybe to use with module M_TIME base procedures)
+   ! convert date_time to integer array (maybe to use with module M_TIME base procedures)
+   dat=event%datout()
    write(*,*)
    write(*,404)'DAT=',dat
 
