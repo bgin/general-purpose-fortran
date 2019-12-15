@@ -73,11 +73,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <BLOCKQUOTE>
 <PRE>
 <P>
-<B>subroutine</B> <B>journal</B>([where,]message,[VALUE(s)])
+<B>subroutine</B> <B>journal</B>([where,],[VALUE(s)])
 <P>
     character(len=*),intent(in) :: where
-    character(len=*),intent(in) :: msg
-    character(len=*)|real|integer|doubleprecision|complex :: g1,g2,g3,g4,g5,g6,g7,g8,g9
+    character(len=*)|real|integer|doubleprecision|complex,optional :: g1,g2,g3,g4,g5,g6,g7,g8,g9
 <P>
 </PRE>
 </BLOCKQUOTE>
@@ -86,36 +85,30 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
     <H4>&nbsp; &nbsp; WRITE MESSAGES</H4>
 </A>
 <BLOCKQUOTE>
-<P>
-call <B>journal</B>(where,message,[VALUE])
+call <B>journal</B>(where,[VALUE(S)])
+call <B>journal</B>(message) # a shortcut for "call <B>journal</B>(&#146;sc&#146;,message)":
 </BLOCKQUOTE>
-<P>
-or a shortcut for "call <B>journal</B>(&#146;sc&#146;,message)"
-<P>
-<PRE>
-      call journal(message)
-<P>
-</PRE>
 <A name=>
 
     <H4>&nbsp; &nbsp; OPEN OR CLOSE TRAIL FILE</H4>
 </A>
 <BLOCKQUOTE>
-<P>
-open a trail file, or close trail if filename is blank
-<P>
-<PRE>
-      call journal(&#146;O&#146;,[trailfile_name|&#146;&#146;])
-<P>
-</PRE>
-</BLOCKQUOTE>
+call <B>journal</B>(&#146;O&#146;,trailfile_name) # open trail file
+<TABLE cellpadding=3><!-- tsb: call <B>journal</B>(&#146;O&#146;,trailfile_name) # open trail file
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>call </B><B>journal</B>(&#146;O&#146;,&#146;&#146;) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+# close trail file
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <A name=>
 
     <H4>&nbsp; &nbsp; SET OUTPUT TIME PREFIX</H4>
 </A>
 <BLOCKQUOTE>
-<P>
-set the <B>NOW</B>(3f) function display format for timestamps
+set the function display format for timestamps. See the <B>NOW</B>(3f)
+procedure for allowable timestamp macros
 <P>
 <PRE>
       call journal(&#146;%&#146;,time_stamp_prefix_specification)
@@ -131,7 +124,8 @@ set the <B>NOW</B>(3f) function display format for timestamps
 Turn on/off writing DEBUG messages to trail file
 <P>
 <PRE>
-      call journal([.true.|.false.],&#146;debug&#146;)
+      call journal(&#146;&gt;&#146;,&#146;debug on&#146;) # turn on debug mode
+      call journal(&#146;&lt;&#146;,&#146;debug off&#146;) # turn off debug mode
 <P>
 </PRE>
 </BLOCKQUOTE>
@@ -162,7 +156,7 @@ change stdout to iunit to use a file already open
 <P>
 If a user procedure is used for outputting messages instead of calling
 <B>WRITE</B>(3f) it is easy to provide control of when messages are printed
-(ie. a "verbose" mode, or "quite" mode), creating files to replace
+(ie. a "verbose" mode, or "quite" mode), creating files to replay
 program execution, duplicating output, &#46;&#46;&#46;
 </BLOCKQUOTE>
 <A name=3>
@@ -209,8 +203,9 @@ Usually used by itself
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>D</B> </TD><TD valign=bottom>
-write to trail file as a comment with DEBUG: prefix in front
-of message (if file is open) if debug mode is on
+write to trail file as a comment with "DEBUG:" prefix in front
+of message (if file is open) if debug mode is on. Write to stdout
+if no trail file and debug mode is on.
 </TD></TR>
 <TR><TD colspan=2>
 Modifier for S|E|C|T|D specifiers
@@ -246,15 +241,21 @@ can call the auxiliary programs and still just generate one log file,
 but if the auxiliary program is used as a stand-alone program no trail
 is generated.
 </TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>%</B> </TD><TD valign=bottom>
-set prefix to run thru <B>now</B>(3f) to generate time prefix strings
-</TD></TR>
 <TR></TR></TABLE><!-- .TP -->
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>MESSAGE</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B></B><B>VALUES</B>(S) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 message to write to stdout, stderr, and the trail file.
+a numeric or character value to optionally be appended
+<TABLE width=100% cellpadding=3><!-- tsb: message to write to stdout, stderr, and the trail file.
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>to the message.</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Up to nine values are allowed. The WHERE
+field is required if values are added.
+</TD></TR>
+<TR></TR></TABLE><!-- .TP -->
 </TD></TR>
 <TR valign=top><TD colspan=2>
 <B>FILENAME</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
@@ -266,11 +267,6 @@ to the trail file is turned off.
 <B>TFORMAT</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 when WHERE="%" the message is treated as a time format
 specification as described under <B>now</B>(3f).
-</TD></TR>
-<TR valign=top><TD width=6% nowrap>
-<B>VALUE</B> </TD><TD valign=bottom>
-a numeric or character value to optionally be appended to the message.
-Up to nine values are allowed. The WHERE field is required if values are added.
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=4>
@@ -284,24 +280,48 @@ Sample program:
 <PRE>
    program demo_journal
    use M_journal, only : journal
-<P>
    !! BASIC USAGE
-   call journal(&#146;write to standard output as-is, and trail file as a comment&#146;)
-<P>
+   call journal(&#146;write to standard output as-is, and trail file as a comment if open&#146;)
    ! since we have not opened a trail file yet, only stdout will display output
-   call journal(&#146;sc&#146;,&#146;write to standard output as-is, and trail file as a comment&#146;)
    call journal(&#146;c&#146;,&#146;ignored, as trail file is not open&#146;)
-<P>
    ! now open trail file "trail"
    call journal(&#146;o&#146;,&#146;trail&#146;)
-   call journal(&#146;sc&#146;,&#146;same thing, with &#146;)
+   call journal(&#146;sc&#146;,&#146;same thing except now trail file is open&#146;)
    ! only write to trail file if open
    call journal(&#146;c&#146;,&#146;not ignored, as trail file is open. Written with # suffix&#146;)
    call journal(&#146;t&#146;,&#146;not ignored, as trail file is open. Written as-is&#146;)
    ! turn off trail file
-   call journal(&#146;o&#146;)
-<P>
+   call journal(&#146;o&#146;,&#146;&#146;)
    end program demo_journal
+<P>
+</PRE>
+Adding intrinsic scalar values to the message:
+<P>
+<PRE>
+   program test_journal
+   use M_journal, only: journal
+   implicit none
+      call unit_check_start(&#146;journal&#146;)
+      call journal(&#146;S&#146;,&#146;This is a test with no optional value&#146;)
+      call journal(&#146;S&#146;,&#146;This is a test with a logical value&#146;,.true.)
+      call journal(&#146;S&#146;,&#146;This is a test with a double value&#146;,1234567890.123456789d0)
+      call journal(&#146;S&#146;,&#146;This is a test with a real value&#146;,1234567890.123456789)
+      call journal(&#146;S&#146;,&#146;This is a test with an integer value&#146;,1234567890)
+      call journal(&#146;STDC&#146;,&#146;This is a test using STDC&#146;,1234567890)
+      call journal(&#146;stdc&#146;,&#146;This is a test using stdc&#146;,1234567890)
+      call journal(&#146;o&#146;,&#146;journal.txt&#146;)                        ! open trail file
+      call journal(&#146;S&#146;,1,12.34,56789.111111111d0,.false.,&#146;a bunch of values&#146;)
+      ! the combinations that make sense
+      call journal(&#146;st&#146;,&#146;stdout and trail&#146;)
+      call journal(&#146;s&#146; ,&#146;stdout only&#146;)
+      call journal(&#146;t&#146; ,&#146;trail only&#146;)
+      call journal(&#146;sc&#146;,&#146;stdout and trail_comment&#146;)
+      call journal(&#146;c&#146; ,&#146;trail_comment only &#146;)
+      call journal(&#146;d&#146; ,&#146;debug only&#146;)
+      call journal(&#146;e&#146; ,&#146;stderr only&#146;)
+      call journal(&#146;o&#146; ,&#146; &#146;) ! closing trail file
+   end program test_journal
+<P>
 </PRE>
 </BLOCKQUOTE>
 <A name=5>
@@ -321,7 +341,7 @@ John S. Urban
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>journal (3)</TD> <TD align=right width=33%><I>December 10, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from f96679ea-4183-4911-aa49-78479cf85034 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>journal (3)</TD> <TD align=right width=33%><I>December 14, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 356f324e-15d9-44ca-977d-fe165e9a3974 using man macros.</FONT>
 <br><br><center><img src="images/journal.3.gif"></center>
 </div>
 </div>

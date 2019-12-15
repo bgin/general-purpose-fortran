@@ -4,7 +4,7 @@
 module M_time
 use M_strings, only : upper, lower,  substitute
 use M_debug, only : stderr
-use iso_fortran_env, only : int64
+use, intrinsic :: iso_fortran_env, only : int64
 implicit none
 private
 private stderr
@@ -95,7 +95,7 @@ real(kind=realtime),public,parameter :: dt_week=dt_day*7.0d0  ! one week in seco
 !!
 !!##OPTIONS
 !!    dat   Integer array holding a "DAT" array, similar in structure
-!!          to the array returned by the intrinsic DATE_AND_TIME(3f).
+!!          to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!##RETURNS
@@ -242,12 +242,12 @@ end subroutine test_date_to_julian
 !!    UET is the number of seconds since 00:00 on January 1st, 1970, UTC.
 !!
 !!##OPTIONS
-!!     julian   Julian Date (days)
-!!     dat      Integer array holding a "DAT" array, similar in structure
-!!              to the array returned by the intrinsic DATE_AND_TIME(3f).
-!!     ier      0 for successful execution
+!!     julian  Julian Date (days)
+!!     dat     Integer array holding a "DAT" array, similar in structure
+!!             to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
-!!               dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
+!!              dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
+!!
 !!##RETURNS
 !!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 on
 !!              January 1st, 1970, UTC.
@@ -414,7 +414,7 @@ end subroutine test_julian_to_date
 !!
 !!##OPTIONS
 !!    dat   Integer array holding a "DAT" array, similar in structure
-!!          to the array returned by the intrinsic DATE_AND_TIME(3f).
+!!          to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!##RETURNS
@@ -501,15 +501,17 @@ end subroutine test_date_to_unix
 !!     integer,intent(out)            :: ierr     ! 0 for successful execution
 !!
 !!##DESCRIPTION
+!!
 !!     Converts a Unix Epoch Time (UET) to a DAT date-time array.
 !!
 !!##OPTIONS
+!!
 !!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 on
 !!              January 1st, 1970, UTC; of type real(kind=realtime).
 !!
 !!##RETURNS
 !!     dat      Integer array holding a "DAT" array, similar in structure
-!!              to the array returned by the intrinsic DATE_AND_TIME(3f).
+!!              to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!               dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!
@@ -602,7 +604,7 @@ end subroutine test_unix_to_date
 !!
 !!##OPTIONS
 !!     dat  Integer array holding a "DAT" array, similar in structure
-!!          to the array returned by the intrinsic DATE_AND_TIME(3f).
+!!          to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!##RETURNS
@@ -725,7 +727,6 @@ end subroutine test_d2o
 !!    Before using this routine consider the consequences if the application
 !!    is running at the moment a new year begins.
 !!
-!!        2 147 483 647 / 31 536 000 ==> 68.09625973490613901572 years
 !!##EXAMPLE
 !!
 !!   sample program
@@ -806,13 +807,12 @@ end subroutine test_ordinal_seconds
 !!
 !!   Sample program:
 !!
-!!    program demo_datesub
+!!    program demo_ordinal_to_date
 !!    use M_time, only : ordinal_to_date
 !!    implicit none
 !!    INTEGER            :: yyyy, ddd, mm, dd
 !!    integer            :: dat(8)
 !!    integer            :: ios
-!!
 !!      INFINITE: do
 !!         write(*,'(a)',advance='no')'Enter year YYYY and ordinal day of year DD '
 !!         read(*,*,iostat=ios)yyyy,ddd
@@ -821,9 +821,10 @@ end subroutine test_ordinal_seconds
 !!         call ordinal_to_date(yyyy, ddd, dat)
 !!         mm=dat(2)
 !!         dd=dat(3)
+!!         write(*,*)'For Year ',yyyy,' and Ordinal day ',ddd, &
+!!         &         ' Month is ',mm,' and Day of Month is',dd
 !!       enddo INFINITE
-!!
-!!    end program demo_datesub
+!!    end program demo_ordinal_to_date
 !===================================================================================================================================
 subroutine ordinal_to_date(yyyy,ddd,dat)
 !!use M_time, only : d2j,j2d, realtime
@@ -893,10 +894,11 @@ end subroutine test_ordinal_to_date
 !!
 !!##RETURNS
 !!     dat   Integer array holding a "DAT" array, similar in structure
-!!           to the array returned by the intrinsic DATE_AND_TIME(3f).
-!!           The timezone value is from the current time on the current platform.
+!!           to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!            dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
+!!
+!!           The timezone value is from the current time on the current platform.
 !!
 !!##EXAMPLE
 !!
@@ -1078,9 +1080,10 @@ end subroutine test_v2mo
 !!
 !!##SYNOPSIS
 !!
-!!       function mo2d(month_name) result (dat)
+!!       function mo2d(month_name,year) result (dat)
 !!
 !!        character(len=*),intent(in) :: month_name
+!!        integer,intent(in),optional :: year
 !!        integer                     :: dat(8)
 !!
 !!##DESCRIPTION
@@ -1093,7 +1096,9 @@ end subroutine test_v2mo
 !!    year        Optional year. Defaults to current year
 !!##RETURNS
 !!    dat         An integer array that has the same structure as the array
-!!                returned by the Fortran intrinsic DATE_AND_TIME(3f).
+!!                returned by the Fortran intrinsic DATE_AND_TIME(3f):
+!!
+!!                  dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!
 !!##EXAMPLE
 !!
@@ -1312,8 +1317,7 @@ end subroutine test_mo2v
 !!     subroutine showme() ! see all formatting options
 !!     use M_time, only : fmtdate_usage
 !!        call fmtdate_usage() ! see all formatting options
-!!     end subroutine showme
-!!
+!!     end subroutine
 !!     end program demo_now
 !!
 !!    results:
@@ -1367,16 +1371,16 @@ end subroutine test_now
 !!     character(len=:),allocatable         :: timestr
 !!
 !!##DESCRIPTION
-!!     The fmtdate(3f) procedure lets you reformat a DAT array in
-!!     many common formats using a special string containing macro names
-!!     beginning with '%'. To see the allowable macros call or see the
-!!     fmtdate_usage(3f) routine.
+!!    The fmtdate(3f) procedure lets you reformat a DAT array in
+!!    many common formats using a special string containing macro names
+!!    beginning with '%'. To see the allowable macros call or see the
+!!    fmtdate_usage(3f) routine.
 !!
 !!##OPTIONS
 !!     values   date in a "DAT" array, which is the same format as
-!!              the values returned by the intrinsic DATE_AND_TIME(3f).
+!!              the values returned by the intrinsic DATE_AND_TIME(3f):
 !!
-!!              dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
+!!               dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!
 !!     format   string describing how to format the "DAT" array.
 !!              For a complete description of the formatting macros
@@ -2017,7 +2021,7 @@ end subroutine test_fmtdate_usage
 !!    anot  A string assumed to represent a date including a year, month and day.
 !!
 !!    dat   Integer array holding a "DAT" array, similar in structure
-!!          to the array returned by the intrinsic DATE_AND_TIME(3f).
+!!          to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!
@@ -2437,13 +2441,11 @@ end subroutine test_guessdate
 !!     integer          :: weekday
 !!     character(len=9) :: day
 !!     integer          :: ierr
-!!
 !!       call date_and_time(values=dat)
 !!       call dow(dat, weekday, day, ierr)
 !!       write(*,'(a,i0)')'weekday=',weekday
 !!       write(*,'(a,a)')'day=',trim(day)
 !!       write(*,'(a,i0)')'ierr=',ierr
-!!
 !!     end program demo_dow
 !!
 !!    results:
@@ -2566,7 +2568,6 @@ end subroutine test_dow
 !!     integer           :: dat(8)     ! input date array
 !!     integer           :: iso_year, iso_week, iso_weekday
 !!     character(len=10) :: iso_name
-!!
 !!        call date_and_time(values=dat)
 !!        call d2w(dat,iso_year,iso_week,iso_weekday,iso_name)
 !!        write(*,'("ISO-8601 Week:   ",a)')iso_name
@@ -3100,13 +3101,15 @@ end subroutine test_box_month
 !!     real(kind=realtime) :: julian
 !!
 !!##DESCRIPTION
+!!    Given DAT date-time array returns Julian Date
 !!
 !!##OPTIONS
 !!    dat       Integer array holding a "DAT" array, similar in structure
-!!              to the array returned by the intrinsic DATE_AND_TIME(3f).
-!!              If not present, use current time.
+!!              to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
-!!              dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
+!!                dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
+!!
+!!              If not present, use current time.
 !!##RETURNS
 !!    julian    The Julian Date.
 !!
@@ -3200,13 +3203,13 @@ end subroutine test_d2j
 !!     Converts a Julian Ephemeris Date to a DAT date-time array.
 !!
 !!##OPTIONS
-!!    julian    A Julian Ephemeris Date (JED) is the number of days since
-!!              noon (not midnight) on January 1st, 4713 BC.
-!!              If not present, use current time.
+!!    julian  A Julian Ephemeris Date (JED) is the number of days since
+!!            noon (not midnight) on January 1st, 4713 BC.
+!!            If not present, use current time.
 !!
 !!##RETURNS
 !!    dat   Integer array holding a "DAT" array, similar in structure
-!!          to the array returned by the intrinsic DATE_AND_TIME(3f).
+!!          to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!
@@ -3297,10 +3300,11 @@ end subroutine test_j2d
 !!
 !!##OPTIONS
 !!    dat   Integer array holding a "DAT" array, similar in structure
-!!          to the array returned by the intrinsic DATE_AND_TIME(3f).
-!!          If not present the current time is used
+!!          to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!           dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
+!!
+!!          If not present the current time is used
 !!
 !!##RETURNS
 !!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 on
@@ -3384,6 +3388,7 @@ end subroutine test_d2u
 !!     integer                           :: dat(8)
 !!
 !!##DESCRIPTION
+!!    given Unix Epoch Time returns DAT date-time array
 !!
 !!##OPTIONS
 !!    unixtime  The "Unix Epoch" time, or the number of seconds since 00:00:00 on
@@ -3391,7 +3396,7 @@ end subroutine test_d2u
 !!
 !!##RETURNS
 !!    dat       Integer array holding a "DAT" array, similar in structure
-!!              to the array returned by the intrinsic DATE_AND_TIME(3f).
+!!              to the array returned by the intrinsic DATE_AND_TIME(3f):
 !!
 !!               dat=[year,month,day,timezone,hour,minutes,seconds,milliseconds]
 !!
@@ -3540,7 +3545,7 @@ end function get_timezone
 !===================================================================================================================================
 function sec2days(seconds,crop) result(dhms)
 use M_strings, only: split, compact, s2v, transliterate
-use iso_fortran_env, only : int64
+use, intrinsic :: iso_fortran_env, only : int64
 
 character(len=*),parameter::ident_24="&
 &@(#)M_time::sec2days(3f): converts seconds or string of form IId JJh KKm LLs to string showing days of form D-HH:MM:SS"
@@ -3714,26 +3719,28 @@ end subroutine test_sec2days
 !!         mm:ss
 !!         ss
 !!
-!!          Where dd is days, hh hours, mm minutes and ss seconds.
+!!         Where dd is days, hh hours, mm minutes and ss seconds.
 !!
-!!          A decimal fraction is supported on the seconds (Actually,
-!!          any of the numeric values may represent positive floating
-!!          point numbers). Spaces are ignored.
+!!      A decimal fraction is supported on the seconds (Actually,
+!!      any of the numeric values may represent positive floating
+!!      point numbers). Spaces are ignored.
+!!
+!!
+!!      Simple numeric values may also be used with unit suffixes; where
+!!      s,m,h, or d represents seconds, minutes, hours or days and w
+!!      represents a week. Allowed aliases for w,d,h,m, and s units are
 !!
 !!        NNdNNhNNmNNs
-!!          Simple numeric values may also be used with unit suffixes; where
-!!          s,m,h, or d represents seconds, minutes, hours or days and w
-!!          represents a week. Allowed aliases for w,d,h,m, and s units are
 !!
-!!                           d -  days,day
-!!                           m -  minutes,minute,min,mins
-!!                           h -  hours,hour,hr,hrs
-!!                           s -  seconds,second,sec,secs
-!!                           w -  week, weeks, wk, wks
+!!          d -  days,day
+!!          m -  minutes,minute,min,mins
+!!          h -  hours,hour,hr,hrs
+!!          s -  seconds,second,sec,secs
+!!          w -  week, weeks, wk, wks
 !!
-!!          The numeric values may represent floating point numbers.
+!!      The numeric values may represent floating point numbers.
 !!
-!!          Spaces, commas and case are ignored.
+!!      Spaces, commas and case are ignored.
 !!
 !!##OPTIONS
 !!       str   string of the general form dd-hh:mm:ss.nn
@@ -3765,18 +3772,18 @@ end subroutine test_sec2days
 !!
 !!    Results:
 !!
-!!     129860.00000000000
-!!     one second    1.0000000000000000
-!!     one minute    60.000000000000000
-!!     one hour    3600.0000000000000
-!!     one day    86400.000000000000
-!!     T
-!!     T
-!!     T
-!!     T
-!!     T
-!!     T
-!!     T
+!!     > 129860.00000000000
+!!     > one second    1.0000000000000000
+!!     > one minute    60.000000000000000
+!!     > one hour    3600.0000000000000
+!!     > one day    86400.000000000000
+!!     > T
+!!     > T
+!!     > T
+!!     > T
+!!     > T
+!!     > T
+!!     > T
 !!
 !!##AUTHOR
 !!    John S. Urban, 2015
@@ -4047,7 +4054,7 @@ end subroutine test_phase_of_moon
 !!
 !!##OPTIONS
 !!
-!!  dat        DAT Date array describing input date
+!!  datin      DAT Date array describing input date
 !!
 !!##RESULTS
 !!
@@ -4433,7 +4440,9 @@ end subroutine call_sleep
 !===================================================================================================================================
 subroutine call_usleep(wait_seconds)
 use,intrinsic                   :: iso_c_binding, only: c_int
+
 character(len=*),parameter::ident_31="@(#)M_time::call_usleep(3fp): call usleep(3c)"
+
 integer(kind=c_int),intent(in)  :: wait_seconds
 integer(kind=c_int)             :: how_long
 interface
@@ -4552,7 +4561,6 @@ end interface
 end subroutine put_environment_variable
 !===================================================================================================================================
 pure function str2arr(string) result (array)
-
 
 character(len=*),parameter::ident_33="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
 
@@ -4714,7 +4722,9 @@ contains
 ! this function is used internally in the module, but is also declared to be a constructor for creating TYPE(DATE_TYPE) structures
 !
 function construct_from_dat(dat)
+
 character(len=*),parameter::ident_35="@(#)M_time::construct_from_dat(3f): construct TYPE(DATE_TIME) with DAT date-time array"
+
 integer,intent(in)          :: dat(:)                       ! (maybe partial) date time array
 integer                     :: datlocal(8)                  ! date time array similar to that returned by DATE_AND_TIME
 type(date_time)             :: construct_from_dat
@@ -4734,16 +4744,20 @@ type(date_time)             :: construct_from_dat
 end function construct_from_dat
 !===================================================================================================================================
 function construct_from_jed(jed)
+
 character(len=*),parameter::ident_36="&
 &@(#)M_time::construct_from_jed(3f): construct TYPE(DATE_TIME) with REAL Julian JED date-time value"
+
 real(kind=realtime),intent(in)   :: jed
 type(date_time)                 :: construct_from_jed
    construct_from_jed=construct_from_dat(j2d(jed))
 end function construct_from_jed
 !===================================================================================================================================
 function construct_from_uet(uet)
+
 character(len=*),parameter::ident_37="&
 &@(#)M_time::construct_from_uet(3f): construct TYPE(DATE_TIME) with INTEGER Unix UET date-time value"
+
 integer,intent(in)   :: uet
 type(date_time)                 :: construct_from_uet
    construct_from_uet=construct_from_dat(u2d(real(uet,kind=realtime)))
@@ -4755,7 +4769,9 @@ end function construct_from_uet
 ! These functions are privately used to define the methods that TYPE(DATE_TIME) will support
 !===================================================================================================================================
 function dt2d(self) result (dat)
+
 character(len=*),parameter::ident_38="@(#)M_time::dt2d(3f): convert derived type date_time to DAT date-time array"
+
 class(date_time),intent(in) :: self
 integer                     :: dat(8)                  ! date time array similar to that returned by DATE_AND_TIME
    dat=[self%year, self%month, self%day, self%tz, self%hour, self%minute, self%second, self%millisecond]
@@ -4764,14 +4780,18 @@ end function dt2d
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function epoch(self) result (epoch_seconds)
+
 character(len=*),parameter::ident_39="@(#)M_time::epoch(3f): convert derived type date_time to unix epoch seconds"
+
 class(date_time),intent(in) :: self
 real(kind=realtime)         :: epoch_seconds
    epoch_seconds=d2u(dt2d(self))
 end function epoch
 !===================================================================================================================================
 function format(self,fmt) result (string)
+
 character(len=*),parameter::ident_40="@(#)M_time::format(3f): convert derived type date_time to formatted string"
+
 class(date_time),intent(in)           :: self
 character(len=*),intent(in),optional  :: fmt
 character(len=:),allocatable          :: fmtlocal
@@ -4804,21 +4824,27 @@ character(len=*),parameter            :: mdy_fmt='%M/%D/%Y %h:%m:%s.%x%z'
 end function format
 !===================================================================================================================================
 function julian(self) result (julian_days)
+
 character(len=*),parameter::ident_41="@(#)M_time::julian(3f): convert derived type date_time to julian date"
+
 class(date_time),intent(in) :: self
 real(kind=realtime)         :: julian_days
     julian_days=d2j(dt2d(self))
 end function julian
 !===================================================================================================================================
 function ordinal(self) result (ordinal_days)
+
 character(len=*),parameter::ident_42="@(#)M_time::ordinal(3f): convert derived type date_time to ordinal date"
+
 class(date_time),intent(in) :: self
 integer                     :: ordinal_days
     ordinal_days=d2o(dt2d(self))
 end function ordinal
 !===================================================================================================================================
 function weekday(self) result (iday)
+
 character(len=*),parameter::ident_43="@(#)M_time::weekday(3f): convert derived type date_time to weekday (1=Monday,7=Sunday)"
+
 class(date_time),intent(in)   :: self
 integer                       :: iday
 integer                       :: ierr      ! Error return,0=correct,-1=invalid Julian Date,-2=neither day nor weekday specified
@@ -4833,8 +4859,9 @@ function delta(self,year,month,day,tz,hour,minute,second,millisecond,week,durati
 ! even though there is no specific size for month and year, this is conventionally what is meant by "a year from now"
 ! or "a month from now". Once the arbitrary values are used to change the original date_time value convert it to
 ! Epoch time and back to make sure you get a valid date.
-!
+
 character(len=*),parameter::ident_44="@(#)M_time::delta(3f): add times to a type(date_time)"
+
 class(date_time),intent(in)           :: self
 integer,intent(in),optional           :: year, month, day, tz, hour, minute, second, millisecond, week
 character(len=*),intent(in),optional  :: duration
@@ -4865,8 +4892,9 @@ subroutine init_dt(self,year,month,day,tz,hour,minute,second,millisecond,type,da
 ! If the 8-element dat array is present use it to initialize the date_time object
 ! If not, initialize to the current time or start of epoch depending on TYPE=["now"|"epoch"]
 ! Then, apply specific values, typically specified by keyword value
-!
+
 character(len=*),parameter::ident_45="@(#)M_time::init_dt(3f): initialize TYPE(DATE_TIME)"
+
 class(date_time)                     :: self
 type(date_time)                      :: holddt
 integer,intent(in),optional          :: year, month, day, tz, hour, minute, second, millisecond
@@ -4927,7 +4955,9 @@ end subroutine init_dt
 ! FUNCTIONS FOR DEFINING OVERLOADED OPERATORS
 !===================================================================================================================================
 function plus_seconds(self,seconds) result (dattim)
+
 character(len=*),parameter::ident_46="@(#)M_time::plus_seconds(3f): add derived type date_time object and seconds"
+
 class(date_time),intent(in)    :: self
 real(kind=realtime),intent(in) :: seconds
 type(date_time)                :: dattim
@@ -4938,7 +4968,9 @@ type(date_time)                :: dattim
 end function plus_seconds
 !===================================================================================================================================
 function minus_seconds(self,seconds) result (dattim)
+
 character(len=*),parameter::ident_47="@(#)M_time::minus_seconds(3f): subtract seconds from derived type date_time object"
+
 class(date_time),intent(in)    :: self
 real(kind=realtime),intent(in) :: seconds
 type(date_time)                :: dattim
@@ -4946,7 +4978,9 @@ type(date_time)                :: dattim
 end function minus_seconds
 !===================================================================================================================================
 function minus_date_time(self,other) result (seconds)
+
 character(len=*),parameter::ident_48="@(#)M_time::minus_date_time(3f): add derived type date_time object and seconds"
+
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
 real(kind=realtime)           :: seconds
@@ -4954,7 +4988,9 @@ real(kind=realtime)           :: seconds
 end function minus_date_time
 !===================================================================================================================================
 logical function eq(self,other)
+
 character(len=*),parameter::ident_49="@(#)M_time::eq(3f): compare derived type date_time objects (eq,lt,gt,le,ge,ne)"
+
 class(date_time),intent(in)   :: self
 type(date_time),intent(in)    :: other
    eq= int(d2u(dt2d(self))) .eq. int(d2u(dt2d(other)))

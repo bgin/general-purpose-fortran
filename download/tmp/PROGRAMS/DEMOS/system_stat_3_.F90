@@ -2,7 +2,7 @@
 
           use M_system, only : system_stat, system_getpwuid, system_getgrgid
           use M_time, only :   fmtdate, u2d
-          use iso_fortran_env, only : int32, int64
+          use, intrinsic :: iso_fortran_env, only : int32, int64
           implicit none
 
           integer(kind=int64)  :: buff(13)

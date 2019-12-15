@@ -267,17 +267,21 @@ real(kind=DP), public, parameter ::              &
 !---------------------!------------------------------------------------------------
    end=99999    ! END OF CONSTANTS
 !===================================================================================================================================
-      interface norm_angle_360                                  ! a Generic Interface in a module with PRIVATE specific procedures
-         module procedure norm_angle_360_real, norm_angle_360_double
-         module procedure norm_angle_360_integer
-      end interface
 
-      interface r2d
-         module procedure r2d_d, r2d_r, r2d_i
-      end interface
-      interface d2r
-         module procedure d2r_d, d2r_r, d2r_i
-      end interface
+   interface norm_angle_360                                  ! a Generic Interface in a module with PRIVATE specific procedures
+      module procedure norm_angle_360_real, norm_angle_360_double
+      module procedure norm_angle_360_integer
+   end interface
+
+   interface r2d
+      module procedure r2d_d, r2d_r, r2d_i
+   end interface
+
+   interface d2r
+      module procedure d2r_d
+      module procedure d2r_r
+      module procedure d2r_i
+   end interface
 
 contains
 !***********************************************************************************************************************************
@@ -1673,7 +1677,7 @@ end function norm_angle_rad
 !>
 !!##NAME
 !!    norm_angle_360(3f) - [M_units:TRIGONOMETRY] Return input angle given in degrees as angle between 0 and 360
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
@@ -1758,7 +1762,7 @@ character(len=*),parameter::ident_27="@(#)M_units:: norm_angle_360_double(3fp): 
 
 doubleprecision,intent(in) :: ang
 doubleprecision            :: norm_angle_360_double
-   norm_angle_360_double = ang - dble(floor(ang/360.d0)) * 360.d0
+   norm_angle_360_double = norm_angle_360_class(ang)
 end function norm_angle_360_double
 !===================================================================================================================================
 elemental function norm_angle_360_real(ang)
@@ -1767,7 +1771,7 @@ character(len=*),parameter::ident_28="@(#)M_units:: norm_angle_360_real(3fp): Re
 
 real,intent(in) :: ang
 real            :: norm_angle_360_real
-   norm_angle_360_real = ang - dble(floor(ang/360.d0)) * 360.d0
+   norm_angle_360_real = norm_angle_360_class(ang)
 end function norm_angle_360_real
 !===================================================================================================================================
 elemental function norm_angle_360_integer(ang)
@@ -1776,7 +1780,7 @@ character(len=*),parameter::ident_29="@(#)M_units:: norm_angle_360_integer(3fp):
 
 integer,intent(in) :: ang
 integer            :: norm_angle_360_integer
-   norm_angle_360_integer = ang - dble(floor(ang/360.d0)) * 360.d0
+   norm_angle_360_integer = norm_angle_360_class(ang)
 end function norm_angle_360_integer
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -2033,7 +2037,7 @@ end function nan128
 !>
 !!##NAME
 !!    is_even(3f) - [M_units] determine if integer is even
-!!    (LICENSE:MIT)
+!!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
 !!    elemental pure logical is_even(int)
@@ -2042,7 +2046,9 @@ end function nan128
 !!##DESCRIPTION
 !!     Determine if an integer is even or not.
 !!##OPTIONS
-!!     int   The integer to test
+!!     int      The integer to test
+!!##RETURNS
+!!     is_even  logical value is .true. if the input value INT is even
 !!##EXAMPLE
 !!
 !!   simple example
@@ -2066,7 +2072,7 @@ end function nan128
 !!     T F F F T
 !!     T F T F T F T F T F T F T F T F T F T F T
 !!##LICENSE
-!!    MIT License
+!!    Public Domain
 !===================================================================================================================================
 elemental pure function is_even(ival)
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
@@ -2076,15 +2082,10 @@ character(len=*),parameter::ident_35="@(#)M_units::is_even(3f): determine if int
 class(*),intent(in) :: ival
 logical             :: is_even
 select type(ival)
-   type is (integer(kind=int8)) ; is_even = mod(ival, 2_int8) == 0_int8
+   type is (integer(kind=int8))  ; is_even = mod(ival, 2_int8)   == 0_int8
    type is (integer(kind=int16)) ; is_even = iand(ival, 1_int16) == 0_int16
    type is (integer(kind=int32)) ; is_even = iand(ival, 1_int32) == 0_int32
-   type is (integer(kind=int64))
-     if (mod(ival, 2_int64) == 0_int64) then
-        is_even = .true.
-     else
-        is_even = .false.
-     endif
+   type is (integer(kind=int64)) ; is_even = mod(ival, 2_int64)  == 0_int64
    end select
 end function is_even
 !===================================================================================================================================
@@ -2158,6 +2159,8 @@ end function is_nan
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_units()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
 
 !! test constants
    call testit_p('pi',      real(PI)      ,  real(3.141592653589793238462643383279500d0)  ,message='')
@@ -2234,8 +2237,6 @@ end subroutine testit_p
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_nan()
 use,intrinsic :: iso_fortran_env, only: real32, real64, real128
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 real(kind=real32) :: r32
 real(kind=real64) :: r64
 real(kind=real128) :: r128
@@ -2254,8 +2255,6 @@ real(kind=real128) :: r128
 end subroutine test_nan
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_is_even()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 logical,parameter     :: t=.true.
 logical,parameter     :: f=.false.
    call unit_check_start('is_even',msg='')
@@ -2264,8 +2263,6 @@ logical,parameter     :: f=.false.
 end subroutine test_is_even
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_is_nan()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 character(len=3),save :: line='NaN'
 real                  :: x
 logical,parameter     :: t=.true.
@@ -2278,9 +2275,6 @@ call unit_check('is_nan', all(is_nan([x, 0.0,-0.0,-x,-100.0,100.0,huge(0.0)]).eq
 end subroutine test_is_nan
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_inf()
-
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('inf',msg='')
    !!call unit_check('inf', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('inf',msg='')
@@ -2288,8 +2282,6 @@ end subroutine test_inf
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_acosd()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('acosd',msg='')
    !!call unit_check('acosd', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('acosd',msg='')
@@ -2297,8 +2289,6 @@ end subroutine test_acosd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_asind()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('asind',msg='')
    !!call unit_check('asind', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('asind',msg='')
@@ -2306,8 +2296,6 @@ end subroutine test_asind
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_atan2d()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('atan2d',msg='')
    !!call unit_check('atan2d', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('atan2d',msg='')
@@ -2315,8 +2303,6 @@ end subroutine test_atan2d
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_atand()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('atand',msg='')
    !!call unit_check('atand', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('atand',msg='')
@@ -2324,8 +2310,6 @@ end subroutine test_atand
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_atomnum2symbol()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('atomnum2symbol',msg='')
    !!call unit_check('atomnum2symbol', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('atomnum2symbol',msg='')
@@ -2333,8 +2317,6 @@ end subroutine test_atomnum2symbol
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_c2f()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('c2f',msg='')
    call testit_p('c2f',     c2f(0.0)   ,  32.0,message='')
    call testit_p('c2f',     c2f(100.0) , 212.0,message='')
@@ -2344,8 +2326,6 @@ end subroutine test_c2f
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_cartesian_to_polar()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('cartesian_to_polar',msg='')
    !!call unit_check('cartesian_to_polar', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('cartesian_to_polar',msg='')
@@ -2353,8 +2333,6 @@ end subroutine test_cartesian_to_polar
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_cartesian_to_spherical()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 use M_math,  only : accdig
 implicit none
 real    :: x=10.0,y=10.0,z=10.0
@@ -2375,8 +2353,6 @@ end subroutine test_cartesian_to_spherical
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_cosd()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 real, allocatable :: values(:)
 integer           :: i
 values=[0.0, 30.0, 45.0, 60.0, 92.0, 120.0, 135.0, 150.0, 180.0, 210.0, 240.0, 273.0, 300.0, 330.0, 360.0, -45.0]
@@ -2392,8 +2368,6 @@ end subroutine test_cosd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_d2r()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('d2r',msg='')
 
    call testit_p('d2r', d2r(    0.0)    , 0.0       ,message='real for 0')
@@ -2430,8 +2404,6 @@ use M_debug, only : unit_check_level
 end subroutine test_f2c
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_feet_to_meters()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 doubleprecision, parameter :: f2m=0.3048d0
    call unit_check_start('feet_to_meters',msg=' 0.3048')
 
@@ -2447,8 +2419,6 @@ end subroutine test_feet_to_meters
 
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_meters_to_feet()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    doubleprecision, parameter :: m2f=3.2808398950131233595d0
 
    call unit_check_start('meters_to_feet',msg='3.2808398950131233595')
@@ -2465,8 +2435,6 @@ end subroutine test_meters_to_feet
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_norm_angle_360_double()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('norm_angle_360_double',msg='')
    !!call unit_check('norm_angle_360_double', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('norm_angle_360_double',msg='')
@@ -2474,8 +2442,6 @@ end subroutine test_norm_angle_360_double
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_norm_angle_360_integer()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('norm_angle_360_integer',msg='')
    !!call unit_check('norm_angle_360_integer', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('norm_angle_360_integer',msg='')
@@ -2483,8 +2449,6 @@ end subroutine test_norm_angle_360_integer
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_norm_angle_360_real()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('norm_angle_360_real',msg='')
    !!call unit_check('norm_angle_360_real', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('norm_angle_360_real',msg='')
@@ -2492,8 +2456,6 @@ end subroutine test_norm_angle_360_real
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_norm_angle_rad()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('norm_angle_rad',msg='')
    !!call unit_check('norm_angle_rad', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('norm_angle_rad',msg='')
@@ -2501,8 +2463,6 @@ end subroutine test_norm_angle_rad
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_polar_to_cartesian()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('polar_to_cartesian',msg='')
    !!call unit_check('polar_to_cartesian', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('polar_to_cartesian',msg='')
@@ -2510,8 +2470,6 @@ end subroutine test_polar_to_cartesian
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_pounds_to_kilograms()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('pounds_to_kilograms',msg='')
    call unit_check('pounds_to_kilograms',abs(pounds_to_kilograms(1.0)-0.45359237).lt.0.00001,'real')
    call unit_check('pounds_to_kilograms',any(abs(pounds_to_kilograms([ 0, 1, 100, 200 ])-&
@@ -2522,8 +2480,6 @@ end subroutine test_pounds_to_kilograms
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_r2d()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 real              :: x=real(PI)
 doubleprecision   :: d=PI
 
@@ -2548,8 +2504,6 @@ end subroutine test_r2d
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_sind()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 real, allocatable :: values(:)
 integer           :: i
    values=[0.0, 30.0, 45.0, 60.0, 90.0, 120.0, 135.0, 150.0, 181.0, 210.0, 240.0, 270.0, 300.0, 330.0, 362.0, -45.0]
@@ -2563,8 +2517,6 @@ integer           :: i
 end subroutine test_sind
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_spherical_to_cartesian()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 use M_math,  only : accdig
 implicit none
 real    :: x,y,z
@@ -2588,16 +2540,12 @@ end subroutine test_spherical_to_cartesian
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_symbol2atomnum()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('symbol2atomnum',msg='')
    !!call unit_check('symbol2atomnum', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('symbol2atomnum',msg='')
 end subroutine test_symbol2atomnum
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_tand()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 real, allocatable :: values(:)
 integer                      :: i
    values=[0.0,30.0,45.0,60.0,92.0,120.0,135.0,150.0,183.0,210.0,240.0,273.0,300.0, 330.0, 362.0, -45.0]

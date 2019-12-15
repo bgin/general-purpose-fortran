@@ -98,7 +98,7 @@ END MODULE PUTSTRMODULE
 !!##INTRODUCTION
 !!
 !! M_display is a standard Fortran 95 module for quick and easy displaying of numbers, vectors or
-!! matrices using default or specified format. It can be useful for debugging, purposes, for
+!! matrices using default or specified format. It can be useful for debugging purposes, for
 !! preliminary display of numerical results, and even for final display of such results in cases when
 !! carefully formatted tables are not needed. It is comparable to the automatic matrix printing of
 !! Matlab, S and R, but offers substantially more control over the format used.

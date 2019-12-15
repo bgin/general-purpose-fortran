@@ -4600,8 +4600,6 @@ character(len=*),parameter::ident_17="&
    real               :: fln
    integer            :: i, i20, i30
 !-----------------------------------------------------------------------
-write(*,*)'*bds* got here A',N
-write(*,*)'*bds* got here A 1',X
       FLN=N
 !-----------------------------------------------------------------------
 !  SUM AND MEAN AND LARGEST AND SMALLEST AND LOCATION OF EXTREMES
@@ -4610,7 +4608,6 @@ write(*,*)'*bds* got here A 1',X
       STAT(IS)=1                       ! location of smallest
       STAT(IB)=1                       ! location of biggest
       STAT(SUM) =0.0                   ! sum of all values
-write(*,*)'*bds* got here B'
       DO I=1,N
          STAT(SUM)= STAT(SUM) +X(I)    ! add all values into SUM
          IF(X(I).LT.STAT(SMALL))THEN   ! find smallest value
@@ -4622,15 +4619,12 @@ write(*,*)'*bds* got here B'
             STAT(IB)=I
          ENDIF
       enddo
-write(*,*)'*bds* got here C'
       STAT(MEAN)= STAT(SUM)/FLN
-write(*,*)'*bds* got here D'
 !-----------------------------------------------------------------------
 !  SECOND, THIRD, FOURTH MOMENTS ABOUT THE MEAN
       STAT(u2) = 0.0
       STAT(u3) = 0.0
       STAT(u4) = 0.0
-write(*,*)'*bds* got here E'
       DO I20=1,N
          deltafixed = (X(I20) - STAT(mean))
          deltasum = deltafixed
@@ -4639,24 +4633,17 @@ write(*,*)'*bds* got here E'
             STAT(I30) = STAT(I30) + deltasum
          enddo
       enddo
-write(*,*)'*bds* got here F'
 !-----------------------------------------------------------------------
       STAT(u2) = STAT(u2) / FLN
       STAT(u3) = STAT(u3) / FLN
       STAT(u4) = STAT(u4) / FLN
-write(*,*)'*bds* got here G'
 !-----------------------------------------------------------------------
 !  VARIANCE, STANDARD DEVIATION
-write(*,*)'*bds* got here H'
       STAT(varnce) = FLN * STAT(u2) / (FLN-1.0)
-write(*,*)'*bds* got here I'
       STAT(sd) = SQRT(STAT(varnce))
-write(*,*)'*bds* got here J'
 !-----------------------------------------------------------------------
 !  SKEWNESS, KURTOSIS
-write(*,*)'*bds* got here K'
       STAT(skew) = STAT(u3) /(STAT(u2) * SQRT(STAT(u2)))
-write(*,*)'*bds* got here L'
       STAT(kurto) = STAT(u4) / (STAT(u2) * STAT(u2)) - 3.0
 !-----------------------------------------------------------------------
 END SUBROUTINE BDS
@@ -4704,7 +4691,6 @@ INTEGER,INTENT(IN) :: IOPT
    INTEGER         :: I
    REAL            :: T2, T3, T4
    REAL            :: D
-write(*,*)'*bds* got here M'
       RN = REAL(NHI)
       IF (IOPT.EQ.0) THEN
          S = 0.0
@@ -4726,7 +4712,6 @@ write(*,*)'*bds* got here M'
       enddo
       YSKEW=SQRT(RN)*T3/T2**1.5
       YKURT=RN*T4/T2**2
-write(*,*)'*skekur1* got here AAA'
 END SUBROUTINE SKEKUR1
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -4782,7 +4767,6 @@ character(len=*),parameter::ident_19="@(#)M_math::skekurx(3f): COMPUTE UNBIASED 
       doubleprecision    :: stddev
       integer            :: i10,i20,i30
 !-----------------------------------------------------------------------
-write(*,*)'*skekurx* got here A'
       RN = N
 !-----------------------------------------------------------------------
       ! GET AVERAGE
@@ -4798,7 +4782,6 @@ write(*,*)'*skekurx* got here A'
          SUM=SUM+(Y(I30)-XBAR)**2
       enddo
       STDDEV=SQRT(SUM/(RN-1.0d0))
-write(*,*)'*skekurx* got here AA'
 !-----------------------------------------------------------------------
       SUM3=0.0
       SUM4=0.0
@@ -4810,7 +4793,6 @@ write(*,*)'*skekurx* got here AA'
       YSKEW=RN/((RN-1.0d0)*(RN-2.0d0))*SUM3
       YKURT= RN*(RN+1.0d0) / ((RN-1.0d0)*(RN-2.0d0)*(RN-3.0d0)) * SUM4 - 3.0d0*(RN-1.0d0)**2/((RN-2.0d0)*(RN-3.0d0))
 !-----------------------------------------------------------------------
-write(*,*)'*skekurx* got here AAA'
 END SUBROUTINE SKEKURX
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -5080,11 +5062,12 @@ end function stddev
 !!    Returns true or false depending on whether the two numbers given agree
 !!    to within the specified number of digits as calculated by ACCDIG(3f).
 !!##OPTIONS
-!!    x,y      expected and calculated values to be compared
+!!    x,y      expected and calculated values to be compared. May be of
+!!             type REAL, INTEGER, or DOUBLEPRECISION.
 !!    rdigits  real number representing number of digits of precision
 !!             to compare
 !!    verbose  optional value that specifies to print the results of the
-!!             comparison if TRUE.
+!!             comparison when set to .TRUE..
 !!##RETURNS
 !!    almost   TRUE if the input values compare up to the specified number
 !!             of values
@@ -5130,7 +5113,7 @@ end function stddev
 !===================================================================================================================================
 function almost(x,y,digits,verbose)
 use M_anything, only : todp=>anyscalar_to_real128
-use M_strings,  only : msg
+use M_journal,  only : journal
 
 character(len=*),parameter::ident_21="&
 &@(#)M_math::almost(3f): function to compare two real numbers only up to a specified number of digits by calling DP_ACCDIG(3f)"
@@ -5159,18 +5142,18 @@ integer                     :: ind
       type is(real)
          call accdig(x,y,digits_local,acurcy,ind)
          if(verbose_local)then
-            write(*,*)'*almost* for values ',x,y,' agreement of ',acurcy,' digits out of requested ',digits_local
+            call journal('sc','*almost*','for values',x,y,'agreement of',acurcy,'digits out of requested',digits_local)
          endif
       class default
          call dp_accdig(x,y,digits_local,acurcy,ind)
          if(verbose_local)then
-            write(*,*)'*almost* for values ',msg(x),' ',msg(y),' agreement of ',acurcy,' digits out of requested ',digits_local
+            call journal('sc','*almost*','for values',x,y,'agreement of',acurcy,'digits out of requested',digits_local)
          endif
       end select
    class default
       call dp_accdig(x,y,digits,acurcy,ind)
       if(verbose_local)then
-         write(*,*)'*almost* for values ',msg(x),' ',msg(y),' agreement of ',acurcy,' digits out of requested ',digits_local
+         call journal('sc','*almost*','for values',x,y,'agreement of',acurcy,'digits out of requested',digits_local)
       endif
    end select
 

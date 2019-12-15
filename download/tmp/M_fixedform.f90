@@ -1124,7 +1124,7 @@ end subroutine errmessage
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine my_exit()                           ! temporarily exit to standard mode or terminate program
    use M_ncurses
-   use iso_fortran_env
+   use, intrinsic :: iso_fortran_env
    implicit none
    integer          :: ierr                    ! return value for most ncurses(3c) functions
    character(len=1) :: answer                  ! read an answer in line mode to confirm exit

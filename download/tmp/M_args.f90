@@ -31,7 +31,7 @@
 !!    and negative values do not need quoted as values. Single-letter keywords
 !!    are assumed to be used on the command line as short options with a single
 !!    dash prefix, while multi-letter keywords are assumed to be long options.
-!!    variable names may be equivalenced to allow for short and long versios of
+!!    variable names may be equivalenced to allow for short and long versions of
 !!    a keyword.
 !!
 !!##EXAMPLE
@@ -104,7 +104,7 @@
 module M_args
 use M_journal, only : journal
 use M_list,          only : insert, locate, replace, remove
-use iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>OUTPUT_UNIT    ! access computing environment
+use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>OUTPUT_UNIT    ! access computing environment
 use M_strings,       only : isupper, lower, quote, upper
 private
 !===================================================================================================================================

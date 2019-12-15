@@ -1364,7 +1364,7 @@ end subroutine xterm_get_geometry
 !!    Public Domain
 !===================================================================================================================================
 subroutine xterm_get_position(right,down)
-use iso_fortran_env, only : int8, int16, int32, int64
+use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
 use M_strings, only : split, s2v
 implicit none
 

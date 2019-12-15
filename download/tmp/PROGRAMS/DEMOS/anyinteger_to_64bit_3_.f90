@@ -1,5 +1,5 @@
            program demo_anyinteger_to_64bit
-           use iso_fortran_env, only : int8, int16, int32, int64
+           use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
            implicit none
               ! call same function with many scalar input types
               write(*,*)squarei(huge(0_int8)),huge(0_int8) , &

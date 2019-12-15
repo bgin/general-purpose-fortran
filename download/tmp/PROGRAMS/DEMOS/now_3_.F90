@@ -7,6 +7,5 @@
            subroutine showme() ! see all formatting options
            use M_time, only : fmtdate_usage
               call fmtdate_usage() ! see all formatting options
-           end subroutine showme
-
+           end subroutine
            end program demo_now

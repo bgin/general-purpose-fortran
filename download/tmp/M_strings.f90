@@ -429,7 +429,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 MODULE M_strings !
-use iso_fortran_env, only : ERROR_UNIT        ! access computing environment
+use, intrinsic :: iso_fortran_env, only : ERROR_UNIT        ! access computing environment
 use M_journal,       only : journal
 use M_debug, only : unit_check, unit_check_start, unit_check_good, unit_check_bad, unit_check_done
 use M_debug, only : unit_check_level
@@ -6713,7 +6713,9 @@ character(len=80)             :: string
 end function l2s
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_v2s()
-doubleprecision SUM, SUM2, DELTA
+use M_math, only : almost
+real            :: SUM
+doubleprecision :: SUM2
    call unit_check_start('v2s',' &
       & -description ''generic function returns string given numeric REAL|DOUBLEPRECISION|INTEGER value'' &
       & -section 3  &
@@ -6724,20 +6726,14 @@ doubleprecision SUM, SUM2, DELTA
       & -ccall        n &
       & -archive      GPF.a &
       & ')
-   SUM2=5.555555555555555555555555555555555d0+5.555555555555555555555555555555555e0+INT(5.555555555555555555555555555555555)
-   DELTA=spacing(0.0d0)+spacing(0.0)
-   SUM=s2v(v2s(5.55555555555555555555555555d0))
-   SUM=SUM+REAL(s2v(v2s(5.55555555555555555555555555e0)))
-   SUM=SUM+INT(s2v(v2s(5.55555555555555555555555555e0)))
-   if(unit_check_level.gt.0)then
-      WRITE(*,*) 'v2s: SUM2=', SUM2
-      WRITE(*,*) 'v2s: SUM=', SUM
-      WRITE(*,*) 'v2s: DELTA=', DELTA
-   endif
-   call unit_check('v2s',sum+delta.ge.sum2.and.sum-delta.le.sum2)
-   call unit_check('v2s',v2s(1234).eq.'1234')
-   call unit_check('v2s',v2s(.true.).eq.'T')
-   call unit_check('v2s',v2s(.false.).eq.'F')
+
+   SUM2=5.555555555555555555555555555555555d0
+   SUM=5.555555555555555555555555555555555e0
+   call unit_check('v2s',almost(REAL(s2v(v2s(SUM))),SUM,7),msg=msg('real',SUM,REAL(s2v(v2s(SUM)))))
+   call unit_check('v2s',almost(s2v(v2s(SUM2)),SUM2,15),msg=msg('doubleprecision',SUM2,s2v(v2s(SUM))))
+   call unit_check('v2s',v2s(1234).eq.'1234',msg=msg('integer',1234))
+   call unit_check('v2s',v2s(.true.).eq.'T',msg=msg('logical',v2s(.true.)))
+   call unit_check('v2s',v2s(.false.).eq.'F',msg=msg('logical',v2s(.false.)))
    call unit_check_done('v2s')
 end subroutine test_v2s
 !===================================================================================================================================

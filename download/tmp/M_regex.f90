@@ -367,7 +367,7 @@
 module M_regex
 use ISO_C_Binding, only: C_ptr, C_int, C_size_t, C_char, C_NULL_char, C_NULL_ptr
 use iso_c_binding, only: c_associated , c_f_pointer
-use ISO_Fortran_Env, only: ERROR_UNIT
+use, intrinsic :: ISO_Fortran_Env, only: ERROR_UNIT
 use M_strings, only : s2c
 implicit none
 private
@@ -1237,7 +1237,7 @@ call unit_check_done('M_regex')
 end subroutine test_regex
 !===================================================================================================================================
 subroutine mymatch(expression,string,expected)
-use,intrinsic :: iso_fortran_env, only : ERROR_UNIT
+use, intrinsic :: iso_fortran_env, only : ERROR_UNIT
 use M_debug, only: unit_check, unit_check_good, unit_check_bad, unit_check_done, unit_check_start, unit_check_level, msg
 character(len=*),intent(in) :: expression
 character(len=*),intent(in) :: string

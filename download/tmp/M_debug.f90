@@ -191,7 +191,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 module m_debug
-use iso_fortran_env, only : ERROR_UNIT,OUTPUT_UNIT    ! access computing environment
+use, intrinsic :: iso_fortran_env, only : ERROR_UNIT,OUTPUT_UNIT    ! access computing environment
 implicit none
 private
 
@@ -385,7 +385,7 @@ integer                       :: increment
    endif
 
    istart=1
-   line=' '
+   line=''
    if(present(generic1))call print_generic(generic1)
    if(present(generic2))call print_generic(generic2)
    if(present(generic3))call print_generic(generic3)

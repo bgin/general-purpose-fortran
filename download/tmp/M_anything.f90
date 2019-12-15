@@ -3,9 +3,8 @@
 ! can use polymorphism to allow arguments of different types generically
 !===================================================================================================================================
 module M_anything
-!!use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, dp=>real128
-use ISO_FORTRAN_ENV, only : INT8, INT16, INT32, INT64       !  1           2           4           8
-use ISO_FORTRAN_ENV, only : REAL32, REAL64, REAL128         !  4           8          10
+use, intrinsic :: ISO_FORTRAN_ENV, only : INT8, INT16, INT32, INT64       !  1           2           4           8
+use, intrinsic :: ISO_FORTRAN_ENV, only : REAL32, REAL64, REAL128         !  4           8          10
 implicit none
 private
 
@@ -205,8 +204,8 @@ end subroutine bytes_to_anything
 !!
 !!    program demo_anything_to_bytes
 !!    use M_anything,      only : anything_to_bytes
-!!    !!use iso_fortran_env, only : int8, int16, int32, int64
-!!    !!use iso_fortran_env, only : real32, real64, real128
+!!    !!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+!!    !!use, intrinsic :: iso_fortran_env, only : real32, real64, real128
 !!    implicit none
 !!    integer :: i
 !!       write(*,'(/,4(1x,z2.2))')anything_to_bytes([(i*i,i=1,10)])
@@ -331,8 +330,8 @@ end function  anything_to_bytes_scalar
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_real128
-!!     use iso_fortran_env, only : int8, int16, int32, int64
-!!     use iso_fortran_env, only : real32, real64, real128
+!!     use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+!!     use, intrinsic :: iso_fortran_env, only : real32, real64, real128
 !!     implicit none
 !!        ! call same function with many scalar input types
 !!        write(*,*)squarei(2_int8)
@@ -360,7 +359,7 @@ end function  anything_to_bytes_scalar
 !!    Public Domain
 !===================================================================================================================================
 pure elemental function anyscalar_to_real128(valuein) result(d_out)
-use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
+use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 
 character(len=*),parameter::ident_3="&
@@ -421,8 +420,8 @@ end function anyscalar_to_real128
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_double
-!!     use iso_fortran_env, only : int8, int16, int32, int64
-!!     use iso_fortran_env, only : real32, real64, real128
+!!     use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+!!     use, intrinsic :: iso_fortran_env, only : real32, real64, real128
 !!     implicit none
 !!        ! call same function with many scalar input types
 !!        write(*,*)squarei(2_int8)
@@ -450,7 +449,7 @@ end function anyscalar_to_real128
 !!    Public Domain
 !===================================================================================================================================
 pure elemental function anyscalar_to_double(valuein) result(d_out)
-use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
+use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 
 character(len=*),parameter::ident_4="&
@@ -517,8 +516,8 @@ end function anyscalar_to_double
 !!   Sample program
 !!
 !!     program demo_anyscalar_to_real
-!!     use iso_fortran_env, only : int8, int16, int32, int64
-!!     use iso_fortran_env, only : real32, real64, real128
+!!     use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+!!     use, intrinsic :: iso_fortran_env, only : real32, real64, real128
 !!     implicit none
 !!        ! call same function with many scalar input types
 !!        write(*,*)squarei(2_int8)
@@ -546,7 +545,7 @@ end function anyscalar_to_double
 !!    Public Domain
 !===================================================================================================================================
 pure elemental function anyscalar_to_real(valuein) result(r_out)
-use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
+use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 
 character(len=*),parameter::ident_5="@(#)M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real"
@@ -609,7 +608,7 @@ end function anyscalar_to_real
 !!    Sample program
 !!
 !!     program demo_anyinteger_to_64bit
-!!     use iso_fortran_env, only : int8, int16, int32, int64
+!!     use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
 !!     implicit none
 !!        ! call same function with many scalar input types
 !!        write(*,*)squarei(huge(0_int8)),huge(0_int8) , &
@@ -647,7 +646,7 @@ end function anyscalar_to_real
 !!    Public Domain
 !===================================================================================================================================
 pure elemental function anyinteger_to_64bit(intin) result(ii38)
-use iso_fortran_env, only : error_unit !! ,input_unit,output_unit
+use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
 
 character(len=*),parameter::ident_6="@(#)M_anything::anyinteger_to_64(3f): convert integer parameter of any kind to 64-bit integer"

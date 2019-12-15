@@ -2512,7 +2512,7 @@ end function system_getumask
 !!    That's all Folks!
 !===================================================================================================================================
 subroutine system_perror(prefix)
-use iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT     ! access computing environment
+use, intrinsic :: iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT     ! access computing environment
 
 character(len=*),parameter::ident_14="@(#)M_system::system_perror(3f): call perror(3c) to display error message"
 
@@ -4856,7 +4856,7 @@ end function C2F_string
 !!
 !!    use M_system, only : system_stat, system_getpwuid, system_getgrgid
 !!    use M_time, only :   fmtdate, u2d
-!!    use iso_fortran_env, only : int32, int64
+!!    use, intrinsic :: iso_fortran_env, only : int32, int64
 !!    implicit none
 !!
 !!    integer(kind=int64)  :: buff(13)
@@ -4994,7 +4994,7 @@ end subroutine system_stat
 subroutine system_stat_print(filename,lun)
 !!use M_system, only      : system_getpwuid, system_getgrgid, system_perm, system_stat
 use M_time, only          : fmtdate, u2d
-use iso_fortran_env, only : OUTPUT_UNIT
+use, intrinsic :: iso_fortran_env, only : OUTPUT_UNIT
 implicit none
 character(len=*),intent(in)  :: filename
 integer,intent(in),optional  :: lun

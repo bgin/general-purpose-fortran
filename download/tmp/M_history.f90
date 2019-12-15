@@ -469,10 +469,10 @@ data numbers/'123456789012345678901234567890123456789012345678901234567890&
        case('D')                                                         ! toggle debug mode
          if(ddd .eqv. .false.)then
             ddd=.true.
-            call journal(.true.,'debug')
+            call journal('>')
          else
             ddd=.false.
-            call journal(.false.,'debug')
+            call journal('<')
          endif
 !-----------------------------------------------------------------------------------------------------------------------------------
        case('l','p')                                                     ! display history buffer file with line numbers

@@ -933,7 +933,7 @@ character(len=4096) :: local_filename
 contains
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine stderr_local(message)
-use iso_fortran_env, only : error_unit
+use, intrinsic :: iso_fortran_env, only : error_unit
 character(len=*) :: message
    write(error_unit,'(a)')trim(message)    ! write message to standard error
 end subroutine stderr_local
@@ -1072,7 +1072,7 @@ end subroutine slurp
 !!    Public Domain
 !===================================================================================================================================
 integer function notopen(start,end,err)
-use iso_fortran_env, only : error_unit,input_unit,output_unit     ! access computing environment
+use, intrinsic :: iso_fortran_env, only : error_unit,input_unit,output_unit     ! access computing environment
 implicit none
 
 character(len=*),parameter::ident_7="@(#)M_io::notopen(3f): find free FORTRAN unit number to OPEN() a file"
@@ -1515,7 +1515,7 @@ end subroutine splitpath
 !!    Public Domain
 !===================================================================================================================================
 function read_all(line,lun) result(ier)
-use iso_fortran_env, only : INPUT_UNIT
+use, intrinsic :: iso_fortran_env, only : INPUT_UNIT
 implicit none
 
 character(len=*),parameter::ident_10="&
@@ -1606,7 +1606,7 @@ end function read_all
 !!    Public Domain
 !===================================================================================================================================
 function read_line(line,lun) result(ier)
-use iso_fortran_env, only : INPUT_UNIT
+use, intrinsic :: iso_fortran_env, only : INPUT_UNIT
 use M_strings,only : notabs
 implicit none
 
@@ -1905,7 +1905,7 @@ end function scratch
 function rd_character(prompt,default) result(strout)
 ! 1995 John S. Urban
 !
-use,intrinsic :: iso_fortran_env, only : stdin=>input_unit !!, stdout=>output_unit, stderr=>error_unit
+use, intrinsic :: iso_fortran_env, only : stdin=>input_unit !!, stdout=>output_unit, stderr=>error_unit
 use M_journal,                    only : journal
 implicit none
 

@@ -153,7 +153,7 @@
 !===================================================================================================================================
 module M_list
 use M_debug, only : debug
-use iso_fortran_env, only : stderr=>ERROR_UNIT,stdout=>OUTPUT_UNIT    ! access computing environment
+use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdout=>OUTPUT_UNIT    ! access computing environment
 implicit none
 private
 

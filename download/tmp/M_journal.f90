@@ -2,7 +2,7 @@
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 module M_journal
-use iso_fortran_env, only : ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT     ! access computing environment
+use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, INPUT_UNIT, OUTPUT_UNIT     ! access computing environment
 implicit none
 private
 
@@ -13,29 +13,24 @@ private
 !!##SYNOPSIS
 !!
 !!
-!!    subroutine journal([where,]message,[VALUE(s)])
+!!    subroutine journal([where,],[VALUE(s)])
 !!
 !!     character(len=*),intent(in) :: where
-!!     character(len=*),intent(in) :: msg
-!!     character(len=*)|real|integer|doubleprecision|complex :: g1,g2,g3,g4,g5,g6,g7,g8,g9
+!!     character(len=*)|real|integer|doubleprecision|complex,optional :: g1,g2,g3,g4,g5,g6,g7,g8,g9
 !!
 !!   WRITE MESSAGES
+!!    basic messages
 !!
-!!       call journal(where,message,[VALUE])
-!!
-!!    or a shortcut for "call journal('sc',message)"
-!!
-!!       call journal(message)
-!!
+!!       call journal(where,[VALUE(S)])
+!!       call journal(message) # a shortcut for "call journal('sc',message)":
 !!   OPEN OR CLOSE TRAIL FILE
+!!    trail file
 !!
-!!    open a trail file, or close trail if filename is blank
-!!
-!!       call journal('O',[trailfile_name|''])
-!!
+!!       call journal('O',trailfile_name) # open trail file
+!!       call journal('O','')             # close trail file
 !!   SET OUTPUT TIME PREFIX
-!!
-!!    set the NOW(3f) function display format for timestamps
+!!    set the function display format for timestamps. See the NOW(3f)
+!!    procedure for allowable timestamp macros
 !!
 !!       call journal('%',time_stamp_prefix_specification)
 !!
@@ -43,7 +38,8 @@ private
 !!
 !!    Turn on/off writing DEBUG messages to trail file
 !!
-!!       call journal([.true.|.false.],'debug')
+!!       call journal('>','debug on') # turn on debug mode
+!!       call journal('<','debug off') # turn off debug mode
 !!
 !!   ASSIGN STDOUT TO AN ALTERNATE FILE
 !!    change stdout to iunit and open filename; or close unit and go back to stdout if filename=''
@@ -58,7 +54,7 @@ private
 !!
 !!    If a user procedure is used for outputting messages instead of calling
 !!    WRITE(3f) it is easy to provide control of when messages are printed
-!!    (ie. a "verbose" mode, or "quite" mode), creating files to replace
+!!    (ie. a "verbose" mode, or "quite" mode), creating files to replay
 !!    program execution, duplicating output, ...
 !!
 !!##OPTIONS
@@ -81,8 +77,9 @@ private
 !!
 !!      Usually used by itself
 !!
-!!      D   write to trail file as a comment with DEBUG: prefix in front
-!!          of message (if file is open) if debug mode is on
+!!      D   write to trail file as a comment with "DEBUG:" prefix in front
+!!          of message (if file is open) if debug mode is on. Write to stdout
+!!          if no trail file and debug mode is on.
 !!
 !!      Modifier for S|E|C|T|D specifiers
 !!
@@ -102,16 +99,16 @@ private
 !!          can call the auxiliary programs and still just generate one log file,
 !!          but if the auxiliary program is used as a stand-alone program no trail
 !!          is generated.
-!!      %   set prefix to run thru now(3f) to generate time prefix strings
 !!
-!!   MESSAGE   message to write to stdout, stderr, and the trail file.
-!!   FILENAME  when WHERE="O" to turn the trail file on or off, the "message"
-!!             field becomes the trail filename to open. If blank, writing
-!!             to the trail file is turned off.
-!!   TFORMAT   when WHERE="%" the message is treated as a time format
-!!             specification as described under now(3f).
-!!   VALUE     a numeric or character value to optionally be appended to the message.
-!!             Up to nine values are allowed. The WHERE field is required if values are added.
+!!   VALUES(S)   message to write to stdout, stderr, and the trail file.
+!!               a numeric or character value to optionally be appended
+!!               to the message.  Up to nine values are allowed. The WHERE
+!!               field is required if values are added.
+!!   FILENAME    when WHERE="O" to turn the trail file on or off, the "message"
+!!               field becomes the trail filename to open. If blank, writing
+!!               to the trail file is turned off.
+!!   TFORMAT     when WHERE="%" the message is treated as a time format
+!!               specification as described under now(3f).
 !!
 !!##EXAMPLE
 !!
@@ -119,24 +116,46 @@ private
 !!
 !!    program demo_journal
 !!    use M_journal, only : journal
-!!
 !!    !! BASIC USAGE
-!!    call journal('write to standard output as-is, and trail file as a comment')
-!!
+!!    call journal('write to standard output as-is, and trail file as a comment if open')
 !!    ! since we have not opened a trail file yet, only stdout will display output
-!!    call journal('sc','write to standard output as-is, and trail file as a comment')
 !!    call journal('c','ignored, as trail file is not open')
-!!
 !!    ! now open trail file "trail"
 !!    call journal('o','trail')
-!!    call journal('sc','same thing, with ')
+!!    call journal('sc','same thing except now trail file is open')
 !!    ! only write to trail file if open
 !!    call journal('c','not ignored, as trail file is open. Written with # suffix')
 !!    call journal('t','not ignored, as trail file is open. Written as-is')
 !!    ! turn off trail file
-!!    call journal('o')
-!!
+!!    call journal('o','')
 !!    end program demo_journal
+!!
+!!   Adding intrinsic scalar values to the message:
+!!
+!!    program test_journal
+!!    use M_journal, only: journal
+!!    implicit none
+!!       call unit_check_start('journal')
+!!       call journal('S','This is a test with no optional value')
+!!       call journal('S','This is a test with a logical value',.true.)
+!!       call journal('S','This is a test with a double value',1234567890.123456789d0)
+!!       call journal('S','This is a test with a real value',1234567890.123456789)
+!!       call journal('S','This is a test with an integer value',1234567890)
+!!       call journal('STDC','This is a test using STDC',1234567890)
+!!       call journal('stdc','This is a test using stdc',1234567890)
+!!       call journal('o','journal.txt')                        ! open trail file
+!!       call journal('S',1,12.34,56789.111111111d0,.false.,'a bunch of values')
+!!       ! the combinations that make sense
+!!       call journal('st','stdout and trail')
+!!       call journal('s' ,'stdout only')
+!!       call journal('t' ,'trail only')
+!!       call journal('sc','stdout and trail_comment')
+!!       call journal('c' ,'trail_comment only ')
+!!       call journal('d' ,'debug only')
+!!       call journal('e' ,'stderr only')
+!!       call journal('o' ,' ') ! closing trail file
+!!    end program test_journal
+!!
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -147,9 +166,8 @@ public journal
 interface journal
    module procedure flush_trail               ! journal()                ! no options
    module procedure write_message_only        ! journal(c)               ! must have one string
-   module procedure where_write_message_all   ! journal(where,c,[g1-g9]) ! must have two strings
+   module procedure where_write_message_all   ! journal(where,[g1-g9])   ! must have two strings
    module procedure set_stdout_lun            ! journal(i)               ! first is not a string
-   module procedure change_model              ! journal(i,c)             ! first is not a string then string
 end interface journal
 
 public test_suite_M_journal
@@ -159,7 +177,7 @@ character(len=*),parameter::ident_1="&
 
 ! global variables
 
-!integer,save,private       :: stdin=INPUT_UNIT
+!integer,parameter,private  :: stdin=INPUT_UNIT
 integer,save,private       :: stdout=OUTPUT_UNIT
 logical,save               :: debug=.false.
 integer,save               :: last_int=0
@@ -231,10 +249,20 @@ end interface
          !!   write(stdout,'(a)',advance=adv)prefix//trim(msg)
          !!   times=times+1
          endif
+      !-----------------------------------------------------------------------------------------------------------------------------
       case('S','s')
          write(stdout,'(a)',advance=adv)prefix//trim(msg)
          times=times+1
+      !-----------------------------------------------------------------------------------------------------------------------------
+      case('E','e')
+         write(stderr,'(a)',advance=adv)prefix//trim(msg)
+         times=times+1
+      !-----------------------------------------------------------------------------------------------------------------------------
       case('+'); adv='no'
+      !-----------------------------------------------------------------------------------------------------------------------------
+      case('>'); debug=.true.
+      !-----------------------------------------------------------------------------------------------------------------------------
+      case('<'); debug=.false.
       !-----------------------------------------------------------------------------------------------------------------------------
       case('%')                       ! setting timestamp prefix
          if(msg.eq.'')then            ! if message is blank turn off prefix
@@ -247,7 +275,7 @@ end interface
       case('N')                                                   ! new name for stdout
          if(msg.ne.' '.and.msg.ne.'#N#'.and.msg.ne.'"#N#"')then   ! if filename not special or blank open new file
             close(unit=last_int,iostat=ios)
-            open(unit=last_int,file=trim(msg),iostat=ios)
+            open(unit=last_int,file=adjustl(trim(msg)),iostat=ios)
             if(ios.eq.0)then
                stdout=last_int
             else
@@ -269,7 +297,7 @@ end interface
       case('D','d')
          if(debug)then
             if(trailopen)then
-               write(itrail,'(3a)',advance=adv)prefix,comment,'DEBUG: ',trim(msg)
+               write(itrail,'(4a)',advance=adv)prefix,comment,'DEBUG: ',trim(msg)
             elseif(times.eq.0)then
                write(stdout,'(3a)',advance=adv)prefix,'DEBUG:',trim(msg)
                times=times+1
@@ -282,12 +310,13 @@ end interface
          endif
       case('A','a')
          if(msg.ne.'')then
-            open(newunit=itrail,status='unknown',access='sequential', file=trim(msg),form='formatted',iostat=ios,position='append')
+            open(newunit=itrail,status='unknown',access='sequential',file=adjustl(trim(msg)),&
+            & form='formatted',iostat=ios,position='append')
             trailopen=.true.
          endif
       case('O','o')
          if(msg.ne.'')then
-            open(newunit=itrail,status='unknown',access='sequential', file=trim(msg),form='formatted',iostat=ios)
+            open(newunit=itrail,status='unknown',access='sequential', file=adjustl(trim(msg)),form='formatted',iostat=ios)
             trailopen=.true.
          else
             if(trailopen)then
@@ -324,34 +353,16 @@ end subroutine set_stdout_lun
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine change_model(value,mode)
-
-character(len=*),parameter::ident_5="@(#)M_journal::change_model(3fp): change integer journal(3f) modes"
-
-logical,intent(in)          :: value
-character(len=*),intent(in) :: mode
-
-select case(mode)
-case('debug','DEBUG')
-   debug=value
-case default
-   call where_write_message('sc','*journal* unknown logical mode '//trim(mode))
-end select
-
-end subroutine change_model
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 !>
 !!##NAME
 !!    where_write_message_all(3f) - [M_journal] converts any standard scalar type to a string
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!   subroutine  where_write_message_all(where,message,g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
+!!   subroutine  where_write_message_all(where,g0,g1,g2g3,g4,g5,g6,g7,g8,g9,nospace)
 !!
 !!     character(len=*),intent(in)   :: where
-!!     character(len=*),intent(in)   :: message
+!!     class(*),intent(in)           :: g0
 !!     class(*),intent(in),optional  :: g1,g2,g3,g4,g5,g6,g7,g8,g9
 !!     logical,intent(in),optional   :: nospace
 !!
@@ -361,7 +372,7 @@ end subroutine change_model
 !!##OPTIONS
 !!
 !!    where    string designating where to write message
-!!    message  initial message string
+!!    g0       option required if WHERE string is present
 !!    g[1-9]   optional values to print the value of after the message. May
 !!             be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX,
 !!             or CHARACTER.
@@ -382,18 +393,19 @@ end subroutine change_model
 !!##LICENSE
 !!    Public Domain
 !===================================================================================================================================
-subroutine where_write_message_all(where,message, &
+subroutine where_write_message_all(where,         &
+                & generic0,                       &
                 & generic1, generic2, generic3,   &
                 & generic4, generic5, generic6,   &
                 & generic7, generic8, generic9,   &
                 & nospace)
 implicit none
 
-character(len=*),parameter::ident_6="&
+character(len=*),parameter::ident_5="&
 &@(#)M_journal::where_write_message_all(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: where
-character(len=*),intent(in)   :: message
+class(*),intent(in)           :: generic0
 class(*),intent(in),optional  :: generic1, generic2, generic3
 class(*),intent(in),optional  :: generic4, generic5, generic6
 class(*),intent(in),optional  :: generic7, generic8 ,generic9
@@ -412,8 +424,8 @@ integer                       :: increment
    endif
 
    istart=1
-   line=trim(message)
-   istart=len_trim(message)+increment
+   line=' '
+   call print_generic(generic0)
    if(present(generic1))call print_generic(generic1)
    if(present(generic2))call print_generic(generic2)
    if(present(generic3))call print_generic(generic3)
@@ -447,7 +459,8 @@ character(len=256)           :: msg
       type is (character(len=*));       write(line(istart:),'(a)',iostat=ios,iomsg=msg) trim(generic)
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")',iostat=ios,iomsg=msg) generic
    end select
-   istart=len_trim(line)+increment
+   istart=len_trim(line)
+   if(istart.ne.0)istart=istart+increment
    if(ios.ne.0)then
       call journal('e' ,'*where_write_message_all*',msg)
    endif
@@ -459,7 +472,7 @@ end subroutine where_write_message_all
 !===================================================================================================================================
 subroutine write_message_only(message)
 
-character(len=*),parameter::ident_7="@(#)M_journal::write_message_only(3fp): calls JOURNAL('sc',message)"
+character(len=*),parameter::ident_6="@(#)M_journal::write_message_only(3fp): calls JOURNAL('sc',message)"
 
 character(len=*),intent(in)          :: message
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -470,9 +483,10 @@ end subroutine write_message_only
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_journal()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
 implicit none
 !! setup
-   call test_change_model()
    call test_flush_trail()
    call test_set_stdout_lun()
    call test_where_write_message_all()
@@ -480,18 +494,7 @@ implicit none
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_change_model()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-implicit none
-   call unit_check_start('change_model',msg='')
-   !!call unit_check('change_model', 0.eq.0. msg=msg('checking',100))
-   call unit_check_done('change_model',msg='')
-end subroutine test_change_model
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_flush_trail()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 implicit none
    call unit_check_start('flush_trail',msg='')
    call journal()
@@ -500,8 +503,6 @@ implicit none
 end subroutine test_flush_trail
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_set_stdout_lun()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 implicit none
    call unit_check_start('set_stdout_lun',msg='')
    !!call unit_check('set_stdout_lun', 0.eq.0. msg=msg('checking',100))
@@ -509,8 +510,6 @@ implicit none
 end subroutine test_set_stdout_lun
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_where_write_message_all()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 implicit none
    call unit_check_start('where_write_message_all',msg='')
    !!call unit_check('where_write_message_all', 0.eq.0. msg=msg('checking',100))
@@ -518,8 +517,6 @@ implicit none
 end subroutine test_where_write_message_all
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_write_message_only()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 implicit none
    call unit_check_start('write_message_only',msg='')
    !!call unit_check('write_message_only', 0.eq.0. msg=msg('checking',100))
@@ -527,9 +524,6 @@ implicit none
 end subroutine test_write_message_only
 !===================================================================================================================================
 end subroutine test_suite_M_journal
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
