@@ -1,5 +1,15 @@
 # General-Purpose Fortran Repository
 
+This is the main repository where many additional procedures
+are available, as well as man(1) pages, utility programs, extended
+examples and unit tests.  As generally useful modules mature stand-alone
+versions are created from this base. That is because the full GPF has
+many interdependencies and falls under various restrictions and is far
+more likely to have compiler-dependent code. There may be many more
+features available here but it is less stable. The individual modules
+are more appropriate when a specific module is required in a production
+environment.
+
 ### Cloning the repository
 
     git clone https://github.com/urbanjost/general-purpose-fortran
