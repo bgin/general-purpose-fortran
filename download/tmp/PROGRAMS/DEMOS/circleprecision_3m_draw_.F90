@@ -3,8 +3,6 @@
           use M_draw,    only  : D_BLACK,   D_WHITE
           use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
           use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-          use M_drawPLUS, only : page
-          use M_strings,  only : v2s
           real    :: b=0.5
           real    :: y1,y2,ym,x1,x2
           real    :: width=50.0/8.0,width2
@@ -13,7 +11,7 @@
           integer :: ipaws
              !! set up long bar as plotting area
              call prefsize(1000,200)
-             call vinit(' ') ! start graphics using device $M_draw_DEVICE
+             call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
              call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
              call textsize( 2.5/2.0, 3.0/2.0)
              call font('futura.l')
@@ -30,7 +28,7 @@
                 x2=x1+width2
                 call move2((x1+x2)/2.0,ym)
                 call circleprecision(ivals(i))
-                call drawstr((v2s(ivals(i))))     ! convert number to string and draw it
+                call print(ivals(i))     ! convert number to string and draw it
                 call circle((x1+x2)/2.0, ym, (x2-x1)/2.10)
                 x1=x1+width
              enddo

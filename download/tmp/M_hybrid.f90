@@ -95,7 +95,7 @@ subroutine strgar3(line,iread,default,numbrs,inums,delims,delimc,ierr)
 
    use M_journal,    only : journal
    use M_calculator, only : iclen_calc
-   use M_calculator, only : jucalcx
+   use M_calculator, only : expression
    implicit none
    character(len=*),parameter :: ident="@(#)strgar3(3f):read a string into an array USING CALCULATOR passing double-quoted strings"
 !===================================================================================================================================
@@ -113,11 +113,11 @@ subroutine strgar3(line,iread,default,numbrs,inums,delims,delimc,ierr)
    integer                      :: i10,i20           ! loop counters
    integer                      :: iend
    integer                      :: iend1
-   integer                      :: ier               ! error flag returned by jucalcx(3f) to be examined
+   integer                      :: ier               ! error flag returned by expression(3f) to be examined
    integer                      :: ierrcurves(3)
    integer                      :: ii
    integer                      :: ilen
-   integer                      :: ilendm            ! dummy parameter for use on jucalcx(3f) calls
+   integer                      :: ilendm            ! dummy parameter for use on expression(3f) calls
    integer,parameter            :: inoerrcurves=0
    integer                      :: instring
    integer                      :: iprev
@@ -132,7 +132,7 @@ subroutine strgar3(line,iread,default,numbrs,inums,delims,delimc,ierr)
    save /errq/
 !===================================================================================================================================
    ierr=0                                                            ! return error flag (value defines where error occurs)
-   ier=0                                                             ! error flag returned by jucalcx(3f) calls
+   ier=0                                                             ! error flag returned by expression(3f) calls
    inums=0                                                           ! initialize number of values read
 !===================================================================================================================================
    if(delims.eq.'"'.or.delimc.eq.'"')then                            ! MAKING THE ASSUMPTION THAT " IS NOT A DELIMITER
@@ -254,19 +254,19 @@ contains
                dval2=default                                                      ! second value is default
                ierrcurves(:)=inoerrcurves                                         ! clear values that might be set by e() function
                if(ii.eq.0)then                                                    ! if no colon
-                  call jucalcx(line(istart:iend),dval,outlin,ier,ilendm)          ! curve number or e(top,curve,bottom)
+                  call expression(line(istart:iend),dval,outlin,ier,ilendm)       ! curve number or e(top,curve,bottom)
                else                                                               ! there is a colon
                   iend1=istart+ii-2                                               ! find end of first string
                   if(iend1-istart+1.le.0)then                                     ! if no first number
                      dval=0.0d0                                                   ! ERROR
                      call journal('sc','*strgar3* missing curve number')
                   else                                                            ! get first value from string up to colon
-                     call jucalcx(line(istart:iend1),dval,outlin,ier,ilendm)      ! get curve number or e(top,curve,bottom)
+                     call expression(line(istart:iend1),dval,outlin,ier,ilendm)   ! get curve number or e(top,curve,bottom)
                   endif
                                                                                   ! get second number after colon (file number)
                   istart2=istart+ii
                   if(iend.ge.istart2)then
-                     call jucalcx(line(istart2:iend),dval2,outlin,ier,ilendm)     ! get file number
+                     call expression(line(istart2:iend),dval2,outlin,ier,ilendm)  ! get file number
                   else                                                            ! nothing after the colon
                      dval2=default                                                ! file number is set to default
                   endif
@@ -326,7 +326,7 @@ end function errc
 !!
 !!##DEPENDENCIES
 !!       o sget
-!!       o jucalcx
+!!       o expression
 !!
 !!##EXAMPLES
 !!
@@ -351,7 +351,7 @@ function fetch(dicname)
 ! 1994 John S. Urban
 use M_kracken,         only : sget
 use M_calculator,      only : iclen_calc
-use M_calculator,      only : jucalcx
+use M_calculator,      only : expression
 use M_journal,         only : journal
 implicit none
 
@@ -373,7 +373,7 @@ integer                      :: ilen
       fetch=fetch//' '                                         ! make sure at least one character long for substring tests
       if(fetch(1:1).eq.'$'.or.fetch(1:1).eq.'"')then           ! get string value from calculator
          ierr=0
-         call jucalcx(fetch,dvalue2,outlin0,ierr,ilen)         ! convert a calculator expression into a numeric value
+         call expression(fetch,dvalue2,outlin0,ierr,ilen)      ! convert a calculator expression into a numeric value
          if(ierr.eq.2) then                                    ! if a string was successfully returned set fetch to it
             fetch=outlin0
          else

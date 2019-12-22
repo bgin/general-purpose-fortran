@@ -1,7 +1,6 @@
 program clockit
 use M_kracken,  only : kracken, iget, sget, lget
 use M_draw
-use M_drawplus, only : page
 use M_time,     only : system_sleep, d2o, fmtdate
 use M_color,    only : hue
 implicit none

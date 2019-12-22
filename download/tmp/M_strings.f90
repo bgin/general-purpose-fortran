@@ -196,14 +196,17 @@
 !!
 !!  program demo_M_strings
 !!  !
-!!  ! This is an example using the object-oriented class/type model defined in M_strings_oop
-!!  ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators
+!!  ! This is an example using the object-oriented class/type model
+!!  ! defined in M_strings_oop
+!!  ! This is essentially the same functionality as the procedures
+!!  ! combined with several Fortran intrinsics and overloaded operators
 !!  !
 !!  use M_strings_oop,only : string, p
 !!  implicit none
 !!  TYPE(string) :: str1
 !!  TYPE(string) :: str2
 !!  TYPE(string) :: str3
+!!  TYPE(string) :: str4
 !!  !==============================================================================
 !!    write(*,*)'exercise the M_STRING_OOP module interface'
 !!    ! draw a break line in the output
@@ -211,6 +214,7 @@
 !!    write(*,*)'Call methods of type(STRING)'
 !!    ! define TYPE(STRING) with constructor
 !!    str2=string('   This  is  a  String!       ')
+!!    str4=string(' a  String ')
 !!    write(*,*)repeat('=',78)
 !!    ! print members of type
 !!    write(*,101)'str2%str is ................ ',str2%str
@@ -254,7 +258,7 @@
 !!    write(*,101)'transliterate("aeiou","") .. ',p(str2%transliterate("aeiou",""))
 !!    write(*,101)'transliterate(" aeiou","") . ',p(str2%transliterate(" aeiou",""))
 !!    ! calls M_strings procedure SWITCH()
-!!    write(*,404)'chars .................... . ',str2%chars()
+!!    write(*,404)'chars .................... . ',str4%chars()
 !!
 !!    write(*,*)repeat('=',78)
 !!    str2%str='\t\tSome tabs\t   x\bX '
@@ -375,7 +379,7 @@
 !!   transliterate("aeiou"," ") . [   Th s   s     Str ng!             ]
 !!   transliterate("aeiou","") .. [   Ths  s    Strng!                 ]
 !!   transliterate(" aeiou","") . [ThssStrng!                          ]
-!!   chars .................... . [ ][ ][ ][T][h][i][s][ ][ ][i][s][ ][ ][a][ ][ ][S][t][r][i][n][g][!][ ][ ][ ][ ][ ][ ][ ]
+!!   chars .................... . [ ][a][ ][s][t][r][i][n][g][ ]
 !!   =============================================================================
 !!   str2%str ................... [\t\tSome tabs\t   x\bX ]
 !!   expand ..................... [         Some tabs          x   X]
@@ -1482,11 +1486,11 @@ end subroutine test_split
 !!
 !!    end program demo_chomp
 !!
-!!    sample input file
+!!   sample input file
 !!
 !!     this is a test of chomp; A:B :;,C;;
 !!
-!!    sample output file
+!!   sample output file
 !!
 !!     INLINE     this is a test of chomp; A:B :;,C;;
 !!               1 TOKEN=[this]
@@ -2516,22 +2520,18 @@ end subroutine test_substitute
 !!     character(len=132) :: line='This is a test string to change'
 !!     integer            :: ierr
 !!        write(*,*)trim(line)
-!!
 !!        ! change miniscule a to uppercase A
 !!        call change(line,'c/a/A/',ierr)
 !!        write(*,*)trim(line)
-!!
 !!        ! put string at beginning of line
 !!        call change(line,'c//prefix: /',ierr)
 !!        write(*,*)trim(line)
-!!
 !!        ! remove blanks
 !!        call change(line,'c/ //',ierr)
 !!        write(*,*)trim(line)
-!!
 !!    end program demo_change
 !!
-!!    Expected output
+!!   Expected output
 !!
 !!     This is a test string to change
 !!     This is A test string to chAnge
@@ -2646,6 +2646,9 @@ integer             :: ier
 
    call unit_check_done('change') ! indicate test of change(3f) passed
 end subroutine test_change
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!     strtok(3f) - [M_strings:TOKENS] Tokenize a string
@@ -3069,19 +3072,19 @@ end subroutine test_modif
 !!
 !!    program demo_len_white
 !!
-!!     use M_strings, only : len_white
-!!     character(len=80) ::  s
-!!     intrinsic len
+!!      use M_strings, only : len_white
+!!      character(len=80) ::  s
+!!      intrinsic len
 !!
-!!     s=' ABCDEFG abcdefg '
-!!     ilen = len(s)
-!!     lastnb = len_white(s)
+!!      s=' ABCDEFG abcdefg '
+!!      ilen = len(s)
+!!      lastnb = len_white(s)
 !!
-!!     write(*,*) 'total length of variable is ',ilen
-!!     write(*,*) 'trimmed length of variable is ',lastnb
-!!     write(*,*) 'trimmed string=[',s(:lastnb),']'
+!!      write(*,*) 'total length of variable is ',ilen
+!!      write(*,*) 'trimmed length of variable is ',lastnb
+!!      write(*,*) 'trimmed string=[',s(:lastnb),']'
 !!
-!!    end program demo_len_white
+!!     end program demo_len_white
 !!
 !!##NOTES
 !!
@@ -3578,9 +3581,9 @@ character(len=:),allocatable         :: right_local
    string=''
    do i = 1,size(str)
       if(trm_local)then
-         string=string//left//trim(str(i))//right//sep
+         string=string//left_local//trim(str(i))//right_local//sep_local
       else
-         string=string//left//str(i)//right//sep
+         string=string//left_local//str(i)//right_local//sep_local
       endif
    enddo
 end function join
@@ -4816,9 +4819,11 @@ end subroutine test_expand
 !!       endblock READFILE
 !!
 !!    end program demo_notabs
-!!##SEE ALSO:
+!!
+!!##SEE ALSO
 !!     GNU/Unix commands expand(1) and unexpand(1)
-!!##AUTHOR:
+!!
+!!##AUTHOR
 !!     John S. Urban
 !!##LICENSE
 !!    Public Domain
@@ -6808,48 +6813,48 @@ end subroutine test_v2s
 !!
 !!  Example run
 !!
-!!     Begin entering values
-!!     ERROR:          -1 End of file
-!!      ERROR for            -1 :null string
-!!    10
-!!     VALUE=   10.0000000
-!!      for 10            1 :integer
-!!    20
-!!     VALUE=   20.0000000
-!!      for 20            1 :integer
-!!    20.
-!!     VALUE=   20.0000000
-!!      for 20.            2 :whole number
-!!    30.1
-!!     VALUE=   30.1000004
-!!      for 30.1            3 :real number
-!!    3e1
-!!     VALUE=   30.0000000
-!!      for 3e1            4 :value with exponent
-!!    1-2
-!!     VALUE=   9.99999978E-03
-!!      for 1-2            4 :value with exponent
-!!    100.22d-4
-!!     VALUE=   1.00220004E-02
-!!      for 100.22d-4            4 :value with exponent
-!!    1--2
-!!     ERROR:        5010 Bad real number in item 1 of list input
-!!      ERROR for 1--2           -5 :bad number
-!!    e
-!!     ERROR:        5010 Bad real number in item 1 of list input
-!!      ERROR for e           -6 :missing leading value before exponent
-!!    e1
-!!     ERROR:        5010 Bad real number in item 1 of list input
-!!      ERROR for e1           -6 :missing leading value before exponent
-!!    1e
-!!     ERROR:        5010 Bad real number in item 1 of list input
-!!      ERROR for 1e           -3 :missing exponent
-!!    1e+
-!!     ERROR:        5010 Bad real number in item 1 of list input
-!!      ERROR for 1e+           -4 :missing exponent after sign
-!!    1e+2.0
-!!     ERROR:        5010 Bad real number in item 1 of list input
-!!      ERROR for 1e+2.0           -5 :bad number
+!!    > Begin entering values
+!!    > ERROR:          -1 End of file
+!!    >  ERROR for            -1 :null string
+!!    >10
+!!    > VALUE=   10.0000000
+!!    >  for 10            1 :integer
+!!    >20
+!!    > VALUE=   20.0000000
+!!    >  for 20            1 :integer
+!!    >20.
+!!    > VALUE=   20.0000000
+!!    >  for 20.            2 :whole number
+!!    >30.1
+!!    > VALUE=   30.1000004
+!!    >  for 30.1            3 :real number
+!!    >3e1
+!!    > VALUE=   30.0000000
+!!    >  for 3e1            4 :value with exponent
+!!    >1-2
+!!    > VALUE=   9.99999978E-03
+!!    >  for 1-2            4 :value with exponent
+!!    >100.22d-4
+!!    > VALUE=   1.00220004E-02
+!!    >  for 100.22d-4            4 :value with exponent
+!!    >1--2
+!!    > ERROR:        5010 Bad real number in item 1 of list input
+!!    >  ERROR for 1--2           -5 :bad number
+!!    >e
+!!    > ERROR:        5010 Bad real number in item 1 of list input
+!!    >  ERROR for e           -6 :missing leading value before exponent
+!!    >e1
+!!    > ERROR:        5010 Bad real number in item 1 of list input
+!!    >  ERROR for e1           -6 :missing leading value before exponent
+!!    >1e
+!!    > ERROR:        5010 Bad real number in item 1 of list input
+!!    >  ERROR for 1e           -3 :missing exponent
+!!    >1e+
+!!    > ERROR:        5010 Bad real number in item 1 of list input
+!!    >  ERROR for 1e+           -4 :missing exponent after sign
+!!    >1e+2.0
+!!    > ERROR:        5010 Bad real number in item 1 of list input
+!!    >  ERROR for 1e+2.0           -5 :bad number
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -7127,10 +7132,13 @@ end subroutine test_trimzeros
 !!     program demo_listout
 !!     use M_strings, only : listout
 !!     implicit none
-!!     integer,allocatable :: icurve_lists(:)        ! icurve_lists is input array
-!!     integer :: icurve_expanded(1000)  ! icurve_expanded is output array
-!!     integer :: inums                  ! number of icurve_lists values on input, number of icurve_expanded numbers on output
+!!     integer,allocatable :: icurve_lists(:)
+!!     integer :: icurve_expanded(1000)
+!!     ! icurve_lists is input array
+!!     integer :: inums
+!!     ! icurve_expanded is output array
 !!     integer :: i
+!!     ! number of icurve_lists values on input, number of icurve_expanded numbers on output
 !!     integer :: ierr
 !!        icurve_lists=[1, 20, -30, 101, 100, 99, 100, -120, 222, -200]
 !!        inums=size(icurve_lists)
@@ -8562,6 +8570,8 @@ subroutine print_generic(generic)
 !use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in) :: generic
+integer             :: iblanks
+   iblanks=0
    select type(generic)
       type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
       type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
@@ -8571,10 +8581,16 @@ class(*),intent(in) :: generic
       type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
       type is (logical);                write(line(istart:),'(1l)') generic
-      type is (character(len=*));       write(line(istart:),'(a)') trim(generic)
+      type is (character(len=*));
+                                        if(generic.eq.' ')then ! keep totally blank strings
+                                           write(line(istart:),'(a)') generic
+                                           iblanks=len(generic)
+                                        else
+                                           write(line(istart:),'(a)') trim(generic)
+                                        endif
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
-   istart=len_trim(line)+increment
+   istart=len_trim(line)+increment+iblanks
 end subroutine print_generic
 !===================================================================================================================================
 end function msg_scalar
@@ -9239,19 +9255,19 @@ end subroutine test_islower
 !!
 !!       These elemental functions test if a character belongs to various subsets of the ASCII character set.
 !!
-!!       o isalnum:   returns .true. if character is a letter (a-z,A-Z) or digit (0-9)
-!!       o isalpha:   returns .true. if character is a letter and .false. otherwise
-!!       o isascii:   returns .true. if character is in the range char(0) to char(127)
-!!       o isblank:   returns .true. if character is a blank (space or horizontal tab).
-!!       o iscntrl:   returns .true. if character is a delete character or ordinary control character (0x7F or 0x00-0x1F).
-!!       o isdigit:   returns .true. if character is a digit (0,1,...,9) and .false. otherwise
-!!       o isgraph:   returns .true. if character is a printable ASCII character excluding space
-!!       o islower:   returns .true. if character is a miniscule letter (a-z)
-!!       o isprint:   returns .true. if character is a printable ASCII character
-!!       o ispunct:   returns .true. if character is a printable punctuation character (isgraph(c) && !isalnum(c)).
-!!       o isspace:   returns .true. if character is a null, space, tab, carriage return, new line, vertical tab, or formfeed
-!!       o isupper:   returns .true. if character is an uppercase letter (A-Z)
-!!       o isxdigit:  returns .true. if character is a hexadecimal digit (0-9, a-f, or A-F).
+!!       isalnum    returns .true. if character is a letter (a-z,A-Z) or digit (0-9)
+!!       isalpha    returns .true. if character is a letter and .false. otherwise
+!!       isascii    returns .true. if character is in the range char(0) to char(127)
+!!       isblank    returns .true. if character is a blank (space or horizontal tab).
+!!       iscntrl    returns .true. if character is a delete character or ordinary control character (0x7F or 0x00-0x1F).
+!!       isdigit    returns .true. if character is a digit (0,1,...,9) and .false. otherwise
+!!       isgraph    returns .true. if character is a printable ASCII character excluding space
+!!       islower    returns .true. if character is a miniscule letter (a-z)
+!!       isprint    returns .true. if character is a printable ASCII character
+!!       ispunct    returns .true. if character is a printable punctuation character (isgraph(c) && !isalnum(c)).
+!!       isspace    returns .true. if character is a null, space, tab, carriage return, new line, vertical tab, or formfeed
+!!       isupper    returns .true. if character is an uppercase letter (A-Z)
+!!       isxdigit   returns .true. if character is a hexadecimal digit (0-9, a-f, or A-F).
 !!
 !!##EXAMPLES
 !!
@@ -9259,21 +9275,21 @@ end subroutine test_islower
 !!
 !!    program demo_isdigit
 !!
-!!    use M_strings, only : isdigit, isspace, switch
-!!    implicit none
-!!    character(len=10),allocatable :: string(:)
-!!    integer                       :: i
-!!       string=[&
-!!       & '1 2 3 4 5 ' ,&
-!!       & 'letters   ' ,&
-!!       & '1234567890' ,&
-!!       & 'both 8787 ' ]
-!!       ! if string is nothing but digits and whitespace return .true.
-!!       do i=1,size(string)
-!!          write(*,'(a)',advance='no')'For string['//string(i)//']'
-!!          write(*,*) &
-!!          all(isdigit(switch(string(i))).or.isspace(switch(string(i))))
-!!       enddo
+!!     use M_strings, only : isdigit, isspace, switch
+!!     implicit none
+!!     character(len=10),allocatable :: string(:)
+!!     integer                       :: i
+!!        string=[&
+!!        & '1 2 3 4 5 ' ,&
+!!        & 'letters   ' ,&
+!!        & '1234567890' ,&
+!!        & 'both 8787 ' ]
+!!        ! if string is nothing but digits and whitespace return .true.
+!!        do i=1,size(string)
+!!           write(*,'(a)',advance='no')'For string['//string(i)//']'
+!!           write(*,*) &
+!!           all(isdigit(switch(string(i))).or.isspace(switch(string(i))))
+!!        enddo
 !!
 !!     end program demo_isdigit
 !!
@@ -9950,7 +9966,6 @@ end function tobase
 !!    seventeen
 !!       one two three four five six seven eight nine ten eleven twelve thirteen
 !!       fourteen fifteen sixteen seventeen
-!! ================================================================================
 !!
 !!##AUTHOR
 !!    John S. Urban

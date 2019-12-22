@@ -3,6 +3,7 @@
    <title> M_time </title>
    <link rel="stylesheet" type="text/css" href="StyleSheets/man.css" title="Local" />
    <meta name="description" content="Fortran module containing library of date and time procedures">
+   <meta name="keywords" content="time period">
    <meta name="keywords" content="date_and_time,date,time,gregorian,julian,epoch time,day of week, ordinal day">
    <meta name="keywords" content="week of year">
    <meta name="keywords" content="Fortran,module,library,repository,collection">
@@ -430,7 +431,8 @@ character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
    ! with no percent (%) characters
    write(*,303)'Calendar Time ......... ',event%format("Y-M-D h:m:s.x z")
    ! keywords with no percent (%) characters
-   write(*,303)'Calendar Time ......... ',event%format('"year-month-day hour:minute:second.millisecond timezone"')
+   write(*,303)'Calendar Time ......... ',&
+   & event%format('"year-month-day hour:minute:second.millisecond timezone"')
    write(*,*)event%format('Longer format.......... "%W, %L %d, %Y %H:%m:%s %N"') ! a nice friendly format
    303 format(1x,a,'"',a,'"')
 
@@ -449,9 +451,12 @@ character(len=*),parameter   :: iso_fmt='%Y-%M-%DT%h:%m:%s.%x%z'
 
    ! OVERLOADED OPERATORS (logical comparisons)
    ! NOTE COMPARISONS ARE PERFORMED BY CONVERTING TIMES TO INTEGER SECONDS
-   write(*,*)event.eq.event   ,event.lt.event   ,event.gt.event   ,event.le.event   ,event.ge.event   ,event.ne.event
-   write(*,*)event.eq.answer  ,event.lt.answer  ,event.gt.answer  ,event.le.answer  ,event.ge.answer  ,event.ne.answer
-   write(*,*)answer.eq.event  ,answer.lt.event  ,answer.gt.event  ,answer.le.event  ,answer.ge.event  ,answer.ne.event
+   write(*,*)event.eq.event   ,event.lt.event   ,event.gt.event &
+   & ,event.le.event   ,event.ge.event   ,event.ne.event
+   write(*,*)event.eq.answer  ,event.lt.answer  ,event.gt.answer  &
+   & ,event.le.answer  ,event.ge.answer  ,event.ne.answer
+   write(*,*)answer.eq.event  ,answer.lt.event  ,answer.gt.event  &
+   & ,answer.le.event  ,answer.ge.event  ,answer.ne.event
 
    ! %DELTA easily lets you change dates by common increments
    write(*,*)

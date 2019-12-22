@@ -1,7 +1,6 @@
           program demo_saveobj
           ! create object in file "circle.obj" for use with loadobj(3f)
           use M_draw
-          use M_drawplus, only : invokeobj,page, pop, push
           implicit none
           character(len=:),allocatable :: env
           integer :: ipaws

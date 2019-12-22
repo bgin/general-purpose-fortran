@@ -936,7 +936,6 @@ end subroutine remove_i
 !!    Public Domain
 !===================================================================================================================================
 subroutine replace_c(list,value,place)
-use M_time, only : now
 
 character(len=*),parameter::ident_14="@(#)M_list::replace_c(3fp): replace string in allocatable string array at specified position"
 
@@ -1143,7 +1142,6 @@ end subroutine replace_i
 !!    Public Domain
 !===================================================================================================================================
 subroutine insert_c(list,value,place)
-use M_time, only : now
 
 character(len=*),parameter::ident_19="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
 

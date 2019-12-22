@@ -8,7 +8,7 @@
             integer :: ipaws
 
             call prefsize(300,300)
-            call vinit(' ') ! start graphics using device $M_draw_DEVICE
+            call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
             ipaws=getkey()
             call ortho2(-100.0,100.0,-100.0,100.0)
 

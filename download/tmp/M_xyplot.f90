@@ -11,7 +11,7 @@ use M_calculator, only : igetvalue, rgetvalue ! igetvalue faster than inum0?
 use M_calculator, only : iclen_calc
 use M_calculator, only : inum0, rnum0, snum0
 use M_calculator, only : strgar2
-use M_calculator, only : jucalcx
+use M_calculator, only : expression
 
 implicit none
 private
@@ -1975,7 +1975,6 @@ subroutine plot_marks(nameit)
 ! Copyright(C) 1995 John S. Urban. All rights reserved
 use M_journal,         only : journal
 use M_draw
-use M_drawplus,        only : pop, push
 use M_drawplus,        only : spirograph
 implicit none
 
@@ -3664,7 +3663,6 @@ subroutine xy_init_graphics()
 use M_journal,    only : journal
 use M_kracken,    only : iget, sget, store
 use M_draw
-use M_drawplus,   only : page
 implicit none
 
 character(len=*),parameter::ident_24="@(#)M_xyplot::xy_init_graphics(3f): Initialize PLT graphics environment"
@@ -3805,7 +3803,6 @@ end function xy_ifdrawn
 subroutine xy_iftext()
 use M_journal, only : journal
 use M_draw
-use M_drawplus, only : pop, push
 use M_drawplus, only : plain_rect
 implicit none
 
@@ -5054,7 +5051,7 @@ end subroutine xy_laxis
 subroutine xy_pickpnt(itype,xecho,yecho,ibut)
 use M_journal, only : journal
 use M_draw
-use M_drawplus, only : pop, push, rdpnt
+use M_drawplus, only : rdpnt
 implicit none
 
 character(len=*),parameter::ident_34="&
@@ -5296,7 +5293,6 @@ end subroutine xy_setsize
 subroutine xy_tidybox()
 use M_journal,         only : journal
 use M_draw
-use M_drawplus,        only : pop, push
 implicit none
 
 character(len=*),parameter::ident_37="@(#)M_xyplot::xy_tidybox(3f): draw legend lines inside box specified on call"
@@ -6528,7 +6524,6 @@ end subroutine xy_tidybox1
 subroutine xy_tidybox2(itextc,ichars,iwchar,ibox,plot_setmark_size,cwhere,xmint,xmaxt,ymint,ymaxt,xmark)
 use M_journal, only : journal
 use M_draw
-use M_drawplus, only : pop, push
 use M_drawplus, only : plain_rect
 implicit none
 
@@ -6872,7 +6867,7 @@ end subroutine xy_listout3
 !!    IER   is zero(0) if no error occurred.
 !!
 !!##DEPENDENCIES
-!!      + jucalcx
+!!      + expression
 !!      + len_trim
 !!      + retrev
 !!##SEE ALSO
@@ -6907,7 +6902,7 @@ integer                      :: ilen2
    call retrev(name(1:lenn),val(1:lenv),ilen,ier)
    if(val(1:1).eq.'$'.or.val(1:1).eq.'"')then
       ! evaluate a calculator string expression
-      call jucalcx(val(:lenv),dvalue2,outlin0,ier2,ilen2)
+      call expression(val(:lenv),dvalue2,outlin0,ier2,ilen2)
       if(ier2.eq.2)then
          val=outlin0
          ilen=len_trim(outlin0)
@@ -8044,7 +8039,6 @@ end subroutine priv_justrlen
 !===================================================================================================================================
 subroutine priv_justr(x,y,l0,itype,xmin,xmax,ymin,ymax)
 use M_draw
-use M_drawplus,        only : pop, push
 use M_journal,         only : journal
 implicit none
 
@@ -8345,7 +8339,7 @@ data fonts/                                                       &
                rdum=rnum0(xy_array(i30))  ! evaluate numeric expression
             else  ! string names without a $ character
                cname(2:)=xy_array(i30)
-               call jucalcx(cname,dvalue,fetched,ierr,iline2)
+               call expression(cname,dvalue,fetched,ierr,iline2)
                if(ierr.ne.2)then
                   call journal('*xy_juprint* error in string variable')
                elseif(ierr.eq.2.and.dvalue.ge.1.0d0)then
@@ -9517,7 +9511,6 @@ end subroutine priv_draw_y_nums
 subroutine priv_draw_y_label(ifixedlab,TXTWDL,TXTHIL,fontL,device,caxis,XMIN,XMAX,YMIN,YMAX,ORIENT,ia)
 use M_journal, only : journal
 use M_draw
-use M_drawplus, only : pop, push
 implicit none
 
 character(len=*) :: fontL,device,caxis
@@ -10108,7 +10101,6 @@ end subroutine priv_findlongest
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine plot_page(xsmall,xlarge,ysmall,ylarge)
 use M_draw
-use M_drawplus, only : page
 implicit none
 
 character(len=*),parameter::ident_73="@(#)M_xyplot::plot_page(3f): initialize plot page and set up common page-related values"
@@ -10452,7 +10444,6 @@ end subroutine plot_set_nice_range
 !-----------------------------------------------------------------------------------------------------------------------------------
 subroutine xy_line(ipen,ivals,ctype,xy_arrayx,xy_arrayy)
 use M_draw
-use M_drawplus, only : pop, push
 implicit none
 
 character(len=*),parameter::ident_83="&
@@ -11078,7 +11069,7 @@ end function xy_con_y
 !!
 !===================================================================================================================================
 subroutine xy_setcnv(ilogx,ilogy)
-use M_drawplus, only : pop, push
+use M_draw, only : pop, push
 implicit none
 
 character(len=*),parameter::ident_89="@(#)M_xyplot::xy_setcnv(3f): set up conversion table for xy_con_x and xy_con_y functions"
@@ -11817,7 +11808,6 @@ subroutine xy_obj12345(string)
 ! using the hcopy command
 !
 use M_draw
-use M_drawplus, only : pop, push
 implicit none
 
 character(len=*),parameter::ident_97="@(#)M_xyplot::xy_obj12345(3f): create or close M_plot object 12345"
@@ -12129,7 +12119,6 @@ end subroutine priv_endgrid
 !===================================================================================================================================
 subroutine priv_judash(x,y,n,pat,ipat,offset)
 use M_draw
-use M_drawplus, only : pop, push
 use ISO_C_BINDING
 implicit none
 
@@ -12416,7 +12405,6 @@ subroutine priv_jusym(x,y,n,istep,im,ipennum)
 use M_journal, only : journal
 use M_strings, only : change, crop
 use M_draw
-use M_drawplus, only : invokeobj, pop, push
 use M_drawplus, only : spirograph
 use M_drawplus, only : arrowhead
 implicit none
@@ -12648,7 +12636,6 @@ end subroutine xy_getmark
 !!
 !!    program demo_illusion
 !!    use M_draw,      only : vinit, color, clear, backbuffer, getkey, vexit
-!!    use M_drawplus,  only : page
 !!    use M_xyplot,    only : illusion
 !!    call vinit(' ')
 !!    call page(0.0,4800.0,0.0,4800.0)

@@ -6,7 +6,6 @@
            use M_draw,     only : D_BLACK,   D_WHITE
            use M_draw,     only : D_RED,     D_GREEN,    D_BLUE
            use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
-           use M_drawplus, only : page
            implicit none
            real              :: x1=0.0,    x2=40.0,    y1=0.0,    y2=7.0
            real              :: xmin=1.0,  xmax=39.0,  ymin=1.0,  ymax=6.0

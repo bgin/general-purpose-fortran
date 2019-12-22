@@ -1700,7 +1700,6 @@ real    :: ytemp1
 subroutine dl_init(xmax0,ymax0,vpx,vpy,zom)
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
 use M_draw
-use M_drawplus, only : page
 implicit none
 
 character(len=*),parameter::ident_3="@(#)M_slices::dl_init(3f): initialize the longlib graphics plot package"

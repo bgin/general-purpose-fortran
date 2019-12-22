@@ -510,7 +510,11 @@ character(len=:),allocatable :: line
           if(text(i).eq.NEW_LINE('A'))then
              exit
           endif
-          line(i:i)=text(i)
+          if(text(i).eq.char(9))then
+             line(i:i)=' '
+          else
+             line(i:i)=text(i)
+          endif
        enddo
        icols=size(s2vs(line))
        allocate(array(irows,icols))
@@ -525,7 +529,11 @@ character(len=:),allocatable :: line
                 exit
              endif
              k=k+1
-             line(k:k)=text(i)
+             if(text(i).eq.char(9))then
+                line(k:k)=' '
+             else
+                line(k:k)=text(i)
+             endif
           enddo
           istart=i+1
           array(j,:)=s2vs(line)
@@ -572,7 +580,11 @@ character(len=:),allocatable :: line
           if(text(i).eq.NEW_LINE('A'))then
              exit
           endif
-          line(i:i)=text(i)
+          if(text(i).eq.char(9))then
+             line(i:i)=' '
+          else
+             line(i:i)=text(i)
+          endif
        enddo
        icols=size(s2vs(line))
        allocate(array(irows,icols))
@@ -587,7 +599,11 @@ character(len=:),allocatable :: line
                 exit
              endif
              k=k+1
-             line(k:k)=text(i)
+             if(text(i).eq.char(9))then
+                line(k:k)=' '
+             else
+                line(k:k)=text(i)
+             endif
           enddo
           istart=i+1
           array(j,:)=s2vs(line)

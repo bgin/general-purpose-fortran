@@ -1,6 +1,5 @@
          program demo_dashcode
          use M_draw
-         use M_drawplus, only : page
          implicit none
          integer        :: icolor
          integer        :: ikey

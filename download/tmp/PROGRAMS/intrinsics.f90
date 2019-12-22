@@ -17,7 +17,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Tue, Dec 10th, 2019 3:20:16 AM>',&
+'@(#)COMPILED:       Sat, Dec 21st, 2019 11:08:07 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -10565,7 +10565,7 @@ write(io,'(a)')''
 write(io,'(a)')'   [[bit_size]], [[popcnt]], [[poppar]], [[leadz]]'
 write(io,'(a)')''
 write(io,'(a)')'NAME'
-write(io,'(a)')'     select_type(3f) - [FORTRAN:EXECUTION_CONTROL] select_type'
+write(io,'(a)')'     select_type(7f) - [FORTRAN:EXECUTION_CONTROL] select_type'
 write(io,'(a)')'     (LICENSE:PD)'
 write(io,'(a)')'SYNOPSIS'
 write(io,'(a)')'     select_type(VARIABLE)'

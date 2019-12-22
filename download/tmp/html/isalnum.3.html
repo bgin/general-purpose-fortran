@@ -92,55 +92,55 @@ These elemental functions test if a character belongs to various subsets of the 
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD colspan=2>
-<B>o isalnum:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isalnum</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a letter (a-z,A-Z) or digit (0-9)
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isalpha:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isalpha</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a letter and .false. otherwise
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isascii:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isascii</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is in the range <B>char</B>(0) to <B>char</B>(127)
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isblank:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isblank</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a blank (space or horizontal tab).
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o iscntrl:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>iscntrl</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a delete character or ordinary control character (0x7F or 0x00-0x1F).
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isdigit:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isdigit</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a digit (0,1,&#46;&#46;&#46;,9) and .false. otherwise
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isgraph:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isgraph</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a printable ASCII character excluding space
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o islower:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>islower</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a miniscule letter (a-z)
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isprint:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isprint</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a printable ASCII character
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o ispunct:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>ispunct</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a printable punctuation character (isgraph(c) && !isalnum(c)).
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isspace:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isspace</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a null, space, tab, carriage return, new line, vertical tab, or formfeed
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isupper:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isupper</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is an uppercase letter (A-Z)
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B>o isxdigit:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<B>isxdigit</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 returns .true. if character is a hexadecimal digit (0-9, a-f, or A-F).
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
@@ -155,21 +155,21 @@ Sample Program:
 <PRE>
    program demo_isdigit
 <P>
-   use M_strings, only : isdigit, isspace, switch
-   implicit none
-   character(len=10),allocatable :: string(:)
-   integer                       :: i
-      string=[&
-      & &#146;1 2 3 4 5 &#146; ,&
-      & &#146;letters   &#146; ,&
-      & &#146;1234567890&#146; ,&
-      & &#146;both 8787 &#146; ]
-      ! if string is nothing but digits and whitespace return .true.
-      do i=1,size(string)
-         write(*,&#146;(a)&#146;,advance=&#146;no&#146;)&#146;For string[&#146;//string(i)//&#146;]&#146;
-         write(*,*) &
-         all(isdigit(switch(string(i))).or.isspace(switch(string(i))))
-      enddo
+    use M_strings, only : isdigit, isspace, switch
+    implicit none
+    character(len=10),allocatable :: string(:)
+    integer                       :: i
+       string=[&
+       & &#146;1 2 3 4 5 &#146; ,&
+       & &#146;letters   &#146; ,&
+       & &#146;1234567890&#146; ,&
+       & &#146;both 8787 &#146; ]
+       ! if string is nothing but digits and whitespace return .true.
+       do i=1,size(string)
+          write(*,&#146;(a)&#146;,advance=&#146;no&#146;)&#146;For string[&#146;//string(i)//&#146;]&#146;
+          write(*,*) &
+          all(isdigit(switch(string(i))).or.isspace(switch(string(i))))
+       enddo
 <P>
     end program demo_isdigit
 <P>
@@ -201,7 +201,7 @@ John S. Urban
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>isalnum (3)</TD> <TD align=right width=33%><I>December 15, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 139608a6-b792-45bf-9c52-3f7f6d2160b8 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>isalnum (3)</TD> <TD align=right width=33%><I>December 22, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 728f0429-addb-4784-b8a6-4c82df3d4d11 using man macros.</FONT>
 <br><br><center><img src="images/isalnum.3.gif"></center>
 </div>
 </div>

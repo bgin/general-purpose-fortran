@@ -7,7 +7,7 @@
             integer :: ipaws
 
             call prefsize(200,200)
-            call vinit(' ') ! start graphics using device $M_draw_DEVICE
+            call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
             call ortho2(-55.0, 55.0, -55.0, 55.0)
             call linewidth(400)
             call color(D_WHITE)

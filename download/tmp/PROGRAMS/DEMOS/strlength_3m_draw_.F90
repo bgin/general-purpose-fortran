@@ -1,6 +1,5 @@
           program demo_strlength
           use :: M_draw
-          use M_drawplus, only : page
           use M_draw,    only  : D_BLACK,   D_WHITE
           use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
           use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -10,7 +9,7 @@
           real    :: texth=10.0
              !! set up drawing surface
              call prefsize(800, 400)
-             call vinit(' ') ! start graphics using device $M_draw_DEVICE
+             call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
              call page(-100.0, 300.0, -100.0, 100.0)
              call color(D_WHITE)
              call clear()

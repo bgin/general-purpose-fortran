@@ -49,10 +49,10 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <!-- =========================================================================================================================== -->
 <dt><b>SYNOPSIS</b></dt><dd>
 <pre>
-    use M_calculator, only : jucalc, getvalue, igetvalue, rgetvalue, stuff, stuffa
+    use M_calculator, only : calculator, getvalue, igetvalue, rgetvalue, stuff, stuffa
     use M_calculator, only : iclen_calc, ixy_calc, icname_calc, x, y, values_len, values
     ! convenience routines
-    use M_calculator, only : inum0, rnum0, dnum0, snum0, jucalcx, strgarr, strgar2
+    use M_calculator, only : inum0, rnum0, dnum0, snum0, expression, strgarr, strgar2
 </pre>
 </dd>
 <!-- =========================================================================================================================== -->
@@ -70,7 +70,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </p>
 
 <p>
-    The primary routine JUCALC acts like a powerful desk-top
+    The primary routine CALCULATOR(3f) acts like a powerful desk-top
     calculator. It supports named variables and has several arrays (of
     55555 elements each). Many standard FORTRAN functions are available,
     plus access to user-written functions is permitted via
@@ -78,15 +78,15 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </p>
 
 <p>
-    The programmer (generally) uses just the JUCALC routine or several
-    convenience routines (INUM0,RNUM0,SNUM0,STRGAR2,JUCALCX) that
-    simplify making the most common type of calls to JUCALC.
+    The programmer (generally) uses just the CALCULATOR(3f) routine or several
+    convenience routines (INUM0,RNUM0,SNUM0,STRGAR2,EXPRESSION) that
+    simplify making the most common type of calls to CALCULATOR(3f).
 </p>
 
 <!-- =========================================================================================================================== -->
 <dt><b> PROCEDURES </b></dt><dd>
    <ul>
-   <li> <a href="jucalc.3.html">jucalc</a>        The procedure JUCALC acts like a calculator
+   <li> <a href="calculator.3.html">calculator</a>        The procedure CALCULATOR(3f) acts like a calculator
    <li> <a href="getvalue.3.html">getvalue</a>    given numeric variable name return double precision value directly
    <li> <a href="igetvalue.3.html">igetvalue</a>  given numeric variable name return integer value directly
    <li> <a href="rgetvalue.3.html">rgetvalue</a>  given numeric variable name return real value directly
@@ -98,7 +98,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
    <li> <a href="rnum0">rnum0</a>                 resolve a calculator string into a real number (return 0 on errors)
    <li> <a href="dnum0">dnum0</a>                 resolve a calculator string into a doubleprecision number (return 0 on error s)
    <li> <a href="snum0">snum0</a>                 resolve a calculator expression into a string(return blank on errors)
-   <li> <a href="jucalcx">jucalcx</a>             call jucalc() calculator and display messages
+   <li> <a href="expression">expression</a>       call calculator() calculator and display messages
    <li> <a href="strgarr">strgarr</a>             read a string into an array USING CALCULATOR
    <li> <a href="strgar2">strgr2</a>              read a string into an array USING CALCULATOR
    </ul>
@@ -138,8 +138,8 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <!-- =========================================================================================================================== -->
 <dt><b> SEE ALSO</b></dt> <dd>
 <ul>
-   <li> jucalc(3f)  </li>
-   <li> jucalcx(3f)  </li>
+   <li> calculator(3f)  </li>
+   <li> expression(3f)  </li>
    <li> inum0(3f),rnum0(3f),dnum0(3f),snum0(3f)  </li>
    <li> stuff(3f),stuffa(3f), getvalue, igetvalue, rgetvalue  </li>
    <li> strgarr, strgar2  </li>
@@ -688,7 +688,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
       <br/><br/>
 
        A display of all available functions can be obtained when
-       executing JUCALC by entering the command 'funcs'. No descriptions
+       executing CALCULATOR(3f) by entering the command 'funcs'. No descriptions
        are provided.
       </dl>
    </dd>
@@ -702,15 +702,15 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <dt>
 <h2>ADDING FUNCTIONS</h2>
 <p>
-   Any program that calls JUCALC directly or indirectly (via JUCALX(),
+   Any program that calls CALCULATOR(3f) directly or indirectly (via JUCALX(),
    STRGAR2(), INUM0(), RNUM0(), SNUM0()) can extend the functions
    available by supplying two routines:
 </p>
 
 <ol>
   <li> SUBSTITUTE_SUBROUTINE(3f) - This user-supplied routine is a hook
-           for programmers to add their own functions to JUCALC without
-           having to change JUCALC directly. It is passed the name of
+           for programmers to add their own functions to CALCULATOR(3f) without
+           having to change CALCULATOR(3f) directly. It is passed the name of
            unknown functions and their parameter lists if the expression
            'ownmode(1)' is passed to the calculator.  If you do not
            need to add custom functions to the calculator this is
@@ -762,9 +762,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
    program demo_M_calculator
 
-      !     line mode calculator that calls jucalc
+      !     line mode calculator that calls calculator
       !
-      use M_calculator, only: jucalc,iclen_calc
+      use M_calculator, only: calculator,iclen_calc
       use M_calculator, only : rnum0
       use M_calculator, only : set_mysub, set_myfunc
       implicit none
@@ -778,7 +778,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
       INFINITE: do
          read(*,'(a)',iostat=ios)line
          if(ios.ne.0)exit INFINITE
-         call jucalc(line,outlin,event,rvalue,ierr)
+         call calculator(line,outlin,event,rvalue,ierr)
          ! line   -- input expression
          ! outlin -- result as a string
          ! event  --
@@ -797,7 +797,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
          case(-1) ! an error has occurred
            write(6,'(a,a)')'error===>',trim(event)
          case default ! this should not occur
-           write(6,'(a)')'warning===> unexpected ierr value from jucalc'
+           write(6,'(a)')'warning===> unexpected ierr value from calculator'
          end select
       enddo INFINITE
 

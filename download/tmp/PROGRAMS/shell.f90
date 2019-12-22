@@ -8,7 +8,7 @@ program testGPF
 !-----------------------------------------------------------------------------------------------------------------------------------
 use :: M_journal,         only : journal
 
-use :: M_calculator,      only : jucalc,iclen_calc
+use :: M_calculator,      only : calculator,iclen_calc
 use :: M_calculator,      only : stuff    ! [M_calculator] directly store value into calculator directory for efficiency
 use :: M_calculator,      only : strgar2
 
@@ -35,7 +35,7 @@ use m_readline,   only : system_readline
 !-----------------------------------------------------------------------------------------------------------------------------------
    implicit NONE
 character(len=*),parameter::ident_1="&
-&@(#)line mode calculator program (that calls jucalc(3f),cond(3f),M_history(3f),M_kracken(3f),M_pixel(3f))"
+&@(#)line mode calculator program (that calls calculator(3f),cond(3f),M_history(3f),M_kracken(3f),M_pixel(3f))"
 
    integer,parameter             :: dp=kind(0.0d0)         ! calculator returns double precision values
    character(len=:),allocatable  :: scratch                ! numeric value as a string returned by calculator
@@ -466,7 +466,7 @@ character(len=iclen_calc)     :: event                  ! string value or messag
 character(len=iclen_calc)     :: outlin                 ! numeric value as a string returned by calculator
 real(kind=dp)                 :: rvalue                 ! numeric value returned by calculator
 integer                       :: ierr
-   call jucalc(inline,outlin,event,rvalue,ierr)
+   call calculator(inline,outlin,event,rvalue,ierr)
    if(.not.lget('set_q'))then
       select case (ierr)                                        ! handle different status flag values returned by calculator
       case(0);  call journal(trim(outlin)//' = '//trim(inline)) ! a numeric value was returned without error
@@ -918,7 +918,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
 '@(#)LICENSE:        Public Domain. This is free software: you are free to change and redistribute it.>',&
 '@(#)                There is NO WARRANTY, to the extent permitted by law.>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 10:09:53 PM>',&
+'@(#)COMPILED:       Sun, Dec 22nd, 2019 10:55:08 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

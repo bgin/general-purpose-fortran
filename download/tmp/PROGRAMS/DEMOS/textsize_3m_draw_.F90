@@ -5,7 +5,7 @@
           integer :: ipaws
              !! set up long bar as plotting area
              call prefsize(900,150)
-             call vinit(' ') ! start graphics using device $M_draw_DEVICE
+             call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
              call ortho2(-30.0, 30.0, -5.0, 5.0)
              call font('times.r')
 

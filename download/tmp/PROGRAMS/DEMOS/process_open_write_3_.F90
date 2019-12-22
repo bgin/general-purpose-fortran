@@ -1,4 +1,4 @@
-           program demo_M_process
+          program demo_M_process
            use M_process ,only : process_open_write, process_writeline
            use M_process ,only : streampointer, process_close
            implicit none

@@ -1,13 +1,16 @@
         program demo_M_strings
         !
-        ! This is an example using the object-oriented class/type model defined in M_strings_oop
-        ! This is essentially the same functionality as the procedures combined with several Fortran intrinsics and overloaded operators
+        ! This is an example using the object-oriented class/type model
+        ! defined in M_strings_oop
+        ! This is essentially the same functionality as the procedures
+        ! combined with several Fortran intrinsics and overloaded operators
         !
         use M_strings_oop,only : string, p
         implicit none
         TYPE(string) :: str1
         TYPE(string) :: str2
         TYPE(string) :: str3
+        TYPE(string) :: str4
         !==============================================================================
           write(*,*)'exercise the M_STRING_OOP module interface'
           ! draw a break line in the output
@@ -15,6 +18,7 @@
           write(*,*)'Call methods of type(STRING)'
           ! define TYPE(STRING) with constructor
           str2=string('   This  is  a  String!       ')
+          str4=string(' a  String ')
           write(*,*)repeat('=',78)
           ! print members of type
           write(*,101)'str2%str is ................ ',str2%str
@@ -58,7 +62,7 @@
           write(*,101)'transliterate("aeiou","") .. ',p(str2%transliterate("aeiou",""))
           write(*,101)'transliterate(" aeiou","") . ',p(str2%transliterate(" aeiou",""))
           ! calls M_strings procedure SWITCH()
-          write(*,404)'chars .................... . ',str2%chars()
+          write(*,404)'chars .................... . ',str4%chars()
 
           write(*,*)repeat('=',78)
           str2%str='\t\tSome tabs\t   x\bX '

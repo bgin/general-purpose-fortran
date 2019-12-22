@@ -1,6 +1,5 @@
           program demo_circle
              use M_draw
-             use M_drawPLUS, only : page
              use M_draw,    only  : D_BLACK,   D_WHITE
              use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
              use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -10,7 +9,7 @@
              integer :: ipaws
           ! set up drawing surface
              call prefsize(1000,200)
-             call vinit(' ') ! start graphics using device $M_draw_DEVICE
+             call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
              call page(-25.0-b,25.0+b,-R-b,R+b)
              call linewidth(200)
              call color(D_CYAN)

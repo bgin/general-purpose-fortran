@@ -1,10 +1,10 @@
 !>
 !!##NAME
-!!   jucalc - [M_calculator] parse calculator expression and return numeric or string value
+!!   calculator - [M_calculator] parse calculator expression and return numeric or string value
 !!   (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!   subroutine jucalc(inline,outlin,mssg,slast,ierr)
+!!   subroutine calculator(inline,outlin,mssg,slast,ierr)
 !!
 !!    character(len=*),intent=(in)           :: inline
 !!    character(len=iclen_calc),intent=(out) :: outlin
@@ -13,7 +13,7 @@
 !!    integer, intent=(out)                  :: ierr
 !!
 !!##DESCRIPTION
-!!    JUCALC() evaluates FORTRAN-like expressions. It can be used to add
+!!    CALCULATOR(3f) evaluates FORTRAN-like expressions. It can be used to add
 !!    calculator-like abilities to your program.
 !!
 !!##OPTIONS
@@ -30,25 +30,17 @@
 !!             o REAL value set to last successfully calculated value when IERR=0
 !!             o Number of characters in returned string variable when IERR=2
 !!     ierr    status flag.
-!!             o  -1 ==> An error occurred
-!!             o  0 ==> A numeric value was returned
-!!             o  1 ==> A message was returned
-!!             o  2 ==> A string value was returned
-!!##DEPENDENCIES
-!!        o ceiling
-!!        o floor
-!!        o change
-!!        o modif
-!!        o rand
-!!        o len_trim
-!!        o Possible User-supplied routines: substitute_subroutine, substitute_c
+!!               -1  An error occurred
+!!                0  A numeric value was returned
+!!                1  A message was returned
+!!                2  A string value was returned
 !!##EXAMPLES
 !!
 !!   Example calculator program
 !!
-!!       program demo_jucalc
-!!       !compute(1f): line mode calculator program (that calls jucalc(3f))
-!!       use M_calculator, only: jucalc,iclen_calc
+!!       program demo_calculator
+!!       !compute(1f): line mode calculator program (that calls calculator(3f))
+!!       use M_calculator, only: calculator,iclen_calc
 !!       ! iclen_calc : max length of expression or variable value as a string
 !!       implicit none
 !!       integer,parameter         :: dp=kind(0.0d0)
@@ -58,12 +50,12 @@
 !!       real(kind=dp)             :: rvalue
 !!       integer                   :: ierr
 !!       ierr=0
-!!       call jucalc('ownmode(1)',outlin,event,rvalue,ierr)
+!!       call calculator('ownmode(1)',outlin,event,rvalue,ierr)
 !!       ! activate user-defined function interface
 !!       INFINITE: do
 !!          read(*,'(a)',end=999)line
 !!          if(line.eq.'.')stop
-!!          call jucalc(line,outlin,event,rvalue,ierr)
+!!          call calculator(line,outlin,event,rvalue,ierr)
 !!          select case (ierr)
 !!          ! several different meanings to the error flag returned by calculator
 !!          case(0)
@@ -80,16 +72,14 @@
 !!            write(*,'(a,a)')'error===>',trim(event(:len_trim(event)))
 !!          case default
 !!          ! this should not occur
-!!            WRITE(6,'(A,i10)')'*JUCALC* UNEXPECTED IERR VALUE ',IERR
+!!            WRITE(6,'(A,i10)')'*CALCULATOR* UNEXPECTED IERR VALUE ',IERR
 !!          end select
 !!       enddo INFINITE
 !!       999 continue
-!!       end program demo_jucalc
+!!       end program demo_calculator
 !!
 !!##SEE ALSO
-!!     see INUM0(),RNUM0(),SNUM0(),STRGAR2(),JUCALCX().
-!!##REFERENCES
-!!    NONE.
+!!     see INUM0(),RNUM0(),SNUM0(),STRGAR2(),EXPRESSION().
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -129,20 +119,20 @@ integer,save,public,allocatable           :: values_len(:)         ! lengths of 
 character(len=:),allocatable,save         :: keyr_q(:)             ! contains the names of numeric variables
 real(kind=dp),save,allocatable            :: values_d(:)           ! numeric variable values
 
-public :: jucalc
+public :: calculator
 public :: getvalue
 public :: igetvalue
 public :: rgetvalue
 public :: stuff
 public :: stuffa
 ! CONVENIENCE ROUTINES
-public :: inum0   ! resolve a calculator string into a whole integer number
-public :: rnum0   ! resolve a calculator string into a real number (return 0 on errors)
-public :: dnum0   ! resolve a calculator string into a doubleprecision number (return 0 on error s)
-public :: snum0   ! resolve a calculator expression into a string(return blank on errors)
-public :: jucalcx ! call jucalc() calculator and display messages
-public :: strgarr ! read a string into an array USING CALCULATOR
-public :: strgar2 ! read a string into an array USING CALCULATOR
+public :: inum0      ! resolve a calculator string into a whole integer number
+public :: rnum0      ! resolve a calculator string into a real number (return 0 on errors)
+public :: dnum0      ! resolve a calculator string into a doubleprecision number (return 0 on error s)
+public :: snum0      ! resolve a calculator expression into a string(return blank on errors)
+public :: expression ! call calculator() calculator and display messages
+public :: strgarr    ! read a string into an array USING CALCULATOR
+public :: strgar2    ! read a string into an array USING CALCULATOR
 
 public :: set_mysub
 public :: set_myfunc
@@ -232,7 +222,7 @@ end subroutine set_mysub
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !-----------------------------------------------------------------------------------------------------------------------------------
-recursive subroutine jucalc(inline,outlin,mssg,slast,ierr)
+recursive subroutine calculator(inline,outlin,mssg,slast,ierr)
 !
 !     The goal is to create a procedure easily utilized from other
 !     programs that takes a standard Fortran value statement and reduces
@@ -289,9 +279,9 @@ recursive subroutine jucalc(inline,outlin,mssg,slast,ierr)
 !               5. a flag value for ier to distinguish between string
 !                  and numeric output?
 !#----------------------------------------------------------------------------------------------------------------------------------
-!subroutine jucalc(inline,outlin,mssg,slast,ierr)
+!subroutine calculator(inline,outlin,mssg,slast,ierr)
 
-character(len=*),parameter::ident_1="@(#)M_calculator::jucalc(3f): The procedure JUCALC acts like a calculator"
+character(len=*),parameter::ident_1="@(#)M_calculator::calculator(3f): The procedure CALCULATOR(3f) acts like a calculator"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)            :: inline
@@ -331,7 +321,7 @@ integer                                :: nchard
          return
       elseif(nchard.eq.0)then  ! if a blank input string was entered report it as an error and quit
          ierr=-1
-         mssg='*jucalc* input line was empty'
+         mssg='*calculator* input line was empty'
       elseif(line(1:nchard).eq.'dump')then ! process dump command
          call journal(line(1:nchard))
          call journal('sc','current value= ',last)
@@ -416,7 +406,7 @@ integer                                :: nchard
       exit BIG
    enddo BIG
    slast=rlast                                            ! set returned value to last successfully calculated real value
-end subroutine jucalc
+end subroutine calculator
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 !-----------------------------------------------------------------------------------------------------------------------------------
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2942,7 +2932,7 @@ end subroutine given_name_get_stringvalue_
 !!
 !!##DEFINITION
 !!       Given numeric variable name return double precision value.
-!!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
+!!       Note this is breaking the rule of only accessing the calculator thru calculator(3f).
 !!       It should only be used from user substitute_subroutine(3f) routines to avoid recursion
 !!##OPTIONS
 !!    varnam   name of calculator variable to look up that is assumed to be a valid defined
@@ -3001,7 +2991,7 @@ end function getvalue
 !!
 !!##DEFINITION
 !!       Given numeric variable name return integer value.
-!!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
+!!       Note this is breaking the rule of only accessing the calculator thru calculator(3f).
 !!       It should only be used from optional user-defined substitute_subroutine(3f) routines to avoid recursion
 !!
 !!##OPTIONS
@@ -3049,7 +3039,7 @@ end function igetvalue
 !!
 !!##DEFINITION
 !!       Given numeric variable name return real value.
-!!       Note this is breaking the rule of only accessing the calculator thru jucalc(3f).
+!!       Note this is breaking the rule of only accessing the calculator thru calculator(3f).
 !!       It should only be used from optional user-defined substitute_subroutine(3f) routines to avoid recursion
 !!
 !!##OPTIONS
@@ -3098,7 +3088,7 @@ end function rgetvalue
 !!    integer,intent(in),optional :: ioflag
 !!
 !!##DEFINITION
-!!    breaking the rule of only accessing the calculator thru jucalc:
+!!    breaking the rule of only accessing the calculator thru calculator(3f):
 !!
 !!    a direct deposit of a value into the calculator assumed to
 !!    be used only by friendly calls, for efficiency and to avoid
@@ -3107,13 +3097,13 @@ end function rgetvalue
 !!    variable table
 !!
 !!    Normally values are stored or defined in the calculator module
-!!    M_calculator(3fm) using the jucalc(3f) routine or the convenience
+!!    M_calculator(3fm) using the calculator(3f) routine or the convenience
 !!    routines in the module M_calculator(3fm). For efficiency when
 !!    large numbers of values require being stored the stuff(3f) procedure
 !!    can be used to store numeric values by name in the calculator
 !!    dictionary.
 !!
-!!    breaking the rule of only accessing the calculator thru jucalc:
+!!    breaking the rule of only accessing the calculator thru calculator(3f):
 !!
 !!    stuff(3f) is assumed to only be used when needed for efficiency and to
 !!    avoid problems with recursion if a routine called by the calculator
@@ -3212,7 +3202,7 @@ end subroutine stuff
 !!    character(len=*),intent(in),optional :: ioflag
 !!
 !!##DEFINITION
-!!    Breaking the rule of only accessing the calculator thru jucalc:
+!!    Breaking the rule of only accessing the calculator thru calculator(3f):
 !!
 !!    a direct deposit of a value into the calculator assumed to be used
 !!    only by friendly calls, for efficiency and to avoid problems with
@@ -3298,7 +3288,7 @@ end subroutine stuffa
 !!    INUM0() evaluates a CHARACTER argument as a FORTRAN-like
 !!    calculator expression and returns an integer.
 !!
-!!     o INUM0() uses the calculator routine jucalc(3f)
+!!     o INUM0() uses the calculator routine CALCULATOR(3f)
 !!     o Remember that the calculator treats all values as DOUBLEPRECISION.
 !!
 !!    Values returned are assumed to be very close to being whole integer
@@ -3314,14 +3304,9 @@ end subroutine stuffa
 !!    ierr    zero (0) if no error occurs
 !!
 !!##DEPENDENCIES
-!!       o jucalcx
-!!       o User-supplied routines:
-!!
 !!         All programs that call the calculator routine can supply their
 !!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
 !!         the ../html/Example.html">example program for samples.
-!!           o juown1
-!!           o c
 !!##EXAMPLES
 !!
 !!    Sample program:
@@ -3338,15 +3323,13 @@ end subroutine stuffa
 !!       The syntax of an expression is as described in
 !!       the main document of the Calculator Library.
 !!   See
-!!       JUCALC(),
+!!       CALCULATOR(),
 !!       RNUM0(),
 !!       DNUM0(),
 !!       SNUM0(),
 !!       STRGARR(),
 !!       STRGAR2(),
-!!       JUCALCX()
-!!##REFERENCES
-!!##NONE.
+!!       EXPRESSION()
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -3381,7 +3364,7 @@ elseif(inline.eq.'*')then                                  ! return -99999 on sp
    dnum1=-99999d0
 else                                                       ! parse string using calculator function
    iend=len(inline)
-   call jucalcx(inline(:iend),dnum1,cdum20,ierr_local,ilen)
+   call expression(inline(:iend),dnum1,cdum20,ierr_local,ilen)
    if(ierr_local.ne.0)then
       dnum1=0.0d0
    endif
@@ -3406,7 +3389,7 @@ end function inum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!       rnum0(3f) - [M_calculator] returns real number from string expression using JUCALC(3f)
+!!       rnum0(3f) - [M_calculator] returns real number from string expression using CALCULATOR(3f)
 !!       (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -3424,7 +3407,6 @@ end function inum0
 !!     ierr    error code. If zero, no error occurred
 !!
 !!##DEPENDENCIES
-!!       o jucalcx
 !!       o User-supplied routines:
 !!         All programs that call the calculator routine can supply their
 !!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
@@ -3445,10 +3427,8 @@ end function inum0
 !!
 !!       o The syntax of an expression is as described in the main documentation
 !!         of the Calculator Library.
-!!       o See JUCALCX(3f), JUCALC(3f), STRGAR2(3f), INUM0(3f), DNUM0(3f), SNUM0(3f).
+!!       o See EXPRESSION(3f), CALCULATOR(3f), STRGAR2(3f), INUM0(3f), DNUM0(3f), SNUM0(3f).
 !!
-!!##REFERENCES
-!!       o NONE.
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -3479,7 +3459,7 @@ integer                      :: iend
       d_answer=-99999.0d0
    else
       iend=len(inline)
-      call jucalcx(inline(:iend),d_answer,cdum20,ierr_local,ilen)
+      call expression(inline(:iend),d_answer,cdum20,ierr_local,ilen)
       if(ierr_local.ne.0)then
          d_answer=0.0d0
       endif
@@ -3495,7 +3475,7 @@ end function rnum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!      dnum0(3f) - [M_calculator] return double precision value from string expression using JUCALC
+!!      dnum0(3f) - [M_calculator] return double precision value from string expression using calculator(3f)
 !!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -3508,18 +3488,11 @@ end function rnum0
 !!     DNUM0() is used to return a DOUBLEPRECISION value from a CHARACTER string
 !!     representing a numeric expression.
 !!       o If an error occurs in evaluating the expression INUM() returns zero(0).
-!!       o DNUM0() ultimately uses the calculator routine jucalc.f .
+!!       o DNUM0() ultimately uses the calculator routine CALCULATOR(3f)
 !!
 !!      inline  INLINE is a CHARACTER variable up to (iclen_calc=255) characters long
 !!              that is similar to a FORTRAN 77 numeric expression.
 !!      ierr    error code. If zero, no error occurred
-!!
-!!##DEPENDENCIES
-!!       o jucalcx
-!!       o User-supplied routines:
-!!         All programs that call the calculator routine can supply their
-!!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
-!!         the example program for samples.
 !!
 !!##EXAMPLES
 !!
@@ -3537,10 +3510,8 @@ end function rnum0
 !!##SEE ALSO
 !!
 !!       o The syntax of an expression is as described in the main documentation of the Calculator Library.
-!!       o See JUCALCX(), JUCALC(), STRGAR2(), RNUM0(), SNUM0().
+!!       o See EXPRESSION(), CALCULATOR(), STRGAR2(), RNUM0(), SNUM0().
 !!
-!!##REFERENCES
-!!       o NONE.
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -3568,7 +3539,7 @@ integer                     :: ilen
       dnum1=-99999.0d0
    else
       iend=len(inline)
-      call jucalcx(inline(:iend),dnum1,cdum20,ierr_local,ilen)
+      call expression(inline(:iend),dnum1,cdum20,ierr_local,ilen)
       if(ierr_local.ne.0)then
          dnum1=0.0d0
       endif
@@ -3597,7 +3568,7 @@ end function dnum0
 !!##DESCRIPTION
 !!     SNUM0() is used to return a string value up to (iclen_calc=512) characters
 !!     long from a string expression.
-!!     SNUM0() uses the calculator routine jucalc.f .
+!!     SNUM0() uses the calculator routine CALCULATOR(3f)
 !!
 !!     inline0  INLINE0 is a CHARACTER variable up to (iclen_calc=512) characters long that
 !!              is similar to a FORTRAN 77 expression.
@@ -3630,7 +3601,6 @@ end function dnum0
 !!      KC=This is my title variable
 !!
 !!##DEPENDENCIES
-!!       o jucalcx
 !!       o User-supplied routines:
 !!         All programs that call the calculator routine can supply their
 !!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
@@ -3639,10 +3609,7 @@ end function dnum0
 !!##SEE ALSO
 !!       o The syntax of an expression is described in the main document of the
 !!         Calculator Library.
-!!       o See JUCALC(), RNUM0(), SNUM0(), STRGAR2(), JUCALCX().
-!!
-!!##REFERENCES
-!!       o NONE.
+!!       o See CALCULATOR(), RNUM0(), SNUM0(), STRGAR2(), EXPRESSION().
 !!
 !!##AUTHOR
 !!    John S. Urban
@@ -3679,11 +3646,11 @@ doubleprecision              :: dnum1
       lcopy=adjustl(inline(:iend))                                ! trim leading spaces
       if(lcopy(1:1).eq.'$'.or.lcopy(1:1).eq.'"')then              ! this is a string that needs evaluated
          dnum1=0.0d0
-         call jucalcx(inline(:iend),dnum1,lcopy,ierr_local,ilen)
+         call expression(inline(:iend),dnum1,lcopy,ierr_local,ilen)
          if(ierr_local.ne.2)then                                  ! check if expression was evaluated to a string successfully
             snum0=' '                                             ! input string was not resolved to a string
          endif
-         snum0=lcopy(:max(1,ilen))                                ! return whatever jucalcx() returned
+         snum0=lcopy(:max(1,ilen))                                ! return whatever expression() returned
       else                                                        ! input was just a string, not an expression so just copy it
          snum0=inline(:iend)                                      ! copy input string to output
       endif
@@ -3697,11 +3664,11 @@ end function snum0
 !===================================================================================================================================
 !>
 !!##NAME
-!!     jucalcx(3f) - [M_calculator] return value from a string expression processing messages to simplify call to JUCALC(3f)
+!!     expression(3f) - [M_calculator] return value from a string expression processing messages to simplify call to CALCULATOR(3f)
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!    subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
+!!    subroutine expression(inlin0,outval,outlin0,ierr,ilen)
 !!
 !!     character(len=*), intent=(in)  :: inlin0
 !!     doubleprecision, intent=(out)  :: outval
@@ -3710,12 +3677,13 @@ end function snum0
 !!     integer, intent=(out)          :: ilen
 !!
 !!##DESCRIPTION
-!!     JUCALCX() takes a string containing a FORTRAN-like expression and evaluates
+!!     expression() takes a string containing a FORTRAN-like expression and evaluates
 !!     it and returns a numeric or string value as appropriate.
-!!     The main purpose of JUCALCX() is to assume the burden of displaying the
-!!     calculator messages for codes that make multiple calls to JUCALC(). JUCALC
-!!     () does not display error messages directly.
-!!       o JUCALCX() calls the calculator routine jucalc.f to evaluate the
+!!     The main purpose of expression() is to assume the burden of displaying the
+!!     calculator messages for codes that make multiple calls to CALCULATOR(3f).
+!!     CALCULATOR(3f) does not display error messages directly.
+!!
+!!       o EXPRESSION(3f) calls the calculator routine CALCULATOR(3f) to evaluate the
 !!         expressions.
 !!       o Messages beginning with a # are considered comments and are not passed
 !!         on to the calculator.
@@ -3748,8 +3716,6 @@ end function snum0
 !!     ilen    ILEN returns the length of the input string minus trailing blanks.
 !!
 !!##DEPENDENCIES
-!!       o jucalc
-!!       o pdec
 !!       o User-supplied routines:
 !!         All programs that call the calculator routine can supply their
 !!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
@@ -3758,17 +3724,17 @@ end function snum0
 !!
 !!    Sample program:
 !!
-!!     program demo_jucalcx
+!!     program demo_expression
 !!     use M_calculator,      only : iclen_calc
-!!     use M_calculator, only : jucalcx
+!!     use M_calculator, only : expression
 !!     character(len=iclen_calc) ::  outlin0
 !!     doubleprecision :: outval
-!!     call jucalcx('A=3.4**5    ',outval,outlin0,ierr,ilen)
+!!     call expression('A=3.4**5    ',outval,outlin0,ierr,ilen)
 !!     write(*,*)'value of expression is ',outval
 !!     write(*,*)'string representation of value is ',trim(outlin0)
 !!     write(*,*)'error flag value is ',ierr
 !!     write(*,*)'length of expression is ',ilen
-!!     end program demo_jucalcx
+!!     end program demo_expression
 !!
 !!   Results:
 !!
@@ -3778,9 +3744,7 @@ end function snum0
 !!     length of expression is            8
 !!
 !!##SEE ALSO
-!!     See also: STRGAR(),RNUM0(),JUCALC(),INUM0(),SNUM0()
-!!##REFERENCES
-!!     NONE.
+!!     See also: STRGAR(),RNUM0(),CALCULATOR(),INUM0(),SNUM0()
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -3790,10 +3754,10 @@ end function snum0
 !! AUTHOR   John S. Urban
 !!##VERSION  V1.0, 19971123
 !===================================================================================================================================
-recursive subroutine jucalcx(inlin0,outval,outlin0,ierr,ilen)
+recursive subroutine expression(inlin0,outval,outlin0,ierr,ilen)
 use M_journal, only : journal
 
-character(len=*),parameter::ident_20="@(#)M_calculator::jucalcx(3f):call jucalc() calculator and display messages"
+character(len=*),parameter::ident_20="@(#)M_calculator::expression(3f):call CALCULATOR(3f) calculator and display messages"
 
 ! evaluate a FORTRAN-like string expression and return a numeric
 ! value and its character equivalent or a string value as appropriate
@@ -3821,39 +3785,39 @@ character(len=iclen_calc)   :: event
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(ilen.eq.0)then                                            ! command was totally blank
       ierr=-1
-      call journal('sc','*jucalcx* warning===> blank expression')
+      call journal('sc','*expression* warning===> blank expression')
 !-----------------------------------------------------------------------------------------------------------------------------------
    elseif(line(:1).eq.'#')then                                  ! line was a comment
 !-----------------------------------------------------------------------------------------------------------------------------------
    else
       ierr=0
-      call jucalc(line(:ilen),outlin,event,rvalue,ierr)         ! evaluate the expression
+      call calculator(line(:ilen),outlin,event,rvalue,ierr)         ! evaluate the expression
 !-----------------------------------------------------------------------------------------------------------------------------------
       select case(ierr)
       case(-1)                                    ! trapped error, display error message
-        call journal('sc','*jucalcx* error===>',event)
+        call journal('sc','*expression* error===>',event)
         !call pdec(line(:ilen))                   ! echo input string as is and in ASCII decimal
       case(1)                                     ! general message, display message
-        call journal('sc','*jucalcx* message===>',event)
+        call journal('sc','*expression* message===>',event)
       case(0)                                     ! numeric output
          outlin0=outlin
       case(2)                                     ! string output
          outlin0=event                            ! assumes outlin is long enough to return the string into
          ilen=int(rvalue)                         ! in special mode where a string is returned, rvalue is the length of the string
       case default
-        call journal('sc','*jucalcx* warning===> unexpected ierr value=',ierr)
+        call journal('sc','*expression* warning===> unexpected ierr value=',ierr)
       end select
 !-----------------------------------------------------------------------------------------------------------------------------------
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    outval=rvalue                            ! return normal sized real value
-end subroutine jucalcx
+end subroutine expression
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
 !!##NAME
-!!       strgarr(3f) - [M_calculator] read a string into an array using jucalc(3f) calculator
+!!       strgarr(3f) - [M_calculator] read a string into an array using CALCULATOR(3f) calculator
 !!       (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -3872,7 +3836,7 @@ end subroutine jucalcx
 !!     with " delimiters.
 !!
 !!       o strgarr() parses the string at the specified delimiters and calls the
-!!         calculator routine JUCALCX(3f) to evaluate the expressions.
+!!         calculator routine EXPRESSION(3f) to evaluate the expressions.
 !!       o It counts the number of values found.
 !!       o Once the maximum allowable number of values have been found strgarr()
 !!         returns, ignoring the rest of the line.
@@ -3899,7 +3863,7 @@ end subroutine jucalcx
 !!                  evaluated.
 !!
 !!##DEPENDENCIES
-!!       o jucalcx
+!!       o expression
 !!       o User-supplied routines:
 !!         All programs that call the calculator routine can supply their
 !!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
@@ -3983,10 +3947,8 @@ end subroutine jucalcx
 !!
 !!##SEE ALSO
 !!    To parse a list of numbers instead of expressions see STRGAR().
-!!    If there is only one expression see RNUM0(), JUCALCX(), JUCALC().
+!!    If there is only one expression see RNUM0(), EXPRESSION(), CALCULATOR(3f).
 !!
-!!##REFERENCES
-!!    none.
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -4070,7 +4032,7 @@ character(len=*),parameter::ident_21="@(#)M_calculator::strgarr(3f):read numeric
                  ENDIF
                ENDDO
                IF(iend.EQ.0)iend=ilen+1                     ! no delimiters found, so this substring goes to end of line
-               CALL jucalcx(line(istart:iend-1),dval,outlin,ier,ilendm)    ! parse substring minus delimiter
+               CALL expression(line(istart:iend-1),dval,outlin,ier,ilendm)    ! parse substring minus delimiter
                IF(ier.EQ.0)THEN
                     vals(i10)=real(dval)
                     ifound=ifound+1
@@ -4113,7 +4075,7 @@ END SUBROUTINE strgarr
 !!     STRGAR2() returns an array of real values from a string containing numeric
 !!     and string expressions.
 !!       o STRGAR2() parses the string at the specified delimiters and calls the
-!!         calculator routine jucalc.f to evaluate the expressions.
+!!         calculator routine CALCULATOR(3f) to evaluate the expressions.
 !!       o It counts the number of values found.
 !!       o Once the maximum allowable number of values have been found STRGAR2()
 !!         returns, ignoring the rest of the line.
@@ -4140,7 +4102,6 @@ END SUBROUTINE strgarr
 !!                  evaluated.
 !!
 !!##DEPENDENCIES
-!!       o jucalcx
 !!       o User-supplied routines:
 !!         All programs that call the calculator routine can supply their
 !!         own substitute_subroutine(3f) and substitute_C(3f) procedures. See
@@ -4212,10 +4173,8 @@ END SUBROUTINE strgarr
 !!##SEE ALSO
 !!
 !!     To parse a list of numbers instead of expressions see STRGAR().
-!!     If there is only one expression see RNUM0(), JUCALCX(), JUCALC().
+!!     If there is only one expression see RNUM0(), EXPRESSION(), CALCULATOR(3f)
 !!
-!!##REFERENCES
-!!     NONE.
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -4308,7 +4267,7 @@ character(len=*),parameter::ident_22="&
                if(line(istart:iend).eq.'*')then
                   dval=-99999.0d0
                else
-                  call jucalcx(line(istart:iend),dval,outlin,ierr_calc,ilendm)
+                  call expression(line(istart:iend),dval,outlin,ierr_calc,ilendm)
                endif
                if(ierr_calc.eq.0)then
                   inums=inums+1
@@ -4349,7 +4308,7 @@ character(len=*),parameter::ident_22="&
             if(line(istart:iend).eq.'*')then
                dval=-99999.0d0
             else
-               call jucalcx(line(istart:iend),dval,outlin,ierr_calc,ilendm)
+               call expression(line(istart:iend),dval,outlin,ierr_calc,ilendm)
             endif
             if(ierr_calc.eq.0)then                                               ! returned number
               inums=inums+1
@@ -4452,7 +4411,7 @@ subroutine test_suite_M_calculator
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
 use M_math,  only : almost
-call test_jucalc()
+call test_calculator()
 !!call test_jucals()
 !!call test_squeeze_()
 
@@ -4467,7 +4426,7 @@ call test_stuff()
 
 call test_dnum0()
 call test_inum0()
-call test_jucalcx()
+call test_expression()
 call test_rnum0()
 call test_snum0()
 call test_strgar2()
@@ -4504,12 +4463,12 @@ subroutine test_igetvalue()
    call unit_check_done('igetvalue',msg='')
 end subroutine test_igetvalue
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_jucalc()
+subroutine test_calculator()
 
-   call unit_check_start('jucalc',msg='')
-   !!call unit_check('jucalc', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('jucalc',msg='')
-end subroutine test_jucalc
+   call unit_check_start('calculator',msg='')
+   !!call unit_check('calculator', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('calculator',msg='')
+end subroutine test_calculator
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_rgetvalue()
 
@@ -4566,12 +4525,12 @@ character(len=:),allocatable :: string
    call unit_check_done('inum0',msg='')
 end subroutine test_inum0
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_jucalcx()
+subroutine test_expression()
 
-   call unit_check_start('jucalcx',msg='')
-   !!call unit_check('jucalcx', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('jucalcx',msg='')
-end subroutine test_jucalcx
+   call unit_check_start('expression',msg='')
+   !!call unit_check('expression', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('expression',msg='')
+end subroutine test_expression
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_rnum0()
 

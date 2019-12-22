@@ -5,12 +5,11 @@
           use M_draw,     only : D_BLACK,   D_WHITE
           use M_draw,     only : D_RED,     D_GREEN,    D_BLUE
           use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
-          use M_drawPLUS, only : page
           implicit none
           real    :: b=0.5
           integer :: ipaws
           call prefsize(1000,200)
-          call vinit(' ') ! start graphics using device $M_draw_DEVICE
+          call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
           call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
           call color(D_YELLOW)
           call clear()

@@ -1,11 +1,9 @@
             program demo_getkey
             use :: M_draw
-            use :: M_units, only : cosd, sind
-            use :: M_time, only : system_sleep
             !! set up drawing environment
             call prefsize(600,600)
             call voutput('+')
-            call vinit(' ') ! start graphics using device $M_draw_DEVICE
+            call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
             call ortho2(-300.0,300.0,-300.0,300.0)
             call textsize(500.0,500.0)
             call linewidth(130)

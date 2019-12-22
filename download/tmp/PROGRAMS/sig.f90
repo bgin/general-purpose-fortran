@@ -4,7 +4,6 @@
 program testit
 !(LICENSE:PD)
 use M_draw
-use M_drawplus, only : page
 implicit none
 real :: CPX
 real :: CPY

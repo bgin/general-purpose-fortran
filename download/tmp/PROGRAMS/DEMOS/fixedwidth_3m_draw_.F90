@@ -1,6 +1,5 @@
           program demo_fixedwidth
              use M_draw
-             use M_drawplus, only : page
              implicit none
              real,parameter :: x1=0.0,  x2=40.0,  y1=0.0,  y2=4.0
              real,parameter :: scl=3*0.7

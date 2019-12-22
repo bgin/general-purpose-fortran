@@ -1,8 +1,8 @@
               program demo_M_calculator
 
-                 !     line mode calculator that calls jucalc
+                 !     line mode calculator that calls calculator
                  !
-                 use M_calculator, only: jucalc,iclen_calc
+                 use M_calculator, only: calculator,iclen_calc
                  use M_calculator, only : rnum0
                  use M_calculator, only : set_mysub, set_myfunc
                  implicit none
@@ -16,7 +16,7 @@
                  INFINITE: do
                     read(*,'(a)',iostat=ios)line
                     if(ios.ne.0)exit INFINITE
-                    call jucalc(line,outlin,event,rvalue,ierr)
+                    call calculator(line,outlin,event,rvalue,ierr)
                     ! line   -- input expression
                     ! outlin -- result as a string
                     ! event  --
@@ -35,7 +35,7 @@
                     case(-1) ! an error has occurred
                       write(6,'(a,a)')'error===>',trim(event)
                     case default ! this should not occur
-                      write(6,'(a)')'warning===> unexpected ierr value from jucalc'
+                      write(6,'(a)')'warning===> unexpected ierr value from calculator'
                     end select
                  enddo INFINITE
 

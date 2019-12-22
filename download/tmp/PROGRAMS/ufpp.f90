@@ -36,6 +36,7 @@
 !!          [ -noenv]
 !!          [ -width n]
 !!          [ -d ignore|remove|blank]
+!!          [ -debug
 !!          [ -cstyle default|doxygen]
 !!          [ -version]
 !!          [ -help [ -html]]
@@ -764,17 +765,19 @@ use M_system, only  : system_islnk, system_stat, system_remove
 use M_time, only    : now
    implicit none
 
-   integer,parameter                    :: num=2048                       ! number of named values allowed
-   integer,public,parameter             :: G_line_length=4096             ! allowed length of input lines
-   integer,public,parameter             :: G_var_len=31                   ! allowed length of variable names
+   integer,parameter                   :: num=2048                       ! number of named values allowed
+   integer,public,parameter            :: G_line_length=4096             ! allowed length of input lines
+   integer,public,parameter            :: G_var_len=31                   ! allowed length of variable names
 
-   integer,public                       :: G_numdef=0                     ! number of defined variables in dictionary
+   integer,public                      :: G_numdef=0                     ! number of defined variables in dictionary
 
-   character(len=G_line_length),public  :: G_source                       ! original source file line
-   character(len=G_line_length),public  :: G_outline                      ! message to build for writing to output
+   character(len=G_line_length),public :: G_source                       ! original source file line
+   character(len=G_line_length),public :: G_outline                      ! message to build for writing to output
 
-   character(len=G_var_len),public      :: G_defval(num)                  ! variable values in variable dictionary
-   character(len=G_var_len),public      :: G_defvar(num)                  ! variables in variable dictionary
+   character(len=G_var_len),public     :: G_defval(num)                  ! variable values in variable dictionary
+   character(len=G_var_len),public     :: G_defvar(num)                  ! variables in variable dictionary
+   character(len=:),allocatable        :: G_debug
+   logical                             :: G_build_debug_version ! build debug version by including DEBUG//VERSION: to DEBUG//VERSION
 
    type file_stack
       integer,public                       ::  unit_number
@@ -866,6 +869,8 @@ subroutine cond()       !@(#)cond(3f): process conditional directive assumed to 
       select case(VERB)
       case('  ')                                                      ! entire line is a comment
       case('DEFINE');           call define(upopts,1)                 ! only process DEFINE if not skipping data lines
+      case('DEBUG');            call debugmode(upopts)                ! only process DEBUG  if not skipping data lines
+      case('DISPLAY');          call displayvars(upopts)              ! only process DISPLAY if not skipping data lines
       case('INCLUDE');          call include(options,50+G_iocount)    ! Filenames can be case sensitive
       case('PRINTENV');         call printenv(upopts)
       case('DOCUMENT');         call document(options)
@@ -882,13 +887,14 @@ subroutine cond()       !@(#)cond(3f): process conditional directive assumed to 
       case('ERROR');
          call stderr(G_source(2:))
          stop 2
-      end select
+      endselect
    endif
    select case(VERB)                                                  ! process logical flow control even if G_write is false
 
   case('DEFINE','INCLUDE','PRINTENV','DOCUMENT','SHOW','STOP')
    case('SYSTEM','UNDEF','UNDEFINE','MESSAGE','WARNING')
    case('HELP','OUTPUT','ERROR','IDENT','@(#)','FILTER')
+   case('DEBUG','DISPLAY')
    case(' ')
 
    case('ELSE','ELSEIF');  call else(verb,upopts,noelse,eb)
@@ -898,7 +904,7 @@ subroutine cond()       !@(#)cond(3f): process conditional directive assumed to 
    !--------------------------------------------------------
    case default
       call stop_ufpp('*ufpp:cond* ERROR(b) - UNKNOWN COMPILER DIRECTIVE ['//trim(verb)//']: '//trim(G_SOURCE))
-   end select
+   endselect
 end subroutine cond
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -957,12 +963,12 @@ subroutine ident(opts)                                 !@(#)ident(3f): process $
          ident_count=ident_count+1
       case default
          call stop_ufpp('*ufpp:exe* ERROR(ident::A) - IDENT TOO LONG:'//trim(G_SOURCE))
-      end select
+      endselect
    case('c')
          write(G_iout,'(a)')'#ident "@(#)'//text//'"'
    case default
          call stop_ufpp('*ufpp:exe* ERROR(ident::B) - IDENT LANGUAGE UNKNOWN:'//trim(G_SOURCE))
-   end select
+   endselect
 
 end subroutine ident
 !===================================================================================================================================
@@ -991,11 +997,49 @@ subroutine output_case(opts)                             !@(#)output_case(3f): p
          if(ios.ne.0)then
             call stop_ufpp('*ufpp:output_case* ERROR(f) - FAILED TO OPEN OUTPUT FILE:'//trim(filename))
          endif
-      end select
+      endselect
    if(G_write_what)then
       write(ERROR_UNIT,'(a)')'*ufpp:output_case*: OUTPUT FILE CHANGED TO:'//trim(filename)
    endif
 end subroutine output_case
+!==================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine displayvars(opts)                        !@(#)displayvars(3f): process 'displayvars string' directive
+character(len=*),intent(in)    :: opts              ! packed uppercase working copy of input line with leading $verb removed
+integer,save :: icount=0
+!-----------------------------------------------------------------------------------------------------------------------------------
+! originally, thought this would work but NAMELIST groups are not allowed in block constructs
+! block
+! namelist /uniquename/ opts
+! write(*,uniquename) opts
+! endblock
+!-----------------------------------------------------------------------------------------------------------------------------------
+     icount=icount+1
+     call write_out(trim(opts))
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine displayvars
+!==================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine debugmode(opts)                          !@(#)debugmode(3f): process 'debugmode string' directive
+character(len=*),intent(in)    :: opts              ! packed uppercase working copy of input line with leading $verb removed
+!-----------------------------------------------------------------------------------------------------------------------------------
+select case(opts)
+ case('NEVER')
+    G_debug='never'
+    G_build_debug_version=.false.
+ case('ON')
+    G_debug='on'
+    G_build_debug_version=.true.
+ case('OFF')
+    G_debug='on'
+    G_build_debug_version=.false.
+ case default
+    call stop_ufpp('*ufpp* ERROR(dv) - UNKNOWN DEBUG MODE:'//trim(opts))
+endselect
+!-----------------------------------------------------------------------------------------------------------------------------------
+end subroutine debugmode
 !==================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1122,9 +1166,9 @@ subroutine printenv(opts)                                  !@(#)printenv(3f): pr
          call stop_ufpp('*ufpp:printenv* ERROR(p) - COMPILER DOES NOT SUPPORT ENVIRONMENT VARIABLES:'//trim(G_SOURCE))
       case default
          call stop_ufpp('*ufpp:printenv* ERROR(q) - UNEXPECTED STATUS VALUE '//v2s(istatus)//':'//trim(G_SOURCE))
-      end select
+      endselect
       call write_out(varvalue)
-   end select
+   endselect
 end subroutine printenv
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1509,7 +1553,7 @@ character(len=G_line_length)    :: line       ! line        -
                case(4)
                   line=line(:i-2)//'+'//line(i+2:index(line,')')-1)
                case default
-               end select
+               endselect
             else
                line=line(:i-1)//line(i+1:index(line,')')-1)
             endif
@@ -1533,7 +1577,7 @@ character(len=G_line_length)    :: line       ! line        -
             case(4)
                line=line(:i-2)//'+'//line(i+2:index(line,')')-1)//line(index(line,')')+1:)
             case default
-            end select
+            endselect
          else
             line=line(:i-1)//line(i+1:index(line,')')-1)//line(index(line,')')+1:)
          endif
@@ -1583,7 +1627,7 @@ character(len=*)                             :: line
 integer                                      :: ipos2
 
    character(len=11)                         :: temp
-   character(len=G_line_length)                :: newl
+   character(len=G_line_length)              :: newl
    character(len=2),save                     :: ops(3)= (/'**','*/','+-'/)
    integer                                   :: i
    integer                                   :: j
@@ -1667,7 +1711,7 @@ integer                                      :: ipos2
               endif
            case default
               call stop_ufpp('*ufpp:domath* ERROR(ar) - INTERNAL PROGRAM ERROR:'//trim(G_source))
-           end select
+           endselect
         endif
 
         if (i1.le.0) then
@@ -1766,7 +1810,7 @@ integer                            :: ipos2
             case(6)                                              ! .lt.
                if (val1.lt.val2) G_dc=.true.
             case default
-            end select
+            endselect
             temp='.FALSE.'
             if (G_dc) temp='.TRUE.'
             call rewrit(newl,temp(:len_trim(temp)),j,j,k,k)
@@ -1825,7 +1869,7 @@ end subroutine doop
             call stop_ufpp('*ufpp:trufal* ERROR(ap) - CONSTANT LOGICAL EXPRESSION REQUIRED.'//trim(G_source))
       endif
 
-   end select
+   endselect
 
    if (ifound.lt.0) then                                     ! not a variable name or string '.TRUE.' or '.FALSE.'
       call stop_ufpp('*ufpp:trufal* ERROR(ao) - CONSTANT LOGICAL EXPRESSION REQUIRED:'//trim(G_source))
@@ -1893,7 +1937,7 @@ subroutine logic(line,ipos1,ipos2)           !@(#)logic(3f): process .OP. operat
            case(3); G_dc=one.or.two
            case default
               call stop_ufpp('*ufpp* internal error')
-           end select
+           endselect
            !-------------------------------------
            temp='.FALSE.'
            if (G_dc) temp='.TRUE.'
@@ -2143,7 +2187,7 @@ character(len=1),allocatable   :: text(:) ! array to hold file in memory
          case('doxygen')               ! convert plain text to doxygen comment blocks with some automatic markdown highlights
             G_MAN_PRINT=.true.
          case default
-         end select
+         endselect
 !-----------------------------------------------------------------------------------------------------------------------------------
    case('VERSION')
       G_outtype='version'
@@ -2171,7 +2215,7 @@ character(len=1),allocatable   :: text(:) ! array to hold file in memory
       write(*,*)'*ufpp:stop* ERROR(ai 1) - UNEXPECTED "FILTER" OPTION. FOUND:'//trim(G_source)
       write(*,*)'*ufpp:stop* ERROR(ai 2) - UNEXPECTED "FILTER" OPTION. FOUND:'//trim(sget('filter_oo'))
       call stop_ufpp('*ufpp:stop* ERROR(ai 3) - UNEXPECTED "FILTER" OPTION. FOUND:'//sget('filter_man'))
-   end select
+   endselect
 !-----------------------------------------------------------------------------------------------------------------------------------
    G_comment_count=0
 end subroutine document
@@ -2217,7 +2261,7 @@ subroutine print_comment_block() !@(#)print_comment_block(3f): format comment bl
    case(1);     !call stop_ufpp('ERROR(ufpp:print_comment_block) - VARIABLE DOES NOT EXIST:'//trim(varname))
    case(2);      call stop_ufpp('ERROR(ufpp:print_comment_block) - COMPILER DOES NOT SUPPORT ENVIRONMENT VARIABLES:'//trim(varname))
    case default; call stop_ufpp('ERROR(ufpp:print_comment_block) - UNEXPECTED STATUS VALUE '//v2s(istatus)//':'//trim(varname))
-   end select
+   endselect
 
    if(ilength.ne.0.and.G_MAN.ne.''.and.G_MAN_FILE.ne.' ')then ! if $FILTER ... -file FILE is present generate file in directory/doc
       filename=trim(varvalue)//'/doc/'
@@ -2318,7 +2362,7 @@ subroutine format_g_man()
             write(G_iout,'(a)',iostat=ios) G_MAN
             if(ios.ne.0)exit WRITEIT
             write(G_iout,'("!",131("="))')
-         end select
+         endselect
 !-----------------------------------------------------------------------------------------------------------------------------------
          exit ALL
       endblock WRITEIT
@@ -2649,7 +2693,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                       Alternatives may be specified by providing an            ',&
 '                       ASCII Decimal Equivalent (Common values are 37=%         ',&
 '                       42=* 35=# 36=$ 64=@). If the value is not numeric        ',&
-'                       it is assumed to be a literal character.                 ',&
+'                       t is assumed to be a literal character.                  ',&
 '   -html            Assumes the input file is HTML that follows the following   ',&
 '                    rules:                                                      ',&
 '                     1. Input lines are not output until a simple               ',&
@@ -2690,6 +2734,37 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                           used to support the optional compilation of          ',&
 '                           "debug" code by many Fortran compilers when          ',&
 '                           compiling fixed-format Fortran source.               ',&
+'   -debug [.false.]  Dee''d lines as controlled by the -d option are traditionally',&
+'                     used with fixed-format sources. This is an alternative to  ',&
+'                     use for free-format sources.                               ',&
+'                                                                                ',&
+'                     NOTE: It has no effect unless the environment variable     ',&
+'                     DEBUGVERSION is set to T|F, which activates the mode and   ',&
+'                     sets the default for the -d switch.                        ',&
+'                                                                                ',&
+'                     assuming DEBUGVERSION is set use the following syntax      ',&
+'                                                                                ',&
+'                        DEBUGVERSION: block                                     ',&
+'                           ! the block of debug statements                      ',&
+'                           write(*,*) ''debug @@@'',@@@                         ',&
+'                        endblock DEBUGVERSION                                   ',&
+'                                                                                ',&
+'                     These blocks are now removed when the debug mode           ',&
+'                     is .false..  If the debug mode is on they are written      ',&
+'                     with the following rules where nnn is an incrementing      ',&
+'                     count of the number of "DEBUGVERSION:" strings:            ',&
+'                                                                                ',&
+'                       o The string "DEBUGVERSION" is replaced with D_nnn       ',&
+'                       o "@@@" is replaced with nnn                             ',&
+'                       o do NOT use the string "DEBUGVERSION" except to start   ',&
+'                         or end the block of debug statements                   ',&
+'                                                                                ',&
+'                     NB.: IMPORTANT!! This means when this mode is              ',&
+'                     activated by the DEBUGVERSION environment variable         ',&
+'                     being set the string DEBUGVERSION is a magic               ',&
+'                     string and should not be used in input files unless        ',&
+'                     unless the input file starts with "$DEBUG never".          ',&
+'                                                                                ',&
 '   -version         Display version and exit                                    ',&
 '   -width n         Maximum line length of the output file. Default             ',&
 '                    is 1024. Typically used to trim fixed-format                ',&
@@ -2731,6 +2806,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '     $SHOW                                                [! comment ]          ',&
 '     $STOP {stop_value}                                   [! comment ]          ',&
 '     $SYSTEM system_command                               [! comment ]          ',&
+'     $DEBUG ON|OFF|NEVER                                  [! comment ]          ',&
 '     $UNDEFINE variable_name                              [! comment ]          ',&
 '     $WARNING  message_to_stderr                          [! comment ]          ',&
 '     $MESSAGE  message_to_stderr                          [! comment ]          ',&
@@ -3004,6 +3080,22 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                                                                                ',&
 '   Write message to stderr of form "message"                                    ',&
 '                                                                                ',&
+'   $DEBUG option                                                                ',&
+'                                                                                ',&
+'   NEVER    allows for designating a file does not contain                      ',&
+'            any "DEBUGVERSION" strings that should be processed                 ',&
+'            as conditionally inserted lines.                                    ',&
+'                                                                                ',&
+'   Even if the environment variable DEBUGVERSION is no set to T|F:              ',&
+'                                                                                ',&
+'      ON    Change the default set by the environment variable                  ',&
+'            DEBUGVERSION or set by the -debug switch                            ',&
+'            and turn debug processing on.                                       ',&
+'                                                                                ',&
+'      OFF   Change the default set by the environment variable                  ',&
+'            DEBUGVERSION or set by the -debug switch                            ',&
+'            and turn debug processing off.                                      ',&
+'                                                                                ',&
 'LIMITATIONS                                                                     ',&
 '                                                                                ',&
 '   $IF constructs can be nested up to 20 levels deep. Note that using           ',&
@@ -3117,6 +3209,89 @@ help_text=[ CHARACTER(LEN=128) :: &
 '   >AUTHOR:      John S. Urban                                                  ',&
 '   >$FILTER END                                                                 ',&
 '   >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',&
+'                                                                                ',&
+'  An example using the magic string "DEBUGVERSION" assuming the environment     ',&
+'  variable DEBUGVERSION has been set to T or F. Given the source file:          ',&
+'                                                                                ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'   module M_d                                                                   ',&
+'      implicit none                                                             ',&
+'   contains                                                                     ',&
+'      subroutine proc(r)                                                        ',&
+'         integer,intent(inout) :: r(:)                                          ',&
+'         debugversion: block                                                    ',&
+'            integer :: i                                                        ',&
+'            write(*,''(*(g0))'')"*proc* message",@@@                            ',&
+'            write(*,''("*proc* ",*(i0,"[",g0,"]"))'')(i,r(i),i=1,size(r))       ',&
+'         endblock debugversion                                                  ',&
+'         r=r**2                                                                 ',&
+'         debugversion: block                                                    ',&
+'            integer :: i                                                        ',&
+'            write(*,''("*proc* LOCATION @@@:",*(i0,"[",g0,"]"))'')(i,r(i),i=1,size(r))',&
+'         endblock debugversion                                                  ',&
+'      end subroutine proc                                                       ',&
+'   end module M_d                                                               ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'   program run                                                                  ',&
+'      use M_d                                                                   ',&
+'      integer :: arr(5)=[(i*10,i=1,size(arr))]                                  ',&
+'      DEBUGVERSION: block                                                       ',&
+'         write(*,''(a)'')''THIS IS A DEBUG VERSION''                            ',&
+'      endblock DEBUGVERSION                                                     ',&
+'      call proc(arr)                                                            ',&
+'   end program run                                                              ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'                                                                                ',&
+'  Expected output if debug mode is on                                           ',&
+'                                                                                ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'   module M_d                                                                   ',&
+'      implicit none                                                             ',&
+'   contains                                                                     ',&
+'      subroutine proc(r)                                                        ',&
+'         integer,intent(inout) :: r(:)                                          ',&
+'         DEBUG_1: block                                                         ',&
+'            integer :: i                                                        ',&
+'            write(*,''(*(g0))'')"*proc* message",1                              ',&
+'            write(*,''("*proc* ",*(i0,"[",g0,"]"))'')(i,r(i),i=1,size(r))       ',&
+'         endblock DEBUG_1                                                       ',&
+'         r=r**2                                                                 ',&
+'         DEBUG_2: block                                                         ',&
+'            integer :: i                                                        ',&
+'            write(*,''("*proc* LOCATION 2:",*(i0,"[",g0,"]"))'')(i,r(i),i=1,size(r))',&
+'         endblock DEBUG_2                                                       ',&
+'      end subroutine proc                                                       ',&
+'   end module M_d                                                               ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'   program run                                                                  ',&
+'      use M_d                                                                   ',&
+'      integer :: arr(5)=[(i*10,i=1,size(arr))]                                  ',&
+'      DEBUG_3: block                                                            ',&
+'         write(*,''(a)'')''THIS IS A DEBUG VERSION''                            ',&
+'      endblock DEBUG_3                                                          ',&
+'      call proc(arr)                                                            ',&
+'   end program run                                                              ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'                                                                                ',&
+'  Expected output if debug mode is off:                                         ',&
+'                                                                                ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'   module M_d                                                                   ',&
+'      implicit none                                                             ',&
+'   contains                                                                     ',&
+'      subroutine proc(r)                                                        ',&
+'         integer,intent(inout) :: r(:)                                          ',&
+'         r=r**2                                                                 ',&
+'      end subroutine proc                                                       ',&
+'   end module M_d                                                               ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'   program run                                                                  ',&
+'      use M_d                                                                   ',&
+'      integer :: arr(5)=[(i*10,i=1,size(arr))]                                  ',&
+'      call proc(arr)                                                            ',&
+'   end program run                                                              ',&
+'   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz                                 ',&
+'                                                                                ',&
 'AUTHOR                                                                          ',&
 '   John S. Urban                                                                ',&
 'LICENSE                                                                         ',&
@@ -3162,7 +3337,7 @@ end subroutine help_usage
 !!                        Alternatives may be specified by providing an
 !!                        ASCII Decimal Equivalent (Common values are 37=%
 !!                        42=* 35=# 36=$ 64=@). If the value is not numeric
-!!                        it is assumed to be a literal character.
+!!                        t is assumed to be a literal character.
 !!    -html            Assumes the input file is HTML that follows the following
 !!                     rules:
 !!                      1. Input lines are not output until a simple
@@ -3203,6 +3378,37 @@ end subroutine help_usage
 !!                            used to support the optional compilation of
 !!                            "debug" code by many Fortran compilers when
 !!                            compiling fixed-format Fortran source.
+!!    -debug [.false.]  Dee'd lines as controlled by the -d option are traditionally
+!!                      used with fixed-format sources. This is an alternative to
+!!                      use for free-format sources.
+!!
+!!                      NOTE: It has no effect unless the environment variable
+!!                      DEBUGVERSION is set to T|F, which activates the mode and
+!!                      sets the default for the -d switch.
+!!
+!!                      assuming DEBUGVERSION is set use the following syntax
+!!
+!!                         DEBUGVERSION: block
+!!                            ! the block of debug statements
+!!                            write(*,*) 'debug @@@',@@@
+!!                         endblock DEBUGVERSION
+!!
+!!                      These blocks are now removed when the debug mode
+!!                      is .false..  If the debug mode is on they are written
+!!                      with the following rules where nnn is an incrementing
+!!                      count of the number of "DEBUGVERSION:" strings:
+!!
+!!                        o The string "DEBUGVERSION" is replaced with D_nnn
+!!                        o "@@@" is replaced with nnn
+!!                        o do NOT use the string "DEBUGVERSION" except to start
+!!                          or end the block of debug statements
+!!
+!!                      NB.: IMPORTANT!! This means when this mode is
+!!                      activated by the DEBUGVERSION environment variable
+!!                      being set the string DEBUGVERSION is a magic
+!!                      string and should not be used in input files unless
+!!                      unless the input file starts with "$DEBUG never".
+!!
 !!    -version         Display version and exit
 !!    -width n         Maximum line length of the output file. Default
 !!                     is 1024. Typically used to trim fixed-format
@@ -3244,6 +3450,7 @@ end subroutine help_usage
 !!      $SHOW                                                [! comment ]
 !!      $STOP {stop_value}                                   [! comment ]
 !!      $SYSTEM system_command                               [! comment ]
+!!      $DEBUG ON|OFF|NEVER                                  [! comment ]
 !!      $UNDEFINE variable_name                              [! comment ]
 !!      $WARNING  message_to_stderr                          [! comment ]
 !!      $MESSAGE  message_to_stderr                          [! comment ]
@@ -3517,6 +3724,22 @@ end subroutine help_usage
 !!
 !!    Write message to stderr of form "message"
 !!
+!!    $DEBUG option
+!!
+!!    NEVER    allows for designating a file does not contain
+!!             any "DEBUGVERSION" strings that should be processed
+!!             as conditionally inserted lines.
+!!
+!!    Even if the environment variable DEBUGVERSION is no set to T|F:
+!!
+!!       ON    Change the default set by the environment variable
+!!             DEBUGVERSION or set by the -debug switch
+!!             and turn debug processing on.
+!!
+!!       OFF   Change the default set by the environment variable
+!!             DEBUGVERSION or set by the -debug switch
+!!             and turn debug processing off.
+!!
 !!##LIMITATIONS
 !!
 !!    $IF constructs can be nested up to 20 levels deep. Note that using
@@ -3631,6 +3854,89 @@ end subroutine help_usage
 !!    >AUTHOR:      John S. Urban
 !!    >$FILTER END
 !!    >$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+!!
+!!   An example using the magic string "DEBUGVERSION" assuming the environment
+!!   variable DEBUGVERSION has been set to T or F. Given the source file:
+!!
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!    module M_d
+!!       implicit none
+!!    contains
+!!       subroutine proc(r)
+!!          integer,intent(inout) :: r(:)
+!!          debugversion: block
+!!             integer :: i
+!!             write(*,'(*(g0))')"*proc* message",@@@
+!!             write(*,'("*proc* ",*(i0,"[",g0,"]"))')(i,r(i),i=1,size(r))
+!!          endblock debugversion
+!!          r=r**2
+!!          debugversion: block
+!!             integer :: i
+!!             write(*,'("*proc* LOCATION @@@:",*(i0,"[",g0,"]"))')(i,r(i),i=1,size(r))
+!!          endblock debugversion
+!!       end subroutine proc
+!!    end module M_d
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!    program run
+!!       use M_d
+!!       integer :: arr(5)=[(i*10,i=1,size(arr))]
+!!       DEBUGVERSION: block
+!!          write(*,'(a)')'THIS IS A DEBUG VERSION'
+!!       endblock DEBUGVERSION
+!!       call proc(arr)
+!!    end program run
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!
+!!   Expected output if debug mode is on
+!!
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!    module M_d
+!!       implicit none
+!!    contains
+!!       subroutine proc(r)
+!!          integer,intent(inout) :: r(:)
+!!          DEBUG_1: block
+!!             integer :: i
+!!             write(*,'(*(g0))')"*proc* message",1
+!!             write(*,'("*proc* ",*(i0,"[",g0,"]"))')(i,r(i),i=1,size(r))
+!!          endblock DEBUG_1
+!!          r=r**2
+!!          DEBUG_2: block
+!!             integer :: i
+!!             write(*,'("*proc* LOCATION 2:",*(i0,"[",g0,"]"))')(i,r(i),i=1,size(r))
+!!          endblock DEBUG_2
+!!       end subroutine proc
+!!    end module M_d
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!    program run
+!!       use M_d
+!!       integer :: arr(5)=[(i*10,i=1,size(arr))]
+!!       DEBUG_3: block
+!!          write(*,'(a)')'THIS IS A DEBUG VERSION'
+!!       endblock DEBUG_3
+!!       call proc(arr)
+!!    end program run
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!
+!!   Expected output if debug mode is off:
+!!
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!    module M_d
+!!       implicit none
+!!    contains
+!!       subroutine proc(r)
+!!          integer,intent(inout) :: r(:)
+!!          r=r**2
+!!       end subroutine proc
+!!    end module M_d
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!    program run
+!!       use M_d
+!!       integer :: arr(5)=[(i*10,i=1,size(arr))]
+!!       call proc(arr)
+!!    end program run
+!!    !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+!!
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -3652,7 +3958,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 9:58:00 PM>',&
+'@(#)COMPILED:       Thu, Dec 19th, 2019 8:03:32 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -3685,7 +3991,7 @@ character(len=*),intent(in)    :: line
          G_llwrite=.false.
       case ('<'//'/XMP><!--/FORTRAN-->','<'//'/XMP><!--/FORTRAN90-->')
          G_llwrite=.false.
-      end select
+      endselect
       if(G_llwrite)then
          if(istart.ne.0)then
             write(ERROR_UNIT,'("-->>",a)')trim(line(istart+4:))
@@ -3755,7 +4061,7 @@ integer                        :: ierr
       call stop_ufpp('*ufpp:stop* ERROR(bh) - UNEXPECTED "FILTER" VALUE. FOUND:'//trim(G_source))
       call stop_ufpp('*ufpp:stop* ERROR(bh) - UNEXPECTED "FILTER" VALUE. FOUND:'//trim(G_outtype))
 !----------------------------------------------------------------------------------------------------------------------------------=
-   end select
+   endselect
 !===================================================================================================================================
    if(G_MAN_COLLECT)then
       G_MAN=G_MAN//new_line('N')//trim(line)
@@ -3774,7 +4080,7 @@ end module M_fpp
 program ufpp                                            !@(#)ufpp(1f): preprocessor for Fortran/FORTRAN source code
 use M_kracken, only: kracken, lget, rget, iget, sget, retrev, sget
 !--------------------------------------------------------
-use M_strings, only : notabs, isdigit, switch
+use M_strings, only : notabs, isdigit, switch, replace, v2s
 use M_kracken, only: kracken_comment
 use M_fpp
 !use M_fpp,only : G_line_length,source,write,G_nestl,G_file_dictionary,G_iocount,G_io_total_lines,G_html_switch,G_system_on
@@ -3791,6 +4097,12 @@ implicit none
    character(len=G_line_length) :: out_filename=''           ! output filename, default is stdout
    character(len=1)             :: prefix                    ! directive prefix character
    character(len=1)             :: letterd                   !
+
+   logical,save                 :: indebug=.false.           ! in block of lines delimited by DEBUG//VERSION: ... DEBUG//VERSION
+   character(len=13)            :: checkdebug                ! scratch for checking environment variable DEBUG//VERSION
+   character(len=13)            :: test_for_debug_version    ! uppercase left-justified copy of input to look for DEBUG//VERSION in
+   integer                      :: istatus
+   integer                      :: idebugs=0
 
    character(len=G_line_length) :: line                      ! working copy of input line
    logical                      :: keeptabs=.false.          ! flag whether to retain tabs and carriage returns or not
@@ -3820,6 +4132,20 @@ implicit none
    call substitute(cmd,'CSTYLE',trim(G_comment_style))                  ! change command line to have correct default
                                                                         ! this would actually allow any parameter after number
 !-----------------------------------------------------------------------------------------------------------------------------------
+   call get_environment_variable('DEBUG'//'VERSION',checkdebug,status=istatus)
+   G_debug='never'
+   if(istatus.eq.0)then
+      G_debug='on'
+      checkdebug=upper(checkdebug)
+      if(checkdebug(1:1).eq.'T'.or.checkdebug(1:1).eq.'Y')then
+         cmd=trim(cmd)//' -debug .true.'
+      else
+         cmd=trim(cmd)//' -debug .false.'
+      endif
+   else
+      cmd=trim(cmd)//' -debug .false.'
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    kracken_comment='!'
    call kracken('ufpp',cmd)                                       ! define command arguments, default values and crack command line
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3828,7 +4154,7 @@ implicit none
    out_filename(:G_line_length) = sget('ufpp_o')
    if ( all(isdigit(switch(trim(sget('ufpp_prefix'))))) ) then   ! if all characters are numeric digits
       prefix = char(iget('ufpp_prefix'))                         ! assume this is an ADE
-   else
+else
       prefix = sget('ufpp_prefix')                               ! not a digit so not an ADE so assume a literal character
    endif
    G_iwidth                     = iget('ufpp_width')
@@ -3858,6 +4184,7 @@ implicit none
    G_write_what=lget('ufpp_verbose')                       ! set flag for special mode where lines with @(#) are written to stderr
    G_comment_style=lower(sget('ufpp_cstyle'))              ! allow formatting comments for particular post-processors
    G_system_on = lget('ufpp_system')                       ! allow system commands on $SYSTEM directives
+   G_build_debug_version=lget('ufpp_debug')                ! build code between DEBUG//VERSION: ... DEBUG//VERSION
 !-----------------------------------------------------------------------------------------------------------------------------------
    G_html_switch = lget('ufpp_html')                       ! set flag for special mode where input is assumed to be HTML
    if(G_html_switch)then
@@ -3891,13 +4218,51 @@ implicit none
             line(1:1)='C'
          case('e')                                         ! exclamation
             line(1:1)='!'
-         end select
-      end select
+         endselect
+      endselect
       !-----------------------------------------------------
       if (line(1:1).eq.prefix) then                        ! prefix must be in column 1 for conditional compile directive
          call cond()                                       ! process directive
       elseif (G_write) then                                ! if last conditional was true then write line
-         call write_out(trim(G_source))                    ! write data line
+         DEBUG_MODE: select case(G_debug)
+         case ('never')
+            call write_out(trim(G_source))                 ! debug option not specified so write all lines
+         case default
+            if(.not.G_build_debug_version)then
+               test_for_debug_version=upper(adjustl(G_source))
+               if(test_for_debug_version.eq.'DEBUG'//'VERSION:')then
+                  indebug=.true.
+                  cycle
+               elseif(index(upper(G_source),'DEBUG'//'VERSION').ne.0)then
+                  indebug=.false.
+                  cycle
+               endif
+            endif
+            if((.not.G_build_debug_version).and.(indebug))then ! skip lines in DEBUG//VERSION block if not a debug version
+            else
+
+               test_for_debug_version=upper(adjustl(G_source))
+               if(test_for_debug_version.eq.'DEBUG'//'VERSION:')then
+                  indebug=.true.
+                  idebugs=idebugs+1
+               elseif(index(upper(G_source),'DEBUG'//'VERSION').ne.0)then
+                  G_source=replace(G_source,'DEBUG'//'VERSION','DEBUG_'//v2s(idebugs))
+                  G_source=replace(G_source,'debug'//'version','DEBUG_'//v2s(idebugs))
+                  G_source=replace(G_source,'Debug'//'Version','DEBUG_'//v2s(idebugs))
+                  G_source=replace(G_source,'@@@',v2s(idebugs))
+                  call write_out(trim(G_source))
+                  indebug=.false.
+                  cycle
+               endif
+               if(indebug)then
+                  G_source=replace(G_source,'DEBUG'//'VERSION','DEBUG_'//v2s(idebugs))
+                  G_source=replace(G_source,'debug'//'version','DEBUG_'//v2s(idebugs))
+                  G_source=replace(G_source,'Debug'//'Version','DEBUG_'//v2s(idebugs))
+                  G_source=replace(G_source,'@@@',v2s(idebugs))
+               endif
+               call write_out(trim(G_source))               ! if building a debug version write all lines
+            endif
+        endselect DEBUG_MODE
       endif
       cycle
       !-----------------------------------------------------

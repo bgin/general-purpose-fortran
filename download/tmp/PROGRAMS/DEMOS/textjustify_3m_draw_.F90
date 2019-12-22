@@ -3,7 +3,6 @@
           use M_draw,    only  : D_BLACK,   D_WHITE
           use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
           use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-          use M_drawplus, only : page
           use iso_c_binding
           implicit none
           real :: x1=-20.0, x2=20.0, y1=-20.0, y2=20.0

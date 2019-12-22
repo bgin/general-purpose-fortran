@@ -3,7 +3,6 @@
           use M_draw,    only  : D_BLACK,   D_WHITE
           use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
           use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-          use M_drawplus, only : page
           use M_units,    only : cosd, sind
           implicit none
           integer  :: ipaws
@@ -13,7 +12,7 @@
 
              ! initialize image
              call prefsize(400,400)  ! set size before starting
-             call vinit(' ')         ! start graphics using device $M_draw_DEVICE
+             call vinit(' ')         ! start graphics using device $M_DRAW_DEVICE
              call textsize(10.0,10.0)
              call mapcolor( 0,   255,255,255 )  !white
              call mapcolor( 1,   255,  0,  0 )  !red
@@ -135,5 +134,4 @@
              call textsize(height,height)
              call drawstr(itext)
              end subroutine hershey
-
-              end program demo_M_draw
+       end program demo_M_draw

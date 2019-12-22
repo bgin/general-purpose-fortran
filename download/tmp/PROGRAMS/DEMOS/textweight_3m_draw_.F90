@@ -1,6 +1,5 @@
           program demo_textweight
           use M_draw
-          use M_drawplus, only : page
           implicit none
           real,parameter :: w=40.0
           integer        :: key

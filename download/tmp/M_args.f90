@@ -13,6 +13,7 @@
 !!    use M_args, only : get_command_arguments_string
 !!    use M_args, only : longest_command_argument
 !!    use M_args, only : debug
+!!    use M_args, only : oneline
 !!
 !!##DESCRIPTION
 !!    Use the M_arguments(3fp) module template in the following example
@@ -40,7 +41,7 @@
 !!
 !!    !program demo_M_args
 !!    module M_arguments
-!!    use M_args,    only : get_namelist, print_dictionary, unnamed
+!!    use M_args,    only : get_namelist, print_dictionary, unnamed, oneline
 !!
 !!    ! >>> CHANGE THIS
 !!    ! declare and initialize a namelist. Letter_ denotes an uppercase short command keyword
@@ -58,10 +59,11 @@
 !!       integer :: ios
 !!       character(len=255) :: message ! use for I/O error messages
 !!       character(len=:),allocatable :: readme  ! stores updated namelist
-!!       character(len=10000) :: hold_namelist
+!!       character(len=10000) :: hold_namelist(60)
+!!          hold_namelist=''
 !!          write(hold_namelist,nml=args,iostat=ios,iomsg=message)
 !!          if(ios.eq.0)then
-!!             readme=get_namelist(hold_namelist)
+!!             readme=get_namelist(oneline(hold_namelist))
 !!             read(readme,nml=args,iostat=ios,iomsg=message)
 !!          endif
 !!          if(ios.ne.0)then
@@ -104,7 +106,7 @@
 module M_args
 use M_journal, only : journal
 use M_list,          only : insert, locate, replace, remove
-use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>OUTPUT_UNIT    ! access computing environment
+use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>INPUT_UNIT    ! access computing environment
 use M_strings,       only : isupper, lower, quote, upper
 private
 !===================================================================================================================================
@@ -113,6 +115,7 @@ public  :: get_command_arguments_string
 public  :: longest_command_argument
 public  :: get_namelist
 public  :: print_dictionary
+public  :: oneline
 public debug
 public unnamed
 
@@ -497,20 +500,20 @@ end subroutine get_command_arguments_string
 !!     ! routine must be in a contained routine or directly in the body of
 !!     ! the routine that declares the NAMELIST. get_args(3f) should not
 !!     ! need changed except for possibly the length of HOLD_NAMELIST
-!!     use M_args,    only : get_namelist, print_dictionary
+!!     use M_args,    only : get_namelist, print_dictionary, oneline
 !!     !
 !!     integer :: ios, i
 !!     character(len=255) :: message ! use for I/O error messages
 !!     character(len=:),allocatable :: readme  ! stores updated namelist
 !!     ! make big enough for all of namelist
-!!     character(len=10000) :: hold_namelist
+!!     character(len=10000) :: hold_namelist(60)
 !!     ! the routine needs a copy of the options to determine what values
 !!     ! are character and logical versus numeric
 !!        write(hold_namelist,nml=args,iostat=ios,iomsg=message)
 !!        if(ios.eq.0)then
 !!           ! pass in the namelist and get an updated copy that includes
 !!           ! values specified on the command line
-!!           readme=get_namelist(hold_namelist)
+!!           readme=get_namelist(oneline(hold_namelist))
 !!           ! read the updated namelist to update the values
 !!           ! in the namelist group
 !!           read(readme,nml=args,iostat=ios,iomsg=message)
@@ -655,7 +658,7 @@ end subroutine get_command_arguments_string
 !!
 !!    When using one of the Unix-like command line forms note that
 !!    (subject to change) the following variations from other common
-!!    commnd-line parsers:
+!!    command-line parsers:
 !!
 !!       o duplicate keywords are replaced by the rightmost entry
 !!
@@ -1502,6 +1505,23 @@ end subroutine dictionary_to_namelist
 !!        write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
 !!     endif
 !!     end program demo_get_namelist
+!!
+!!    Sample output
+!!
+!!    Calling the sample program with an unknown
+!!    parameter produces the following:
+!!
+!!       $ ./print_dictionary -A
+!!       UNKNOWN SHORT KEYWORD: -A
+!!       KEYWORD             PRESENT  VALUE
+!!       z                   F        [3]
+!!       y                   F        [2]
+!!       x                   F        [1]
+!!       help                F        [F]
+!!       h                   F        [F]
+!!
+!!       STOP 2
+!!
 !!##AUTHOR
 !!    John S. Urban, 2019
 !!##LICENSE
@@ -1748,6 +1768,24 @@ keyword_value=dummy(istart:iend)
 end subroutine splitit
 
 end subroutine namelist_to_dictionary
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+pure function oneline(str) result (string)
+
+character(len=*),parameter::ident_7="&
+&@(#)M_strings::oneline(3f): append an array of character variables with space separator into a single CHARACTER variable"
+
+character(len=*),intent(in)          :: str(:)
+character(len=:),allocatable         :: string
+integer                              :: i
+character(len=1),parameter           :: sep=' '
+
+   string=''
+   do i = 1,size(str)
+      string=string//trim(str(i))//sep
+   enddo
+end function oneline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================

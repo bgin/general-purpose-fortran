@@ -1,6 +1,5 @@
              program demo_system_utime
              use M_system, only : system_utime, system_perror
-             use M_time, only   : d2u
              implicit none
              character(len=4096) :: pathname
              integer             :: times(2)

@@ -73,7 +73,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <P>
 M_draw is a portable public-domain device-independent graphics library
 intended for being called from Fortran that is based on VOGLE (from
-the The University of Melbourne) that is loosely based on the Silicon
+the University of Melbourne) that is loosely based on the Silicon
 Graphics Iris GL library. It was also partly inspired by the DIGS
 library developed at the U.S. Naval Academy under the guidance of
 Prof David Rogers.
@@ -146,7 +146,7 @@ fashion. Simple hidden line removal is also available via polygon
 backfacing. Access to hardware text and double buffering of drawings
 depends on the driver.
 <P>
-M_draw is based on VOGLE, which is callable from C, Fortran, and Pascal;
+M_draw is callable from C and Fortran, and Pascal;
 but M_draw is only supported in Fortran (the C components are being converted
 to Fortran).
 <P>
@@ -317,7 +317,7 @@ Call device flush or syncronisation routine
 <TR><TD colspan=2>
 On some devices (particularly X11) considerable speedups in display
 can be achieved by not flushing each graphics primitive call to the
-actual display until necessary. VOGL automatically delays flushing in
+actual display until necessary. M_draw automatically delays flushing in
 the following cases:
 </TD></TR>
 <TR><TD width=6%>&nbsp;</TD><TD>
@@ -456,10 +456,21 @@ Specify perspective viewing pyramid
 Specify a perspective viewing pyramid
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-<P>
-<P>
+<A name=>
+
+    <H4>&nbsp; &nbsp; PROJECTION AND VIEWPORT ROUTINES</H4>
+</A>
 <BLOCKQUOTE>
-All the projection routines define a new transformation matrix, and
+<TABLE cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B>subroutine page (left, right, bottom, top)</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+create a window of the specified size and then
+set the viewport to the largest viewport with
+that aspect so that output acts much like a
+page of paper of the specified size without
+distortion.
+</TD></TR>
+<TR></TR></TABLE>All the projection routines define a new transformation matrix, and
 consequently the world units. Parallel projections are defined by
 ortho or ortho2. Perspective projections can be defined by perspective
 and window.
@@ -870,7 +881,7 @@ A markers font "markers" is also provided for doing markers - you need
 to have centertext mode on for this to give sensible results when placing
 the markers.
 <P>
-If the environment variable "M_draw_FONTPATH" is set M_draw looks for the software
+If the environment variable "M_DRAW_FONTPATH" is set M_draw looks for the software
 fonts in the directory given by this value.
 <P>
 the default font is futura.l
@@ -991,6 +1002,10 @@ Load the object in the file filename as object number n.
 <B></B><B>saveobj</B>(n, filename) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 Save object number n into file filename. Does NOT save objects called inside object n.
 </TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>invokeobj</B>(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+push environment and do a transformation and then pop environment
+</TD></TR>
 <TR></TR></TABLE>Objects are graphical entities created by the drawing routines called
 between makeobj and closeobj. Objects may be called from within other
 objects. When an object is created most of the calculations required
@@ -1048,6 +1063,21 @@ Gets the current graphics position
 Gets the current screen graphics position in screen coords (<B>-1</B> to 1)
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; GENERAL STACK ROUTINES</H4>
+</A>
+<BLOCKQUOTE>
+<TABLE cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B>subroutine </B><B>pop</B>() </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+pop
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>subroutine </B><B>push</B>() </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+push
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
 <A name=3>
 
      <H3>EXAMPLE</H3>
@@ -1062,7 +1092,6 @@ Sample program:
    use M_draw,    only  : D_BLACK,   D_WHITE
    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-   use M_drawplus, only : page
    use M_units,    only : cosd, sind
    implicit none
    integer  :: ipaws
@@ -1072,7 +1101,7 @@ Sample program:
 <P>
       ! initialize image
       call prefsize(400,400)  ! set size before starting
-      call vinit(&#146; &#146;)         ! start graphics using device $M_draw_DEVICE
+      call vinit(&#146; &#146;)         ! start graphics using device $M_DRAW_DEVICE
       call textsize(10.0,10.0)
       call mapcolor( 0,   255,255,255 )  !white
       call mapcolor( 1,   255,  0,  0 )  !red
@@ -1194,11 +1223,8 @@ Sample program:
       call textsize(height,height)
       call drawstr(itext)
       end subroutine hershey
-<P>
 </PRE>
-<BLOCKQUOTE>
 end program demo_M_draw
-</BLOCKQUOTE>
 </BLOCKQUOTE>
 <A name=4>
 
@@ -1231,7 +1257,7 @@ Exactly what attributes should and should not be reset with a
 <B>vnewdev</B>(3f) is questionable.
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_draw (3)</TD> <TD align=right width=33%><I>December 15, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 7ea03d15-6a33-4496-bf84-f9bae63cbb46 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>M_draw (3)</TD> <TD align=right width=33%><I>December 22, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 5a3c3f4b-7754-44f4-9ab0-ea7f840e6123 using man macros.</FONT>
 <br><br><center><img src="images/M_draw.3m_draw.gif"></center>
 </div>
 </div>

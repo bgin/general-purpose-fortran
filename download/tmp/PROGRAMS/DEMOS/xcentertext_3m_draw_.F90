@@ -1,6 +1,5 @@
           program demo_xcentertext
           use M_draw
-          use M_drawplus, only : page
           implicit none
           real    :: x1, x2, y1, y2
           real    :: scl, ax, bx

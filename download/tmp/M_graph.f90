@@ -1206,7 +1206,6 @@ end subroutine color_
 subroutine graph_init(xmax0,ymax0,vpx,vpy,zom)
 !     FORTRAN-77 VERSION:   DGL JULY, 1987
 use M_draw
-use M_drawplus, only : page
 
 character(len=*),parameter::ident_2="@(#)M_graph::graph_init(3f): initialize the longlib graphics plot package"
 

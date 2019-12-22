@@ -111,73 +111,35 @@ Which <I>axis</I> to perform rotation about. Allowed values are &#146;x&#146;,
 </A>
 <BLOCKQUOTE>
 Sample usage
-program demo_rotate
-use M_drawplus, only : draw_interpret
-<B>character</B>(len=:),allocatable :: <B>draw_cmds</B>(:)
-<BLOCKQUOTE>
-<TABLE cellpadding=3><!-- tsb: Sample usage
- -->
-<TR></TR><TR></TR>
-<TR valign=top><TD colspan=2>
-<B>draw_cmds=[ </B><B>character</B>(len=128) :: <!-- Consumed .TP -->
-<BR>
-<B>&#146;# set up display</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;prefsize 300 300;prefposition 200 10;vinit X11;</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;set SIZE=1.2</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;color 3;clear;color 2; ortho2 </B><B>-SIZE</B> SIZE <B>-SIZE</B> SIZE </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;set X=</B><B>-0.75</B> Y=0.75 </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;# create an object to repeatedly draw</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;makeobj 1</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;polyfill .true.;color 1; rect 0 0 X Y</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;polyfill .false.;linewidth 200;color 2 ;rect 0 0 X Y</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;closeobj</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;# draw opbject, rotating coordinate system between instantiations</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;callobj 1</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;rotate 45 z</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;callobj 1</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;rotate 45 z</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;callobj 1</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;circle 0 0 X/3</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>&#146;getkey;vexit</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
-<B>write</B>(*,&#146;(a)&#146;)draw_cmds
-call <B>draw_interpret</B>(draw_cmds,delimiters=&#146;;&#146;)
-end program demo_rotate
-</TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
+<P>
+<PRE>
+   program demo_rotate
+   use M_drawplus, only : draw_interpret
+   character(len=:),allocatable :: draw_cmds(:)
+   draw_cmds=[ character(len=128) ::                                      &
+   &#146;# set up display                                                    &#146;,&
+   &#146;prefsize 300 300;prefposition 200 10;vinit X11;                     &#146;,&
+   &#146;set SIZE=1.2                                                        &#146;,&
+   &#146;color 3;clear;color 2; ortho2 -SIZE SIZE -SIZE SIZE                 &#146;,&
+   &#146;set X=-0.75 Y=0.75                                                  &#146;,&
+   &#146;# create an object to repeatedly draw                               &#146;,&
+   &#146;makeobj 1                                                           &#146;,&
+   &#146;polyfill .true.;color 1; rect 0 0 X Y                               &#146;,&
+   &#146;polyfill .false.;linewidth 200;color 2 ;rect 0 0 X Y                &#146;,&
+   &#146;closeobj                                                            &#146;,&
+   &#146;# draw opbject, rotating coordinate system between instantiations   &#146;,&
+   &#146;callobj 1                                                           &#146;,&
+   &#146;rotate 45 z                                                         &#146;,&
+   &#146;callobj 1                                                           &#146;,&
+   &#146;rotate 45 z                                                         &#146;,&
+   &#146;callobj 1                                                           &#146;,&
+   &#146;circle 0 0 X/3                                                      &#146;,&
+   &#146;getkey;vexit                                                        &#146;]
+   write(*,&#146;(a)&#146;)draw_cmds
+   call draw_interpret(draw_cmds,delimiters=&#146;;&#146;)
+   end program demo_rotate
+<P>
+</PRE>
 </BLOCKQUOTE>
 <A name=5>
 
@@ -188,7 +150,7 @@ end program demo_rotate
 translate, pushmatrix, popmatrix, scale
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>rotate (3)</TD> <TD align=right width=33%><I>December 15, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 83dcd4b4-3890-433f-a746-b983d7140a2a using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>rotate (3)</TD> <TD align=right width=33%><I>December 22, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from c0823c8a-ab9a-4613-8635-2cba32e71df6 using man macros.</FONT>
 <br><br><center><img src="images/rotate.3m_draw.gif"></center>
 </div>
 </div>

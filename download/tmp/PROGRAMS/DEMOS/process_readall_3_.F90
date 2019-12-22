@@ -1,4 +1,4 @@
-             program demo_process_readall
+            program demo_process_readall
              use M_process ,only: process_readall
              use M_strings ,only: split
              implicit none

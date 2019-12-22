@@ -4,7 +4,7 @@
           integer :: i
           integer :: ipaws
           call prefsize(300,300)
-          call vinit(' ') ! start graphics using device $M_draw_DEVICE
+          call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
           call ortho2(0.0, 20.0, 0.0, 20.0)
           call color(D_MAGENTA)
           do i=1,20

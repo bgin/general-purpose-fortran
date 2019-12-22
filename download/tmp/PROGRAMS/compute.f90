@@ -14,7 +14,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 'SYNOPSIS                                                                        ',&
 '       compute [STRING] [ -verbose]| [ -help| -version]                         ',&
 'DESCRIPTION                                                                     ',&
-'       Given any expression call the JUCALC(3f) calculator function and         ',&
+'       Given any expression call the CALCULATOR(3f) calculator function and     ',&
 '       evaluate it. If no expression is present on the command line, read       ',&
 '       expressions from stdin until a line composed of a period(".") or         ',&
 '       end of data is encountered.                                              ',&
@@ -31,7 +31,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '       --trail FILENAME  record actions on a trail file.                        ',&
 'SEE  ALSO                                                                       ',&
 '       See the man(1) page for M_calculator(3fm) for a more detailed            ',&
-'       description of the jucalc(3f) routine.                                   ',&
+'       description of the CALCULATOR(3f) routine.                               ',&
 'EXAMPLES                                                                        ',&
 '       Sample commands:                                                         ',&
 '                                                                                ',&
@@ -84,7 +84,7 @@ end subroutine help_usage
 !!
 !!        compute [STRING] [ -verbose]| [ -help| -version]
 !!##DESCRIPTION
-!!        Given any expression call the JUCALC(3f) calculator function and
+!!        Given any expression call the CALCULATOR(3f) calculator function and
 !!        evaluate it. If no expression is present on the command line, read
 !!        expressions from stdin until a line composed of a period(".") or
 !!        end of data is encountered.
@@ -101,7 +101,7 @@ end subroutine help_usage
 !!        --trail FILENAME  record actions on a trail file.
 !!##SEE  ALSO
 !!        See the man(1) page for M_calculator(3fm) for a more detailed
-!!        description of the jucalc(3f) routine.
+!!        description of the CALCULATOR(3f) routine.
 !!##EXAMPLES
 !!
 !!        Sample commands:
@@ -154,11 +154,11 @@ if(l_version)then
 help_text=[ CHARACTER(LEN=128) :: &
 '@(#)PRODUCT:        GPF (General Purpose Fortran) utilities and examples>',&
 '@(#)PROGRAM:        compute(1f)>',&
-'@(#)DESCRIPTION:    line mode calculator program (that calls jucalc(3f))>',&
+'@(#)DESCRIPTION:    line mode calculator program (that calls CALCULATOR(3f))>',&
 '@(#)VERSION:        23.1 20160618>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 9:53:26 PM>',&
+'@(#)COMPILED:       Sun, Dec 22nd, 2019 10:55:42 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -167,7 +167,7 @@ end subroutine help_version
 !-----------------------------------------------------------------------------------------------------------------------------------
 program compute
 use M_kracken,    only : kracken, sget, lget
-use M_calculator, only : jucalc,iclen_calc
+use M_calculator, only : calculator,iclen_calc
 use M_history,    only : redo
 use M_io,         only : read_line
 use M_journal,    only : journal
@@ -188,10 +188,10 @@ integer                      :: ierr=0
 logical                      :: verbose
 integer                      :: in=5
 integer                      :: ios
-   call jucalc('ownmode(1)',outlin,event,rvalue,ierr)  ! specify user-supplied juown1 routine contains user routines for calculator
+   call calculator('ownmode(1)',outlin,event,rvalue,ierr)     ! specify user-supplied routine contains extra routines for calculator
    call kracken('compute',' -oo -help .f. -version .f. -verbose .f. -trail') ! define and crack command line arguments
-   call help_usage(lget('compute_help'))               ! process -help switch
-   call help_version(lget('compute_version'))          ! process -version switch
+   call help_usage(lget('compute_help'))                      ! process -help switch
+   call help_version(lget('compute_version'))                 ! process -version switch
 
    verbose=lget('compute_verbose')                     ! test if -verbose switch is present on command line
    trailfile=sget('compute_trail')
@@ -241,7 +241,7 @@ integer                      :: ios
    endif
 contains
    subroutine processit
-      call jucalc(line,outlin,event,rvalue,ierr)
+      call calculator(line,outlin,event,rvalue,ierr)
       select case(ierr)                                                             ! several different meanings to the error flag
        case(-1);     call journal('sc','error===>',event)                           ! an error has occurred
        case(0)

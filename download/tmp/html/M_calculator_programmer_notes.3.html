@@ -66,21 +66,21 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <h2>public convenience routines in M_calculator(3f) module</h2>
 
 <ul>
-<li><em>JUCALCX </em>
+<li><em>EXPRESSION </em>
     returns the results of evaluating an expression but in addition
     it displays error messages and other information. It calls
-    JUCALC to evaluate the expression.
+    CALCULATOR(3f) to evaluate the expression.
 <li><em>STRGAR2 </em>
     returns an array of numeric values from a list of expressions
-    by separating the expressions and calling jucalcx.
+    by separating the expressions and calling expression.
 <li><em>INUM0   </em>
-    returns an integer value from an expression by calling jucalcx.
+    returns an integer value from an expression by calling expression.
 <li><em>RNUM0   </em>
     is a function that
-    returns a REAL value from an expression by calling jucalcx.
+    returns a REAL value from an expression by calling expression.
 <li><em>SNUM0   </em>
     is a function that
-    returns a CHARACTER value from an expression by calling jucalcx.
+    returns a CHARACTER value from an expression by calling expression.
 </ul>
 </dd>
 
@@ -203,7 +203,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <p>
    A special routine can be added to allow add your own
    functions for a particular program that you don't want in the main
-   JUCALC() utility code. It will be called when any function
+   CALCULATOR(3f) utility code. It will be called when any function
    name is not recognized and the expression 'ownmode(1)' has previously
    been entered into the calculator. The
    <a href="Example.html">example program</a> shows a fully functional

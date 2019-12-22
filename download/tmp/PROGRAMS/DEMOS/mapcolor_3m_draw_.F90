@@ -4,7 +4,6 @@
           !   or only has a small color table (a frame in this program takes
           !   at least SLICES*RINGS colors to produce accurately).
           use M_draw
-          use M_drawplus, only : page
           use m_color, only : hue
           use M_units, only : cosd, sind
           implicit none
@@ -18,7 +17,7 @@
              integer              :: istart, iend
              character(len=20)    :: device
              call prefsize(BOX,BOX)
-             call vinit(' ') ! start graphics using device $M_draw_DEVICE
+             call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
              call polyfill(.true.)
              call color(D_BLACK)
              call clear()

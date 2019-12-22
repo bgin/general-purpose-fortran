@@ -3,7 +3,7 @@
             implicit none
             real :: X,Y
             call prefsize(20,20)
-            call vinit(' ') ! start graphics using device $M_draw_DEVICE
+            call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
             call ortho2(-100.0,100.0,-100.0,100.0)
             call move2(0.0,0.0)
             call draw2(96.5,98.333)

@@ -3,7 +3,6 @@
           use M_draw,    only  : D_BLACK,   D_WHITE
           use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
           use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-          use M_drawplus, only : page
           implicit none
           real    :: x1, x2, y1, y2
           real    :: scl, ax, bx

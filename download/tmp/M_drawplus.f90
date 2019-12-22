@@ -4,8 +4,8 @@
 !!    (LICENSE:MIT)
 !!##SYNOPSIS
 !!
-!!    use M_drawplus, only : page ,invokeobj ,spirograph ,call_draw ,draw_interpret
-!!    use M_drawplus, only : arrowhead ,plain_rect ,rdpnt ,rdbox ,barcode ,pop ,push
+!!    use M_drawplus, only : spirograph ,call_draw ,draw_interpret
+!!    use M_drawplus, only : arrowhead ,plain_rect ,rdpnt ,rdbox ,barcode
 !!    use M_drawplus, only : uconic ,ellipse ,uarc ,polyline2, seefont
 !!    use M_drawplus, only : smoot, ismoo,ismoo1,ismoo2,ismoo3,perin
 !!    use M_drawplus, only : ismoo,ismoo1,ismoo2,ismoo3, perin
@@ -35,13 +35,7 @@
 !!
 !!    PROJECTION AND VIEWPORT ROUTINES
 !!
-!!        subroutine page (left, right, bottom, top)
-!!
 !!    MATRIX STACK ROUTINES
-!!
-!!        subroutine pop
-!!
-!!        subroutine push
 !!
 !!    VIEWPOINT ROUTINES
 !!
@@ -85,8 +79,6 @@
 !!
 !!    OBJECT ROUTINES
 !!
-!!        subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
-!!
 !!    DOUBLE BUFFERING
 !!
 !!    POSITION ROUTINES
@@ -115,8 +107,6 @@ use M_journal, only : journal
 implicit none
 private
 
-public  :: page
-public  :: invokeobj
 public  :: spirograph
 public  :: call_draw
 public  :: draw_interpret
@@ -126,8 +116,6 @@ public  :: rdpnt
 public  :: rdbox
 
 public  :: barcode
-public  :: pop
-public  :: push
 public  :: uconic
 public  :: ellipse
 public  :: uarc
@@ -143,12 +131,6 @@ private :: arc2
 interface polyline2
    module procedure :: polyline2_i, polyline2_r
 end interface polyline2
-
-interface page
-   module procedure :: biggest_ortho2
-   module procedure :: page_rri
-end interface page
-
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
@@ -354,71 +336,6 @@ end subroutine plain_rect
 !===================================================================================================================================
 !>
 !!##NAME
-!!       page_rri(3fp) - [M_drawplus] - new world window with viewport set to largest area with same aspect ratio
-!!       (LICENSE:MIT)
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine page_rri(xsize,ysize,icolor)
-!!
-!!    integer,intent(in)          :: xsize
-!!    integer,intent(in)          :: ysize
-!!    integer,intent(in)          :: icolor
-!!
-!!##DESCRIPTION
-!!    Given a horizontal size and vertical size and color set the window to
-!!    the rectangle defined by the corner points <0.0,0.0> and <xsize,ysize>
-!!    and set the viewport to the largest viewport on the display with the
-!!    same aspect ratio and start a new page with the specified background
-!!    color if background color is supported on the device.
-!!
-!!##OPTIONS
-!!    XSIZE    X size of requested window
-!!    YSIZE    Y size of requested window
-!!    ICOLOR   Color to set background.
-!!
-!!##EXAMPLE
-!!
-!!   Sample program:
-!!
-!!      program demo_page_rri
-!!      use M_draw
-!!      use M_drawplus, only : polyline2, page
-!!      implicit none
-!!      integer :: ipaws
-!!      call prefsize(300,300)
-!!      call vinit(' ')
-!!      call page(8.5,11.0,3)
-!!      call color(2)
-!!      call linewidth(100)
-!!      call circle(8.5/0.0,11.0/0.0,8.5/2.0)
-!!      call color(1)
-!!      call polyline2([0.0,0,0,8.5,11.0]
-!!      call polyline2([8.5,0,0,0.0,11.0]
-!!      ipaws=getkey()
-!!      call vexit()
-!!      end
-!!      program demo_page_rri
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    MIT License
-!===================================================================================================================================
-subroutine page_rri(xsize,ysize,icolor)
-real,intent(in)             :: xsize
-real,intent(in)             :: ysize
-integer                     :: icolor
-   call page(0.0,xsize,0.0,ysize)
-   call pushattributes()
-      call color(icolor)
-      call clear()
-   call popattributes()
-end subroutine page_rri
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-!>
-!!##NAME
 !!       polyline2(3f) - [M_drawplus] - draw an unclosed polyline in the XY plane
 !!       (LICENSE:MIT)
 !!
@@ -531,165 +448,6 @@ end subroutine polyline2_r
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
-!>
-!!##NAME
-!!    invokeobj(3f) - [M_drawplus] invoke object with specified transformations
-!!    (LICENSE:MIT)
-!!
-!!##SYNOPSIS
-!!
-!!       subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
-!!       real,intent(in)    :: xt,yt,zt
-!!       real,intent(in)    :: xs,ys,zs
-!!       real,intent(in)    :: xr,yr,zr
-!!       integer,intent(in) :: iobject
-!!
-!!##DESCRIPTION
-!!    save and restore the coordinate system while invoking an object with
-!!    specified translation, rotation, and scaling.
-!!
-!!##OPTIONS
-!!    xt,yt,zt    linear transforms
-!!    xs,ys,zs    scaling
-!!    xr,yr,zr    rotation in degrees
-!!    iobject     object to invoke
-!!##EXAMPLE
-!!
-!!  Sample program
-!!
-!!    program demo_invokeobj
-!!    use M_draw
-!!    use M_drawplus, only : invokeobj
-!!    implicit none
-!!    real :: a, angle, step
-!!    integer :: i, idum
-!!    ! set window size
-!!       call prefsize(700,700)
-!!       call prefposition( 0, 0)
-!!       call vinit ('X11')
-!!       a=1.0
-!!    ! make an object to draw ( a disk with an arrow on it)
-!!       call makeobj(12345)
-!!       call polyfill(.TRUE.)
-!!       call color( 5)
-!!       call circle( 0.0, 0.0, a)
-!!       call color( 3)
-!!       call makepoly()
-!!       call move2( 0.00*a, 0.80*a)
-!!       call draw2( 0.50*a, 0.30*a)
-!!       call draw2( 0.20*a, 0.30*a)
-!!       call draw2( 0.20*a,-0.80*a)
-!!       call draw2(-0.20*a,-0.80*a)
-!!       call draw2(-0.20*a, 0.30*a)
-!!       call draw2(-0.50*a, 0.30*a)
-!!       call draw2( 0.00*a, 0.80*a)
-!!       call closepoly()
-!!       call polyfill(.FALSE.)
-!!       call color(7)
-!!       call linewidth(20)
-!!       call circleprecision(200)
-!!       call circle( 0.0, 0.0, a)
-!!       call vflush()
-!!       call closeobj()
-!!    ! draw the disk invoking different rotation
-!!       ANGLE=0.0
-!!       STEP=0.4
-!!       idum=backbuffer()
-!!       idum=-1
-!!       if(idum.ne.-1)then
-!!          do i=1,int(360/STEP*10)
-!!             idum=backbuffer()
-!!             call clear()
-!!             call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345)
-!!             ANGLE=ANGLE+STEP
-!!             call swapbuffers()
-!!          enddo
-!!       else
-!!          ANGLE=45.0
-!!          call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345)
-!!          idum=getkey()
-!!       endif
-!!       call vexit()
-!!    end program demo_invokeobj
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    MIT License
-!===================================================================================================================================
-subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
-
-character(len=*),parameter::ident_3="&
-&@(#)M_drawplus::invokeobj(3f): invoke object with specified transformation applied and then restored"
-
-real,intent(in)    :: xt,yt,zt  ! linear transforms
-real,intent(in)    :: xs,ys,zs  ! scaling
-real,intent(in)    :: xr,yr,zr  ! rotation
-integer,intent(in) :: iobject
-
-   call pushmatrix()
-   call translate(xt,yt,zt)
-   call scale(xs,ys,zs)
-   call rotate(xr,'x')
-   call rotate(yr,'y')
-   call rotate(zr,'z')
-   call callobj(iobject)
-   call popmatrix()
-
-end subroutine invokeobj
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------------------------------------------------------------------------------------------------------------!
-!>
-!!##NAME
-!!    pop(3f) - [M_drawplus] call popviewport(), popmatrix(), popattributes()
-!!    (LICENSE:MIT)
-!!##SYNOPSIS
-!!
-!!    subroutine pop()
-!!##DESCRIPTION
-!!    call popviewport(), popmatrix(), popattributes()
-!!##EXAMPLE
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    MIT License
-!===================================================================================================================================
-subroutine pop()
-
-character(len=*),parameter::ident_4="@(#)M_drawplus::pop(3f): call popviewport(), popmatrix(), popattributes()"
-
-   call popviewport()
-   call popmatrix()
-   call popattributes()
-end subroutine pop
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------------------------------------------------------------------------------------------------------------!
-!>
-!!##NAME
-!!    push(3f) - [M_drawplus] call pushviewport(), pushmatrix(), pushattributes()
-!!    (LICENSE:MIT)
-!!##SYNOPSIS
-!!
-!!     subroutine push()
-!!##DESCRIPTION
-!!    call pushattributes(), pushmatrix(), pushviewport()
-!!##EXAMPLE
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    MIT License
-!===================================================================================================================================
-subroutine push()
-
-character(len=*),parameter::ident_5="@(#)M_drawplus::push(3f): call pushattributes(), pushmatrix(), pushviewport()"
-
-   call pushattributes()
-   call pushmatrix()
-   call pushviewport()
-end subroutine push
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
@@ -757,7 +515,7 @@ subroutine uarc(x,y,angle)
 !-----------------------------------------------------------------------------------------------------------------------------------
 use M_draw
 
-character(len=*),parameter::ident_6="@(#)M_drawplus::create circular arc, leaving CP at end of arc"
+character(len=*),parameter::ident_3="@(#)M_drawplus::create circular arc, leaving CP at end of arc"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -825,7 +583,7 @@ real :: ynow
 subroutine arc2(x, y, radius, startang, endang)
 use M_draw
 
-character(len=*),parameter::ident_7="&
+character(len=*),parameter::ident_4="&
 &@(#)M_drawplus::arc2(3f): Like M_draw(3f) arc(3f) routine without move at end so can be in a polygon"
 
 real,intent(in) :: x
@@ -864,181 +622,6 @@ real     :: ynow
       call draw2(cx, cy)
    enddo
 end subroutine arc2
-!----------------------------------------------------------------------------------------------------------------------------------!
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!----------------------------------------------------------------------------------------------------------------------------------!
-!>
-!!##NAME
-!!    page(3f) - [M_drawplus] set window into largest viewport available
-!!    (LICENSE:MIT)
-!!
-!!##SYNOPSIS
-!!
-!!    subroutine page(xsmall,xlarge,ysmall,ylarge)
-!!    real, intent=(in) :: xsmall
-!!    real, intent=(in) :: xlarge
-!!    real, intent=(in) :: ysmall
-!!    real, intent=(in) :: ylarge
-!!
-!!    subroutine page(xsize,ysize,icolor)
-!!    real, intent=(in)    :: xsize
-!!    real, intent=(in)    :: ysize
-!!    integer, intent=(in) :: icolor
-!!
-!!##DESCRIPTION
-!!    FORM SUBROUTINE PAGE(XSMALL,XLARGE,YSMALL,YLARGE)
-!!
-!!    Set the window to the rectangle defined by the corner points
-!!    <xsmall,ysmall> and <xlarge,ylarge>.
-!!
-!!    Also, given the window size, and assuming a one-to-one correspondence
-!!    of window units (ie. an "x-unit" is as long as a "y-unit"), find the
-!!    largest area on the display surface that has the same aspect ratio,
-!!    and set the viewport to it.
-!!
-!!    FORM SUBROUTINE PAGE(XSIZE,YSIZE,ICOLOR)
-!!
-!!    Size the window to the rectangle defined by the corner points
-!!    <0.0,0.0> and <xsize,ysize> and the viewport to the largest centered
-!!    area that has the same aspect ratio, and set the background color to
-!!    the value mapped to color ICOLOR.
-!!
-!!##EXAMPLE
-!!
-!!   Sample program:
-!!
-!!    program demo_page
-!!    use M_draw
-!!    use M_drawplus, only : page
-!!    use M_draw,    only  : D_BLACK,   D_WHITE
-!!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
-!!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    implicit none
-!!    integer :: ipaws
-!!    real,parameter :: radius=25.0
-!!       call prefsize(600,600)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
-!!       call page(-radius, radius, -radius, radius)
-!!       call linewidth(200)
-!!       call clear()
-!!       call color(D_BLUE)
-!!       call move2(-radius, -radius)
-!!       call draw2(-radius, radius)
-!!       call draw2(radius, radius)
-!!       call draw2(radius, -radius)
-!!       call draw2(-radius, -radius)
-!!       call color(D_CYAN)
-!!       call circle(0.0,0.0,radius)
-!!       call vflush()
-!!       ipaws=getkey()
-!!       call vexit()
-!!    end program demo_page
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    MIT License
-!===================================================================================================================================
-subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
-
-character(len=*),parameter::ident_8="@(#)M_drawplus::page(3f): given a window size, find and set to largest accommodating viewport"
-
-real,intent(in)  :: xsmall
-real,intent(in)  :: xlarge
-real,intent(in)  :: ysmall
-real,intent(in)  :: ylarge
-real             :: rps
-real             :: spr
-real             :: tryx
-real             :: tryy
-real             :: vhigh
-real             :: vwide
-real             :: xdelta
-real             :: xmax
-real             :: xmin
-real             :: xsplit
-real             :: ydelta
-real             :: ymax
-real             :: ymin
-real             :: ysplit
-!----------------------------------------------------------------------------------------------------------------------------------!
-      call getdisplaysize(vwide,vhigh) !get screen size in terms of raster units
-!----------------------------------------------------------------------------------------------------------------------------------!
-!     the default viewport is in "screen units", and goes from -1,-1 to 1,1
-!     all new viewports are defined in terms of this original viewport, which
-!     is 2 units wide and 2 units tall.
-!----------------------------------------------------------------------------------------------------------------------------------!
-      rps=min(vwide,vhigh)/2.0         ! number of rasters per screen unit
-      spr=2.0/min(vwide,vhigh)         ! number of screen units per raster
-      tryx=vwide                       ! make as wide as display as a trial fit
-      if(xlarge-xsmall.ne.0.0)then
-         tryy=vwide*(ylarge-ysmall)/(xlarge-xsmall) ! calculate required height
-      else                             ! ERROR: do something desperate
-         call journal('*page* window has a zero X dimension')
-         tryy=vhigh
-      endif
-      if(tryy.gt.vhigh)then ! if required height too great, fit with y maximized
-         tryy=vhigh
-         if(ylarge-ysmall.ne.0.0)then
-            tryx=vhigh*(xlarge-xsmall)/(ylarge-ysmall)
-         else                          ! ERROR: do something desperate
-            call journal('*page* window has a zero Y dimension')
-            tryx=vwide
-         endif
-      endif
-!----------------------------------------------------------------------------------------------------------------------------------!
-!   tryx and tryy are now the required viewport in raster units. The raster
-!   units now need converted to screen units to be used in viewport procedure
-!
-!   some explanation of physical viewport units is required:
-!   assuming maximizing the required aspect ratio in the available drawing area,
-!   and that the original viewport "origin" 0,0 stays in its original position,
-!   and that the original -1,1,-1,1 viewport is the largest square that can fit
-!   on the display, bottom left justified.
-!   the screen coordinate system is a right-handed Cartesian coordinate system
-!   with positive x to the viewer's right, positive y up.
-!
-!   at this point,
-!    vwide=width in rasters of entire display
-!    vhigh=height in rasters of entire display
-!   assuming a square raster
-!     tryx is desired width in rasters
-!     tryy is desired height in rasters
-!----------------------------------------------------------------------------------------------------------------------------------!
-      xdelta=tryx-2.0*rps  ! need this many more rasters in x direction from 1,1
-      ydelta=tryy-2.0*rps  ! need this many more rasters in y direction from 1,1
-      ! to center (to left bottom justify, make xsplit and ysplit 0)
-      xsplit=(vwide-tryx)/2.0
-      ysplit=(vhigh-tryy)/2.0
-      xmax=1+xdelta*spr+xsplit*spr
-      ymax=1+ydelta*spr+ysplit*spr
-      xmin=-1+xsplit*spr
-      ymin=-1+ysplit*spr
-!----------------------------------------------------------------------------------------------------------------------------------!
-!      write(*,*)'max. display area is', vwide, ' by ',vhigh,' rasters'
-!      write(*,*)'shape is ',xsmall,xlarge,ysmall,ylarge
-!      write(*,*)'attempting to get a viewport of ',tryx,' by ',tryy
-!      write(*,*)'needed more rasters, ',xdelta,' by ',ydelta
-!      write(*,*)'resulted in viewport ',-1,xmax,-1,ymax
-!----------------------------------------------------------------------------------------------------------------------------------!
-      if(xmin.ne.xmax.and.ymin.ne.ymax)then
-         call viewport(xmin,xmax,ymin,ymax)
-      else
-         call journal('*page* window has zero dimension,no viewport set')
-      endif
-!     to prevent clipping lines that are right on edge of window fudge a bit
-      !bugx=.001*(xlarge-xsmall)
-      !bugy=.001*(ylarge-ysmall)
-      !xsmall1=xsmall-bugx
-      !xlarge1=xlarge+bugx
-      !ysmall1=ysmall-bugy
-      !ylarge1=ylarge+bugy
-      !call ortho2(xsmall1,xlarge1,ysmall1,ylarge1)
-      if(xsmall.ne.xlarge.and.ysmall.ne.ylarge)then
-         call ortho2(xsmall,xlarge,ysmall,ylarge)
-      else    ! ERROR: do something desperate
-         call journal('*page* window has zero dimension, no window set')
-      endif
-end subroutine biggest_ortho2
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
@@ -1088,7 +671,7 @@ use M_draw
 use ISO_C_BINDING
 implicit none
 
-character(len=*),parameter::ident_9="@(#)M_drawplus::m_draw:ellipse(3f):: draw ellipse or elliptical arc"
+character(len=*),parameter::ident_5="@(#)M_drawplus::m_draw:ellipse(3f):: draw ellipse or elliptical arc"
 
 real,intent(in)    :: xpage
 real,intent(in)    :: ypage
@@ -1333,7 +916,7 @@ use M_draw
 use ISO_C_BINDING
 use m_units, only: d2r
 
-character(len=*),parameter::ident_10="@(#)M_drawplus::m_draw:uconic(3f): general conic sections"
+character(len=*),parameter::ident_6="@(#)M_drawplus::m_draw:uconic(3f): general conic sections"
 
 real :: an
 real :: angdel
@@ -1609,7 +1192,7 @@ end subroutine uconic
 subroutine barcode(XCORNER_IN,YCORNER_IN,XSMALL_IN,XLARGE_IN,YSIZE_IN,STRING)
 implicit none
 
-character(len=*),parameter::ident_11="@(#)M_drawplus::barcode(3f): draw 3-of-9 bar code"
+character(len=*),parameter::ident_7="@(#)M_drawplus::barcode(3f): draw 3-of-9 bar code"
 
 ! void barcode( float xcorner, float ycorner, float xsmall, float xlarge, float ysize, char *string);
    interface
@@ -1900,7 +1483,7 @@ use M_draw
 !!implicit real   (a-h,o-z)
 implicit none
 
-character(len=*),parameter::ident_12="@(#)M_drawplus::call_draw(3f): parse most M_draw(3fm) routines positionally"
+character(len=*),parameter::ident_8="@(#)M_drawplus::call_draw(3f): parse most M_draw(3fm) routines positionally"
 
 ! parse most M_draw(3fm) routines positionally
 ! simplistic, does not handle quoted parameters directly, just parses on space
@@ -2340,7 +1923,7 @@ logical function iflogic(string)
 use M_calculator, only : inum0
 use M_strings,    only : lower
 
-character(len=*),parameter::ident_13="@(#)M_drawplus::iflogic(3fp): evaluate string in calculator and return false if value is zero"
+character(len=*),parameter::ident_9="@(#)M_drawplus::iflogic(3fp): evaluate string in calculator and return false if value is zero"
 
 character(len=*)           :: string
    select case(lower(string))
@@ -2414,7 +1997,7 @@ subroutine spirograph(xcenter,ycenter,sunr0,planet0,offset0,radius,ilines,ang,an
 !===================================================================================================================================
 use M_draw
 
-character(len=*),parameter::ident_14="@(#)M_drawplus::spirograph(3f): draw hypocycloidal curves"
+character(len=*),parameter::ident_10="@(#)M_drawplus::spirograph(3f): draw hypocycloidal curves"
 
 real,parameter :: PI= 3.14159265358979323846264338327950288419716939937510
 real,intent(in)    :: xcenter, ycenter      ! center of curve
@@ -2512,7 +2095,7 @@ use M_draw
 
 !! public :: ismoo,ismoo1,ismoo2,ismoo3,perin
 
-character(len=*),parameter::ident_15="&
+character(len=*),parameter::ident_11="&
 &@(#)M_drawplus::smoot(3f): draw smooth curve thru set up points using spline-fitting technique"
 
 !
@@ -2843,7 +2426,7 @@ real :: y3
 subroutine reflx(vx1,vy1,vx2,vy2)
 implicit none
 
-character(len=*),parameter::ident_16="@(#)M_drawplus::reflx(3fp): internal routine called by SMOOT"
+character(len=*),parameter::ident_12="@(#)M_drawplus::reflx(3fp): internal routine called by SMOOT"
 
 real,intent(in)  :: vx1
 real,intent(in)  :: vy1
@@ -2868,7 +2451,7 @@ end subroutine reflx
 subroutine plot_in(x,y,lc)
 use M_draw
 
-character(len=*),parameter::ident_17="@(#)M_drawplus::plot_in(3fp): internal routine called by SMOOT"
+character(len=*),parameter::ident_13="@(#)M_drawplus::plot_in(3fp): internal routine called by SMOOT"
 
 real,intent(in) :: x
 real,intent(in) :: y
@@ -2969,7 +2552,7 @@ use M_journal, only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_18="@(#)M_drawplus::rdbox(3f): reads two points and outline defined box and return points"
+character(len=*),parameter::ident_14="@(#)M_drawplus::rdbox(3f): reads two points and outline defined box and return points"
 
 real,intent(out)    :: returnx1, returny1
 real,intent(out)    :: returnx2, returny2
@@ -3086,7 +2669,7 @@ use M_journal,  only : journal
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_19="@(#)M_drawplus::rdpnt(3f): reads coordinates of point locator clicked at"
+character(len=*),parameter::ident_15="@(#)M_drawplus::rdpnt(3f): reads coordinates of point locator clicked at"
 
 ! see M_DRAW locator(3f) description for more details
 real,intent(in)     :: oldx, oldy
@@ -3192,7 +2775,7 @@ use m_calculator,      only : dnum0
 use M_draw
 implicit none
 
-character(len=*),parameter::ident_20="@(#)display sample page of a font"
+character(len=*),parameter::ident_16="@(#)display sample page of a font"
 
 character(len=*),intent(in)   :: fontin
 character(len=80)             :: line
@@ -3514,12 +3097,9 @@ implicit none
 !! setup
    call test_arrowhead()
    call test_barcode()
-   call test_biggest_ortho2()
    call test_call_draw()
    call test_draw_interpret()
    call test_ellipse()
-   call test_invokeobj()
-   call test_page_rri()
    call test_plain_rect()
    call test_polyline2_i()
    call test_polyline2_r()
@@ -3553,15 +3133,6 @@ implicit none
    call unit_check_done('barcode',msg='')
 end subroutine test_barcode
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_biggest_ortho2()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-implicit none
-   call unit_check_start('biggest_ortho2',msg='')
-   !!call unit_check('biggest_ortho2', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('biggest_ortho2',msg='')
-end subroutine test_biggest_ortho2
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_call_draw()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
@@ -3589,24 +3160,6 @@ implicit none
    call unit_check_done('ellipse',msg='')
 end subroutine test_ellipse
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_invokeobj()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-implicit none
-   call unit_check_start('invokeobj',msg='')
-   !!call unit_check('invokeobj', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('invokeobj',msg='')
-end subroutine test_invokeobj
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_page_rri()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-implicit none
-   call unit_check_start('page_rri',msg='')
-   !!call unit_check('page_rri', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('page_rri',msg='')
-end subroutine test_page_rri
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_plain_rect()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
@@ -3633,24 +3186,6 @@ implicit none
    !!call unit_check('polyline2_r', 0.eq.0, msg=msg('checking',100))
    call unit_check_done('polyline2_r',msg='')
 end subroutine test_polyline2_r
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_pop()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-implicit none
-   call unit_check_start('pop',msg='')
-   !!call unit_check('pop', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('pop',msg='')
-end subroutine test_pop
-!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-subroutine test_push()
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
-implicit none
-   call unit_check_start('push',msg='')
-   !!call unit_check('push', 0.eq.0, msg=msg('checking',100))
-   call unit_check_done('push',msg='')
-end subroutine test_push
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_rdbox()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg

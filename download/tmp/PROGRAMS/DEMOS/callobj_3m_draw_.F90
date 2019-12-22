@@ -1,6 +1,5 @@
           program demo_callobj
              use M_draw
-             use M_drawplus, only : page
              implicit none
              integer :: ipaws
              integer :: ix, iy
@@ -9,7 +8,7 @@
 
              ! set up graphics area
              call prefsize(680,680)
-             call vinit(' ') ! start graphics using device $M_draw_DEVICE
+             call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
              !! Background color
              !call color(D_WHITE)
              !! Page setup

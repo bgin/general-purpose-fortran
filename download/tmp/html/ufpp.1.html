@@ -128,7 +128,7 @@ The default directive prefix character is "$".
 Alternatives may be specified by providing an
 ASCII Decimal Equivalent (Common values are 37=%
 42=* 35=# 36=$ 64=@). If the value is not numeric
-it is assumed to be a literal character.
+t is assumed to be a literal character.
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B></B><B>-html</B> </TD><TD valign=bottom>
@@ -205,11 +205,66 @@ used to support the optional compilation of
 compiling fixed-format Fortran source.
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B></B><B>-version</B> </TD></TR><TR valign=top><TD width=4%>&nbsp;</TD><TD>
+<B></B><B>-debug</B> [.false.] </TD></TR><TR valign=top><TD width=4%>&nbsp;</TD><TD>
+Dee&#146;d lines as controlled by the <B>-d</B> option are traditionally
+used with fixed-format sources. This is an alternative to
+use for free-format sources.
+<P>
+NOTE: It has no effect unless the environment variable
+DEBUGVERSION is set to T|F, which activates the mode and
+sets the default for the <B>-d</B> switch.
+<P>
+assuming DEBUGVERSION is set use the following syntax
+<P>
+<PRE>
+                        DEBUGVERSION: block
+                           ! the block of debug statements
+                           write(*,*) &#146;debug @@@&#146;,@@@
+                        endblock DEBUGVERSION
+<P>
+</PRE>
+These blocks are now removed when the debug mode
+<TABLE width=100% cellpadding=3><!-- tsb: These blocks are now removed when the debug mode
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>is .false..</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+If the debug mode is on they are written
+with the following rules where nnn is an incrementing
+count of the number of "DEBUGVERSION:" strings:
+<TABLE width=100% cellpadding=3><!-- tsb: If the debug mode is on they are written
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+The string "DEBUGVERSION" is replaced with D_nnn
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+"@@@" is replaced with nnn
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+do NOT use the string "DEBUGVERSION" except to start
+or end the block of debug statements
+</TD></TR>
+<TR></TR></TABLE><!-- .PP -->
+</TD></TR>
+<TR></TR></TABLE>NB.: IMPORTANT!! This means when this mode is
+activated by the DEBUGVERSION environment variable
+being set the string DEBUGVERSION is a magic
+string and should not be used in input files unless
+unless the input file starts with "$DEBUG never".
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>-version</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
 Display version and exit
 </TD></TR>
 <TR valign=top><TD colspan=2>
-<B></B><B>-width</B> <I>n</I> </TD></TR><TR valign=top><TD width=4%>&nbsp;</TD><TD>
+<B></B><B>-width</B> <I>n</I> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
 Maximum line length of the output file. Default
 is 1024. Typically used to trim fixed-format
 FORTRAN code that contains comments or "ident"
@@ -258,6 +313,7 @@ The syntax for the control lines is as follows:
      $SHOW                                                [! comment ]
      $STOP {stop_value}                                   [! comment ]
      $SYSTEM system_command                               [! comment ]
+     $DEBUG ON|OFF|NEVER                                  [! comment ]
      $UNDEFINE variable_name                              [! comment ]
      $WARNING  message_to_stderr                          [! comment ]
      $MESSAGE  message_to_stderr                          [! comment ]
@@ -568,6 +624,29 @@ Write message to stderr of form "WARNING message"
 $MESSAGE message
 <P>
 Write message to stderr of form "message"
+<P>
+$DEBUG option
+<TABLE cellpadding=3><!-- tsb: $DEBUG option
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>NEVER</B> </TD><TD valign=bottom>
+allows for designating a file does not contain
+any "DEBUGVERSION" strings that should be processed
+as conditionally inserted lines.
+</TD></TR>
+<TR></TR></TABLE>Even if the environment variable DEBUGVERSION is no set to T|F:
+<P>
+<PRE>
+      ON    Change the default set by the environment variable
+            DEBUGVERSION or set by the -debug switch
+            and turn debug processing on.
+<P>
+      OFF   Change the default set by the environment variable
+            DEBUGVERSION or set by the -debug switch
+            and turn debug processing off.
+<P>
+</PRE>
 </BLOCKQUOTE>
 <A name=4>
 
@@ -743,7 +822,98 @@ Basic conditionals:
    &gt;AUTHOR:      John S. Urban
    &gt;$FILTER END
    &gt;$!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+<P>
 </PRE>
+<BLOCKQUOTE>
+An example using the magic string "DEBUGVERSION" assuming the environment
+variable DEBUGVERSION has been set to T or F. Given the source file:
+<P>
+<PRE>
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+   module M_d
+      implicit none
+   contains
+      subroutine proc(r)
+         integer,intent(inout) :: r(:)
+         debugversion: block
+            integer :: i
+            write(*,&#146;(*(g0))&#146;)"*proc* message",@@@
+            write(*,&#146;("*proc* ",*(i0,"[",g0,"]"))&#146;)(i,r(i),i=1,size(r))
+         endblock debugversion
+         r=r**2
+         debugversion: block
+            integer :: i
+            write(*,&#146;("*proc* LOCATION @@@:",*(i0,"[",g0,"]"))&#146;)(i,r(i),i=1,size(r))
+         endblock debugversion
+      end subroutine proc
+   end module M_d
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+   program run
+      use M_d
+      integer :: arr(5)=[(i*10,i=1,size(arr))]
+      DEBUGVERSION: block
+         write(*,&#146;(a)&#146;)&#146;THIS IS A DEBUG VERSION&#146;
+      endblock DEBUGVERSION
+      call proc(arr)
+   end program run
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+<P>
+</PRE>
+Expected output if debug mode is on
+<P>
+<PRE>
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+   module M_d
+      implicit none
+   contains
+      subroutine proc(r)
+         integer,intent(inout) :: r(:)
+         DEBUG_1: block
+            integer :: i
+            write(*,&#146;(*(g0))&#146;)"*proc* message",1
+            write(*,&#146;("*proc* ",*(i0,"[",g0,"]"))&#146;)(i,r(i),i=1,size(r))
+         endblock DEBUG_1
+         r=r**2
+         DEBUG_2: block
+            integer :: i
+            write(*,&#146;("*proc* LOCATION 2:",*(i0,"[",g0,"]"))&#146;)(i,r(i),i=1,size(r))
+         endblock DEBUG_2
+      end subroutine proc
+   end module M_d
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+   program run
+      use M_d
+      integer :: arr(5)=[(i*10,i=1,size(arr))]
+      DEBUG_3: block
+         write(*,&#146;(a)&#146;)&#146;THIS IS A DEBUG VERSION&#146;
+      endblock DEBUG_3
+      call proc(arr)
+   end program run
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+<P>
+</PRE>
+Expected output if debug mode is off:
+<P>
+<PRE>
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+   module M_d
+      implicit none
+   contains
+      subroutine proc(r)
+         integer,intent(inout) :: r(:)
+         r=r**2
+      end subroutine proc
+   end module M_d
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+   program run
+      use M_d
+      integer :: arr(5)=[(i*10,i=1,size(arr))]
+      call proc(arr)
+   end program run
+   !zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+<P>
+</PRE>
+</BLOCKQUOTE>
 <A name=6>
 
      <H3>AUTHOR</H3>
@@ -761,7 +931,7 @@ John S. Urban
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ufpp (1)</TD> <TD align=right width=33%><I>December 15, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from d222c1a3-08f5-4dd0-9916-9232fea2ad00 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>ufpp (1)</TD> <TD align=right width=33%><I>December 22, 2019</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 8936d52e-60a0-4508-a739-2136fdba7fb6 using man macros.</FONT>
 <br><br><center><img src="images/ufpp.1.gif"></center>
 </div>
 </div>

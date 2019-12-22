@@ -1256,7 +1256,7 @@ end function system_access
 !!
 !!        To use system_utime(3f) the effective user ID of the process must
 !!        match the owner of the file, or the process has to have write
-!!        permission to the file or has appropriate privileges,
+!!        permission to the file or have appropriate privileges,
 !!
 !!##OPTIONS
 !!        times     If present, the values will be interpreted as the access
@@ -1321,7 +1321,6 @@ end function system_access
 !!
 !!       program demo_system_utime
 !!       use M_system, only : system_utime, system_perror
-!!       use M_time, only   : d2u
 !!       implicit none
 !!       character(len=4096) :: pathname
 !!       integer             :: times(2)
@@ -1776,11 +1775,13 @@ end function system_isreg
 !!        The islnk(3f) function checks if path is a path to a link.
 !!
 !!##OPTIONS
-!!        path   a character string representing a link pathname. Trailing spaces are ignored.
+!!    path          a character string representing a link
+!!                  pathname. Trailing spaces are ignored.
 !!
 !!##RETURN VALUE
-!!        The system_islnk() function should always be successful and no
-!!        return value is reserved to indicate an error.
+!!    system_islnk  The system_islnk() function should always be
+!!                  successful and no return value is reserved to
+!!                  indicate an error.
 !!
 !!##ERRORS
 !!        No errors are defined.
@@ -1929,25 +1930,25 @@ end function system_isblk
 !!##DESCRIPTION
 !!        The chown(3f) function changes owner and group of a file
 !!
-!!        The path argument points to a pathname naming a file. The
-!!        user ID and group ID of the named file shall be set to the numeric
-!!        values contained in owner and group, respectively.
+!!       The path argument points to a pathname naming a file. The
+!!       user ID and group ID of the named file shall be set to the numeric
+!!       values contained in owner and group, respectively.
 !!
-!!        Only processes with an effective user ID equal to the user ID of
-!!        the file or with appropriate privileges may change the ownership
-!!        of a file.
+!!       Only processes with an effective user ID equal to the user ID of
+!!       the file or with appropriate privileges may change the ownership
+!!       of a file.
 !!
 !!##OPTIONS
-!!        path   a character string representing a file pathname.
-!!               Trailing spaces are ignored.
-!!        owner  UID of owner that ownership is to be changed to
-!!        group  GID of group that ownership is to be changed to
+!!       path   a character string representing a file pathname.
+!!              Trailing spaces are ignored.
+!!       owner  UID of owner that ownership is to be changed to
+!!       group  GID of group that ownership is to be changed to
 !!
 !!##RETURN VALUE
-!!        The system_chown() function should return zero (0) if successful.
-!!        Otherwise, these functions shall return    1 and set errno to
-!!        indicate the error. If    1 is returned, no changes are made in
-!!        the user ID and group ID of the file.
+!!       The system_chown(3f) function should return zero 0 if successful.
+!!       Otherwise, these functions shall return 1 and set errno to
+!!       indicate the error. If 1 is returned, no changes are made in
+!!       the user ID and group ID of the file.
 !!
 !!##EXAMPLE
 !!
@@ -4426,12 +4427,13 @@ end subroutine system_gethostname
 !!
 !!##DESCRIPTION
 !!
-!!    The system_getlogin() function returns a string containing the user
+!!    The system_getlogin(3f) function returns a string containing the user
 !!    name associated by the login activity with the controlling terminal
 !!    of the current process. Otherwise, it returns a null string and sets
 !!    errno to indicate the error.
 !!
 !!    Three names associated with the current process can be determined:
+!!
 !!       o system_getpwuid(system_getuid()) returns the name associated with the real user ID of the process.
 !!       o system_getpwuid(system_geteuid()) returns the name associated with the effective user ID of the process
 !!       o system_getlogin() returns the name associated with the current login activity
@@ -4864,9 +4866,9 @@ end function C2F_string
 !!    character(len=*),parameter :: fmt_date='year-month-day hour:minute:second'
 !!
 !!    integer(kind=int64) :: &
-!!       Device_ID,           Inode_number,          File_mode,                  Number_of_links,  Owner_uid,         &
-!!       Owner_gid,           Directory_device,      File_size,                  Last_access,      Last_modification, &
-!!       Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated
+!!     Device_ID, Inode_number,     File_mode, Number_of_links, Owner_uid,        &
+!!     Owner_gid, Directory_device, File_size, Last_access,     Last_modification,&
+!!     Last_status_change,  Preferred_block_size,  Number_of_blocks_allocated
 !!    equivalence                                    &
 !!       ( buff(1)  , Device_ID                  ) , &
 !!       ( buff(2)  , Inode_number               ) , &
@@ -4885,19 +4887,32 @@ end function C2F_string
 !!    CALL SYSTEM_STAT("/etc/hosts", buff, status)
 !!
 !!    if (status == 0) then
-!!       write (*, FMT="('Device ID(hex/decimal):',      T30, Z0,'h/',I0,'d')") buff(1),buff(1)
-!!       write (*, FMT="('Inode number:',                T30, I0)") buff(2)
-!!       write (*, FMT="('File mode (octal):',           T30, O19)") buff(3)
-!!       write (*, FMT="('Number of links:',             T30, I0)") buff(4)
-!!       write (*, FMT="('Owner''s uid/username:',       T30, I0,1x, A)") buff(5), system_getpwuid(buff(5))
-!!       write (*, FMT="('Owner''s gid/group:',          T30, I0,1x, A)") buff(6), system_getgrgid(buff(6))
-!!       write (*, FMT="('Device where located:',        T30, I0)") buff(7)
-!!       write (*, FMT="('File size(bytes):',            T30, I0)") buff(8)
-!!       write (*, FMT="('Last access time:',            T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
-!!       write (*, FMT="('Last modification time:',      T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date)
-!!       write (*, FMT="('Last status change time:',     T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date)
-!!       write (*, FMT="('Preferred block size(bytes):', T30, I0)") buff(12)
-!!       write (*, FMT="('No. of blocks allocated:',     T30, I0)") buff(13)
+!!       write (*, FMT="('Device ID(hex/decimal):',      &
+!!       & T30, Z0,'h/',I0,'d')") buff(1),buff(1)
+!!       write (*, FMT="('Inode number:',                &
+!!       & T30, I0)") buff(2)
+!!       write (*, FMT="('File mode (octal):',           &
+!!       & T30, O19)") buff(3)
+!!       write (*, FMT="('Number of links:',             &
+!!       & T30, I0)") buff(4)
+!!       write (*, FMT="('Owner''s uid/username:',       &
+!!       & T30, I0,1x, A)") buff(5), system_getpwuid(buff(5))
+!!       write (*, FMT="('Owner''s gid/group:',          &
+!!       & T30, I0,1x, A)") buff(6), system_getgrgid(buff(6))
+!!       write (*, FMT="('Device where located:',        &
+!!       & T30, I0)") buff(7)
+!!       write (*, FMT="('File size(bytes):',            &
+!!       & T30, I0)") buff(8)
+!!       write (*, FMT="('Last access time:',            &
+!!       & T30, I0,1x, A)") buff(9), fmtdate(u2d(int(buff(9))),fmt_date)
+!!       write (*, FMT="('Last modification time:',      &
+!!       & T30, I0,1x, A)") buff(10),fmtdate(u2d(int(buff(10))),fmt_date)
+!!       write (*, FMT="('Last status change time:',     &
+!!       & T30, I0,1x, A)") buff(11),fmtdate(u2d(int(buff(11))),fmt_date)
+!!       write (*, FMT="('Preferred block size(bytes):', &
+!!       & T30, I0)") buff(12)
+!!       write (*, FMT="('No. of blocks allocated:',     &
+!!       & T30, I0)") buff(13)
 !!    endif
 !!
 !!    end program demo_system_stat
@@ -6269,8 +6284,6 @@ subroutine test_system_memcpy()
 end subroutine test_system_memcpy
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_system_utime()
-
-use M_time, only  : d2u
 character(len=4096) :: pathname
 integer             :: times(2)
 integer             :: i

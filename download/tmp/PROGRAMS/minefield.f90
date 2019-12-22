@@ -155,7 +155,6 @@ end subroutine help_version
 subroutine minefield(irows0,icols0,switch) ! draw a minesweep program
 ! Created: 19971231
 use M_draw
-use M_drawplus, only : page
 character(len=*),parameter::ident_2="@(#)draw a minesweep game that quits on 'q'"
 !      storage
 !        -1 to -9 for unexposed and 0 to 8 adjacent bombs

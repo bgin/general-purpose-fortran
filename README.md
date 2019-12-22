@@ -131,16 +131,12 @@ Calculate and display date and time values
 ### expression parsers
 
 [M\_CALCULATOR(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_calculator.3.html),
-[M\_CALCULATOR_PLUS(3fm)](http://www.urbanjost.altervista.org/LIBRARY/libGPF/download/tmp/html/M_calculator_plus.3.html)
 
 M\_calculator(3fm) is a module for evaluating expressions. The primary routine
 is JUCALC(3f). JUCALC(3f) evaluates simple numeric and string expressions.
 This allows your input to use expressions and variable names instead of simple
 values. You will have to comment out or supply some of the functions called,
 depending on how f2003-compliant your compiler is.
-
-M\_calculator_plus(3fm) is a supplemental module containing convenience
-routines for using M\_calculator(3fm).
 
 ### command line recall and editing
 

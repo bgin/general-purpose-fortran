@@ -8,7 +8,7 @@
             integer :: ipaws
                ! make first file with one size
                call prefsize(60*2,40*2)
-               call vinit(' ') ! start graphics using device $M_draw_DEVICE
+               call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
                call picture()
                ipaws=getkey()
                call vexit()

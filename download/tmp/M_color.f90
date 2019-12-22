@@ -13,7 +13,7 @@
 !! <dl>
 !! <!-- ======================================================================= -->
 !! <dt> <a name="M_COLOR">NAME</a></dt> <dd>
-!! <em>M_COLOR(3f)</em>&nbsp;-&nbsp;[M_color]&nbsp;a&nbsp;Fortran&nbsp;module&nbsp;that&nbsp;lets&nbsp;you&nbsp;convert&nbsp;between&nbsp;common&nbsp;color&nbsp;models
+!! <em>M_COLOR(3f)</em>&nbsp;-&nbsp;[M_color] &nbsp;a&nbsp;Fortran&nbsp;module&nbsp;that&nbsp;lets&nbsp;you&nbsp;convert&nbsp;between&nbsp;common&nbsp;color&nbsp;models
 !! (LICENSE:PD)
 !! </dd>
 !! <!-- ======================================================================= -->

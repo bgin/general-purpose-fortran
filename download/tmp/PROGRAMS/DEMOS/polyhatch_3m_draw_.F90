@@ -1,6 +1,6 @@
           program demo_polyhatch
           use M_draw
-          use M_drawplus, only : page, spirograph
+          use M_drawplus, only : spirograph
           use M_draw,    only  : D_BLACK,   D_WHITE
           use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
           use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN

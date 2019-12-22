@@ -39,7 +39,6 @@
 program huedisk
 !(LICENSE:PD)
 use M_draw
-use M_drawplus, only : page
 use M_kracken,  only : kracken, lget
 implicit none
 real              :: lightness

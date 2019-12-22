@@ -7,7 +7,7 @@
 !!
 !!    M_draw is a portable public-domain device-independent graphics library
 !!    intended for being called from Fortran that is based on VOGLE (from
-!!    the The University of Melbourne) that is loosely based on the Silicon
+!!    the University of Melbourne) that is loosely based on the Silicon
 !!    Graphics Iris GL library. It was also partly inspired by the DIGS
 !!    library developed at the U.S. Naval Academy under the guidance of
 !!    Prof David Rogers.
@@ -36,7 +36,7 @@
 !!    backfacing. Access to hardware text and double buffering of drawings
 !!    depends on the driver.
 !!
-!!    M_draw is based on VOGLE, which is callable from C, Fortran, and Pascal;
+!!    M_draw is callable from C and Fortran, and Pascal;
 !!    but M_draw is only supported in Fortran (the C components are being converted
 !!    to Fortran).
 !!
@@ -107,7 +107,7 @@
 !!
 !!    On some devices (particularly X11) considerable speedups in display
 !!    can be achieved by not flushing each graphics primitive call to the
-!!    actual display until necessary. VOGL automatically delays flushing in
+!!    actual display until necessary. M_draw automatically delays flushing in
 !!    the following cases:
 !!
 !!      * Within a callobj() call.
@@ -156,6 +156,12 @@
 !!    perspective(fov, aspect, near, far)         Specify perspective viewing pyramid
 !!    window(left, right, bot, top, near,far)     Specify a perspective viewing pyramid
 !!
+!!    PROJECTION AND VIEWPORT ROUTINES
+!!    subroutine page (left, right, bottom, top)  create a window of the specified size and then
+!!                                                set the viewport to the largest viewport with
+!!                                                that aspect so that output acts much like a
+!!                                                page of paper of the specified size without
+!!                                                distortion.
 !!
 !!    All the projection routines define a new transformation matrix, and
 !!    consequently the world units. Parallel projections are defined by
@@ -320,7 +326,7 @@
 !!    to have centertext mode on for this to give sensible results when placing
 !!    the markers.
 !!
-!!    If the environment variable "M_draw_FONTPATH" is set M_draw looks for the software
+!!    If the environment variable "M_DRAW_FONTPATH" is set M_draw looks for the software
 !!    fonts in the directory given by this value.
 !!
 !!    the default font is futura.l
@@ -367,6 +373,8 @@
 !!    loadobj(n, filename)        Load the object in the file filename as object number n.
 !!    saveobj(n, filename)        Save object number n into file filename. Does NOT save objects called inside object n.
 !!
+!!    invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)  push environment and do a transformation and then pop environment
+!!
 !!    Objects are graphical entities created by the drawing routines called
 !!    between makeobj and closeobj. Objects may be called from within other
 !!    objects. When an object is created most of the calculations required
@@ -394,6 +402,10 @@
 !!    getgp2(x, y)                Gets the current graphics position
 !!    sgetgp2(x, y)               Gets the current screen graphics position in screen coords (-1 to 1)
 !!
+!!    GENERAL STACK ROUTINES
+!!    subroutine pop()            pop
+!!    subroutine push()           push
+!!
 !!##EXAMPLE
 !!
 !!   Sample program:
@@ -403,7 +415,6 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : page
 !!    use M_units,    only : cosd, sind
 !!    implicit none
 !!    integer  :: ipaws
@@ -413,7 +424,7 @@
 !!
 !!       ! initialize image
 !!       call prefsize(400,400)  ! set size before starting
-!!       call vinit(' ')         ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ')         ! start graphics using device $M_DRAW_DEVICE
 !!       call textsize(10.0,10.0)
 !!       call mapcolor( 0,   255,255,255 )  !white
 !!       call mapcolor( 1,   255,  0,  0 )  !red
@@ -535,7 +546,6 @@
 !!       call textsize(height,height)
 !!       call drawstr(itext)
 !!       end subroutine hershey
-!!
 !!    end program demo_M_draw
 !!
 !!##BUGS
@@ -597,7 +607,7 @@
 !!      call prefsize(60,40)
 !!      call prefposition(100,100)
 !!
-!!      call vinit(' ')         ! start graphics using device $M_draw_DEVICE
+!!      call vinit(' ')         ! start graphics using device $M_DRAW_DEVICE
 !!      call ortho2(-300.0,300.0,-200.0,200.0)
 !!      call color(D_BLACK)
 !!      call clear()
@@ -644,7 +654,7 @@
 !!      integer :: ipaws
 !!         ! make first file with one size
 !!         call prefsize(60*2,40*2)
-!!         call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!         call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!         call picture()
 !!         ipaws=getkey()
 !!         call vexit()
@@ -770,10 +780,10 @@
 !!        mswin - IBM PC Microsoft Windows.
 !!
 !!     Note 2 : If device is a NULL or a null string the value
-!!          of the environment variable "M_draw_DEVICE" is taken as the
+!!          of the environment variable "M_DRAW_DEVICE" is taken as the
 !!          device type to be opened. The format of the variable is
 !!
-!!             M_draw_DEVICE [ xsize [ ysize [ xoffset [ yoffset ] ] ]
+!!             M_DRAW_DEVICE [ xsize [ ysize [ xoffset [ yoffset ] ] ]
 !!
 !!          That is, if present xsize and ysize will be used
 !!          in a call to prefsize(3c), and xoffset and yoffset will
@@ -1029,16 +1039,16 @@
 !!
 !!       The special file names are
 !!
-!!         * - is standard output
-!!         * + is standard error
-!!         * |command will create a pipe to "command"
+!!         -  is standard output
+!!         +  is standard error
+!!         |  command will create a pipe to "command"
 !!
 !!       If the open of the file fails, an attempt is made to append to file
-!!       "M_draw_OUTPUT". If this fails, standard output is used.
+!!       "M_DRAW_OUTPUT". If this fails, standard output is used.
 !!
 !!       When vinit() is called if voutput() has not been called then the
-!!       environment variable M_draw_OUTPUT is checked and if it is defined and not a
-!!       null string then voutput() is called with the M_draw_OUTPUT variable's value.
+!!       environment variable M_DRAW_OUTPUT is checked and if it is defined and not a
+!!       null string then voutput() is called with the M_DRAW_OUTPUT variable's value.
 !!
 !!       A common use of the |command option is to automatically call programs
 !!       that convert PPM files to other common pixmap formats or converts the GNU
@@ -1199,7 +1209,7 @@
 !!      implicit none
 !!      integer :: ipaws
 !!      call prefsize(60,40)
-!!      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!      call ortho2(-300.0,300.0,-200.0,200.0)
 !!      call color(D_BLACK)
 !!      call clear()
@@ -1238,7 +1248,7 @@
 !!      use M_draw, only: move2, rmove2, rdraw2, vexit
 !!      use M_draw, only: linewidth
 !!      call prefsize(500,500)
-!!      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!      call ortho2(-110.0,110.0,-110.0,110.0)
 !!      call move2(-100.0,-100.0)
 !!      call linewidth(70)
@@ -1351,7 +1361,7 @@
 !!       integer        :: ipaws
 !!
 !!       call prefsize(400,400)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call ortho2(-150.0,150.0,-150.0,150.0)
 !!       call color(D_MAGENTA)
 !!       call clear()
@@ -1406,7 +1416,7 @@
 !!      integer :: ipaws
 !!
 !!      call prefsize(200,200)
-!!      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!      call ortho2(-55.0, 55.0, -55.0, 55.0)
 !!      call linewidth(400)
 !!      call color(D_WHITE)
@@ -1495,7 +1505,6 @@
 !!
 !!    program demo_rect
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -1505,7 +1514,7 @@
 !!
 !!    !! set up graphics area
 !!    call prefsize(1000,200)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!    call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!
 !!    call linewidth(150)
@@ -1641,7 +1650,7 @@
 !!
 !!    program demo_polyhatch
 !!    use M_draw
-!!    use M_drawplus, only : page, spirograph
+!!    use M_drawplus, only : spirograph
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -1782,7 +1791,7 @@
 !!    integer :: i,j
 !!    real    :: xx,yy
 !!       call prefsize(512,512)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call ortho2(0.0,256.0,0.0,256.0)
 !!       call linewidth(1)
 !!       call polyfill(.true.)
@@ -1951,7 +1960,7 @@
 !!    real    :: bottom, left, sun_radius, planet_radius, planet_offset
 !!    integer :: ipaws
 !!       call prefsize(wide,tall)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call ortho2(0.0, real(wide), 0.0, real(tall) )
 !!       ! call linewidth(3) ! really slows down pbm driver because all lines are polygons
 !!       call color(D_WHITE)
@@ -2327,8 +2336,6 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawPLUS, only : page
-!!    use M_strings,  only : v2s
 !!    real    :: b=0.5
 !!    real    :: y1,y2,ym,x1,x2
 !!    real    :: width=50.0/8.0,width2
@@ -2337,7 +2344,7 @@
 !!    integer :: ipaws
 !!       !! set up long bar as plotting area
 !!       call prefsize(1000,200)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!       call textsize( 2.5/2.0, 3.0/2.0)
 !!       call font('futura.l')
@@ -2354,7 +2361,7 @@
 !!          x2=x1+width2
 !!          call move2((x1+x2)/2.0,ym)
 !!          call circleprecision(ivals(i))
-!!          call drawstr((v2s(ivals(i))))     ! convert number to string and draw it
+!!          call print(ivals(i))     ! convert number to string and draw it
 !!          call circle((x1+x2)/2.0, ym, (x2-x1)/2.10)
 !!          x1=x1+width
 !!       enddo
@@ -2398,7 +2405,6 @@
 !!
 !!    program demo_arc
 !!       use M_draw
-!!       use M_drawplus, only : page
 !!       use M_draw,    only  : D_BLACK,   D_WHITE
 !!       use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!       use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2474,7 +2480,6 @@
 !!
 !!    program demo_sector
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2579,7 +2584,6 @@
 !!
 !!    program demo_circle
 !!       use M_draw
-!!       use M_drawPLUS, only : page
 !!       use M_draw,    only  : D_BLACK,   D_WHITE
 !!       use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!       use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2589,7 +2593,7 @@
 !!       integer :: ipaws
 !!    ! set up drawing surface
 !!       call prefsize(1000,200)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call page(-25.0-b,25.0+b,-R-b,R+b)
 !!       call linewidth(200)
 !!       call color(D_CYAN)
@@ -2654,7 +2658,6 @@
 !!
 !!    program demo_point
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -2712,7 +2715,7 @@
 !!    integer :: i
 !!    integer :: ipaws
 !!    call prefsize(300,300)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!    call ortho2(0.0, 20.0, 0.0, 20.0)
 !!    call color(D_MAGENTA)
 !!    do i=1,20
@@ -3009,7 +3012,7 @@
 !!    to have centertext mode on for this to give sensible results when placing
 !!    the markers.
 !!
-!!    If the environment variable "M_draw_FONTPATH" is set M_draw looks for the software
+!!    If the environment variable "M_DRAW_FONTPATH" is set M_draw looks for the software
 !!    fonts in the directory given by this value.
 !!
 !!    WHEN ASKED FOR NON-EXISTENT FONT NAMES, FONT(3f) STOPS THE PROGRAM.
@@ -3023,14 +3026,13 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : page
 !!    real    :: left
 !!    real    :: baseline=80.0
 !!    integer :: icolor=1
 !!    integer :: ipaws
 !!       !! set up drawing surface
 !!       call prefsize(400, 400)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call page(-100.0, 100.0, -100.0, 100.0)
 !!       call color(D_WHITE)
 !!       call clear()
@@ -3120,7 +3122,7 @@
 !!    integer :: ipaws
 !!       !! set up long bar as plotting area
 !!       call prefsize(900,150)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call ortho2(-30.0, 30.0, -5.0, 5.0)
 !!       call font('times.r')
 !!
@@ -3173,7 +3175,7 @@
 !!
 !!    !! set up drawing environment
 !!    call prefsize(600,600)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!    call ortho2(-100.0,100.0,-100.0,100.0)
 !!    call textsize(7.0,7.0)
 !!    call linewidth(20)
@@ -3222,7 +3224,6 @@
 !!
 !!    program demo_fixedwidth
 !!       use M_draw
-!!       use M_drawplus, only : page
 !!       implicit none
 !!       real,parameter :: x1=0.0,  x2=40.0,  y1=0.0,  y2=4.0
 !!       real,parameter :: scl=3*0.7
@@ -3276,7 +3277,7 @@
 !!    use :: M_units, only : cosd, sind
 !!    !! set up drawing environment
 !!    call prefsize(600,600)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!    call ortho2(-300.0,300.0,-300.0,300.0)
 !!    call textsize(8.0,8.0)
 !!    call linewidth(30)
@@ -3544,15 +3545,6 @@
 !!       call vexit()           !  wrap up and exit graphics mode
 !!
 !!       end program demo_drawstr
-!!   Results:
-!! ================================================================================
-!! *ccall*: MAKING TEMPORARY DIRECTORY /tmp/CCALL_CYGWIN64_GFORTRAN_33416
-!! r - /tmp/_JSU.ff
-!! a - /tmp/CCALL_CYGWIN64_GFORTRAN_33416/_JSU.33416.f90
-!! /home/urbanjs/.twm/scripts_regression/goodbad: _JSU.1 0 _JSU start --section 1
-!! *ccall*: REMOVING /tmp/CCALL_CYGWIN64_GFORTRAN_33416
-!! ================================================================================
-!! ================================================================================
 !===================================================================================================================================
 !>
 !!##NAME
@@ -3577,7 +3569,6 @@
 !!
 !!    program demo_strlength
 !!    use :: M_draw
-!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -3587,7 +3578,7 @@
 !!    real    :: texth=10.0
 !!       !! set up drawing surface
 !!       call prefsize(800, 400)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call page(-100.0, 300.0, -100.0, 100.0)
 !!       call color(D_WHITE)
 !!       call clear()
@@ -3673,7 +3664,6 @@
 !!     use M_draw,     only : D_BLACK,   D_WHITE
 !!     use M_draw,     only : D_RED,     D_GREEN,    D_BLUE
 !!     use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!     use M_drawplus, only : page
 !!     implicit none
 !!     real              :: x1=0.0,    x2=40.0,    y1=0.0,    y2=7.0
 !!     real              :: xmin=1.0,  xmax=39.0,  ymin=1.0,  ymax=6.0
@@ -3746,7 +3736,6 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : page
 !!    use iso_c_binding
 !!    implicit none
 !!    real :: x1=-20.0, x2=20.0, y1=-20.0, y2=20.0
@@ -3815,7 +3804,6 @@
 !!
 !!    program demo_leftjustify
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -3868,7 +3856,6 @@
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -3919,7 +3906,6 @@
 !!
 !!    program demo_xcentertext
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -3966,7 +3952,6 @@
 !!
 !!    program demo_topjustify
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -4013,7 +3998,6 @@
 !!
 !!    program demo_bottomjustify
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -4060,7 +4044,6 @@
 !!
 !!    program demo_ycentertext
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl, ax, bx
@@ -4118,7 +4101,6 @@
 !!
 !!    program demo_textslant
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    implicit none
 !!    real    :: x1, x2, y1, y2
 !!    real    :: scl
@@ -4170,7 +4152,6 @@
 !!
 !!    program demo_textweight
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    implicit none
 !!    real,parameter :: w=40.0
 !!    integer        :: key
@@ -4226,12 +4207,11 @@
 !!    use M_draw,     only : D_BLACK,   D_WHITE
 !!    use M_draw,     only : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,     only : D_YELLOW,  D_MAGENTA,  D_CYAN
-!!    use M_drawPLUS, only : page
 !!    implicit none
 !!    real    :: b=0.5
 !!    integer :: ipaws
 !!    call prefsize(1000,200)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!    call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!    call color(D_YELLOW)
 !!    call clear()
@@ -4325,7 +4305,6 @@
 !!
 !!   program demo_dashcode
 !!   use M_draw
-!!   use M_drawplus, only : page
 !!   implicit none
 !!   integer        :: icolor
 !!   integer        :: ikey
@@ -4573,7 +4552,7 @@
 !!      integer :: ipaws
 !!
 !!      call prefsize(300,300)
-!!      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!      ipaws=getkey()
 !!      call ortho2(-100.0,100.0,-100.0,100.0)
 !!
@@ -4621,8 +4600,6 @@
 !!
 !!     program demo_color
 !!     use M_draw
-!!     use M_drawPLUS, only : page
-!!     use M_strings,  only : v2s
 !!     real    :: b=0.5
 !!     real    :: y1,y2,ym,x1,x2
 !!     real    :: width=50.0/8.0,width2
@@ -4630,7 +4607,7 @@
 !!     integer :: ipaws
 !!        !! set up long bar as plotting area
 !!        call prefsize(1000,200)
-!!        call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!        call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!        call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
 !!        call textsize( 3.5, 4.0)
 !!        call font('futura.m')
@@ -4653,7 +4630,7 @@
 !!           call closepoly()
 !!           call color(mod(i+1,7)+1)
 !!           call move2((x1+x2)/2.0,ym)
-!!           call drawstr((v2s(i)))     ! convert number to string and draw it
+!!           call print(i)     ! convert number to string and draw it
 !!           call polyfill(.false.)
 !!           call circle((x1+x2)/2.0, ym, (x2-x1)/2.10)
 !!           x1=x1+width
@@ -4695,7 +4672,6 @@
 !!    !   or only has a small color table (a frame in this program takes
 !!    !   at least SLICES*RINGS colors to produce accurately).
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    use m_color, only : hue
 !!    use M_units, only : cosd, sind
 !!    implicit none
@@ -4709,7 +4685,7 @@
 !!       integer              :: istart, iend
 !!       character(len=20)    :: device
 !!       call prefsize(BOX,BOX)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       call polyfill(.true.)
 !!       call color(D_BLACK)
 !!       call clear()
@@ -4883,12 +4859,10 @@
 !!
 !!      program demo_getkey
 !!      use :: M_draw
-!!      use :: M_units, only : cosd, sind
-!!      use :: M_time, only : system_sleep
 !!      !! set up drawing environment
 !!      call prefsize(600,600)
 !!      call voutput('+')
-!!      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!      call ortho2(-300.0,300.0,-300.0,300.0)
 !!      call textsize(500.0,500.0)
 !!      call linewidth(130)
@@ -4938,11 +4912,10 @@
 !!
 !!    program demo_checkkey
 !!    use :: M_draw
-!!    use :: M_units, only : cosd, sind
 !!    use :: M_time, only : system_sleep
 !!    !! set up drawing environment
 !!    call prefsize(600,600)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!    call ortho2(-300.0,300.0,-300.0,300.0)
 !!    call textsize(500.0,500.0)
 !!    call linewidth(130)
@@ -5082,13 +5055,13 @@
 !!          real xaddr, yaddr
 !!##DESCRIPTION
 !!
-!!    Find out where the cursor is. xaddr and yaddr are set to the current
+!!    Find out where the cursor is. XADDR and YADDR are set to the current
 !!    location in world coordinates. The function returns a bit pattern
-!!    which indicates which buttons are being held down eg. if mouse buttons
-!!    1 and 3 are down locator returns binary 101 (decimal 7). The function
-!!    returns -1 if the device has no locator capability. Note: if you have
-!!    been doing a lot of 3-D transformations xaddr and yaddr may not make a
-!!    lot of sense. In this case use slocator.
+!!    which indicates which buttons are being held down -- eg. if mouse
+!!    buttons 1 and 3 are down locator returns binary 101 (decimal 7). The
+!!    function returns -1 if the device has no locator capability. Note:
+!!    if doing 3-D transformations XADDR and YADDR may not make a lot of
+!!    sense. In that case use slocator.
 !!
 !!##EXAMPLE
 !!
@@ -5611,7 +5584,6 @@
 !!
 !!    program demo_expandviewport
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -5620,7 +5592,7 @@
 !!
 !!    !! set up graphics area
 !!    call prefsize(1000,200)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!
 !!    !! draw box that fills default world coordinate window
 !!    call color(D_RED)
@@ -5683,7 +5655,6 @@
 !!
 !!    program demo_unexpandviewport
 !!    use M_draw
-!!    use M_drawplus, only : page
 !!    use M_draw,    only  : D_BLACK,   D_WHITE
 !!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
 !!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
@@ -5692,7 +5663,7 @@
 !!
 !!    !! set up graphics area
 !!    call prefsize(1000,200)
-!!    call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!    call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!
 !!    !! draw circle that fills default world coordinate window
 !!    call polyfill(.true.)
@@ -6634,6 +6605,7 @@
 !!##EXAMPLE
 !!
 !!   Sample usage
+!!
 !!    program demo_rotate
 !!    use M_drawplus, only : draw_interpret
 !!    character(len=:),allocatable :: draw_cmds(:)
@@ -7040,7 +7012,6 @@
 !!
 !!    program demo_callobj
 !!       use M_draw
-!!       use M_drawplus, only : page
 !!       implicit none
 !!       integer :: ipaws
 !!       integer :: ix, iy
@@ -7049,7 +7020,7 @@
 !!
 !!       ! set up graphics area
 !!       call prefsize(680,680)
-!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!       !! Background color
 !!       !call color(D_WHITE)
 !!       !! Page setup
@@ -7538,7 +7509,6 @@
 !!    program demo_saveobj
 !!    ! create object in file "circle.obj" for use with loadobj(3f)
 !!    use M_draw
-!!    use M_drawplus, only : invokeobj,page, pop, push
 !!    implicit none
 !!    character(len=:),allocatable :: env
 !!    integer :: ipaws
@@ -7674,7 +7644,7 @@
 !!      implicit none
 !!      real :: X,Y
 !!      call prefsize(20,20)
-!!      call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!      call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
 !!      call ortho2(-100.0,100.0,-100.0,100.0)
 !!      call move2(0.0,0.0)
 !!      call draw2(96.5,98.333)
@@ -7925,6 +7895,7 @@ module M_draw
 ! trim and append null to intent(in) character strings
 ! logical to _Bool mapping not consistent across compilers, g95 does not even define KIND=C_BOOL; so make NAME_F routines
 !
+use M_journal, only : journal
 use ISO_C_BINDING
 implicit none
 
@@ -8104,6 +8075,7 @@ end type MATRIX
  public :: ycentertext
  public :: yobbarays
 !public :: verror
+
 ! integer,parameter :: C_BOOL = SELECTED_INT_KIND(1) ! _Bool ! integer*1
 !-------------------------------------------------------------------------------
 ! ==========  function definitions
@@ -9649,6 +9621,21 @@ end type MATRIX
 !----------------------------------------------------------------------------------------------------------------------------------!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !----------------------------------------------------------------------------------------------------------------------------------!
+! extensions in Fortran
+
+public  :: page
+public  :: invokeobj
+public  :: pop
+public  :: push
+public  :: print
+
+interface page
+   module procedure :: biggest_ortho2
+   module procedure :: page_rri
+end interface page
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
 contains
 !-------------------------------------------------------------------------------
 !!call polyfill(.false.)
@@ -10039,6 +10026,13 @@ implicit none
    call test_vnewdev()
    call test_voutput()
    call test_vsetflush()
+   ! fortran extensions
+   call test_invokeobj()
+   call test_pop()
+   call test_push()
+   call test_page()
+   call test_page_rri()
+   call test_biggest_ortho2()
 !! teardown
 contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
@@ -10331,6 +10325,550 @@ implicit none
 end subroutine test_vsetflush
 !===================================================================================================================================
 end subroutine test_suite_M_draw
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    invokeobj(3f) - [M_draw] invoke object with specified transformations
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!       subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
+!!       real,intent(in)    :: xt,yt,zt
+!!       real,intent(in)    :: xs,ys,zs
+!!       real,intent(in)    :: xr,yr,zr
+!!       integer,intent(in) :: iobject
+!!
+!!##DESCRIPTION
+!!    save and restore the coordinate system while invoking an object with
+!!    specified translation, rotation, and scaling.
+!!
+!!##OPTIONS
+!!    xt,yt,zt    linear transforms
+!!    xs,ys,zs    scaling
+!!    xr,yr,zr    rotation in degrees
+!!    iobject     object to invoke
+!!##EXAMPLE
+!!
+!!  Sample program
+!!
+!!    program demo_invokeobj
+!!    use M_draw
+!!    implicit none
+!!    real :: a, angle, step
+!!    integer :: i, idum
+!!    ! set window size
+!!       call prefsize(700,700)
+!!       call prefposition( 0, 0)
+!!       call vinit ('X11')
+!!       a=1.0
+!!    ! make an object to draw ( a disk with an arrow on it)
+!!       call makeobj(12345)
+!!       call polyfill(.TRUE.)
+!!       call color( 5)
+!!       call circle( 0.0, 0.0, a)
+!!       call color( 3)
+!!       call makepoly()
+!!       call move2( 0.00*a, 0.80*a)
+!!       call draw2( 0.50*a, 0.30*a)
+!!       call draw2( 0.20*a, 0.30*a)
+!!       call draw2( 0.20*a,-0.80*a)
+!!       call draw2(-0.20*a,-0.80*a)
+!!       call draw2(-0.20*a, 0.30*a)
+!!       call draw2(-0.50*a, 0.30*a)
+!!       call draw2( 0.00*a, 0.80*a)
+!!       call closepoly()
+!!       call polyfill(.FALSE.)
+!!       call color(7)
+!!       call linewidth(20)
+!!       call circleprecision(200)
+!!       call circle( 0.0, 0.0, a)
+!!       call vflush()
+!!       call closeobj()
+!!    ! draw the disk invoking different rotation
+!!       ANGLE=0.0
+!!       STEP=0.4
+!!       idum=backbuffer()
+!!       idum=-1
+!!       if(idum.ne.-1)then
+!!          do i=1,int(360/STEP*10)
+!!             idum=backbuffer()
+!!             call clear()
+!!             call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345)
+!!             ANGLE=ANGLE+STEP
+!!             call swapbuffers()
+!!          enddo
+!!       else
+!!          ANGLE=45.0
+!!          call invokeobj( 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, ANGLE, ANGLE, ANGLE,12345)
+!!          idum=getkey()
+!!       endif
+!!       call vexit()
+!!    end program demo_invokeobj
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+subroutine invokeobj(xt,yt,zt,xs,ys,zs,xr,yr,zr,iobject)
+
+character(len=*),parameter::ident_2="&
+&@(#)M_draw::invokeobj(3f): invoke object with specified transformation applied and then restored"
+
+real,intent(in)    :: xt,yt,zt  ! linear transforms
+real,intent(in)    :: xs,ys,zs  ! scaling
+real,intent(in)    :: xr,yr,zr  ! rotation
+integer,intent(in) :: iobject
+
+   call pushmatrix()
+   call translate(xt,yt,zt)
+   call scale(xs,ys,zs)
+   call rotate(xr,'x')
+   call rotate(yr,'y')
+   call rotate(zr,'z')
+   call callobj(iobject)
+   call popmatrix()
+
+end subroutine invokeobj
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_invokeobj()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('invokeobj',msg='')
+   !!call unit_check('invokeobj', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('invokeobj',msg='')
+end subroutine test_invokeobj
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    page(3f) - [M_draw] set window into largest viewport available
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine page(xsmall,xlarge,ysmall,ylarge)
+!!    real, intent=(in) :: xsmall
+!!    real, intent=(in) :: xlarge
+!!    real, intent=(in) :: ysmall
+!!    real, intent=(in) :: ylarge
+!!
+!!    subroutine page(xsize,ysize,icolor)
+!!    real, intent=(in)    :: xsize
+!!    real, intent=(in)    :: ysize
+!!    integer, intent=(in) :: icolor
+!!
+!!##DESCRIPTION
+!!    FORM SUBROUTINE PAGE(XSMALL,XLARGE,YSMALL,YLARGE)
+!!
+!!    Set the window to the rectangle defined by the corner points
+!!    <xsmall,ysmall> and <xlarge,ylarge>.
+!!
+!!    Also, given the window size, and assuming a one-to-one correspondence
+!!    of window units (ie. an "x-unit" is as long as a "y-unit"), find the
+!!    largest area on the display surface that has the same aspect ratio,
+!!    and set the viewport to it.
+!!
+!!    FORM SUBROUTINE PAGE(XSIZE,YSIZE,ICOLOR)
+!!
+!!    Size the window to the rectangle defined by the corner points
+!!    <0.0,0.0> and <xsize,ysize> and the viewport to the largest centered
+!!    area that has the same aspect ratio, and set the background color to
+!!    the value mapped to color ICOLOR.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_page
+!!    use M_draw
+!!    use M_draw,    only  : D_BLACK,   D_WHITE
+!!    use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
+!!    use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
+!!    implicit none
+!!    integer :: ipaws
+!!    real,parameter :: radius=25.0
+!!       call prefsize(600,600)
+!!       call vinit(' ') ! start graphics using device $M_draw_DEVICE
+!!       call page(-radius, radius, -radius, radius)
+!!       call linewidth(200)
+!!       call clear()
+!!       call color(D_BLUE)
+!!       call move2(-radius, -radius)
+!!       call draw2(-radius, radius)
+!!       call draw2(radius, radius)
+!!       call draw2(radius, -radius)
+!!       call draw2(-radius, -radius)
+!!       call color(D_CYAN)
+!!       call circle(0.0,0.0,radius)
+!!       call vflush()
+!!       ipaws=getkey()
+!!       call vexit()
+!!    end program demo_page
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+subroutine biggest_ortho2(xsmall,xlarge,ysmall,ylarge)
+
+character(len=*),parameter::ident_3="@(#)M_draw::page(3f): given a window size, find and set to largest accommodating viewport"
+
+real,intent(in)  :: xsmall
+real,intent(in)  :: xlarge
+real,intent(in)  :: ysmall
+real,intent(in)  :: ylarge
+real             :: rps
+real             :: spr
+real             :: tryx
+real             :: tryy
+real             :: vhigh
+real             :: vwide
+real             :: xdelta
+real             :: xmax
+real             :: xmin
+real             :: xsplit
+real             :: ydelta
+real             :: ymax
+real             :: ymin
+real             :: ysplit
+!----------------------------------------------------------------------------------------------------------------------------------!
+      call getdisplaysize(vwide,vhigh) !get screen size in terms of raster units
+!----------------------------------------------------------------------------------------------------------------------------------!
+!     the default viewport is in "screen units", and goes from -1,-1 to 1,1
+!     all new viewports are defined in terms of this original viewport, which
+!     is 2 units wide and 2 units tall.
+!----------------------------------------------------------------------------------------------------------------------------------!
+      rps=min(vwide,vhigh)/2.0         ! number of rasters per screen unit
+      spr=2.0/min(vwide,vhigh)         ! number of screen units per raster
+      tryx=vwide                       ! make as wide as display as a trial fit
+      if(xlarge-xsmall.ne.0.0)then
+         tryy=vwide*(ylarge-ysmall)/(xlarge-xsmall) ! calculate required height
+      else                             ! ERROR: do something desperate
+         call journal('*page* window has a zero X dimension')
+         tryy=vhigh
+      endif
+      if(tryy.gt.vhigh)then ! if required height too great, fit with y maximized
+         tryy=vhigh
+         if(ylarge-ysmall.ne.0.0)then
+            tryx=vhigh*(xlarge-xsmall)/(ylarge-ysmall)
+         else                          ! ERROR: do something desperate
+            call journal('*page* window has a zero Y dimension')
+            tryx=vwide
+         endif
+      endif
+!----------------------------------------------------------------------------------------------------------------------------------!
+!   tryx and tryy are now the required viewport in raster units. The raster
+!   units now need converted to screen units to be used in viewport procedure
+!
+!   some explanation of physical viewport units is required:
+!   assuming maximizing the required aspect ratio in the available drawing area,
+!   and that the original viewport "origin" 0,0 stays in its original position,
+!   and that the original -1,1,-1,1 viewport is the largest square that can fit
+!   on the display, bottom left justified.
+!   the screen coordinate system is a right-handed Cartesian coordinate system
+!   with positive x to the viewer's right, positive y up.
+!
+!   at this point,
+!    vwide=width in rasters of entire display
+!    vhigh=height in rasters of entire display
+!   assuming a square raster
+!     tryx is desired width in rasters
+!     tryy is desired height in rasters
+!----------------------------------------------------------------------------------------------------------------------------------!
+      xdelta=tryx-2.0*rps  ! need this many more rasters in x direction from 1,1
+      ydelta=tryy-2.0*rps  ! need this many more rasters in y direction from 1,1
+      ! to center (to left bottom justify, make xsplit and ysplit 0)
+      xsplit=(vwide-tryx)/2.0
+      ysplit=(vhigh-tryy)/2.0
+      xmax=1+xdelta*spr+xsplit*spr
+      ymax=1+ydelta*spr+ysplit*spr
+      xmin=-1+xsplit*spr
+      ymin=-1+ysplit*spr
+!----------------------------------------------------------------------------------------------------------------------------------!
+!      write(*,*)'max. display area is', vwide, ' by ',vhigh,' rasters'
+!      write(*,*)'shape is ',xsmall,xlarge,ysmall,ylarge
+!      write(*,*)'attempting to get a viewport of ',tryx,' by ',tryy
+!      write(*,*)'needed more rasters, ',xdelta,' by ',ydelta
+!      write(*,*)'resulted in viewport ',-1,xmax,-1,ymax
+!----------------------------------------------------------------------------------------------------------------------------------!
+      if(xmin.ne.xmax.and.ymin.ne.ymax)then
+         call viewport(xmin,xmax,ymin,ymax)
+      else
+         call journal('*page* window has zero dimension,no viewport set')
+      endif
+!     to prevent clipping lines that are right on edge of window fudge a bit
+      !bugx=.001*(xlarge-xsmall)
+      !bugy=.001*(ylarge-ysmall)
+      !xsmall1=xsmall-bugx
+      !xlarge1=xlarge+bugx
+      !ysmall1=ysmall-bugy
+      !ylarge1=ylarge+bugy
+      !call ortho2(xsmall1,xlarge1,ysmall1,ylarge1)
+      if(xsmall.ne.xlarge.and.ysmall.ne.ylarge)then
+         call ortho2(xsmall,xlarge,ysmall,ylarge)
+      else    ! ERROR: do something desperate
+         call journal('*page* window has zero dimension, no window set')
+      endif
+end subroutine biggest_ortho2
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!       page_rri(3fp) - [M_draw] - new world window with viewport set to largest area with same aspect ratio
+!!       (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine page_rri(xsize,ysize,icolor)
+!!
+!!    integer,intent(in)          :: xsize
+!!    integer,intent(in)          :: ysize
+!!    integer,intent(in)          :: icolor
+!!
+!!##DESCRIPTION
+!!    Given a horizontal size and vertical size and color set the window to
+!!    the rectangle defined by the corner points <0.0,0.0> and <xsize,ysize>
+!!    and set the viewport to the largest viewport on the display with the
+!!    same aspect ratio and start a new page with the specified background
+!!    color if background color is supported on the device.
+!!
+!!##OPTIONS
+!!    XSIZE    X size of requested window
+!!    YSIZE    Y size of requested window
+!!    ICOLOR   Color to set background.
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!      program demo_page_rri
+!!      use M_draw
+!!      use M_drawplus, only : polyline2
+!!      implicit none
+!!      integer :: ipaws
+!!      call prefsize(300,300)
+!!      call vinit(' ')
+!!      call page(8.5,11.0,3)
+!!      call color(2)
+!!      call linewidth(100)
+!!      call circle(8.5/0.0,11.0/0.0,8.5/2.0)
+!!      call color(1)
+!!      call polyline2([0.0,0,0,8.5,11.0]
+!!      call polyline2([8.5,0,0,0.0,11.0]
+!!      ipaws=getkey()
+!!      call vexit()
+!!      end
+!!      program demo_page_rri
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+subroutine page_rri(xsize,ysize,icolor)
+real,intent(in)             :: xsize
+real,intent(in)             :: ysize
+integer                     :: icolor
+   call page(0.0,xsize,0.0,ysize)
+   call pushattributes()
+      call color(icolor)
+      call clear()
+   call popattributes()
+end subroutine page_rri
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_page()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('page',msg='')
+   !!call unit_check('page', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('page',msg='')
+end subroutine test_page
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_page_rri()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('page_rri',msg='')
+   !!call unit_check('page_rri', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('page_rri',msg='')
+end subroutine test_page_rri
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_biggest_ortho2()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('biggest_ortho2',msg='')
+   !!call unit_check('biggest_ortho2', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('biggest_ortho2',msg='')
+end subroutine test_biggest_ortho2
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    pop(3f) - [M_draw] call popviewport(), popmatrix(), popattributes()
+!!    (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!    subroutine pop()
+!!##DESCRIPTION
+!!    call popviewport(), popmatrix(), popattributes()
+!!##EXAMPLE
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+subroutine pop()
+
+character(len=*),parameter::ident_4="@(#)M_draw::pop(3f): call popviewport(), popmatrix(), popattributes()"
+
+   call popviewport()
+   call popmatrix()
+   call popattributes()
+end subroutine pop
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_pop()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('pop',msg='')
+   !!call unit_check('pop', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('pop',msg='')
+end subroutine test_pop
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    print(3f) - [M_draw] call DRAWSTR(3f) with up to nine arbitrary intrinsic scalar values
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine print(g1, g2, g3, g4, g5, g6, g7, g8, g9)
+!!
+!!    class(*),intent(in),optional :: g1 ,g2 ,g3 ,g4 ,g5, g6 ,g7 ,g8 ,g9
+!!
+!!##DESCRIPTION
+!!    Call DRAWSTR(3f) with up to nine intrinsic scalar values. They will be composed into a
+!!    string with spaces between the argument values. Trailing spaces of strings
+!!    are trimmed unless the entire variable is blank.
+!!##OPTIONS
+!!    g1-g9  intrinsic scalar values to plot at the current point.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!    program demo_print
+!!    use M_draw
+!!    implicit none
+!!    real :: angle
+!!    integer :: idum
+!!    character(len=*),parameter :: space='       '
+!!       ! set window size
+!!       call prefsize(700,700)
+!!       call prefposition( 0, 0)
+!!       call vinit('X11')
+!!       call page(-5.0,5.0,-5.0,5.0)
+!!       call textsize(0.3,0.3)
+!!       call color(D_BLUE)
+!!       angle=0.0
+!!       call turn()
+!!       call print(space,'a logical such as ',.true.)
+!!       call turn()
+!!       call print(space,'a real value',3.1416)
+!!       call turn()
+!!       call print(space,'double precision',7890.123456d0)
+!!       call turn()
+!!       call print(space,'integer ',1234)
+!!       call turn()
+!!       call print(space,'lots of stuff',1234,.false.,cmplx(20.0,30.0))
+!!       idum=getkey()
+!!       call vexit()
+!!    contains
+!!       subroutine turn()
+!!          call move2(-4.0,-3.5)
+!!          call textang(angle)
+!!          angle=angle+15.0
+!!       end subroutine turn
+!!    end program demo_print
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine print(g1, g2, g3, g4, g5, g6, g7, g8, g9)
+use M_strings, only : msg
+class(*),intent(in),optional :: g1 ,g2 ,g3 ,g4 ,g5, g6 ,g7 ,g8 ,g9
+   call drawstr(msg(g1, g2, g3, g4, g5, g6, g7, g8, g9))
+end subroutine print
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+
+
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!>
+!!##NAME
+!!    push(3f) - [M_draw] call pushviewport(), pushmatrix(), pushattributes()
+!!    (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!     subroutine push()
+!!##DESCRIPTION
+!!    call pushattributes(), pushmatrix(), pushviewport()
+!!##EXAMPLE
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+!===================================================================================================================================
+subroutine push()
+
+character(len=*),parameter::ident_5="@(#)M_draw::push(3f): call pushattributes(), pushmatrix(), pushviewport()"
+
+   call pushattributes()
+   call pushmatrix()
+   call pushviewport()
+end subroutine push
+!----------------------------------------------------------------------------------------------------------------------------------!
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!----------------------------------------------------------------------------------------------------------------------------------!
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_push()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
+implicit none
+   call unit_check_start('push',msg='')
+   !!call unit_check('push', 0.eq.0, msg=msg('checking',100))
+   call unit_check_done('push',msg='')
+end subroutine test_push
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

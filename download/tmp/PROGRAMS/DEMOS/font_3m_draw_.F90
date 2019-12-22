@@ -3,14 +3,13 @@
           use M_draw,    only  : D_BLACK,   D_WHITE
           use M_draw,    only  : D_RED,     D_GREEN,    D_BLUE
           use M_draw,    only  : D_YELLOW,  D_MAGENTA,  D_CYAN
-          use M_drawplus, only : page
           real    :: left
           real    :: baseline=80.0
           integer :: icolor=1
           integer :: ipaws
              !! set up drawing surface
              call prefsize(400, 400)
-             call vinit(' ') ! start graphics using device $M_draw_DEVICE
+             call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
              call page(-100.0, 100.0, -100.0, 100.0)
              call color(D_WHITE)
              call clear()

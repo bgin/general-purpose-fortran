@@ -1,6 +1,6 @@
           !program demo_M_args
           module M_arguments
-          use M_args,    only : get_namelist, print_dictionary, unnamed
+          use M_args,    only : get_namelist, print_dictionary, unnamed, oneline
 
           ! >>> CHANGE THIS
           ! declare and initialize a namelist. Letter_ denotes an uppercase short command keyword
@@ -18,10 +18,11 @@
              integer :: ios
              character(len=255) :: message ! use for I/O error messages
              character(len=:),allocatable :: readme  ! stores updated namelist
-             character(len=10000) :: hold_namelist
+             character(len=10000) :: hold_namelist(60)
+                hold_namelist=''
                 write(hold_namelist,nml=args,iostat=ios,iomsg=message)
                 if(ios.eq.0)then
-                   readme=get_namelist(hold_namelist)
+                   readme=get_namelist(oneline(hold_namelist))
                    read(readme,nml=args,iostat=ios,iomsg=message)
                 endif
                 if(ios.ne.0)then

@@ -1,7 +1,5 @@
            program demo_color
            use M_draw
-           use M_drawPLUS, only : page
-           use M_strings,  only : v2s
            real    :: b=0.5
            real    :: y1,y2,ym,x1,x2
            real    :: width=50.0/8.0,width2
@@ -9,7 +7,7 @@
            integer :: ipaws
               !! set up long bar as plotting area
               call prefsize(1000,200)
-              call vinit(' ') ! start graphics using device $M_draw_DEVICE
+              call vinit(' ') ! start graphics using device $M_DRAW_DEVICE
               call page(-25.0-b, 25.0+b, -5.0-b, 5.0+b)
               call textsize( 3.5, 4.0)
               call font('futura.m')
@@ -32,7 +30,7 @@
                  call closepoly()
                  call color(mod(i+1,7)+1)
                  call move2((x1+x2)/2.0,ym)
-                 call drawstr((v2s(i)))     ! convert number to string and draw it
+                 call print(i)     ! convert number to string and draw it
                  call polyfill(.false.)
                  call circle((x1+x2)/2.0, ym, (x2-x1)/2.10)
                  x1=x1+width

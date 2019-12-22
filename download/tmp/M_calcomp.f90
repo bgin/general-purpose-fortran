@@ -8103,7 +8103,6 @@ end subroutine primitive__frend
 subroutine primitive__start_plotting(xmin,xmax,ymin,ymax)
 use M_strings,  only : string_to_value, v2s
 use M_draw
-use M_drawplus, only : page
 implicit none
 real,intent(in),optional :: xmin, xmax, ymin, ymax
 real                     :: xmin_local, xmax_local, ymin_local, ymax_local

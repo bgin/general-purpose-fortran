@@ -164,7 +164,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180706>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 10:14:24 PM>',&
+'@(#)COMPILED:       Sat, Dec 21st, 2019 12:00:39 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -219,25 +219,6 @@ integer                      :: istart,iend
    marker_size=rget('plt_sz')
    verbose=lget('plt_verbose')
 !-----------------------------------------------------------------------------------------------------------------------------------
-   allocate(xy_array(0,0))
-   filename=trim(adjustl(sget('plt_f')//' '//sget('plt_oo')))
-   if(filename.eq.'')then
-      write(*,*)'*xy* error: filename of form X Y1 Y2 Y3 ... required'
-      stop 1
-   endif
-   call read_table(filename,xy_array,ierr)                ! read data assuming column 1 is X values and at least two columns
-   irows=size(xy_array,dim=1)
-   icols=size(xy_array,dim=2)
-   if(ierr.ne.0)then
-      write(*,*)'*xy* ERROR: datafile',filename,' contains errors '
-      stop 3
-   endif
-
-   if(irows.eq.0.or.icols.lt.2)then
-      write(*,*)'*xy* ERROR: datafile must have at least one row and at least two columns'
-      stop 2
-   endif
-!-----------------------------------------------------------------------------------------------------------------------------------
    if(device.eq.'')device='X11'                    ! determine output filename
    if(device.eq.'x11'.or.device.eq.'X11')then
       call prefsize(640,480)
@@ -257,6 +238,26 @@ integer                      :: istart,iend
    ylarge=4.8
 !-----------------------------------------------------------------------------------------------------------------------------------
    call vinit(device)
+!-----------------------------------------------------------------------------------------------------------------------------------
+   allocate(xy_array(0,0))
+   filename=trim(adjustl(sget('plt_f')//' '//sget('plt_oo')))
+   if(filename.eq.'')then
+      write(*,*)'*xy* error: filename of form X Y1 Y2 Y3 ... required'
+      stop 1
+   endif
+   call read_table(filename,xy_array,ierr)                ! read data assuming column 1 is X values and at least two columns
+   irows=size(xy_array,dim=1)
+   icols=size(xy_array,dim=2)
+   if(ierr.ne.0)then
+      write(*,*)'*xy* ERROR: datafile',filename,' contains errors '
+      stop 3
+   endif
+
+   if(irows.eq.0.or.icols.lt.2)then
+      write(*,*)'*xy* ERROR: datafile must have at least one row and at least two columns'
+      stop 2
+   endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    call plot_init_globals()
    call plot_resetplot()
 !-----------------------------------------------------------------------------------------------------------------------------------

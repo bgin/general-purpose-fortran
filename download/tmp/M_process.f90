@@ -71,7 +71,7 @@
 !!    string variable (see process_readall(3) for an even simpler way to
 !!    do this) ...
 !!
-!!       program read_ex
+!!      program read_ex
 !!       use M_process ,only: process_open_read, process_readline
 !!       use M_process ,only: streampointer, process_close
 !!       implicit none
@@ -114,58 +114,58 @@
 !!    gnuplot(1) program or continue on in the program.
 !!
 !!     program gnuplotExample
-!!     use M_process ,only: process_open_write, process_writeline
-!!     use M_process ,only: streampointer, process_close
-!!     implicit none
-!!     !
-!!     ! Example of Fortran writing GNUPLOT command and data file.
-!!     !
-!!     character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line)
-!!     type(streampointer) :: fp                               !*! C file pointer returned by process_open()
-!!     integer :: ierr                                         !*! check status of calls to process module routines
-!!     integer :: i                                            !*! DO loop counter
-!!     integer,parameter   :: n=50                             !*! number of points to put into curve to be plotted
-!!     real                :: x(n),y(n)                        !*! arrays to fill with curve data to be plotted
-!!     integer             :: ios
+!!      use M_process ,only: process_open_write, process_writeline
+!!      use M_process ,only: streampointer, process_close
+!!      implicit none
+!!      !
+!!      ! Example of Fortran writing GNUPLOT command and data file.
+!!      !
+!!      character(len=4096) :: line                             !*! line of data to write (assumed long enough to hold any command line)
+!!      type(streampointer) :: fp                               !*! C file pointer returned by process_open()
+!!      integer :: ierr                                         !*! check status of calls to process module routines
+!!      integer :: i                                            !*! DO loop counter
+!!      integer,parameter   :: n=50                             !*! number of points to put into curve to be plotted
+!!      real                :: x(n),y(n)                        !*! arrays to fill with curve data to be plotted
+!!      integer             :: ios
 !!
-!!     !*! Define sample X,Y array.
-!!     do i=1,n                                                !*! set X() values as whole numbers 1 to N
-!!        x(i)=i
-!!        !*!
-!!        y(i)=(x(i)+0.5)**2
-!!     enddo
-!!                                                             !*! Write the GnuPlot commands
-!!     call process_open_write('gnuplot',fp,ierr)              !*! open process to write to (ie. start gnuplot(1) program)
-!!     call process_writeline('$SET1 <<EOD',fp,ierr)           !*! create in-line dataset $SET1
-!!     do i=1,n
-!!        write(line,'(2(f10.3,1x))')x(i),y(i)                 !*! Write the X,Y array as coordinates to be plotted.
-!!        call process_writeline(line,fp,ierr)
-!!     enddo
+!!      !*! Define sample X,Y array.
+!!      do i=1,n                                                !*! set X() values as whole numbers 1 to N
+!!         x(i)=i
+!!         !*!
+!!         y(i)=(x(i)+0.5)**2
+!!      enddo
+!!                                                              !*! Write the GnuPlot commands
+!!      call process_open_write('gnuplot',fp,ierr)              !*! open process to write to (ie. start gnuplot(1) program)
+!!      call process_writeline('$SET1 <<EOD',fp,ierr)           !*! create in-line dataset $SET1
+!!      do i=1,n
+!!         write(line,'(2(f10.3,1x))')x(i),y(i)                 !*! Write the X,Y array as coordinates to be plotted.
+!!         call process_writeline(line,fp,ierr)
+!!      enddo
 !!
-!!     call process_writeline([character(len=128) ::                        &
-!!     &'EOD                                                             ', &
-!!     &'set title " Example of GNUPlot data and command file generation"', &
-!!     &'set nokey'                                                       , &
-!!     &'plot $SET1 with lines'                                           , &
-!!     &''],fp,ierr)
+!!      call process_writeline([character(len=128) ::                        &
+!!      &'EOD                                                             ', &
+!!      &'set title " Example of GNUPlot data and command file generation"', &
+!!      &'set nokey'                                                       , &
+!!      &'plot $SET1 with lines'                                           , &
+!!      &''],fp,ierr)
 !!
-!!     write(*,'(a)')'enter gnuplot commands or "." to exit'   !*! Additional gnuplot commands; in this case interactively entered
-!!     do
-!!        write(*,'(a)',advance='no')'gnu>>'
-!!        read(*,'(a)',iostat=ios)line
-!!        if(line.eq.'.')exit
-!!        call process_writeline(trim(line),fp,ierr)
-!!     enddo
-!!                                                             !*! Wrap up
-!!     call process_close(fp,ierr)
-!!     write(*,*)'CLOSED THE PROCESS. RETURNING TO PROGRAM'
-!!     end program gnuplotExample
+!!      write(*,'(a)')'enter gnuplot commands or "." to exit'   !*! Additional gnuplot commands; in this case interactively entered
+!!      do
+!!         write(*,'(a)',advance='no')'gnu>>'
+!!         read(*,'(a)',iostat=ios)line
+!!         if(line.eq.'.')exit
+!!         call process_writeline(trim(line),fp,ierr)
+!!      enddo
+!!                                                              !*! Wrap up
+!!      call process_close(fp,ierr)
+!!      write(*,*)'CLOSED THE PROCESS. RETURNING TO PROGRAM'
+!!      end program gnuplotExample
 !!
 !! This program starts a bash shell that, among other things, calls sqlite3 and gnuplot.
 !! In this case the text is fixed to keep the example simple. More typically the text
 !! would be conditionally selected or generated by the program.
 !!
-!!     program demo_M_process
+!!    program demo_M_process
 !!     use M_process ,only : process_open_write, process_writeline
 !!     use M_process ,only : streampointer, process_close
 !!     implicit none
@@ -234,53 +234,53 @@
 !!   routine to write data to.
 !!
 !!    program test
-!!       call readit('ls -l')
-!!       call writeit('cat -n')
-!!    contains
-!!    !-------------------------------------------------------------------------------
-!!    subroutine readit(cmd)
-!!       use M_process ,ONLY: process_open_read, process_readline, streampointer, process_close
-!!       type(streampointer) :: fp    ! C file pointer returned by process_open()
-!!       character(len=*)    :: cmd   ! command line executed to start process
-!!       character(len=4096) :: line  ! line of data to read (assumed long enough to hold any input line)
-!!       integer ierr
-!!       call process_open_read(cmd,fp,ierr)   ! open process to read from
-!!       write(*,*)'READTEST: process is opened with status ',ierr
-!!       ierr=0
-!!       do while(ierr .eq. 0)
-!!          call process_readline(line,fp,ierr)  ! read a line from the process
-!!          if(ierr.ne.0)then
-!!             write(*,*)'READTEST: ierr is ',ierr
-!!             exit
-!!          endif
-!!          write(*,*)'READTEST: line:'//trim(line)
-!!       enddo
-!!       call process_close(fp,ierr)
-!!       write(*,*)'READTEST: process closed with status ',ierr
-!!    end subroutine readit
-!!    !-------------------------------------------------------------------------------
-!!    subroutine writeit(cmd)
-!!    use M_process ,ONLY: process_open_write, process_writeline, streampointer, process_close
-!!    type(streampointer) :: fp       ! C file pointer returned by process_open()
-!!    character(len=*) :: cmd         ! command line executed to start process
-!!       character(len=4096) :: line  ! line of data to write (assumed long enough to hold any output line)
-!!       integer ierr
-!!       integer i
-!!       call process_open_write(cmd,fp,ierr)   ! open process to write to
-!!       write(*,*)'WRITETEST: process is opened'
-!!       ierr=0
-!!       do i=1,10
-!!          write(line,'("WRITETEST: line ",i0)')i
-!!          call process_writeline(line,fp,ierr)
-!!          if(ierr.lt.0)then
-!!             write(*,*)'WRITETEST: process write error ',ierr
-!!             exit
-!!          endif
-!!       enddo
-!!       call process_close(fp,ierr)
-!!       write(*,*)'WRITETEST: process closed with status ',ierr
-!!    end subroutine writeit
-!!    end program test
+!!        call readit('ls -l')
+!!        call writeit('cat -n')
+!!     contains
+!!     !-------------------------------------------------------------------------------
+!!     subroutine readit(cmd)
+!!        use M_process ,ONLY: process_open_read, process_readline, streampointer, process_close
+!!        type(streampointer) :: fp    ! C file pointer returned by process_open()
+!!        character(len=*)    :: cmd   ! command line executed to start process
+!!        character(len=4096) :: line  ! line of data to read (assumed long enough to hold any input line)
+!!        integer ierr
+!!        call process_open_read(cmd,fp,ierr)   ! open process to read from
+!!        write(*,*)'READTEST: process is opened with status ',ierr
+!!        ierr=0
+!!        do while(ierr .eq. 0)
+!!           call process_readline(line,fp,ierr)  ! read a line from the process
+!!           if(ierr.ne.0)then
+!!              write(*,*)'READTEST: ierr is ',ierr
+!!              exit
+!!           endif
+!!           write(*,*)'READTEST: line:'//trim(line)
+!!        enddo
+!!        call process_close(fp,ierr)
+!!        write(*,*)'READTEST: process closed with status ',ierr
+!!     end subroutine readit
+!!     !-------------------------------------------------------------------------------
+!!     subroutine writeit(cmd)
+!!     use M_process ,ONLY: process_open_write, process_writeline, streampointer, process_close
+!!     type(streampointer) :: fp       ! C file pointer returned by process_open()
+!!     character(len=*) :: cmd         ! command line executed to start process
+!!        character(len=4096) :: line  ! line of data to write (assumed long enough to hold any output line)
+!!        integer ierr
+!!        integer i
+!!        call process_open_write(cmd,fp,ierr)   ! open process to write to
+!!        write(*,*)'WRITETEST: process is opened'
+!!        ierr=0
+!!        do i=1,10
+!!           write(line,'("WRITETEST: line ",i0)')i
+!!           call process_writeline(line,fp,ierr)
+!!           if(ierr.lt.0)then
+!!              write(*,*)'WRITETEST: process write error ',ierr
+!!              exit
+!!           endif
+!!        enddo
+!!        call process_close(fp,ierr)
+!!        write(*,*)'WRITETEST: process closed with status ',ierr
+!!     end subroutine writeit
+!!     end program test
 !!
 !!##SEE ALSO
 !!    o PIPES: pipe(3c), popen(3c), pclose(3c), fflush(3c)
@@ -628,7 +628,7 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !!
 !!   Read all output of a command to a single string
 !!
-!!       program test_process_readall
+!!      program test_process_readall
 !!       use M_process ,only: process_readall
 !!       implicit none
 !!       integer :: ierr
@@ -639,7 +639,7 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !!
 !!   Read all output of a command to an array using split(3f)
 !!
-!!       program demo_process_readall
+!!      program demo_process_readall
 !!       use M_process ,only: process_readall
 !!       use M_strings ,only: split
 !!       implicit none
@@ -656,19 +656,19 @@ character(len=*),parameter::ident_6="@(#)M_process::process_readline(3f): read l
 !!
 !!   Results:
 !!
-!!       1     [Articles]
-!!       2     [LIBRARY]
-!!       3     [PC]
-!!       4     [SHIP]
-!!       5     [SPEC]
-!!       6     [crib.dat]
-!!       7     [doc]
-!!       8     [html]
-!!       9     [index.html]
-!!       10    [plan.txt]
-!!       11    [questions]
-!!       12    [scripts]
-!!       13    [tmp]
+!!       > 1     [Articles]
+!!       > 2     [LIBRARY]
+!!       > 3     [PC]
+!!       > 4     [SHIP]
+!!       > 5     [SPEC]
+!!       > 6     [crib.dat]
+!!       > 7     [doc]
+!!       > 8     [html]
+!!       > 9     [index.html]
+!!       > 10    [plan.txt]
+!!       > 11    [questions]
+!!       > 12    [scripts]
+!!       > 13    [tmp]
 !!
 !!##SEE ALSO
 !!    M_process(3fm)
