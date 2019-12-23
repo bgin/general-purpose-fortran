@@ -515,16 +515,17 @@ help_text=[ &
 &' $str($a|e,$a|e,$a|e,....):append string and value expressions into string      ',&
 &'--------------------------------------------------------------------------------',&
 &'CALENDAR:                                                                       ',&
-&' ye(),year()   : current year                                                   ',&
-&' mo(),month()  : current month                                                  ',&
-&' da(),day()    : current day                                                    ',&
-&' ho(),hour()   : current hour                                                   ',&
-&' mi(),minute() : current minute                                                 ',&
-&' se(),second() : current second                                                 ',&
-&' $dw([n])      : day of week                                                    ',&
-&' $mo([n])      : name of month                                                  ',&
-&' dw()          : day of week                                                    ',&
-&' ju()          : day of year                                                    ',&
+&' ye(),year()     : current year                                                 ',&
+&' mo(),month()    : current month                                                ',&
+&' da(),day()      : current day                                                  ',&
+&' ho(),hour()     : current hour                                                 ',&
+&' tz(),timezone() : current timezone                                             ',&
+&' mi(),minute()   : current minute                                               ',&
+&' se(),second()   : current second                                               ',&
+&' $dw([n])        : day of week                                                  ',&
+&' $mo([n])        : name of month                                                ',&
+&' dw()            : day of week                                                  ',&
+&' ju()            : day of year                                                  ',&
 &' $now(format)                                                                   ',&
 &' $fmtdate(dat(8),format)                                                        ',&
 &' unix_to_date(value)   : converts Unix Epoch Time to DAT date-time array        ',&
@@ -1832,36 +1833,54 @@ case("ifdef")
          endif
       endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
-case("ye","mo","da","ho","mi","se","year","month","day","hour","minute","second","dw","ju")
-         icalen=1                                                              ! default value that is safe even if an error occurs
-         !------------------------------------------
-         call date_and_time(values=idarray)
-         !------------------------------------------
+case("dw")
          if(n.eq.0)then
-            select case(wstrng2(:iend))                                           ! select desired subscript of value to return
-               case("ye","year");     icalen=1                                    ! year
-               case("mo","month");    icalen=2                                    ! month
-               case("da","day");      icalen=3                                    ! day
-               case("dw");            icalen=4                                    ! days since Sunday [ 0-6]
-                  call day_of_week(idarray,iweekday,day,ierr)
-                  idarray(4)=iweekday
-               case("ho","hour");     icalen=5                                    ! hour
-               case("mi","minute");   icalen=6                                    ! minute
-               case("se","second");   icalen=7                                    ! second
-               case("ju");            icalen=8                                    ! days since January 1 [0-365]
-                  idarray(8)=d2o(idarray)
-               case default                                                       ! report internal error if name was not matched
-                  ier=-1
-                  mssge='*calendar* internal error, unknown keyword'//wstrng2(:iend)
-               end select
-            if(ier.eq.0)then                                                      ! if error flag not set set return value
-               fval=idarray(icalen)
-            else                                                                  ! error has occurred, set default return value
+            call date_and_time(values=idarray)
+            call day_of_week(idarray,iweekday,day,ierr)
+            if(ierr.eq.0)then                                              ! if error flag not set set return value
+               fval=iweekday
+            else                                                           ! error has occurred, set default return value
                fval=0.0d0
             endif
          else
             ier=-1
+            mssge='*dw* parameters not allowed'
+            fval=0.0d0
+         endif
+case("ju")
+         if(n.eq.0)then
+            call date_and_time(values=idarray)
+            fval=d2o(idarray) ! days since January 1 [0-365]
+         else
+            ier=-1
+            mssge='*ju* parameters not allowed'
+            fval=0.0d0
+         endif
+!=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
+case("ye","year","mo","month","da","day","tz","timezone","ho","hour","mi","minute","se","second","ms","millisecond")
+         icalen=1                                                       ! default value that is safe even if an error occurs
+         !------------------------------------------
+         call date_and_time(values=idarray)
+         !------------------------------------------
+         if(n.eq.0)then
+            select case(wstrng2(:iend))                                 ! select desired subscript of value to return
+               case("ye","year");         icalen=1                      ! year
+               case("mo","month");        icalen=2                      ! month
+               case("da","day");          icalen=3                      ! day
+               case("tz","timezone");     icalen=4                      ! timezone
+               case("ho","hour");         icalen=5                      ! hour
+               case("mi","minute");       icalen=6                      ! minute
+               case("se","second");       icalen=7                      ! second
+               case("sd","millisecond");  icalen=8
+               case default                                             ! report internal error if name was not matched
+                  ier=-1
+                  mssge='*calendar* internal error, unknown keyword'//wstrng2(:iend)
+               end select
+               fval=idarray(icalen)
+         else
+            ier=-1
             mssge='*calendar* parameters not allowed'
+            fval=0.0d0
          endif
 !=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=------------------------------------------------------------
 case("$mo")                             ! $mo(1-12) is "January, February, ... ")
@@ -1930,7 +1949,6 @@ case("$now")                                          ! $now(format)
          ier=-1
       end select
       iend=len_trim(ctmp)
-!-----------------------------------------------------------------------------------------------------------------------------------
 !-----------------------------------------------------------------------------------------------------------------------------------
 case default
       if(ownon)then

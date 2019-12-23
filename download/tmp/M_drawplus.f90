@@ -3103,8 +3103,6 @@ implicit none
    call test_plain_rect()
    call test_polyline2_i()
    call test_polyline2_r()
-   call test_pop()
-   call test_push()
    call test_rdbox()
    call test_rdpnt()
    call test_seefont()

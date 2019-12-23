@@ -100,7 +100,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    draw a clock>',&
 '@(#)VERSION:        1.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 10:13:23 PM>',&
+'@(#)COMPILED:       Mon, Dec 23rd, 2019 12:01:31 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop

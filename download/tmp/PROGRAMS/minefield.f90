@@ -142,7 +142,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Sat, Nov 16th, 2019 4:59:26 PM>',&
+'@(#)COMPILED:       Mon, Dec 23rd, 2019 12:05:23 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -621,6 +621,8 @@ real               :: rand
    istart=200
    iend=1
    istep=-1
+   x1=x0
+   y1=y0
    do j=1,2
       do k=istart,iend,istep
          do i=1,3,2

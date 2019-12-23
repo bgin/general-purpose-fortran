@@ -726,14 +726,53 @@ character(len=132)                   :: message
 !&aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&
 !&aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab'
 !-----------------------------------------------------------------------------------------------------------------------------------
-if(present(stdout))then       ! write message to stdout, assuming string length is allowed
-   if(stdout.ne.'')then
-      write(*,'(a)')trim(stdout)
-   endif
-endif
 if(present(stderr))then       ! write message to stderr, assuming string length is allowed
    if(stderr.ne.'')then
       write(error_unit,'(a)')trim(stderr)
+   endif
+!f2015!   select case(ierr)             ! have executable return an exit status to the system (IF SUPPORTED)
+!f2015!      case(0); allstop 0
+!f2015!      case(1); allstop 1
+!f2015!      case(2); allstop 2
+!f2015!      case(3); allstop 3
+!f2015!      case(4); allstop 4
+!f2015!      case(5); allstop 5
+!f2015!      case(6); allstop 6
+!f2015!      case(7); allstop 7
+!f2015!      case(8); allstop 8
+!f2015!      case(9); allstop 8
+!f2015!      case(10); allstop 10
+!f2015!      case(11); allstop 11
+!f2015!      case(12); allstop 12
+!f2015!      case(13); allstop 13
+!f2015!      case(14); allstop 14
+!f2015!      case(15); allstop 15
+!f2015!      case(16); allstop 16
+!f2015!      case(17); allstop 17
+!f2015!      case(18); allstop 18
+!f2015!      case(19); allstop 19
+!f2015!      case(20); allstop 20
+!f2015!      case(21); allstop 21
+!f2015!      case(22); allstop 22
+!f2015!      case(23); allstop 23
+!f2015!      case(24); allstop 24
+!f2015!      case(25); allstop 25
+!f2015!      case(26); allstop 26
+!f2015!      case(27); allstop 27
+!f2015!      case(28); allstop 28
+!f2015!      case(29); allstop 29
+!f2015!      case(30); allstop 30
+!f2015!      case(31); allstop 31
+!f2015!      case(32); allstop 32
+!f2015!   case default
+!f2015!      write(message,'(a,i0,a)')'*fstop*: stop value of ',ierr,' returning 1 to system'
+!f2015!      write(error_unit,'(a)')trim(message) ! write message to standard error
+!f2015!      allstop 1
+!f2015!   end select
+endif
+if(present(stdout))then       ! write message to stdout, assuming string length is allowed
+   if(stdout.ne.'')then
+      write(*,'(a)')trim(stdout)
    endif
 endif
 select case(ierr)             ! have executable return an exit status to the system (IF SUPPORTED)
