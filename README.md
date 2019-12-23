@@ -1,14 +1,33 @@
 # General-Purpose Fortran Repository
 
-This is the main repository where many additional procedures
+I like a language when it empowers me. I prefer not to have to empower
+the language; but I have found a sometimes need to do so. Modern Fortran
+is quite capable of accessing many commonly available C libraries or
+expressing many commonly desired utility libraries directly, but the
+standard language does not define many of these basic interfaces. But
+because of Fortran's expressiveness and power in HPC environments (which
+is my primary focus -- Coarrays, MPI, OpenMP, matrix operators and the
+many numeric libraries available in Fortran (see Netlib)) I prefer to
+bring these general-purpose utilities to Fortran instead of bringing
+Fortran to other languages. With that in mind I placed such modules I
+hope others will find useful here. I hope others will find them useful
+and expand upon them.
+
+This is the main repository where many such additional procedures
 are available, as well as man(1) pages, utility programs, extended
-examples and unit tests.  As generally useful modules mature stand-alone
-versions are created from this base. That is because the full GPF has
-many interdependencies and falls under various restrictions and is far
-more likely to have compiler-dependent code. There may be many more
-features available here but it is less stable. The individual modules
-are more appropriate when a specific module is required in a production
-environment.
+examples and unit tests.  As generally useful modules mature simpler
+stand-alone versions are created from this base. That is because the
+full GPF (General Purpose Fortran repository) has many interdependencies
+and falls under various restrictions and is far more likely to have
+compiler-dependent code. There may be many more features available here
+in the general GPF repository but it is less stable. The individual
+modules are more appropriate when a specific module is required in a
+production environment.
+
+But if you want to work with the entire repository this is where the
+man(1) pages and unit tests and features heavily dependent on mutliple
+modules reside, and were I concentrate on new developement. Otherwise,
+the simpler module repositories are recommended.
 
 ### Cloning the repository
 
