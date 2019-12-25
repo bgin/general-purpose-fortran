@@ -3657,7 +3657,7 @@
 !!   Simple program:
 !!
 !!     program demo_boxtext
-!!     use M_draw,     only : vinit,vexit,prefsize,vgetdev,clear
+!!     use M_draw,     only : vinit,vexit,prefsize,vgetdev,clear,page
 !!     use M_draw,     only : centertext,polyfill,font,linewidth,color
 !!     use M_draw,     only : getkey
 !!     use M_draw,     only : color,rect,boxtext
@@ -4201,7 +4201,7 @@
 !!   Sample program:
 !!
 !!    program demo_linewidth
-!!    use M_draw,     only : prefsize, vinit, clear, getkey, drawstr
+!!    use M_draw,     only : prefsize, vinit, clear, getkey, drawstr, page
 !!    use M_draw,     only : textsize, ycentertext, rdraw2, rmove2
 !!    use M_draw,     only : move2, draw2, vexit, color, linewidth, font
 !!    use M_draw,     only : D_BLACK,   D_WHITE

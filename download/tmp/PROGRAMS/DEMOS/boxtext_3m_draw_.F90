@@ -1,5 +1,5 @@
            program demo_boxtext
-           use M_draw,     only : vinit,vexit,prefsize,vgetdev,clear
+           use M_draw,     only : vinit,vexit,prefsize,vgetdev,clear,page
            use M_draw,     only : centertext,polyfill,font,linewidth,color
            use M_draw,     only : getkey
            use M_draw,     only : color,rect,boxtext

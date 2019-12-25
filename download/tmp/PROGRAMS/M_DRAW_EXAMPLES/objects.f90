@@ -1,7 +1,6 @@
 program demo_rect
 !(LICENSE:PD)
    use M_draw
-   use M_drawplus, only : page
    implicit none
    integer :: ipaws
    integer :: ix, iy
