@@ -27,7 +27,7 @@ subroutine print_menu(menu_win, highlight)                        ! draw a menu 
    do i=0,n_choices-1,1                                               ! draw the menu
       if(highlight == i + 1)then                                      ! Highlight the present choice
          ierr=wattron(menu_win, A_REVERSE)                            ! turn on highlighting
-         ierr=mvwaddstr(menu_win,y, x, trim(choices(i))//C_NULL_CHAR) ! print choice description
+         ierr=mvwaddstr(menu_win,y, x, choices(i)//C_NULL_CHAR)       ! print choice description
          ierr=wattroff(menu_win, A_REVERSE)                           ! turn off highlighting
       else
          ierr=mvwaddstr(menu_win, y, x, choices(i)//C_NULL_CHAR)      ! just print choice description without highlighting
@@ -52,7 +52,7 @@ integer                      :: cursor_state
 integer                      :: startx, starty
 integer                      :: WIDTH=60,HEIGHT=20               ! size of subwindow to create menu in
 integer                      :: ierr                             ! used to hold the return value of many curses(3f) functions
-integer                      :: i
+integer                      :: i,j
 integer                      :: ii
 integer                      :: downtime
 integer(C_INT)               :: icount=0                         ! number of calls to read an input character and none was found
@@ -83,6 +83,13 @@ character(len=:),allocatable :: default
    n_choices = size(choices_f)                             ! get the number of items in the menu
    allocate(character(len=len(choices_f)) :: choices(0:n_choices-1))
    choices(:)=choices_f
+   do i=0,size(choices)-1
+      do j=1,len(choices)
+         if(choices(i)(j:j).eq.char(0))then
+            choices(i)(j:j)=' '
+         endif
+      enddo
+   enddo
    deallocate(choices_f)
    if(size(choices).eq.0)then
            choices=['Exit']
@@ -470,7 +477,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        1.0, 20180331>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)HOME PAGE:      http://www.urbanjost.altervista.org/index.html>',&
-'@(#)COMPILED:       Fri, Nov 29th, 2019 10:11:26 PM>',&
+'@(#)COMPILED:       Tue, Dec 24th, 2019 7:11:34 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
