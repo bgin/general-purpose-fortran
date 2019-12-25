@@ -11,7 +11,7 @@ integer                      :: filename_length
       allocate(character(len=filename_length) :: pathi)
       call get_command_argument (i , value=pathi)
       patho= system_realpath(pathi)
-      if(patho.eq.char(0))then
+      if(patho.ne.char(0))then
          write(*,'(a)')trim(patho)
       else
          call system_perror('*system_realpath* error for pathname '//trim(pathi)//':')
