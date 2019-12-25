@@ -142,7 +142,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)DESCRIPTION:    minefield game>',&
 '@(#)VERSION:        4.0, 20180616>',&
 '@(#)AUTHOR:         John S. Urban>',&
-'@(#)COMPILED:       Mon, Dec 23rd, 2019 12:05:23 PM>',&
+'@(#)COMPILED:       Mon, Dec 23rd, 2019 8:29:06 PM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
