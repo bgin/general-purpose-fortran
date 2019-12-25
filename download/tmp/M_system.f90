@@ -1221,7 +1221,7 @@ interface
   end function c_access
 end interface
 
-   if(c_access(str2arr(trim(pathname)),int(amode,kind=c_int)).eq.0)then
+   if(c_access(str2_carr(trim(pathname)),int(amode,kind=c_int)).eq.0)then
       system_access=.true.
    else
       system_access=.false.
@@ -1358,7 +1358,7 @@ end interface
    else
       times_local=int(d2u())
    endif
-   if(c_utime(str2arr(trim(pathname)),int(times_local,kind=c_int)).eq.0)then
+   if(c_utime(str2_carr(trim(pathname)),int(times_local,kind=c_int)).eq.0)then
       system_utime=.true.
    else
       system_utime=.false.
@@ -1419,7 +1419,7 @@ end function system_utime
 !!          endif
 !!          deallocate(pathi)
 !!       enddo
-!!       ! if there were no pathnames give resolve the pathname "."
+!!       ! if there were no pathnames given resolve the pathname "."
 !!       if(i.eq.1)then
 !!          patho=system_realpath('.')
 !!          write(*,*)'.=>',trim(patho)
@@ -1454,7 +1454,7 @@ interface
    end function
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   c_output=c_realpath(str2arr(trim(input)))
+   c_output=c_realpath(str2_carr(trim(input)))
    if(.not.c_associated(c_output))then
       string=char(0)
    else
@@ -1528,7 +1528,7 @@ interface
   end function c_issock
 end interface
 
-   if(c_issock(str2arr(trim(pathname))).eq.1)then
+   if(c_issock(str2_carr(trim(pathname))).eq.1)then
       system_issock=.true.
    else
       system_issock=.false.
@@ -1602,7 +1602,7 @@ interface
   end function c_isfifo
 end interface
 
-   if(c_isfifo(str2arr(trim(pathname))).eq.1)then
+   if(c_isfifo(str2_carr(trim(pathname))).eq.1)then
       system_isfifo=.true.
    else
       system_isfifo=.false.
@@ -1678,7 +1678,7 @@ interface
   end function c_ischr
 end interface
 
-   if(c_ischr(str2arr(trim(pathname))).eq.1)then
+   if(c_ischr(str2_carr(trim(pathname))).eq.1)then
       system_ischr=.true.
    else
       system_ischr=.false.
@@ -1749,7 +1749,7 @@ interface
   end function c_isreg
 end interface
 
-   if(c_isreg(str2arr(trim(pathname))).eq.1)then
+   if(c_isreg(str2_carr(trim(pathname))).eq.1)then
       system_isreg=.true.
    else
       system_isreg=.false.
@@ -1828,7 +1828,7 @@ interface
   end function c_islnk
 end interface
 
-   if(c_islnk(str2arr(trim(pathname))).eq.1)then
+   if(c_islnk(str2_carr(trim(pathname))).eq.1)then
       system_islnk=.true.
    else
       system_islnk=.false.
@@ -1904,7 +1904,7 @@ interface
   end function c_isblk
 end interface
 
-   if(c_isblk(str2arr(trim(pathname))).eq.1)then
+   if(c_isblk(str2_carr(trim(pathname))).eq.1)then
       system_isblk=.true.
    else
       system_isblk=.false.
@@ -1997,7 +1997,7 @@ interface
   end function c_chown
 end interface
 
-   if(c_chown(str2arr(trim(dirname)),int(owner,kind=c_int),int(group,kind=c_int)).eq.1)then
+   if(c_chown(str2_carr(trim(dirname)),int(owner,kind=c_int),int(group,kind=c_int)).eq.1)then
       system_chown=.true.
    else
       system_chown=.false.
@@ -2078,7 +2078,7 @@ interface
   end function c_isdir
 end interface
 
-   if(c_isdir(str2arr(trim(dirname))).eq.1)then
+   if(c_isdir(str2_carr(trim(dirname))).eq.1)then
       system_isdir=.true.
    else
       system_isdir=.false.
@@ -2269,7 +2269,7 @@ interface
   end function c_link
 end interface
 
-   c_ierr=c_link(str2arr(trim(oldname)),str2arr(trim(newname)))
+   c_ierr=c_link(str2_carr(trim(oldname)),str2_carr(trim(newname)))
    ierr=c_ierr
 
 end function system_link
@@ -2352,7 +2352,7 @@ interface
   integer(kind=c_int)          :: c_ierr
   end function c_unlink
 end interface
-   ierr=c_unlink(str2arr(trim(fname)))
+   ierr=c_unlink(str2_carr(trim(fname)))
 end function system_unlink
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2530,7 +2530,7 @@ end interface
    flush(unit=ERROR_UNIT,iostat=ios)
    flush(unit=OUTPUT_UNIT,iostat=ios)
    flush(unit=INPUT_UNIT,iostat=ios)
-   call c_perror(str2arr((trim(prefix))))
+   call c_perror(str2_carr((trim(prefix))))
    call c_flush()
 
 end subroutine system_perror
@@ -2617,7 +2617,7 @@ interface
 end interface
    integer                     :: loc_err
 !-----------------------------------------------------------------------------------------------------------------------------------
-   loc_err=c_chdir(str2arr(trim(path)))
+   loc_err=c_chdir(str2_carr(trim(path)))
    if(present(err))then
       err=loc_err
    endif
@@ -2707,7 +2707,7 @@ interface
    end function
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   err= c_remove(str2arr(trim(path)))
+   err= c_remove(str2_carr(trim(path)))
 end function system_remove
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2814,7 +2814,7 @@ interface
    end function
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ierr= c_rename(str2arr(trim(input)),str2arr(trim(output)))
+   ierr= c_rename(str2_carr(trim(input)),str2_carr(trim(output)))
 end function system_rename
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -2939,7 +2939,7 @@ function system_chmod(filename,mode) result(ierr)
       end function
    end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   ierr=c_chmod(str2arr(trim(filename)),int(mode,kind(0_c_int)))
+   ierr=c_chmod(str2_carr(trim(filename)),int(mode,kind(0_c_int)))
 end function system_chmod
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -3085,7 +3085,7 @@ interface
    end function
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   err= c_rmdir(str2arr(trim(dirname)))
+   err= c_rmdir(str2_carr(trim(dirname)))
    if(err.ne.0) err=system_errno()
 end function system_rmdir
 !===================================================================================================================================
@@ -3226,7 +3226,7 @@ interface
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
    c_mode=mode
-   err= c_mkfifo(str2arr(trim(pathname)),c_mode)
+   err= c_mkfifo(str2_carr(trim(pathname)),c_mode)
 end function system_mkfifo
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -3316,9 +3316,9 @@ end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
    c_mode=mode
    if(index(dirname,'/').ne.0)then
-      call my_mkdir(str2arr(trim(dirname)),c_mode,err)
+      call my_mkdir(str2_carr(trim(dirname)),c_mode,err)
    else
-      err= c_mkdir(str2arr(trim(dirname)),c_mode)
+      err= c_mkdir(str2_carr(trim(dirname)),c_mode)
    endif
    ierr=err                                          ! c_int to default integer kind
 end function system_mkdir
@@ -3430,7 +3430,7 @@ interface
 end interface
 
    ierr=0
-   dir = c_opendir(str2arr(trim(dirname)))
+   dir = c_opendir(str2_carr(trim(dirname)))
    if(.not.c_associated(dir)) then
       write(*,'(a)')'*system_opendir* Error opening '//trim(dirname)
       ierr=-1
@@ -3931,7 +3931,7 @@ interface
    end function
 end interface
 
-   loc_err =  c_setenv(str2arr(trim(NAME)),str2arr(VALUE))
+   loc_err =  c_setenv(str2_carr(trim(NAME)),str2_carr(VALUE))
    if (present(STATUS)) STATUS = loc_err
 end subroutine set_environment_variable
 !===================================================================================================================================
@@ -4093,7 +4093,7 @@ interface
    end function
 end interface
 
-   ierr_local =  c_unsetenv(str2arr(trim(NAME)))
+   ierr_local =  c_unsetenv(str2_carr(trim(NAME)))
 
    if(present(ierr))then
       ierr=ierr_local
@@ -4751,9 +4751,9 @@ end function arr2str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-pure function str2arr(string) result (array)
+pure function str2_carr(string) result (array)
 
-character(len=*),parameter::ident_32="@(#)M_system::str2arr(3fp): function copies string to null terminated char array"
+character(len=*),parameter::ident_32="@(#)M_system::str2_carr(3fp): function copies string to null terminated char array"
 
 character(len=*),intent(in)     :: string
 character(len=1,kind=c_char)    :: array(len(string)+1)
@@ -4764,7 +4764,7 @@ character(len=1,kind=c_char)    :: array(len(string)+1)
    enddo
    array(i:i)=c_null_char
 
-end function str2arr
+end function str2_carr
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -4961,7 +4961,7 @@ interface
    end subroutine c_stat
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call c_stat(str2arr(trim(pathname)),cvalues,cierr,0_c_int)
+   call c_stat(str2_carr(trim(pathname)),cvalues,cierr,0_c_int)
    values=cvalues
    if(present(ierr))then
       ierr=cierr
