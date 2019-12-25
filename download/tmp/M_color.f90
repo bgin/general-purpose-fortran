@@ -2,12 +2,8 @@
 !! <h1> <img src="images/swirl.gif" height="140" width="140" > Fortran color module M_color</h1>
 !!
 !! <p>
-!!    DOWNLOAD:<a href="download.html">GPF.tgz</a>
-!! </p>
-!!
-!! <p>
-!!    The download file includes an example utility program <a href="../PROGRAMS/colors.f90">colors.f90</a> with a
-!!    man(1) page <a href="colors.1.html">colors.1</a> that exercises the module.
+!!    A GPF (General Purpose Fortran) example utility program <a href="../PROGRAMS/colors.f90">colors.f90</a> with a
+!!    man(1) page <a href="colors.1.html">colors.1</a> exercises the module.
 !! </p>
 !!
 !! <dl>
