@@ -1608,14 +1608,42 @@ end function read_all
 !!
 !!   Sample program:
 !!
-!!    program demo_read_line
+!!    program simple_read_line
 !!    use M_io, only : read_line
 !!    implicit none
 !!    character(len=:),allocatable :: line
 !!       INFINITE: do while (read_line(line)==0)
 !!          write(*,'(a)')'['//line//']'
 !!       enddo INFINITE
-!!    end program demo_read_line
+!!    end program simple_read_line
+!!
+!!   Checking the error message and counting lines:
+!!
+!!     program demo_read_line
+!!     use,intrinsic :: iso_fortran_env, only : stdin  => input_unit
+!!     use,intrinsic :: iso_fortran_env, only : stdin  => input_unit
+!!     use,intrinsic :: iso_fortran_env, only : stderr => error_unit
+!!     use,intrinsic :: iso_fortran_env, only : iostat_end, iostat_eor
+!!     use M_io, only : read_line
+!!     implicit none
+!!     character (len =: ), allocatable :: line
+!!     integer  ::  ios, icount=0
+!!        INFINITE: do while (isave (read_line (line), ios) == 0)
+!!           write (*, '(*(g0))') icount,' [',line,']'
+!!        enddo INFINITE
+!!        if (.not.is_iostat_end (ios).or..true.) then
+!!           write (stderr, '(*(g0))') 'error: line ',icount,'==>',trim (line)
+!!        endif
+!!     contains
+!!        integer function isave (iin, iout)
+!!        integer, intent (in) :: iin
+!!        integer, intent (out) :: iout
+!!           iout = iin
+!!           isave = iin
+!!           icount=icount+1
+!!        end function isave
+!!     end program demo_read_line
+!!
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -1635,6 +1663,7 @@ integer                                  :: ier
 
 integer,parameter                        :: buflen=1024
 character(len=:),allocatable             :: line_local
+character(len=256)                       :: message
 integer                                  :: biggest
 character(len=buflen)                    :: buffer
 integer                                  :: last
@@ -1643,15 +1672,12 @@ integer                                  :: lun_local
 
    line_local=''
    ier=0
-   if(present(lun))then
-      lun_local=lun
-   else
-      lun_local=INPUT_UNIT
-   endif
+   lun_local=merge(lun,INPUT_UNIT,present(lun))
 
    INFINITE: do                                                           ! read characters from line and append to result
-      read(lun_local,iostat=ier,fmt='(a)',advance='no',size=isize) buffer ! read next buffer (might use stream I/O for files
-                                                                          ! other than stdin so system line limit is not limiting
+      read(lun_local,iostat=ier,fmt='(a)',advance='no',size=isize,iomsg=message) buffer ! read next buffer (might use stream I/O for
+                                                                          ! files other than stdin so system line limit
+                                                                          ! is not limiting
       if(isize.gt.0)line_local=line_local//buffer(:isize)   ! append what was read to result
       if(is_iostat_eor(ier))then                            ! if hit EOR reading is complete unless backslash ends the line
          last=len(line_local)
@@ -1664,6 +1690,7 @@ integer                                  :: lun_local
          ier=0                                              ! hitting end of record is not an error for this routine
          exit INFINITE                                      ! end of reading line
      elseif(ier.ne.0)then                                   ! end of file or error
+        line_local=trim(message)
         exit INFINITE
      endif
    enddo INFINITE
@@ -1973,8 +2000,9 @@ character(len=:),allocatable :: message
 integer                      :: itest
 integer                      :: i
 
+dvalue=default
 do i=1,20 ! twenty tries max
-   strout=rd_character(prompt,'NaN')
+   strout=adjustl(rd_character(prompt,'NaN'))
 
    ! 1 for an integer [-+]NNNNN
    ! 2 for a whole number [-+]NNNNN.
@@ -2029,8 +2057,12 @@ end function rd_integer
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 subroutine test_suite_M_io()
+use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
+use M_debug, only : unit_check_level
 
 !! setup
+   unit_check_level=0
+
    call test_dirname()
    call test_get_tmp()
    call test_notopen()
@@ -2047,8 +2079,6 @@ contains
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_dirname()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 call unit_check_start('dirname',msg='')
 call unit_check('dirname',  dirname('/usr/bin/') .eq. '/usr', msg=msg('/usr/bin ==>',dirname('/usr/bin'))  )
 call unit_check('dirname',  dirname('dir1/str/') .eq. 'dir1', msg=msg('dir1/str ==>',dirname('dir1/str/')) )
@@ -2058,8 +2088,6 @@ end subroutine test_dirname
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_get_tmp()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('get_tmp',msg='')
    !!call unit_check('get_tmp', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('get_tmp',msg='')
@@ -2067,8 +2095,6 @@ end subroutine test_get_tmp
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_notopen()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 integer :: i, ierr, ierr2
 
    call unit_check_start('notopen',msg='')
@@ -2100,8 +2126,6 @@ end subroutine test_notopen
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_print_inquire()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('print_inquire',msg='')
    !!call unit_check('print_inquire', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('print_inquire',msg='')
@@ -2109,8 +2133,6 @@ end subroutine test_print_inquire
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_rd()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('rd',msg='')
    !!call unit_check('rd_character', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('rd',msg='')
@@ -2118,8 +2140,6 @@ end subroutine test_rd
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_read_all()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('read_all',msg='')
    !!call unit_check('read_all', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('read_all',msg='')
@@ -2127,8 +2147,6 @@ end subroutine test_read_all
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_read_line()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('read_line',msg='')
    !!call unit_check('read_line', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('read_line',msg='')
@@ -2136,8 +2154,6 @@ end subroutine test_read_line
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_read_table()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('read_table',msg='')
    !!call unit_check('read_table', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('read_table',msg='')
@@ -2145,8 +2161,6 @@ end subroutine test_read_table
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_slurp()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('slurp',msg='')
    !!call unit_check('slurp', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('slurp',msg='')
@@ -2154,8 +2168,6 @@ end subroutine test_slurp
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_splitpath()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
 integer,parameter      :: maxlen=4096
 character(len=maxlen)  :: dir
 character(len=maxlen)  :: name
@@ -2180,8 +2192,6 @@ end subroutine test_splitpath
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_uniq()
 
-use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
-use M_debug, only : unit_check_level
    call unit_check_start('uniq',msg='')
    !!call unit_check('uniq', 0.eq.0. msg=msg('checking',100))
    call unit_check_done('uniq',msg='')
