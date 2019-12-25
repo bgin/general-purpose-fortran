@@ -21,7 +21,7 @@
                 endif
                 deallocate(pathi)
              enddo
-             ! if there were no pathnames give resolve the pathname "."
+             ! if there were no pathnames given resolve the pathname "."
              if(i.eq.1)then
                 patho=system_realpath('.')
                 write(*,*)'.=>',trim(patho)
