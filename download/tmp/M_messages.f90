@@ -994,7 +994,7 @@ end subroutine tabgraph
 !!       call blocks('NOTICE',6)
 !!    end program demo_blocks
 !!
-!!    would produce:
+!!   would produce:
 !!
 !!     >nn      nn    oooooooo    tttttttttt   iiiiiiiiii    cccccccc    eeeeeeeeee
 !!     >nnn     nn   oooooooooo   tttttttttt   iiiiiiiiii   cccccccccc   eeeeeeeeee
