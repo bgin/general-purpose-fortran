@@ -894,8 +894,6 @@ character(len=:),allocatable :: tbookmark, wbookmark
 end function matchw
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_matchw()
-character(len=256)           :: line
-character(len=:),allocatable :: COMMAND_LINE
 ! This main() routine passes a bunch of test strings into the above code.
 ! In performance comparison mode, it does that over and over.  Otherwise,
 ! it does it just once.  Either way, it outputs a passed/failed result.
@@ -3772,8 +3770,6 @@ character(len=*), intent(in)   :: str     ! The input string
 character(len=len(str))        :: string  ! The output string
 logical                        :: toggle
 character(len=1)               :: togglechar
-integer                        :: istr
-integer                        :: lstr
 integer                        :: irnk
 integer                        :: i
 character(len=26), parameter   :: large="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -5237,7 +5233,6 @@ character(len=*),intent(in),optional         :: pattern
 character(len=*),intent(in),optional         :: suffix
 !!character(len=max(length,len(trim(line)))) :: strout
 character(len=:),allocatable                 :: strout
-integer                                      :: imax
    if(present(pattern))then
       strout=atleast(line,length,pattern)
    else
@@ -6128,7 +6123,7 @@ end subroutine test_string_to_value
 !!     ierr     If an error occurs the program is stopped if the optional
 !!              parameter IERR is not present. If IERR returns a non-zero
 !!              value an error occurred.
-!!     onerr    The value to return on error. A value of zero (NaN) is
+!!     onerr    The value to return on error. A value of NaN is
 !!              returned on error by default.
 !!##RETURNS
 !!     s2v
@@ -7328,7 +7323,6 @@ character(len=:),allocatable         :: quoted_str
 
 character(len=1),parameter           :: double_quote = '"'
 character(len=20)                    :: local_mode
-logical                              :: local_clip
 !-----------------------------------------------------------------------------------------------------------------------------------
    local_mode=merge_str(mode,'DOUBLE',present(mode))
    if(merge(clip,.false.,present(clip)))then
@@ -7349,7 +7343,6 @@ logical                              :: local_clip
 end function quote
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_quote()
-character(len=:),allocatable :: quoted_str
 integer                      :: i
 integer,parameter            :: line_length=50
 character(len=:),allocatable :: test_in(:)
@@ -8033,6 +8026,7 @@ character(len=:),allocatable :: buffer
 character(len=len(line))     :: words(size(values))
 integer                      :: ios, i, ierr_local,isize
 
+   isize=0
    select type(values)
    type is (integer);          isize=size(values)
    type is (real);             isize=size(values)
@@ -10185,6 +10179,8 @@ subroutine test_suite_m_strings()
    call test_dble()
    call test_int()
    call test_real()
+   call test_stretch()
+   call test_trimzeros()
 end subroutine test_suite_m_strings
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
