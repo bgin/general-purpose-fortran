@@ -30,6 +30,7 @@
 !!          [ -o output_file]
 !!          [ -html]
 !!          [ -system]
+!!          [ -q
 !!          [ -verbose]
 !!          [ -prefix character_ADE]
 !!          [ -keeptabs]
@@ -821,6 +822,7 @@ use M_time, only    : now
    logical,public                       :: G_dc                           ! flag to determine write flag
 
    logical,public                       :: G_write=.true.                 ! whether non-if/else/endif directives should be processed
+   logical,public                       :: G_write0=.true.                ! initial state of G_write after command line options
    logical,public                       :: G_llwrite=.true.               ! whether to write current line or skip it
 
    integer,public                       :: G_comment_count=0
@@ -864,7 +866,7 @@ subroutine cond()       !@(#)cond(3f): process conditional directive assumed to 
    !write(*,*)'OPTIONS='//trim(options)
    !write(*,*)'UPOPTS='//trim(upopts)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   if(G_write)then                                                    ! if processing lines in a logically selected region
+   if(G_write.or.G_nestl.eq.0)then                                    ! if processing lines in a logically selected region
                                                                       ! process the directive
       select case(VERB)
       case('  ')                                                      ! entire line is a comment
@@ -1494,7 +1496,8 @@ endif
    G_condop(G_nestl+1)=.false.
 
    if(G_nestl.eq.0)then
-      G_write=.true.
+      G_write=G_write0
+      !!G_write=.true.
       eb=.false.
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2351,7 +2354,7 @@ subroutine format_g_man()
                enddo
 
             endif
-            write(G_iout,'("!",131("="))')
+            !!write(G_iout,'("!",131("="))')
 !-----------------------------------------------------------------------------------------------------------------------------------
          case default
             if(len(G_MAN).gt.1)then                       ! the way the string is built it starts with a newline
@@ -2361,7 +2364,7 @@ subroutine format_g_man()
             endif
             write(G_iout,'(a)',iostat=ios) G_MAN
             if(ios.ne.0)exit WRITEIT
-            write(G_iout,'("!",131("="))')
+            !!write(G_iout,'("!",131("="))')
          endselect
 !-----------------------------------------------------------------------------------------------------------------------------------
          exit ALL
@@ -2671,6 +2674,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '         [-o output_file]                                                       ',&
 '         [-html]                                                                ',&
 '         [-system]                                                              ',&
+'         [-q]                                                                   ',&
 '         [-verbose]                                                             ',&
 '         [-prefix character_ADE]                                                ',&
 '         [-keeptabs]                                                            ',&
@@ -2718,6 +2722,8 @@ help_text=[ CHARACTER(LEN=128) :: &
 '                    turns off testing for environment variables.                ',&
 '   -system          Allow system commands on $SYSTEM directives to              ',&
 '                    be executed.                                                ',&
+'   -q               Quiet mode. Output is initially off and only turned         ',&
+'                    on if in a conditional block.                               ',&
 '   -keeptabs        By default tab characters are expanded assuming             ',&
 '                    a stop has been set every eight columns; and                ',&
 '                    trailing carriage-return characters are removed.            ',&
@@ -3315,6 +3321,7 @@ end subroutine help_usage
 !!          [-o output_file]
 !!          [-html]
 !!          [-system]
+!!          [-q]
 !!          [-verbose]
 !!          [-prefix character_ADE]
 !!          [-keeptabs]
@@ -3362,6 +3369,8 @@ end subroutine help_usage
 !!                     turns off testing for environment variables.
 !!    -system          Allow system commands on $SYSTEM directives to
 !!                     be executed.
+!!    -q               Quiet mode. Output is initially off and only turned
+!!                     on if in a conditional block.
 !!    -keeptabs        By default tab characters are expanded assuming
 !!                     a stop has been set every eight columns; and
 !!                     trailing carriage-return characters are removed.
@@ -3958,7 +3967,7 @@ help_text=[ CHARACTER(LEN=128) :: &
 '@(#)VERSION:        4.0: 20170502>',&
 '@(#)AUTHOR:         John S. Urban>',&
 '@(#)REPORTING BUGS: http://www.urbanjost.altervista.org/>',&
-'@(#)COMPILED:       Thu, Dec 19th, 2019 8:03:32 PM>',&
+'@(#)COMPILED:       Wed, Dec 25th, 2019 11:56:43 AM>',&
 '']
    WRITE(*,'(a)')(trim(help_text(i)(5:len_trim(help_text(i))-1)),i=1,size(help_text))
    stop ! if -version was specified, stop
@@ -4119,6 +4128,7 @@ implicit none
       & -help              .false.  &
       & -html              .false.  &
       & -verbose           .false.  &
+      & -q                 .false.  &
       & -system            .false.  &
       & -version           .false.  &
       & -noenv             .false.  &
@@ -4161,6 +4171,10 @@ else
    G_iwidth=max(0,G_iwidth)
    letterd(1:1)               = sget('ufpp_d')
    G_noenv=lget('ufpp_noenv')
+!-----------------------------------------------------------------------------------------------------------------------------------
+   G_write=.not.lget('ufpp_q')                             ! check if quiet mode is selected to surpress output till a true condition
+   G_write0=G_write
+   !!G_condop(0)=G_write
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(out_filename.eq.'')then                              ! open output file
       G_iout=6
