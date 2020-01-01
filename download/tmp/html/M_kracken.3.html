@@ -419,7 +419,7 @@ where
      If you actually prefer quoting your arguments and having your unnamed
      variables at the end of your command and support for the "--" option
      supported by some GNU and Unix commands you can set the command
-     line parsing option "kracken_method". This will <em>not</em> change
+     line parsing option "style='args'". This will <em>not</em> change
      how you specify the parameters to the kracken(3f) command except
      possibly for Boolean switches, but allows for entering commands in
      a manner more like the C routine getopts(3c). If you turn the mode
@@ -428,7 +428,11 @@ where
      and the option "--" specifies that the rest of the command line is
      composed of unnamed strings.
 
-     The unnamed values will go into the CHARACTER array "unnamed". That
+     The unnamed values will go into the CHARACTER array "unnamed".
+     The way the command line input is parsed is the same as in the
+     M_args(3f) module.
+
+     That
      means instead of entering:
 </p>
 <xmp>
@@ -458,29 +462,41 @@ where
      end program show_standard
 </xmp>
 <p>
-    Add "kracken_method" and "unnamed" from the M_kracken(3fm) module,
-    set "kracken_method='args'" and the unnamed values will be in the
+    Add "style='args'" to the kracken call and "unnamed" from the
+    M_kracken(3fm) module, and the unnamed values will be in the
     string array "unnamed" instead of obtained from something like
     "sgets('cmd_oo').
+
 </p>
+
+<p>
+    With "style='args' other differences are in how you specify your
+    command prototype.  You MUST use the string ".false." for any boolean
+    switch variable default value; and basically the values ".true." and
+    ".false." are reserved, regardless of case. This is normally how you
+    specify booleans anyway; but in the default style you can set your
+    default to ".true." or use other values for ".false." like "F" or
+    ".F.".
+</p>
+
+<p>
+    The way the arguments will then be read upon input are the same as
+    described in the M_args(3fm) module.
+</p>
+
 <xmp>
      program show_alternate
      use M_kracken, only : kracken, sget, rget, lget
-     USE M_KRACKEN, ONLY : KRACKEN_METHOD, UNNAMED
+     USE M_KRACKEN, ONLY : UNNAMED
      implicit none
      character(len=:),allocatable :: title
      real :: x,y
      integer :: i
-     KRACKEN_METHOD='ARGS'
      ! define and crack command line arguments
      !
-     ! One difference in how you specify your command prototype:
      !
-     !  You MUST use the string ".false." for any switch variable;
-     !  and basically the values ".true." and ".false." are
-     !  reserved, regardless of case.
-     !
-     call kracken('cmd',' --title this is my title -x 123 -y 456 --help .false.')
+     call kracken('cmd',' --title this is my title &
+      & -x 123 -y 456 --help .false.',style='args')
      title=sget('cmd_title')
      x=rget('cmd_x')
      y=rget('cmd_y')
