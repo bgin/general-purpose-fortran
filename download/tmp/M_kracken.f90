@@ -137,7 +137,6 @@ contains
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine retrev(name,val,len,ier)
 
 character(len=*),parameter::ident_2="@(#)M_kracken::retrev(3f): retrieve token value from Language Dictionary when given NAME"
@@ -221,7 +220,6 @@ end subroutine retrev
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function dget(keyword)
 
 character(len=*),parameter::ident_3="&
@@ -293,7 +291,6 @@ end function dget
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function rget(keyword)
 
 character(len=*),parameter::ident_4="&
@@ -369,7 +366,6 @@ end function rget
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function iget(keyword)
 
 character(len=*),parameter::ident_5="&
@@ -449,7 +445,6 @@ end function iget
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function lget(keyword)
 
 character(len=*),parameter::ident_6="@(#)M_kracken::lget(3f): given keyword fetch logical value from lang. dictionary (.f. on err)"
@@ -558,7 +553,6 @@ end function lget
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function sget(name,ilen) result(string)
 
 character(len=*),parameter::ident_7="&
@@ -650,7 +644,6 @@ end function sget
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function dgets(keyword,ier) result(darray)
 
 character(len=*),parameter::ident_8="@(#)M_kracken::dgets(3f): given keyword fetch dble value from Language Dictionary (0 on err)"
@@ -753,7 +746,6 @@ end function dgets
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function igets(keyword,ier) result(iarray)
 
 character(len=*),parameter::ident_9="&
@@ -864,7 +856,6 @@ end function igets
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function rgets(keyword,ier) result(rarray)
 
 character(len=*),parameter::ident_10="@(#)M_kracken::rgets(3f): given keyword fetch real array from string in dictionary (0 on err)"
@@ -948,7 +939,6 @@ end function rgets
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function lgets(keyword) result(larray)
 
 character(len=*),parameter::ident_11="&
@@ -1062,7 +1052,6 @@ end function lgets
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function sgets(name,delim) result(strings)
 
 character(len=*),parameter::ident_12="@(#)M_kracken::sgets(3f): Fetch strings value for specified NAME from the lang. dictionary"
@@ -1097,11 +1086,12 @@ end function sgets
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!     subroutine kracken(verb, string[,ierror])
+!!     subroutine kracken(verb, string[,ierror][style])
 !!
 !!        character(len=*), intent(in) ::  verb
 !!        character(len=*), intent(in) :: string
 !!        integer, intent(out), optional :: ierror
+!!        character(len=*), intent(in),optional :: style
 !!
 !!##DESCRIPTION
 !!
@@ -1126,6 +1116,9 @@ end function sgets
 !!              parameter IERROR is present. If present, it is up
 !!              to the calling program to decide what to do if
 !!              a non-zero value is returned.
+!!     STYLE    parsing style. Either 'kracken' or 'args'. The default
+!!              is 'kracken'.
+!!
 !!##EXAMPLE
 !!
 !!
@@ -1203,25 +1196,32 @@ end function sgets
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
-subroutine kracken(verb,string,error_return)
+subroutine kracken(verb,string,error_return,style)
 
 character(len=*),parameter::ident_13="@(#)M_kracken::kracken(3f): define and parse command line options"
 
 !  get the entire command line argument list and pass it and the prototype to dissect()
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*),intent(in)    :: string
-character(len=*),intent(in)    :: verb
-integer,intent(out),optional   :: error_return
+character(len=*),intent(in)          :: string
+character(len=*),intent(in)          :: verb
+integer,intent(out),optional         :: error_return
+character(len=*),intent(in),optional :: style
 !-----------------------------------------------------------------------------------------------------------------------------------
-character(len=:),allocatable   :: command
-integer                        :: ier
-integer                      :: ibig
+character(len=:),allocatable         :: command
+integer                              :: ier
+integer                              :: ibig
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(present(error_return))then
       error_return=0
    endif
+!-----------------------------------------------------------------------------------------------------------------------------------
    ier=0
+!-----------------------------------------------------------------------------------------------------------------------------------
+   if(present(style))then
+      kracken_method=style
+   else
+      kracken_method='kracken'
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    ! no matter what method make sure this is allocated so user can query it
    ! and so methods can use unnamed array without having to test it
@@ -1232,7 +1232,6 @@ integer                      :: ibig
    allocate(character(len=ibig) ::unnamed(0))
    unnamed=[character(len=ibig) ::]            ! kludge
 !-----------------------------------------------------------------------------------------------------------------------------------
-   !!call journal('sc','GOT HERE A KRACKEN_METHOD=',kracken_method,'VERB=',verb)
    select case(upper(kracken_method))
     case('ARGS')
       call parse(trim(verb),string,'add')                ! initialize command
@@ -1324,7 +1323,6 @@ end subroutine kracken
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine setprompts(verb,init)
 
 character(len=*),parameter::ident_14="@(#)M_kracken::setprompts(3f): set explicit prompts for keywords in interactive mode"
@@ -1392,7 +1390,6 @@ end subroutine setprompts
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine dissect(verb,init,pars,error_return)
 
 character(len=*),parameter::ident_15="@(#)M_kracken::dissect(3f): convenient call to parse() define defaults, then process"
@@ -1556,7 +1553,6 @@ end subroutine dissect
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine parse(verb,string,allow,error_return)
 
 character(len=*),parameter::ident_16="@(#)M_kracken::parse(3f): parse user command and store tokens into Language Dictionary"
@@ -1914,7 +1910,6 @@ end subroutine parse
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine store(name1,value1,allow1,ier)
 
 character(len=*),parameter::ident_17="&
@@ -2097,7 +2092,6 @@ end subroutine store
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function subscript_(chars0)
 
 character(len=*),parameter::ident_18="@(#)M_kracken::subscript_(3fp): return the subscript value of a string when given its name"
@@ -2153,7 +2147,6 @@ end function subscript_
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine menu(verb)
 
 character(len=*),parameter::ident_19="@(#)M_kracken::menu(3fp): prompt for values using a menu interface"
@@ -2433,7 +2426,6 @@ end subroutine menu
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine show(VERB_NAME0,VERBS_ONLY,IWIDE)
 
 character(len=*),parameter::ident_20="@(#)M_kracken::show(3f): dump dictionary entries"
