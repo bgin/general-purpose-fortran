@@ -19,10 +19,11 @@ integer                  :: i
 
 integer,parameter        :: dp=kind(0.0d0)
 
-public anyinteger_to_64bit  ! convert integer parameter of any kind to 64-bit integer
-public anyscalar_to_real    ! convert integer or real parameter of any kind to real
-public anyscalar_to_real128 ! convert integer or real parameter of any kind to real128
-public anyscalar_to_double  ! convert integer or real parameter of any kind to doubleprecision
+public anyinteger_to_64bit   ! convert integer parameter of any kind to 64-bit integer
+public anyinteger_to_string  ! convert integer parameter of any kind to string
+public anyscalar_to_real     ! convert integer or real parameter of any kind to real
+public anyscalar_to_real128  ! convert integer or real parameter of any kind to real128
+public anyscalar_to_double   ! convert integer or real parameter of any kind to doubleprecision
 public test_suite_M_anything
 public anything_to_bytes
 public bytes_to_anything
@@ -110,7 +111,6 @@ contains
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
    subroutine ints_empty_( x, emp )
        integer, allocatable, intent(inout) :: x(:)
        type(Empty_t), intent(in) :: emp
@@ -239,7 +239,6 @@ end subroutine bytes_to_anything
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function anything_to_bytes_arr(anything) result(chars)
 implicit none
 
@@ -357,7 +356,6 @@ end function  anything_to_bytes_scalar
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 pure elemental function anyscalar_to_real128(valuein) result(d_out)
 use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
@@ -447,7 +445,6 @@ end function anyscalar_to_real128
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 pure elemental function anyscalar_to_double(valuein) result(d_out)
 use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
@@ -543,7 +540,6 @@ end function anyscalar_to_double
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 pure elemental function anyscalar_to_real(valuein) result(r_out)
 use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
@@ -584,16 +580,15 @@ end function anyscalar_to_real
 !!##SYNOPSIS
 !!
 !!
-!!    pure elemental function anyinteger_to_64bit(intin) result(ii38)
+!!    pure elemental function anyinteger_to_64bit(intin) result(value)
 !!
-!!     integer(kind=int64) function anyinteger_to_64bit(value)
-!!     class(*),intent(in)     :: intin
-!!     integer(kind=int8|int16|int32|int64) :: value
+!!     class(*),intent(in) :: intin
+!!     integer(kind=int64) :: value
 !!
 !!##DESCRIPTION
 !!
-!!    This function uses polymorphism to allow arguments of different types
-!!    generically. It is used to create other procedures that can take
+!!    This function uses polymorphism to allow arguments of different INTEGER types
+!!    as input. It is typically used to create other procedures that can take
 !!    many scalar arguments as input options, equivalent to passing the
 !!    parameter VALUE as int(VALUE,0_int64).
 !!
@@ -644,7 +639,6 @@ end function anyscalar_to_real
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 pure elemental function anyinteger_to_64bit(intin) result(ii38)
 use, intrinsic :: iso_fortran_env, only : error_unit !! ,input_unit,output_unit
 implicit none
@@ -666,11 +660,103 @@ end function anyinteger_to_64bit
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!>
+!!##NAME
+!!
+!!    anyinteger_to_string(3f) - [M_anything] convert integer of any kind to a string
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    pure function anyinteger_to_string(intin) result(str)
+!!
+!!     character(len=:),allocatable :: anyinteger_to_string
+!!     class(*),intent(in)          :: intin
+!!
+!!##DESCRIPTION
+!!
+!!    This function allows arguments of different INTEGER types as input.
+!!    It is a pure function that does not use an internal WRITE so it
+!!    can be called from other pure routines to create an error message,
+!!    for example.
+!!
+!!##OPTIONS
+!!
+!!    VALUEIN  INTEGER input argument to be converted to a string.
+!!             May be of KIND kind=int8, kind=int16, kind=int32, kind=int64.
+!!
+!!##RESULTS
+!!             The value of VALUIN converted to a CHARACTER string.
+!!
+!!##EXAMPLE
+!!
+!!
+!!   Sample program
+!!
+!!    program demo_anyinteger_to_string
+!!    use, intrinsic :: iso_fortran_env, only : int8, int16, int32, int64
+!!    use M_anything, only : itoc=>anyinteger_to_string
+!!    implicit none
+!!       write(*,*)itoc(huge(0_int8)),       '=> 127'
+!!       write(*,*)itoc(huge(0_int16)),      '=> 32767'
+!!       write(*,*)itoc(huge(0_int32)),      '=> 2147483647'
+!!       write(*,*)itoc(huge(0_int64)),      '=> 9223372036854775807',huge(0_int64)
+!!       write(*,*)itoc(-(huge(0_int64)-1)), '=> -9223372036854775806'
+!!    end program demo_anyinteger_to_string
+!!
+!!   Results:
+!!
+!!    127=> 127
+!!    32767=> 32767
+!!    2147483647=> 2147483647
+!!    9223372036854775807=> 9223372036854775807
+!!    -9223372036854775806=> -9223372036854775806
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
+pure function anyinteger_to_string(int) result(out)
+use,intrinsic :: iso_fortran_env, only : int64
+
+character(len=*),parameter::ident_7="&
+&@(#)M_anything::anyinteger_to_string(3f): pure function that converts an integer value to a character string"
+
+class(*),intent(in)          :: int
+character(len=:),allocatable :: out
+integer,parameter            :: maxlen=32         ! assumed more than enough characters for largest input value
+integer                      :: i, k
+integer(kind=int64)          :: intval
+integer(kind=int64)          :: int_local
+integer                      :: str(maxlen)
+integer,parameter            :: dig0=  ichar('0')
+integer,parameter            :: minus= ichar('-')
+
+   int_local = anyinteger_to_64bit(int)           ! convert input to largest integer type
+   intval = abs(int_local)
+   do i=1,maxlen                                  ! generate digits from smallest significant digit to largest
+      str(i) = dig0 + mod(intval,10)
+      intval = intval / 10
+      if(intval == 0 )exit
+   enddo
+   if (int_local < 0 ) then                       ! now make sure the sign is correct
+      i=i+1
+      str(i) = minus
+   endif
+   allocate(character(len=i) :: out)
+   do k=i,1,-1                                    ! have all the digits in reverse order, now flip them and convert to a string
+      out(i-k+1:i-k+1)=char(str(k))
+   enddo
+end function anyinteger_to_string
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 subroutine test_suite_M_anything()
 use M_debug, only : unit_check_start,unit_check,unit_check_done,unit_check_good,unit_check_bad,unit_check_msg,msg
 use M_debug, only : unit_check_level
 !! setup
    call test_anyinteger_to_64bit()
+   call test_anyinteger_to_string()
    call test_anyscalar_to_real()
    call test_anyscalar_to_double()
    call test_anything_to_bytes()
@@ -688,6 +774,16 @@ call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int32)).eq.2147
 call unit_check('anyinteger_to_64bit',anyinteger_to_64bit(huge(0_int64)).eq.9223372036854775807_int64, msg=msg(huge(0_int64)))
 call unit_check_done('anyinteger_to_64bit',msg='')
 end subroutine test_anyinteger_to_64bit
+!TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+subroutine test_anyinteger_to_string()
+
+call unit_check_start('anyinteger_to_string',msg='')
+call unit_check('anyinteger_to_string',anyinteger_to_string(huge(0_int8)) .eq.'127', msg=msg(huge(0_int8)))
+call unit_check('anyinteger_to_string',anyinteger_to_string(huge(0_int16)).eq.'32767', msg=msg(huge(0_int16)))
+call unit_check('anyinteger_to_string',anyinteger_to_string(huge(0_int32)).eq.'2147483647', msg=msg(huge(0_int32)))
+call unit_check('anyinteger_to_string',anyinteger_to_string(huge(0_int64)).eq.'9223372036854775807', msg=msg(huge(0_int64)))
+call unit_check_done('anyinteger_to_string',msg='')
+end subroutine test_anyinteger_to_string
 !TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
 subroutine test_anyscalar_to_double()
 
