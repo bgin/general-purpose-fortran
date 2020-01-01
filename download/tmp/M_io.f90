@@ -112,7 +112,6 @@ CONTAINS
 !!    John S. Urban, 1993
 !!##LICENSE
 !! Public Domain
-!===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 function uniq(name,istart,verbose,create)
 use M_journal, only : journal
@@ -286,7 +285,6 @@ end function uniq
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine print_inquire(iunit,name) ! Version: JSU-1997-12-31
 use M_journal, only : journal
 
@@ -475,7 +473,6 @@ end subroutine print_inquire
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine read_table_doubleprecision(filename,array,ierr)
 use M_strings, only : s2vs
 implicit none
@@ -708,7 +705,6 @@ end subroutine read_table_real
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine swallow(FILENAME,pageout)
 implicit none
 class(*),intent(in)                      :: FILENAME   ! file to read
@@ -861,7 +857,6 @@ end subroutine swallow
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine slurp(filename,text,length,lines)
 !-----------------------------------------------------------------------------------------------------------------------------------
 implicit none
@@ -1086,7 +1081,6 @@ end subroutine slurp
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 integer function notopen(start,end,err)
 use, intrinsic :: iso_fortran_env, only : error_unit,input_unit,output_unit     ! access computing environment
 implicit none
@@ -1198,7 +1192,6 @@ end function notopen
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 !>
 !! PRODUCT:        CLI library utilities and examples
 !! PROGRAM:        dirname(3f)
@@ -1208,7 +1201,6 @@ end function notopen
 !! AUTHOR:         John S. Urban
 !! REPORTING BUGS: http://www.urbanjost.altervista.org/
 !! HOME PAGE:      http://www.urbanjost.altervista.org/index.html
-!===================================================================================================================================
 function dirname(filename) result (directory)
 implicit none
 
@@ -1371,7 +1363,6 @@ end function dirname
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine splitpath(path,dir,name,basename,ext)
 use M_strings, only : split
 implicit none
@@ -1529,7 +1520,6 @@ end subroutine splitpath
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function read_all(line,lun) result(ier)
 use, intrinsic :: iso_fortran_env, only : INPUT_UNIT
 implicit none
@@ -1621,7 +1611,6 @@ end function read_all
 !!
 !!     program demo_read_line
 !!     use,intrinsic :: iso_fortran_env, only : stdin  => input_unit
-!!     use,intrinsic :: iso_fortran_env, only : stdin  => input_unit
 !!     use,intrinsic :: iso_fortran_env, only : stderr => error_unit
 !!     use,intrinsic :: iso_fortran_env, only : iostat_end, iostat_eor
 !!     use M_io, only : read_line
@@ -1648,7 +1637,6 @@ end function read_all
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function read_line(line,lun) result(ier)
 use, intrinsic :: iso_fortran_env, only : INPUT_UNIT
 use M_strings,only : notabs
@@ -1740,7 +1728,6 @@ end function read_line
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function get_tmp() result(tname)
 
 character(len=*),parameter::ident_12="@(#)M_io::get_tmp(3f): Return the name of the scratch directory"
@@ -1845,7 +1832,6 @@ end function get_tmp
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function scratch(prefix) result(tname)
 use M_uuid, only : generate_uuid
 
@@ -1944,7 +1930,6 @@ end function scratch
 !!    John S. Urban, 1993
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function rd_character(prompt,default) result(strout)
 ! 1995 John S. Urban
 !

@@ -1,6 +1,5 @@
            program demo_read_line
            use,intrinsic :: iso_fortran_env, only : stdin  => input_unit
-           use,intrinsic :: iso_fortran_env, only : stdin  => input_unit
            use,intrinsic :: iso_fortran_env, only : stderr => error_unit
            use,intrinsic :: iso_fortran_env, only : iostat_end, iostat_eor
            use M_io, only : read_line

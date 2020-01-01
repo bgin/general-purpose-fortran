@@ -429,7 +429,6 @@
 !!   :  F  F  T  F  T  T
 !!   =============================================================================
 !===================================================================================================================================
-!===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 MODULE M_strings !
@@ -799,7 +798,6 @@ CONTAINS
 !!
 !!##LICENSE
 !!   Public Domain
-!===================================================================================================================================
 function matchw(tame,wild)
 
 character(len=*),parameter::ident_6="&
@@ -1206,7 +1204,6 @@ end subroutine test_matchw
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -1505,7 +1502,6 @@ end subroutine test_split
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 FUNCTION chomp(source_string,token,delimiters)
 
 character(len=*),parameter::ident_8="@(#)M_strings::chomp(3f): Tokenize a string : JSU- 20151030"
@@ -1703,7 +1699,6 @@ end subroutine test_chomp
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine delim(line,array,n,icount,ibegin,iterm,ilen,dlim)
 
 character(len=*),parameter::ident_9="@(#)M_strings::delim(3f): parse a string and store tokens into an array"
@@ -1993,7 +1988,6 @@ end subroutine test_delim
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine crack_cmd(cmd,old,new,ierr)
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)              :: cmd
@@ -2269,7 +2263,6 @@ end subroutine test_replace
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine substitute(targetline,old,new,ierr,start,end)
 
 character(len=*),parameter::ident_11="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
@@ -2539,7 +2532,6 @@ end subroutine test_substitute
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine change(target_string,cmd,ierr)
 ! Change a string assumed long enough to accommodate the change, with a directive that resembles a line editor directive of the form
 !    C/old_string/new_string/
@@ -2725,7 +2717,6 @@ end subroutine test_change
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(strtok_status)
 ! JSU- 20151030
 
@@ -2910,7 +2901,6 @@ end subroutine test_strtok
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 SUBROUTINE MODIF(CLINE,MOD)
 
 !$@(#) M_strings::modif(3f): Emulate the MODIFY command from the line editor XEDIT
@@ -3113,7 +3103,6 @@ end subroutine test_modif
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 elemental integer function len_white(string)
 !  DEPRECATED. Use len_trim(3f),trim(3f) unless you might have trailing nulls (common when interacting with C procedures)"
 !  John S. Urban, 1984, 1997-12-31
@@ -3200,7 +3189,6 @@ end subroutine test_len_white
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function crop(strin) result (strout)
 use M_journal, only : journal
 
@@ -3297,7 +3285,6 @@ end subroutine test_crop
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 PURE FUNCTION transliterate(instr,old_set,new_set) RESULT(outstr)
 
 character(len=*),parameter::ident_16="@(#)M_strings::transliterate(3f): replace characters from old set with new set"
@@ -3450,7 +3437,6 @@ end subroutine test_transliterate
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function rotate13 (input)
 implicit none
 
@@ -3553,7 +3539,6 @@ end subroutine test_rotate13
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 pure function join(str,sep,trm,left,right) result (string)
 
 character(len=*),parameter::ident_18="&
@@ -3661,7 +3646,6 @@ end subroutine test_join
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 elemental function reverse(string ) result (rev)
 
 character(len=*),parameter::ident_19="@(#)M_strings::reverse(3f): Return a string reversed"
@@ -3760,7 +3744,6 @@ end subroutine test_reverse
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 elemental pure function upper_quoted(str) result (string)
 
 character(len=*),parameter::ident_20="&
@@ -3857,7 +3840,6 @@ end function upper_quoted
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 !===================================================================================================================================
 ! Timing
 !
@@ -3982,7 +3964,6 @@ end subroutine test_upper
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 elemental pure function lower(str,begin,end) result (string)
 
 character(len=*),parameter::ident_22="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
@@ -4127,7 +4108,6 @@ end subroutine test_lower
 !!##LICENSE
 !!    Public Domain
 !===================================================================================================================================
-!===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 pure function a2s(array)  result (string)
@@ -4260,7 +4240,6 @@ end subroutine test_switch
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 pure function s2c(string)  RESULT (array)
 use,intrinsic :: ISO_C_BINDING, only : C_CHAR
 
@@ -4318,7 +4297,6 @@ end subroutine test_s2c
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function c2s(c_string_pointer) result(f_string)
 ! gets a C string (pointer), and returns the corresponding Fortran string;
 ! If the C string is null, it returns "NULL", similar to C's "(null)" printed in similar cases:
@@ -4405,7 +4383,6 @@ end subroutine test_c2s
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function indent(line)
 implicit none
 
@@ -4488,7 +4465,6 @@ end subroutine test_indent
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function visible(input) result(output)
 character(len=*),intent(in)  :: input
 character(len=:),allocatable :: output
@@ -4637,7 +4613,6 @@ end subroutine test_visible
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function expand(line,escape) result(lineout)
 USE ISO_C_BINDING ,ONLY: c_horizontal_tab
 implicit none
@@ -4823,7 +4798,6 @@ end subroutine test_expand
 !!     John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine notabs(INSTR,OUTSTR,ILEN)
 
 character(len=*),parameter::ident_31="&
@@ -4953,7 +4927,6 @@ end subroutine test_notabs
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 pure function adjustc(string,length)
 
 character(len=*),parameter::ident_32="@(#)M_strings::adjustc(3f): center text"
@@ -4963,7 +4936,6 @@ character(len=*),parameter::ident_32="@(#)M_strings::adjustc(3f): center text"
 !! DESCRIPTION center text using implicit or explicit length
 !!##VERSION     2.0, 20160711
 !! AUTHOR      John S. Urban
-!===================================================================================================================================
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)  :: string         ! input string to trim and center
 integer,intent(in),optional  :: length         ! line length to center text in
@@ -5098,7 +5070,6 @@ end subroutine test_adjustc
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function nospace(line)
 
 character(len=*),parameter::ident_33="@(#)M_strings::nospace(3f): remove all whitespace from input string"
@@ -5222,7 +5193,6 @@ end subroutine test_nospace
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function stretch(line,length,pattern,suffix) result(strout)
 
 character(len=*),parameter::ident_34="@(#)M_strings::stretch(3f): return string padded to at least specified length"
@@ -5335,7 +5305,6 @@ end subroutine test_stretch
 !!##LICENSE
 !!    Public Domain
 !===================================================================================================================================
-!===================================================================================================================================
 function atleast(line,length,pattern) result(strout)
 
 character(len=*),parameter::ident_35="@(#)M_strings::atleast(3f): return string padded to at least specified length"
@@ -5416,7 +5385,6 @@ end subroutine test_atleast
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function lenset(line,length) result(strout)
 
 character(len=*),parameter::ident_36="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
@@ -5491,7 +5459,6 @@ end subroutine test_lenset
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
@@ -5594,7 +5561,6 @@ end subroutine test_merge_str
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 !elemental pure function compact(str,char) result (outstr)
 function compact(str,char) result (outstr)
 
@@ -5775,7 +5741,6 @@ end subroutine test_compact
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 elemental function noesc(INSTR)
 
 character(len=*),parameter::ident_39="@(#)M_strings::noesc(3f): convert non-printable characters to a space"
@@ -5879,7 +5844,6 @@ end subroutine test_noesc
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine a2r(chars,valu,ierr)
 
 character(len=*),parameter::ident_40="@(#)M_strings::a2r(3fp): subroutine returns real value from string"
@@ -6202,13 +6166,11 @@ end subroutine test_string_to_value
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 !>
 !!##PROCEDURE:
 !! DESCRIPTION: s2v(3f): function returns doubleprecision number from string;zero if error occurs
 !!##VERSION:     2.0, 20160704
 !! AUTHOR:      John S. Urban
-!===================================================================================================================================
 doubleprecision function s2v(chars,ierr,onerr)
 !  1989 John S. Urban
 
@@ -6397,7 +6359,6 @@ end subroutine test_s2v
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 !===================================================================================================================================
 subroutine value_to_string(gval,chars,length,err,fmt,trimz)
 
@@ -6609,7 +6570,6 @@ end subroutine test_value_to_string
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 ! very odd compiler problems in many (but not all) programs using this routine; GNU Fortran (GCC) 5.4.0; 20161030
 function v2s_bug(gval) result(outstr)
 
@@ -6854,7 +6814,6 @@ end subroutine test_v2s
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function isNumber(string,msg,verbose)
 implicit none
 
@@ -7038,7 +6997,6 @@ end subroutine test_isnumber
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine trimzeros(string)
 
 character(len=*),parameter::ident_50="@(#)M_strings::trimzeros(3fp): Delete trailing zeros from numeric decimal string"
@@ -7150,7 +7108,6 @@ end subroutine test_trimzeros
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine listout(icurve_lists,icurve_expanded,inums_out,ierr)
 use M_journal, only : journal
 implicit none
@@ -7314,7 +7271,6 @@ end subroutine test_listout
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function quote(str,mode,clip) result (quoted_str)
 character(len=*),intent(in)          :: str                ! the string to be quoted
 character(len=*),optional,intent(in) :: mode
@@ -7450,7 +7406,6 @@ end subroutine test_quote
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function unquote(quoted_str,esc) result (unquoted_str)
 character(len=*),intent(in)          :: quoted_str              ! the string to be unquoted
 character(len=1),optional,intent(in) :: esc                     ! escape character
@@ -7722,7 +7677,6 @@ end subroutine test_unquote
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function describe(ch) result (string)
 
 character(len=*),parameter::ident_52="@(#)M_strings::describe(3f): return string describing long name of a single character"
@@ -8009,7 +7963,6 @@ end subroutine test_describe
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine getvals(line,values,icount,ierr)
 implicit none
 
@@ -8175,7 +8128,6 @@ end subroutine test_getvals
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 subroutine string_to_values(line,iread,values,inums,delims,ierr)
 use M_journal, only : journal
 implicit none
@@ -8356,7 +8308,6 @@ end subroutine test_string_to_values
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function s2vs(string,delim) result(darray)
 
 character(len=*),parameter::ident_55="@(#)M_strings::s2vs(3f): function returns array of values from a string"
@@ -8522,7 +8473,6 @@ end subroutine test_isprint
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function msg_scalar(generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
@@ -9298,7 +9248,6 @@ end subroutine test_islower
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 elemental function isalnum(ch) result(res)
 
 character(len=*),parameter::ident_70="@(#)M_strings::isalnum(3f): returns true if character is a letter (a-z,A-Z) or digit(0-9)"
@@ -9407,7 +9356,6 @@ end subroutine test_isalnum
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 logical function base(x,b,y,a)
 implicit none
 character(len=*),intent(in)  :: x
@@ -9567,7 +9515,6 @@ end subroutine test_base
 !!
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 logical function decodebase(string,basein,out_baseten)
 implicit none
 
@@ -9740,7 +9687,6 @@ end subroutine test_decodebase
 !!
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 logical function codebase(inval10,outbase,answer)
 implicit none
 
@@ -9965,7 +9911,6 @@ end function tobase
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-!===================================================================================================================================
 function fmt(source_string,length)
 
 character(len=*),parameter::ident_76="@(#)M_strings::fmt(3f): wrap a long string into a paragraph"

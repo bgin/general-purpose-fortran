@@ -78,6 +78,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 	M_anything::anyscalar_to_double(3f): convert integer or real parameter of any kind to doubleprecision<br/>
 	M_anything::anyscalar_to_real(3f): convert integer or real parameter of any kind to real<br/>
 	M_anything::anyinteger_to_64(3f): convert integer parameter of any kind to 64-bit integer<br/>
+	M_anything::anyinteger_to_string(3f): pure function that converts an integer value to a character string<br/>
 </td>
 <tr><td><a href="M_args.f90">M_args.f90</a></td>
 <td>
@@ -352,6 +353,26 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </td>
 <tr><td><a href="M_lua.f90">M_lua.f90</a></td>
 <td>
+</td>
+<tr><td><a href="M_match.f90">M_match.f90</a></td>
+<td>
+	M_match::f2r(3f): convert Fortran character variable to Ratfor integer array with Ratfor terminator<br/>
+	M_match::r2f(3f): convert Ratfor integer array to Fortran character variable<br/>
+	M_match::getpat_ convert argument into pattern<br/>
+	M_match::getpat__ convert argument into pattern<br/>
+	M_match::addset put C in SET(J) if it fits, increment J<br/>
+	M_match::dodash expand array(i-1)-array(i+1) into set(j)...<br/>
+	M_match::locate look for c in char class at pat(offset)<br/>
+	M_match::match find match anywhere on line<br/>
+	M_match::match find match anywhere on line<br/>
+	M_match::patsiz returns size of pattern entry at pat(n)<br/>
+	M_match::stclos insert closure entry at pat(j)<br/>
+	M_match::getccl expand char class at arg(i) into pat(j)<br/>
+	M_match::filset expand set at  array(i)  into  set(j),  stop at  delim<br/>
+	M_match::esc map  array(i)  into escaped character if appropriate<br/>
+	M_match::omatch_ try to match a single pattern at pat(j)<br/>
+	M_match::amatch_  (non-recursive) look for match starting at lin(from)<br/>
+	M_match::makpat_ make pattern from arg(from), terminate at delim<br/>
 </td>
 <tr><td><a href="M_math.f90">M_math.f90</a></td>
 <td>
